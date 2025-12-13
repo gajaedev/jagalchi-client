@@ -19,7 +19,3 @@ Follow these steps:
 4. Ensure no imports from other features
 
 5. Run `pnpm lint` to verify
-
-```
-
-```
