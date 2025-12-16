@@ -1,11 +1,8 @@
 'use client';
 
-import { useState } from 'react';
-
 import Link from 'next/link';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Eye, EyeOff } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
@@ -14,11 +11,11 @@ import { Label } from '@/components/ui/label';
 
 import { loginSchema, type LoginSchema } from '../schemas/auth.schema';
 
+import { FormErrorMessage } from './FormErrorMessage';
 import { GoogleAuthButton } from './GoogleAuthButton';
+import { PasswordInput } from './PasswordInput';
 
 export function LoginForm() {
-  const [showPassword, setShowPassword] = useState(false);
-
   const {
     register,
     handleSubmit,
@@ -29,12 +26,11 @@ export function LoginForm() {
 
   const onSubmit = (data: LoginSchema) => {
     // TODO: API 연동
-    console.log('Login:', data);
+    void data;
   };
 
   const handleGoogleLogin = () => {
     // TODO: Google OAuth
-    console.log('Google login');
   };
 
   return (
@@ -51,11 +47,7 @@ export function LoginForm() {
           aria-invalid={!!errors.email}
           {...register('email')}
         />
-        {errors.email && (
-          <p role="alert" className="text-destructive text-sm font-medium">
-            {errors.email.message}
-          </p>
-        )}
+        <FormErrorMessage message={errors.email?.message} />
       </div>
 
       {/* 비밀번호 필드 */}
@@ -71,29 +63,13 @@ export function LoginForm() {
             비밀번호를 잊어버렸나요?
           </Link>
         </div>
-        <div className="relative">
-          <Input
-            id="password"
-            type={showPassword ? 'text' : 'password'}
-            placeholder="비밀번호 입력"
-            className="pr-10"
-            aria-invalid={!!errors.password}
-            {...register('password')}
-          />
-          <button
-            type="button"
-            className="text-muted-foreground hover:text-foreground absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer transition-colors"
-            onClick={() => setShowPassword(!showPassword)}
-            aria-label={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
-          >
-            {showPassword ? <Eye className="size-5" /> : <EyeOff className="size-5" />}
-          </button>
-        </div>
-        {errors.password && (
-          <p role="alert" className="text-destructive text-sm font-medium">
-            {errors.password.message}
-          </p>
-        )}
+        <PasswordInput
+          id="password"
+          placeholder="비밀번호 입력"
+          error={!!errors.password}
+          {...register('password')}
+        />
+        <FormErrorMessage message={errors.password?.message} />
       </div>
 
       {/* 버튼 그룹 */}
