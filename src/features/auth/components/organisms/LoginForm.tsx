@@ -22,9 +22,8 @@ export function LoginForm() {
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = (data: LoginSchema) => {
+  const onSubmit = (_data: LoginSchema) => {
     // TODO: API 연동
-    void data;
   };
 
   const handleGoogleLogin = () => {

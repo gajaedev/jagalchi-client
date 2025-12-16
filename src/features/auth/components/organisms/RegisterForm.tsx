@@ -38,16 +38,14 @@ export function RegisterForm({ onStepChange }: RegisterFormProps) {
     resolver: zodResolver(registerStep2Schema),
   });
 
-  const onStep1Submit = (data: RegisterStep1Schema) => {
+  const onStep1Submit = (_data: RegisterStep1Schema) => {
     // TODO: API 연동 - 이메일 인증 확인
-    void data;
     setStep(2);
     onStepChange?.(2, '사용자 이름 설정', '사용자 이름을 입력해주세요');
   };
 
-  const onStep2Submit = (data: RegisterStep2Schema) => {
+  const onStep2Submit = (_data: RegisterStep2Schema) => {
     // TODO: API 연동 - 회원가입 완료
-    void data;
   };
 
   const handleGoogleRegister = () => {

@@ -39,7 +39,7 @@ export function GoogleAuthButton({ variant, className, onClick }: GoogleAuthButt
     <Button
       type="button"
       variant="outline"
-      className={cn('w-full border-slate-300 bg-white/10 font-semibold shadow-sm', className)}
+      className={cn('border-border w-full bg-white/10 font-semibold shadow-sm', className)}
       onClick={onClick}
     >
       <GoogleIcon className="size-4" />

@@ -37,16 +37,14 @@ export function FindPasswordForm({ onStepChange }: FindPasswordFormProps) {
     resolver: zodResolver(findPasswordStep2Schema),
   });
 
-  const onStep1Submit = (data: FindPasswordStep1Schema) => {
+  const onStep1Submit = (_data: FindPasswordStep1Schema) => {
     // TODO: API 연동 - 이메일 인증 확인
-    void data;
     setStep(2);
     onStepChange?.(2, '새 비밀번호 입력', '재설정할 비밀번호를 입력해주세요');
   };
 
-  const onStep2Submit = (data: FindPasswordStep2Schema) => {
+  const onStep2Submit = (_data: FindPasswordStep2Schema) => {
     // TODO: API 연동 - 비밀번호 재설정
-    void data;
   };
 
   if (step === 2) {
