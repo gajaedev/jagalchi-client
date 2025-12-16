@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
+import { useVerificationCode } from '../hooks/use-verification-code';
 import {
   registerStep1Schema,
   registerStep2Schema,
@@ -29,7 +30,7 @@ interface RegisterFormProps {
 
 export function RegisterForm({ onStepChange }: RegisterFormProps) {
   const [step, setStep] = useState<RegisterStep>(1);
-  const [isCodeSent, setIsCodeSent] = useState(false);
+  const { isCodeSent, handleSendCode } = useVerificationCode();
 
   const step1Form = useForm<RegisterStep1Schema>({
     resolver: zodResolver(registerStep1Schema),
@@ -38,11 +39,6 @@ export function RegisterForm({ onStepChange }: RegisterFormProps) {
   const step2Form = useForm<RegisterStep2Schema>({
     resolver: zodResolver(registerStep2Schema),
   });
-
-  const handleSendCode = () => {
-    // TODO: API 연동 - 인증번호 전송
-    setIsCodeSent(true);
-  };
 
   const onStep1Submit = (data: RegisterStep1Schema) => {
     // TODO: API 연동 - 이메일 인증 확인
@@ -121,10 +117,9 @@ export function RegisterForm({ onStepChange }: RegisterFormProps) {
       <VerificationCodeInput
         isCodeSent={isCodeSent}
         onResend={handleSendCode}
-        error={!!step1Form.formState.errors.verificationCode}
+        errorMessage={step1Form.formState.errors.verificationCode?.message}
         {...step1Form.register('verificationCode')}
       />
-      <FormErrorMessage message={step1Form.formState.errors.verificationCode?.message} />
 
       <div className="flex flex-col gap-3">
         {isCodeSent ? (

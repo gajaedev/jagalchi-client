@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
+import { useVerificationCode } from '../hooks/use-verification-code';
 import {
   findPasswordStep1Schema,
   findPasswordStep2Schema,
@@ -28,7 +29,7 @@ interface FindPasswordFormProps {
 
 export function FindPasswordForm({ onStepChange }: FindPasswordFormProps) {
   const [step, setStep] = useState<FindPasswordStep>(1);
-  const [isCodeSent, setIsCodeSent] = useState(false);
+  const { isCodeSent, handleSendCode } = useVerificationCode();
 
   const step1Form = useForm<FindPasswordStep1Schema>({
     resolver: zodResolver(findPasswordStep1Schema),
@@ -37,11 +38,6 @@ export function FindPasswordForm({ onStepChange }: FindPasswordFormProps) {
   const step2Form = useForm<FindPasswordStep2Schema>({
     resolver: zodResolver(findPasswordStep2Schema),
   });
-
-  const handleSendCode = () => {
-    // TODO: API 연동 - 인증번호 전송
-    setIsCodeSent(true);
-  };
 
   const onStep1Submit = (data: FindPasswordStep1Schema) => {
     // TODO: API 연동 - 이메일 인증 확인
@@ -116,10 +112,9 @@ export function FindPasswordForm({ onStepChange }: FindPasswordFormProps) {
       <VerificationCodeInput
         isCodeSent={isCodeSent}
         onResend={handleSendCode}
-        error={!!step1Form.formState.errors.verificationCode}
+        errorMessage={step1Form.formState.errors.verificationCode?.message}
         {...step1Form.register('verificationCode')}
       />
-      <FormErrorMessage message={step1Form.formState.errors.verificationCode?.message} />
 
       {isCodeSent ? (
         <Button type="submit" className="w-full">

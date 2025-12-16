@@ -5,14 +5,16 @@ import { forwardRef } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
+import { FormErrorMessage } from './FormErrorMessage';
+
 interface VerificationCodeInputProps extends React.ComponentProps<'input'> {
   isCodeSent: boolean;
   onResend?: () => void;
-  error?: boolean;
+  errorMessage?: string;
 }
 
 export const VerificationCodeInput = forwardRef<HTMLInputElement, VerificationCodeInputProps>(
-  ({ isCodeSent, onResend, error, ...props }, ref) => {
+  ({ isCodeSent, onResend, errorMessage, ...props }, ref) => {
     return (
       <div className="flex flex-col gap-1.5">
         <div className="flex items-center justify-between">
@@ -38,9 +40,10 @@ export const VerificationCodeInput = forwardRef<HTMLInputElement, VerificationCo
           type="text"
           placeholder="인증번호 입력"
           disabled={!isCodeSent}
-          aria-invalid={error}
+          aria-invalid={!!errorMessage}
           {...props}
         />
+        <FormErrorMessage message={errorMessage} />
       </div>
     );
   },
