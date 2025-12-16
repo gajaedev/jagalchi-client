@@ -1,8 +1,7 @@
-name: PR Guide
+name: PR Comment
 
 on:
   pull_request:
-    types: [opened]
     branches: [main, develop]
 
 permissions:
@@ -10,6 +9,7 @@ permissions:
 
 jobs:
   comment:
+    if: github.event.action == 'opened'
     runs-on: ubuntu-latest
 
     steps:
@@ -55,59 +55,10 @@ jobs:
 | **Praise** | 좋은 코드 칭찬 |
 | **Note** | 참고 사항 공유 |
 
-<details>
-<summary>💬 코멘트 예시 보기 / View Examples</summary>
-
-#### Suggestion
-> 이 부분 \`useMemo\`로 최적화하면 어떨까요?
-\`\`\`tsx
-// Before
-const filtered = items.filter(item => item.active);
-
-// After
-const filtered = useMemo(() => items.filter(item => item.active), [items]);
-\`\`\`
-
-#### Question
-> 이 로직의 의도가 뭐예요? \`status === 0\`일 때 early return 하는 이유가 있나요?
-
-#### Issue
-> 🚨 여기 null 체크 빠졌어요. \`user\`가 없을 때 크래시 날 것 같습니다.
-\`\`\`tsx
-// Before
-const name = user.name;
-
-// After
-const name = user?.name ?? 'Unknown';
-\`\`\`
-
-#### Praise
-> 👍 이 구조 깔끔하네요! 재사용하기 좋을 것 같아요.
-
-#### Note
-> 📝 FYI: 이 API는 v2에서 deprecated 됩니다. 마이그레이션 계획 세워야 할 것 같아요.
-
-</details>
-
-### 3. 리뷰 원칙 / Review Principles
-
-- ⏰ **빠르게**: PR 올라온 후 24시간 이내 리뷰 시작
-- 🎯 **구체적으로**: "이상해요" ❌ → "여기서 null이 들어오면 크래시 날 것 같아요" ✅
-- 🤝 **존중하며**: 코드를 비판, 사람을 비판 X
-- 💡 **대안 제시**: 문제만 지적하지 말고 해결책도 같이
-
-### 4. 승인 조건 / Approval Requirements
+### 3. 승인 조건 / Approval Requirements
 
 - ✅ 최소 1명의 Approve 필수
 - ✅ 모든 Issue 코멘트 해결
 - ✅ CI 테스트 통과
-- ✅ 충돌 해결 완료
-
-#### 셀프 머지 / Self Merge
-
-> 혼자 작업하는 경우 셀프 머지를 허용합니다.
-
-- 셀프 코드 리뷰 필수
-- CI 테스트 통과 필수
-- PR 설명에 "셀프 리뷰 완료" 명시`
+- ✅ 충돌 해결 완료`
             })
