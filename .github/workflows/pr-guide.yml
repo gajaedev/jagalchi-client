@@ -3,6 +3,7 @@ name: PR Guide
 on:
   pull_request:
     types: [opened]
+    branches: [main, develop]
 
 permissions:
   pull-requests: write
