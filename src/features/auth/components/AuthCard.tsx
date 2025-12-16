@@ -28,7 +28,7 @@ export function AuthCard({ title, description, children, footer, className }: Au
         )}
       </CardHeader>
       <CardContent className="p-0">{children}</CardContent>
-      {footer && <CardFooter className="p-0">{footer}</CardFooter>}
+      {footer && <CardFooter className="h-10 items-start justify-center p-0">{footer}</CardFooter>}
     </Card>
   );
 }
