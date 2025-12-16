@@ -55,7 +55,6 @@ export function FindPasswordForm({ onStepChange }: FindPasswordFormProps) {
     void data;
   };
 
-  // Step 2: 새 비밀번호 설정
   if (step === 2) {
     return (
       <form
@@ -63,7 +62,6 @@ export function FindPasswordForm({ onStepChange }: FindPasswordFormProps) {
         onSubmit={step2Form.handleSubmit(onStep2Submit)}
         className="flex flex-col gap-7"
       >
-        {/* 새 비밀번호 필드 */}
         <div className="flex flex-col gap-1.5">
           <Label htmlFor="newPassword" className="text-sm font-medium">
             새 비밀번호
@@ -78,7 +76,6 @@ export function FindPasswordForm({ onStepChange }: FindPasswordFormProps) {
           <FormErrorMessage message={step2Form.formState.errors.newPassword?.message} />
         </div>
 
-        {/* 비밀번호 확인 필드 */}
         <div className="flex flex-col gap-1.5">
           <Label htmlFor="passwordConfirm" className="text-sm font-medium">
             비밀번호 확인
@@ -100,10 +97,8 @@ export function FindPasswordForm({ onStepChange }: FindPasswordFormProps) {
     );
   }
 
-  // Step 1: 이메일 인증
   return (
     <form onSubmit={step1Form.handleSubmit(onStep1Submit)} className="flex flex-col gap-7">
-      {/* 이메일 필드 */}
       <div className="flex flex-col gap-1.5">
         <Label htmlFor="email" className="text-sm font-medium">
           이메일
@@ -118,7 +113,6 @@ export function FindPasswordForm({ onStepChange }: FindPasswordFormProps) {
         <FormErrorMessage message={step1Form.formState.errors.email?.message} />
       </div>
 
-      {/* 인증번호 필드 */}
       <VerificationCodeInput
         isCodeSent={isCodeSent}
         onResend={handleSendCode}
@@ -127,7 +121,6 @@ export function FindPasswordForm({ onStepChange }: FindPasswordFormProps) {
       />
       <FormErrorMessage message={step1Form.formState.errors.verificationCode?.message} />
 
-      {/* 버튼 */}
       {isCodeSent ? (
         <Button type="submit" className="w-full">
           다음

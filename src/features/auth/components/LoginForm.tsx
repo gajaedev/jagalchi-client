@@ -35,7 +35,6 @@ export function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-7">
-      {/* 이메일 필드 */}
       <div className="flex flex-col gap-1.5">
         <Label htmlFor="email" className="text-sm font-medium">
           이메일
@@ -50,7 +49,6 @@ export function LoginForm() {
         <FormErrorMessage message={errors.email?.message} />
       </div>
 
-      {/* 비밀번호 필드 */}
       <div className="flex flex-col gap-1.5">
         <div className="flex items-center justify-between">
           <Label htmlFor="password" className="text-sm font-medium">
@@ -72,7 +70,6 @@ export function LoginForm() {
         <FormErrorMessage message={errors.password?.message} />
       </div>
 
-      {/* 버튼 그룹 */}
       <div className="flex flex-col gap-3">
         <Button type="submit" className="w-full">
           로그인

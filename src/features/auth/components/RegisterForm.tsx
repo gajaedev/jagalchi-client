@@ -60,7 +60,6 @@ export function RegisterForm({ onStepChange }: RegisterFormProps) {
     // TODO: Google OAuth
   };
 
-  // Step 2: 사용자 이름 설정
   if (step === 2) {
     return (
       <form
@@ -90,10 +89,8 @@ export function RegisterForm({ onStepChange }: RegisterFormProps) {
     );
   }
 
-  // Step 1: 이메일, 비밀번호, 인증번호
   return (
     <form onSubmit={step1Form.handleSubmit(onStep1Submit)} className="flex flex-col gap-7">
-      {/* 이메일 필드 */}
       <div className="flex flex-col gap-1.5">
         <Label htmlFor="email" className="text-sm font-medium">
           이메일
@@ -108,7 +105,6 @@ export function RegisterForm({ onStepChange }: RegisterFormProps) {
         <FormErrorMessage message={step1Form.formState.errors.email?.message} />
       </div>
 
-      {/* 비밀번호 필드 */}
       <div className="flex flex-col gap-1.5">
         <Label htmlFor="password" className="text-sm font-medium">
           비밀번호
@@ -122,7 +118,6 @@ export function RegisterForm({ onStepChange }: RegisterFormProps) {
         <FormErrorMessage message={step1Form.formState.errors.password?.message} />
       </div>
 
-      {/* 인증번호 필드 */}
       <VerificationCodeInput
         isCodeSent={isCodeSent}
         onResend={handleSendCode}
@@ -131,7 +126,6 @@ export function RegisterForm({ onStepChange }: RegisterFormProps) {
       />
       <FormErrorMessage message={step1Form.formState.errors.verificationCode?.message} />
 
-      {/* 버튼 그룹 */}
       <div className="flex flex-col gap-3">
         {isCodeSent ? (
           <Button type="submit" className="w-full">

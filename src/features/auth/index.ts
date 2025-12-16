@@ -1,4 +1,3 @@
-// Components
 export { AuthCard } from './components/AuthCard';
 export { FormErrorMessage } from './components/FormErrorMessage';
 export { GoogleAuthButton } from './components/GoogleAuthButton';
@@ -8,10 +7,7 @@ export { RegisterForm } from './components/RegisterForm';
 export { FindPasswordForm } from './components/FindPasswordForm';
 export { VerificationCodeInput } from './components/VerificationCodeInput';
 
-// Types
 export type { RegisterStep, FindPasswordStep } from './types/auth.types';
-
-// Schema Types (use these for form data)
 export type {
   LoginSchema,
   RegisterStep1Schema,
@@ -20,7 +16,6 @@ export type {
   FindPasswordStep2Schema,
 } from './schemas/auth.schema';
 
-// Schemas
 export {
   loginSchema,
   registerStep1Schema,
