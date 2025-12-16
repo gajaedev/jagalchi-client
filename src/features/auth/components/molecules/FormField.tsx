@@ -2,7 +2,7 @@
 
 import { Label } from '@/components/ui/label';
 
-import { FormErrorMessage } from './FormErrorMessage';
+import { FormErrorMessage } from '../atoms/FormErrorMessage';
 
 interface FormFieldProps {
   label: string;

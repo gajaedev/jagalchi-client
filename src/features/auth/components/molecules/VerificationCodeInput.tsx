@@ -5,7 +5,7 @@ import { forwardRef } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-import { FormErrorMessage } from './FormErrorMessage';
+import { FormErrorMessage } from '../atoms/FormErrorMessage';
 
 interface VerificationCodeInputProps extends React.ComponentProps<'input'> {
   isCodeSent: boolean;

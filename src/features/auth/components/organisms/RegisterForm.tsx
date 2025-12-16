@@ -8,20 +8,19 @@ import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
-import { useVerificationCode } from '../hooks/use-verification-code';
+import { useVerificationCode } from '../../hooks/use-verification-code';
 import {
   registerStep1Schema,
   registerStep2Schema,
   type RegisterStep1Schema,
   type RegisterStep2Schema,
-} from '../schemas/auth.schema';
+} from '../../schemas/auth.schema';
+import { GoogleAuthButton } from '../atoms/GoogleAuthButton';
+import { FormField } from '../molecules/FormField';
+import { PasswordInput } from '../molecules/PasswordInput';
+import { VerificationCodeInput } from '../molecules/VerificationCodeInput';
 
-import { FormField } from './FormField';
-import { GoogleAuthButton } from './GoogleAuthButton';
-import { PasswordInput } from './PasswordInput';
-import { VerificationCodeInput } from './VerificationCodeInput';
-
-import type { RegisterStep } from '../types/auth.types';
+import type { RegisterStep } from '../../types/auth.types';
 
 interface RegisterFormProps {
   onStepChange?: (step: RegisterStep, title: string, description: string) => void;

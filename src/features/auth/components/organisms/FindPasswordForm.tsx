@@ -8,19 +8,18 @@ import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
-import { useVerificationCode } from '../hooks/use-verification-code';
+import { useVerificationCode } from '../../hooks/use-verification-code';
 import {
   findPasswordStep1Schema,
   findPasswordStep2Schema,
   type FindPasswordStep1Schema,
   type FindPasswordStep2Schema,
-} from '../schemas/auth.schema';
+} from '../../schemas/auth.schema';
+import { FormField } from '../molecules/FormField';
+import { PasswordInput } from '../molecules/PasswordInput';
+import { VerificationCodeInput } from '../molecules/VerificationCodeInput';
 
-import { FormField } from './FormField';
-import { PasswordInput } from './PasswordInput';
-import { VerificationCodeInput } from './VerificationCodeInput';
-
-import type { FindPasswordStep } from '../types/auth.types';
+import type { FindPasswordStep } from '../../types/auth.types';
 
 interface FindPasswordFormProps {
   onStepChange?: (step: FindPasswordStep, title: string, description: string) => void;

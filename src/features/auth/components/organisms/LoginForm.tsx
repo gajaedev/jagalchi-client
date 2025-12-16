@@ -8,11 +8,10 @@ import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
-import { loginSchema, type LoginSchema } from '../schemas/auth.schema';
-
-import { FormField } from './FormField';
-import { GoogleAuthButton } from './GoogleAuthButton';
-import { PasswordInput } from './PasswordInput';
+import { loginSchema, type LoginSchema } from '../../schemas/auth.schema';
+import { GoogleAuthButton } from '../atoms/GoogleAuthButton';
+import { FormField } from '../molecules/FormField';
+import { PasswordInput } from '../molecules/PasswordInput';
 
 export function LoginForm() {
   const {

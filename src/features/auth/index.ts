@@ -1,11 +1,12 @@
-export { AuthCard } from './components/AuthCard';
-export { FormErrorMessage } from './components/FormErrorMessage';
-export { GoogleAuthButton } from './components/GoogleAuthButton';
-export { LoginForm } from './components/LoginForm';
-export { PasswordInput } from './components/PasswordInput';
-export { RegisterForm } from './components/RegisterForm';
-export { FindPasswordForm } from './components/FindPasswordForm';
-export { VerificationCodeInput } from './components/VerificationCodeInput';
+export { AuthCard } from './components/templates/AuthCard';
+export { FormErrorMessage } from './components/atoms/FormErrorMessage';
+export { GoogleAuthButton } from './components/atoms/GoogleAuthButton';
+export { FormField } from './components/molecules/FormField';
+export { PasswordInput } from './components/molecules/PasswordInput';
+export { VerificationCodeInput } from './components/molecules/VerificationCodeInput';
+export { LoginForm } from './components/organisms/LoginForm';
+export { RegisterForm } from './components/organisms/RegisterForm';
+export { FindPasswordForm } from './components/organisms/FindPasswordForm';
 
 export type { RegisterStep, FindPasswordStep } from './types/auth.types';
 export type {
