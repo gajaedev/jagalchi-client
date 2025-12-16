@@ -7,11 +7,10 @@ import { useForm } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 
 import { loginSchema, type LoginSchema } from '../schemas/auth.schema';
 
-import { FormErrorMessage } from './FormErrorMessage';
+import { FormField } from './FormField';
 import { GoogleAuthButton } from './GoogleAuthButton';
 import { PasswordInput } from './PasswordInput';
 
@@ -35,10 +34,7 @@ export function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-7">
-      <div className="flex flex-col gap-1.5">
-        <Label htmlFor="email" className="text-sm font-medium">
-          이메일
-        </Label>
+      <FormField label="이메일" htmlFor="email" error={errors.email?.message}>
         <Input
           id="email"
           type="email"
@@ -46,29 +42,28 @@ export function LoginForm() {
           aria-invalid={!!errors.email}
           {...register('email')}
         />
-        <FormErrorMessage message={errors.email?.message} />
-      </div>
+      </FormField>
 
-      <div className="flex flex-col gap-1.5">
-        <div className="flex items-center justify-between">
-          <Label htmlFor="password" className="text-sm font-medium">
-            비밀번호
-          </Label>
+      <FormField
+        label="비밀번호"
+        htmlFor="password"
+        error={errors.password?.message}
+        labelExtra={
           <Link
             href="/find-password"
             className="cursor-pointer text-sm tracking-[0.07px] text-neutral-900 underline transition-colors hover:text-neutral-700"
           >
             비밀번호를 잊어버렸나요?
           </Link>
-        </div>
+        }
+      >
         <PasswordInput
           id="password"
           placeholder="비밀번호 입력"
           error={!!errors.password}
           {...register('password')}
         />
-        <FormErrorMessage message={errors.password?.message} />
-      </div>
+      </FormField>
 
       <div className="flex flex-col gap-3">
         <Button type="submit" className="w-full">

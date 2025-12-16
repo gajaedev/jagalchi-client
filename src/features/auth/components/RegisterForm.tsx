@@ -7,7 +7,6 @@ import { useForm } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 
 import { useVerificationCode } from '../hooks/use-verification-code';
 import {
@@ -17,7 +16,7 @@ import {
   type RegisterStep2Schema,
 } from '../schemas/auth.schema';
 
-import { FormErrorMessage } from './FormErrorMessage';
+import { FormField } from './FormField';
 import { GoogleAuthButton } from './GoogleAuthButton';
 import { PasswordInput } from './PasswordInput';
 import { VerificationCodeInput } from './VerificationCodeInput';
@@ -63,10 +62,11 @@ export function RegisterForm({ onStepChange }: RegisterFormProps) {
         onSubmit={step2Form.handleSubmit(onStep2Submit)}
         className="flex flex-col gap-7"
       >
-        <div className="flex flex-col gap-1.5">
-          <Label htmlFor="display-name" className="text-sm font-medium">
-            이름
-          </Label>
+        <FormField
+          label="이름"
+          htmlFor="display-name"
+          error={step2Form.formState.errors.username?.message}
+        >
           <Input
             id="display-name"
             type="text"
@@ -75,8 +75,7 @@ export function RegisterForm({ onStepChange }: RegisterFormProps) {
             aria-invalid={!!step2Form.formState.errors.username}
             {...step2Form.register('username')}
           />
-          <FormErrorMessage message={step2Form.formState.errors.username?.message} />
-        </div>
+        </FormField>
 
         <Button type="submit" className="w-full">
           확인
@@ -87,10 +86,7 @@ export function RegisterForm({ onStepChange }: RegisterFormProps) {
 
   return (
     <form onSubmit={step1Form.handleSubmit(onStep1Submit)} className="flex flex-col gap-7">
-      <div className="flex flex-col gap-1.5">
-        <Label htmlFor="email" className="text-sm font-medium">
-          이메일
-        </Label>
+      <FormField label="이메일" htmlFor="email" error={step1Form.formState.errors.email?.message}>
         <Input
           id="email"
           type="email"
@@ -98,21 +94,20 @@ export function RegisterForm({ onStepChange }: RegisterFormProps) {
           aria-invalid={!!step1Form.formState.errors.email}
           {...step1Form.register('email')}
         />
-        <FormErrorMessage message={step1Form.formState.errors.email?.message} />
-      </div>
+      </FormField>
 
-      <div className="flex flex-col gap-1.5">
-        <Label htmlFor="password" className="text-sm font-medium">
-          비밀번호
-        </Label>
+      <FormField
+        label="비밀번호"
+        htmlFor="password"
+        error={step1Form.formState.errors.password?.message}
+      >
         <PasswordInput
           id="password"
           placeholder="비밀번호 지정"
           error={!!step1Form.formState.errors.password}
           {...step1Form.register('password')}
         />
-        <FormErrorMessage message={step1Form.formState.errors.password?.message} />
-      </div>
+      </FormField>
 
       <VerificationCodeInput
         isCodeSent={isCodeSent}

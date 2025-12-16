@@ -7,7 +7,6 @@ import { useForm } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 
 import { useVerificationCode } from '../hooks/use-verification-code';
 import {
@@ -17,7 +16,7 @@ import {
   type FindPasswordStep2Schema,
 } from '../schemas/auth.schema';
 
-import { FormErrorMessage } from './FormErrorMessage';
+import { FormField } from './FormField';
 import { PasswordInput } from './PasswordInput';
 import { VerificationCodeInput } from './VerificationCodeInput';
 
@@ -58,10 +57,11 @@ export function FindPasswordForm({ onStepChange }: FindPasswordFormProps) {
         onSubmit={step2Form.handleSubmit(onStep2Submit)}
         className="flex flex-col gap-7"
       >
-        <div className="flex flex-col gap-1.5">
-          <Label htmlFor="newPassword" className="text-sm font-medium">
-            새 비밀번호
-          </Label>
+        <FormField
+          label="새 비밀번호"
+          htmlFor="newPassword"
+          error={step2Form.formState.errors.newPassword?.message}
+        >
           <PasswordInput
             id="newPassword"
             placeholder="비밀번호 입력"
@@ -69,13 +69,13 @@ export function FindPasswordForm({ onStepChange }: FindPasswordFormProps) {
             error={!!step2Form.formState.errors.newPassword}
             {...step2Form.register('newPassword')}
           />
-          <FormErrorMessage message={step2Form.formState.errors.newPassword?.message} />
-        </div>
+        </FormField>
 
-        <div className="flex flex-col gap-1.5">
-          <Label htmlFor="passwordConfirm" className="text-sm font-medium">
-            비밀번호 확인
-          </Label>
+        <FormField
+          label="비밀번호 확인"
+          htmlFor="passwordConfirm"
+          error={step2Form.formState.errors.passwordConfirm?.message}
+        >
           <PasswordInput
             id="passwordConfirm"
             placeholder="비밀번호 다시 입력"
@@ -83,8 +83,7 @@ export function FindPasswordForm({ onStepChange }: FindPasswordFormProps) {
             error={!!step2Form.formState.errors.passwordConfirm}
             {...step2Form.register('passwordConfirm')}
           />
-          <FormErrorMessage message={step2Form.formState.errors.passwordConfirm?.message} />
-        </div>
+        </FormField>
 
         <Button type="submit" className="w-full">
           완료
@@ -95,10 +94,7 @@ export function FindPasswordForm({ onStepChange }: FindPasswordFormProps) {
 
   return (
     <form onSubmit={step1Form.handleSubmit(onStep1Submit)} className="flex flex-col gap-7">
-      <div className="flex flex-col gap-1.5">
-        <Label htmlFor="email" className="text-sm font-medium">
-          이메일
-        </Label>
+      <FormField label="이메일" htmlFor="email" error={step1Form.formState.errors.email?.message}>
         <Input
           id="email"
           type="email"
@@ -106,8 +102,7 @@ export function FindPasswordForm({ onStepChange }: FindPasswordFormProps) {
           aria-invalid={!!step1Form.formState.errors.email}
           {...step1Form.register('email')}
         />
-        <FormErrorMessage message={step1Form.formState.errors.email?.message} />
-      </div>
+      </FormField>
 
       <VerificationCodeInput
         isCodeSent={isCodeSent}
