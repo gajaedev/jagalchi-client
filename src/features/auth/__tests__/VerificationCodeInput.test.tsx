@@ -22,12 +22,12 @@ describe('VerificationCodeInput', () => {
 
   it('isCodeSent가 true일 때 재전송 버튼을 표시한다', () => {
     render(<VerificationCodeInput isCodeSent={true} onResend={() => {}} />);
-    expect(screen.getByRole('button', { name: '재전송' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '인증번호 재전송' })).toBeInTheDocument();
   });
 
   it('isCodeSent가 false일 때 재전송 버튼을 표시하지 않는다', () => {
     render(<VerificationCodeInput isCodeSent={false} onResend={() => {}} />);
-    expect(screen.queryByRole('button', { name: '재전송' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: '인증번호 재전송' })).not.toBeInTheDocument();
   });
 
   it('재전송 버튼 클릭 시 onResend를 호출한다', async () => {
@@ -35,7 +35,7 @@ describe('VerificationCodeInput', () => {
     const handleResend = vi.fn();
 
     render(<VerificationCodeInput isCodeSent={true} onResend={handleResend} />);
-    await user.click(screen.getByRole('button', { name: '재전송' }));
+    await user.click(screen.getByRole('button', { name: '인증번호 재전송' }));
 
     expect(handleResend).toHaveBeenCalledTimes(1);
   });

@@ -1,12 +1,18 @@
 import { z } from 'zod';
 
 export const loginSchema = z.object({
-  email: z.string().min(1, '이메일을 입력해주세요').email('올바른 이메일 형식이 아닙니다'),
+  email: z
+    .string()
+    .min(1, '이메일을 입력해주세요')
+    .pipe(z.email({ message: '올바른 이메일 형식이 아닙니다' })),
   password: z.string().min(1, '비밀번호를 입력해주세요'),
 });
 
 export const registerStep1Schema = z.object({
-  email: z.string().min(1, '이메일을 입력해주세요').email('올바른 이메일 형식이 아닙니다'),
+  email: z
+    .string()
+    .min(1, '이메일을 입력해주세요')
+    .pipe(z.email({ message: '올바른 이메일 형식이 아닙니다' })),
   password: z
     .string()
     .min(1, '비밀번호를 입력해주세요')
@@ -22,7 +28,10 @@ export const registerStep2Schema = z.object({
 });
 
 export const findPasswordStep1Schema = z.object({
-  email: z.string().min(1, '이메일을 입력해주세요').email('올바른 이메일 형식이 아닙니다'),
+  email: z
+    .string()
+    .min(1, '이메일을 입력해주세요')
+    .pipe(z.email({ message: '올바른 이메일 형식이 아닙니다' })),
   verificationCode: z.string().min(1, '인증번호를 입력해주세요'),
 });
 
