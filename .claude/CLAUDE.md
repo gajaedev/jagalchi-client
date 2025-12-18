@@ -12,7 +12,7 @@ Jagalchi is a learning roadmap platform where students can fork and customize ed
 - Language: TypeScript (strict mode)
 - Styling: Tailwind CSS
 - UI: shadcn/ui
-- State: Zustand (client), TanStack Query (server)
+- State: Jotai (client), TanStack Query (server)
 - Form: React Hook Form + Zod
 - Test: Vitest, Storybook
 
