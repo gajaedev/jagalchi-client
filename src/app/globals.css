@@ -6,8 +6,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains-mono);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -76,6 +76,28 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  --heading-1-size: 48px;
+  --heading-1-line-height: 48px;
+  --heading-1-letter-spacing: -1.5px;
+  --heading-2-size: 30px;
+  --heading-2-line-height: 30px;
+  --heading-2-letter-spacing: -1px;
+  --heading-3-size: 24px;
+  --heading-3-line-height: 28.8px;
+  --heading-3-letter-spacing: -1px;
+  --heading-4-size: 20px;
+  --heading-4-line-height: 24px;
+  --heading-4-letter-spacing: 0px;
+  --paragraph-regular-size: 16px;
+  --paragraph-regular-line-height: 24px;
+  --paragraph-regular-letter-spacing: 0px;
+  --paragraph-small-size: 14px;
+  --paragraph-small-line-height: 21px;
+  --paragraph-small-letter-spacing: 0.5px;
+  --paragraph-mini-size: 12px;
+  --paragraph-mini-line-height: 16px;
+  --paragraph-mini-letter-spacing: 1.5px;
 }
 
 .dark {
