@@ -11,8 +11,6 @@ const ColorChip = ({
   value: string;
   large?: boolean;
 }) => {
-  const isLight = parseInt(value.slice(1, 3), 16) > 128;
-
   return (
     <div className="flex flex-col gap-2">
       <div
@@ -20,11 +18,7 @@ const ColorChip = ({
         style={{ backgroundColor: value }}
       />
       <div className="flex flex-col gap-0.5">
-        <p
-          className={`font-mono text-xs font-medium ${isLight ? 'text-foreground' : 'text-foreground'}`}
-        >
-          {name}
-        </p>
+        <p className="text-foreground font-mono text-xs font-medium">{name}</p>
         <p className="text-muted-foreground font-mono text-xs">{value}</p>
       </div>
     </div>

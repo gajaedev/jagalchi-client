@@ -220,7 +220,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 **Feature Components Location**: `src/features/[feature]/components/`
 
-```
+```text
 src/features/auth/components/
 ├── atoms/           # Single-purpose components (GoogleAuthButton, FormErrorMessage)
 ├── molecules/       # Composite components (FormField, PasswordInput)
@@ -504,7 +504,7 @@ className = 'bg-background text-foreground border-border';
 
 **Breakpoints** (Tailwind defaults):
 
-```
+```text
 sm: 640px
 md: 768px
 lg: 1024px
@@ -540,7 +540,7 @@ className = 'bg-white dark:bg-zinc-900';
 
 ### Directory Organization
 
-```
+```text
 src/
 ├── app/                    # Next.js App Router (routes & layouts)
 │   ├── (auth)/            # Route group (auth pages)
