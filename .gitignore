@@ -47,3 +47,4 @@ storybook-static
 .vscode/
 # Local Netlify folder
 .netlify
+.playwright-mcp/

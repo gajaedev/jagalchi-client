@@ -6,6 +6,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 
 import { useVerificationCode } from '../../hooks/use-verification-code';
@@ -16,7 +24,6 @@ import {
   type RegisterStep2Schema,
 } from '../../schemas/auth.schema';
 import { GoogleAuthButton } from '../atoms/GoogleAuthButton';
-import { FormField } from '../molecules/FormField';
 import { PasswordInput } from '../molecules/PasswordInput';
 import { VerificationCodeInput } from '../molecules/VerificationCodeInput';
 
@@ -32,10 +39,18 @@ export function RegisterForm({ onStepChange }: RegisterFormProps) {
 
   const step1Form = useForm<RegisterStep1Schema>({
     resolver: zodResolver(registerStep1Schema),
+    defaultValues: {
+      email: '',
+      password: '',
+      verificationCode: '',
+    },
   });
 
   const step2Form = useForm<RegisterStep2Schema>({
     resolver: zodResolver(registerStep2Schema),
+    defaultValues: {
+      username: '',
+    },
   });
 
   const onStep1Submit = (_data: RegisterStep1Schema) => {
@@ -54,77 +69,111 @@ export function RegisterForm({ onStepChange }: RegisterFormProps) {
 
   if (step === 2) {
     return (
-      <form
-        key="step2"
-        onSubmit={step2Form.handleSubmit(onStep2Submit)}
-        className="flex flex-col gap-7"
-      >
-        <FormField
-          label="이름"
-          htmlFor="display-name"
-          error={step2Form.formState.errors.username?.message}
+      <Form {...step2Form}>
+        <form
+          key="step2"
+          onSubmit={step2Form.handleSubmit(onStep2Submit)}
+          noValidate
+          className="flex flex-col gap-7"
         >
-          <Input
-            id="display-name"
-            type="text"
-            placeholder="사용자 이름 입력"
-            autoComplete="off"
-            aria-invalid={!!step2Form.formState.errors.username}
-            {...step2Form.register('username')}
+          <FormField
+            control={step2Form.control}
+            name="username"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>이름</FormLabel>
+                <FormControl>
+                  <Input type="text" placeholder="사용자 이름 입력" autoComplete="off" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-        </FormField>
 
-        <Button type="submit" className="w-full">
-          확인
-        </Button>
-      </form>
+          <Button type="submit" className="w-full">
+            확인
+          </Button>
+        </form>
+      </Form>
     );
   }
 
   return (
-    <form onSubmit={step1Form.handleSubmit(onStep1Submit)} className="flex flex-col gap-7">
-      <FormField label="이메일" htmlFor="email" error={step1Form.formState.errors.email?.message}>
-        <Input
-          id="email"
-          type="email"
-          placeholder="이메일 입력"
-          aria-invalid={!!step1Form.formState.errors.email}
-          {...step1Form.register('email')}
-        />
-      </FormField>
-
-      <FormField
-        label="비밀번호"
-        htmlFor="password"
-        error={step1Form.formState.errors.password?.message}
+    <Form {...step1Form}>
+      <form
+        onSubmit={step1Form.handleSubmit(onStep1Submit)}
+        noValidate
+        className="flex flex-col gap-7"
       >
-        <PasswordInput
-          id="password"
-          placeholder="비밀번호 지정"
-          error={!!step1Form.formState.errors.password}
-          {...step1Form.register('password')}
+        <FormField
+          control={step1Form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>이메일</FormLabel>
+              <FormControl>
+                <Input type="email" placeholder="이메일 입력" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-      </FormField>
 
-      <VerificationCodeInput
-        isCodeSent={isCodeSent}
-        onResend={handleSendCode}
-        errorMessage={step1Form.formState.errors.verificationCode?.message}
-        {...step1Form.register('verificationCode')}
-      />
+        <FormField
+          control={step1Form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>비밀번호</FormLabel>
+              <FormControl>
+                <PasswordInput placeholder="비밀번호 지정" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-      <div className="flex flex-col gap-3">
-        {isCodeSent ? (
-          <Button type="submit" className="w-full">
-            다음
-          </Button>
-        ) : (
-          <Button type="button" className="w-full" onClick={handleSendCode}>
-            인증번호 전송
-          </Button>
-        )}
-        <GoogleAuthButton variant="register" onClick={handleGoogleRegister} />
-      </div>
-    </form>
+        <FormField
+          control={step1Form.control}
+          name="verificationCode"
+          render={({ field }) => (
+            <FormItem>
+              <div className="flex items-center justify-between">
+                <FormLabel className={!isCodeSent ? 'text-muted-foreground' : ''}>
+                  인증번호
+                </FormLabel>
+                {isCodeSent && (
+                  <button
+                    type="button"
+                    aria-label="인증번호 재전송"
+                    className="cursor-pointer text-sm tracking-[0.07px] text-neutral-900 underline transition-colors hover:text-neutral-700"
+                    onClick={handleSendCode}
+                  >
+                    재전송
+                  </button>
+                )}
+              </div>
+              <FormControl>
+                <VerificationCodeInput isCodeSent={isCodeSent} {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <div className="flex flex-col gap-3">
+          {isCodeSent ? (
+            <Button type="submit" className="w-full">
+              다음
+            </Button>
+          ) : (
+            <Button type="button" className="w-full" onClick={handleSendCode}>
+              인증번호 전송
+            </Button>
+          )}
+          <GoogleAuthButton variant="register" onClick={handleGoogleRegister} />
+        </div>
+      </form>
+    </Form>
   );
 }

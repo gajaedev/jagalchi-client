@@ -7,12 +7,8 @@ import { Eye, EyeOff } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 
-interface PasswordInputProps extends React.ComponentProps<'input'> {
-  error?: boolean;
-}
-
-export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
-  ({ className, error, ...props }, ref) => {
+export const PasswordInput = forwardRef<HTMLInputElement, React.ComponentProps<'input'>>(
+  ({ className, ...props }, ref) => {
     const [showPassword, setShowPassword] = useState(false);
 
     return (
@@ -21,7 +17,6 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
           ref={ref}
           type={showPassword ? 'text' : 'password'}
           className={cn('pr-10', className)}
-          aria-invalid={error}
           {...props}
         />
         <button

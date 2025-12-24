@@ -1,7 +1,5 @@
 export { AuthCard } from './components/templates/AuthCard';
-export { FormErrorMessage } from './components/atoms/FormErrorMessage';
 export { GoogleAuthButton } from './components/atoms/GoogleAuthButton';
-export { FormField } from './components/molecules/FormField';
 export { PasswordInput } from './components/molecules/PasswordInput';
 export { VerificationCodeInput } from './components/molecules/VerificationCodeInput';
 export { LoginForm } from './components/organisms/LoginForm';
