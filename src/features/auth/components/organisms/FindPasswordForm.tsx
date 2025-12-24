@@ -6,6 +6,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 
 import { useVerificationCode } from '../../hooks/use-verification-code';
@@ -15,7 +23,6 @@ import {
   type FindPasswordStep1Schema,
   type FindPasswordStep2Schema,
 } from '../../schemas/auth.schema';
-import { FormField } from '../molecules/FormField';
 import { PasswordInput } from '../molecules/PasswordInput';
 import { VerificationCodeInput } from '../molecules/VerificationCodeInput';
 
@@ -31,10 +38,18 @@ export function FindPasswordForm({ onStepChange }: FindPasswordFormProps) {
 
   const step1Form = useForm<FindPasswordStep1Schema>({
     resolver: zodResolver(findPasswordStep1Schema),
+    defaultValues: {
+      email: '',
+      verificationCode: '',
+    },
   });
 
   const step2Form = useForm<FindPasswordStep2Schema>({
     resolver: zodResolver(findPasswordStep2Schema),
+    defaultValues: {
+      newPassword: '',
+      passwordConfirm: '',
+    },
   });
 
   const onStep1Submit = (_data: FindPasswordStep1Schema) => {
@@ -49,74 +64,116 @@ export function FindPasswordForm({ onStepChange }: FindPasswordFormProps) {
 
   if (step === 2) {
     return (
-      <form
-        key="step2"
-        onSubmit={step2Form.handleSubmit(onStep2Submit)}
-        className="flex flex-col gap-7"
-      >
-        <FormField
-          label="새 비밀번호"
-          htmlFor="newPassword"
-          error={step2Form.formState.errors.newPassword?.message}
+      <Form {...step2Form}>
+        <form
+          key="step2"
+          onSubmit={step2Form.handleSubmit(onStep2Submit)}
+          noValidate
+          className="flex flex-col gap-7"
         >
-          <PasswordInput
-            id="newPassword"
-            placeholder="비밀번호 입력"
-            autoComplete="new-password"
-            error={!!step2Form.formState.errors.newPassword}
-            {...step2Form.register('newPassword')}
+          <FormField
+            control={step2Form.control}
+            name="newPassword"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>새 비밀번호</FormLabel>
+                <FormControl>
+                  <PasswordInput
+                    placeholder="비밀번호 입력"
+                    autoComplete="new-password"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-        </FormField>
 
-        <FormField
-          label="비밀번호 확인"
-          htmlFor="passwordConfirm"
-          error={step2Form.formState.errors.passwordConfirm?.message}
-        >
-          <PasswordInput
-            id="passwordConfirm"
-            placeholder="비밀번호 다시 입력"
-            autoComplete="new-password"
-            error={!!step2Form.formState.errors.passwordConfirm}
-            {...step2Form.register('passwordConfirm')}
+          <FormField
+            control={step2Form.control}
+            name="passwordConfirm"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>비밀번호 확인</FormLabel>
+                <FormControl>
+                  <PasswordInput
+                    placeholder="비밀번호 다시 입력"
+                    autoComplete="new-password"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-        </FormField>
 
-        <Button type="submit" className="w-full">
-          완료
-        </Button>
-      </form>
+          <Button type="submit" className="w-full">
+            완료
+          </Button>
+        </form>
+      </Form>
     );
   }
 
   return (
-    <form onSubmit={step1Form.handleSubmit(onStep1Submit)} className="flex flex-col gap-7">
-      <FormField label="이메일" htmlFor="email" error={step1Form.formState.errors.email?.message}>
-        <Input
-          id="email"
-          type="email"
-          placeholder="이메일 입력"
-          aria-invalid={!!step1Form.formState.errors.email}
-          {...step1Form.register('email')}
+    <Form {...step1Form}>
+      <form
+        onSubmit={step1Form.handleSubmit(onStep1Submit)}
+        noValidate
+        className="flex flex-col gap-7"
+      >
+        <FormField
+          control={step1Form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>이메일</FormLabel>
+              <FormControl>
+                <Input type="email" placeholder="이메일 입력" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-      </FormField>
 
-      <VerificationCodeInput
-        isCodeSent={isCodeSent}
-        onResend={handleSendCode}
-        errorMessage={step1Form.formState.errors.verificationCode?.message}
-        {...step1Form.register('verificationCode')}
-      />
+        <FormField
+          control={step1Form.control}
+          name="verificationCode"
+          render={({ field }) => (
+            <FormItem>
+              <div className="flex items-center justify-between">
+                <FormLabel className={!isCodeSent ? 'text-muted-foreground' : ''}>
+                  인증번호
+                </FormLabel>
+                {isCodeSent && (
+                  <button
+                    type="button"
+                    aria-label="인증번호 재전송"
+                    className="cursor-pointer text-sm tracking-[0.07px] text-neutral-900 underline transition-colors hover:text-neutral-700"
+                    onClick={handleSendCode}
+                  >
+                    재전송
+                  </button>
+                )}
+              </div>
+              <FormControl>
+                <VerificationCodeInput isCodeSent={isCodeSent} {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-      {isCodeSent ? (
-        <Button type="submit" className="w-full">
-          다음
-        </Button>
-      ) : (
-        <Button type="button" className="w-full" onClick={handleSendCode}>
-          인증번호 전송
-        </Button>
-      )}
-    </form>
+        {isCodeSent ? (
+          <Button type="submit" className="w-full">
+            다음
+          </Button>
+        ) : (
+          <Button type="button" className="w-full" onClick={handleSendCode}>
+            인증번호 전송
+          </Button>
+        )}
+      </form>
+    </Form>
   );
 }
