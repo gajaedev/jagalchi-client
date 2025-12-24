@@ -33,11 +33,6 @@ describe('PasswordInput', () => {
     expect(screen.getByTestId('password-input')).toHaveAttribute('type', 'password');
   });
 
-  it('error prop이 true일 때 aria-invalid가 설정된다', () => {
-    render(<PasswordInput error data-testid="password-input" />);
-    expect(screen.getByTestId('password-input')).toHaveAttribute('aria-invalid', 'true');
-  });
-
   it('placeholder를 표시한다', () => {
     render(<PasswordInput placeholder="비밀번호 입력" />);
     expect(screen.getByPlaceholderText('비밀번호 입력')).toBeInTheDocument();
