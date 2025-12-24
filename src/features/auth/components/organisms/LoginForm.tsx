@@ -29,9 +29,8 @@ export function LoginForm() {
     },
   });
 
-  const onSubmit = (data: LoginSchema) => {
+  const onSubmit = (_data: LoginSchema) => {
     // TODO: API 연동
-    console.log('onSubmit called with data:', data);
   };
 
   const handleGoogleLogin = () => {
