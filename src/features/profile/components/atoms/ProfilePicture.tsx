@@ -1,6 +1,10 @@
+import Image from 'next/image';
+
+import { useAtomValue } from 'jotai';
+
+import { profileModeAtom } from '../../stores/profile-atoms';
 interface ProfilePictureProps {
   src: string;
-  mode: 'show' | 'edit';
 }
 
 const ImageContainer = ({ children }: { children: React.ReactNode }) => (
@@ -10,10 +14,11 @@ const ImageContainer = ({ children }: { children: React.ReactNode }) => (
 );
 
 const StyledImage = ({ src }: { src: string }) => (
-  <img src={src} alt="profile picture" className="h-full w-full object-cover" />
+  <Image src={src} alt="profile picture" className="h-full w-full object-cover" />
 );
 
-export function ProfilePicture({ src, mode }: ProfilePictureProps) {
+export function ProfilePicture({ src }: ProfilePictureProps) {
+  const mode = useAtomValue(profileModeAtom);
   return (
     <div>
       {mode === 'show' ? (
