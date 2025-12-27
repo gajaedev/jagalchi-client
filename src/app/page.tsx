@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Image from 'next/image';
 
@@ -13,7 +13,16 @@ function getRandomImages() {
 }
 
 export default function Home() {
-  const [images] = useState(getRandomImages);
+  const [images, setImages] = useState<number[]>([]);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setImages(getRandomImages());
+  }, []);
+
+  if (images.length === 0) {
+    return null;
+  }
 
   return (
     <div className="flex min-h-screen items-center justify-center gap-8 bg-white p-8">
