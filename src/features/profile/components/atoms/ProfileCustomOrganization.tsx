@@ -6,8 +6,6 @@ import { useAtomValue } from 'jotai';
 import { Building2 } from 'lucide-react';
 
 import { Input } from '@/components/ui/input';
-import { colors } from '@/constants/colors';
-import { typography } from '@/constants/typography';
 
 import { profileModeAtom } from '../../stores/profile-atoms';
 
@@ -43,15 +41,8 @@ export function ProfileCustomOrganization({ initialValue = '' }: ProfileCustomOr
   return (
     <div className="flex w-full flex-col gap-2">
       <div className="flex items-center gap-2 rounded-md border border-slate-200 px-4 py-2">
-        <Building2 size={16} color={colors.slate[500]} />
-        <p
-          style={{
-            ...typography.paragraph.smallMedium,
-            color: colors.slate[900],
-          }}
-        >
-          {value}
-        </p>
+        <Building2 size={16} className="text-slate-500" />
+        <p className="text-sm font-medium text-slate-900">{value}</p>
       </div>
     </div>
   );

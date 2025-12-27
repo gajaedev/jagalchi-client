@@ -3,8 +3,6 @@ import { useState } from 'react';
 import { useAtom } from 'jotai';
 
 import { Input } from '@/components/ui/input';
-import { colors } from '@/constants/colors';
-import { typography } from '@/constants/typography';
 
 import { profileModeAtom } from '../../stores/profile-atoms';
 
@@ -31,32 +29,22 @@ export function ProfileInfomation({ name, email }: ProfileInfomationProps) {
         <div className="flex w-full flex-row items-center justify-between">
           <div className="flex flex-col justify-between">
             <div className="flex flex-row gap-2">
-              <p style={typography.heading.h4}>{names}</p>
-              <p style={{ ...typography.paragraph.medium, color: colors.slate[500] }}>{emails}</p>
+              <p className="text-xl font-semibold">{names}</p>
+              <p className="text-base font-medium text-slate-500">{emails}</p>
             </div>
 
             <div className="flex flex-row gap-2">
-              <p style={typography.paragraph.medium}>
-                3k{' '}
-                <span style={{ ...typography.paragraph.smallMedium, color: colors.slate[500] }}>
-                  followers
-                </span>
+              <p className="text-base font-medium">
+                3k <span className="text-sm font-medium text-slate-500">followers</span>
               </p>
-              <p style={typography.paragraph.medium}>
-                100{' '}
-                <span style={{ ...typography.paragraph.smallMedium, color: colors.slate[500] }}>
-                  following
-                </span>
+              <p className="text-base font-medium">
+                100 <span className="text-sm font-medium text-slate-500">following</span>
               </p>
             </div>
           </div>
 
           <div className="w-1xl">
-            <ProfileEditButton
-              variant="show"
-              onClick={toggleMode}
-              className={`bg-${colors.indigo[950]}`}
-            />
+            <ProfileEditButton variant="show" onClick={toggleMode} className="bg-indigo-950" />
           </div>
         </div>
       ) : (
@@ -68,27 +56,17 @@ export function ProfileInfomation({ name, email }: ProfileInfomationProps) {
             </div>
 
             <div className="flex flex-row gap-2">
-              <p style={typography.paragraph.medium}>
-                3k{' '}
-                <span style={{ ...typography.paragraph.smallMedium, color: colors.slate[500] }}>
-                  followers
-                </span>
+              <p className="text-base font-medium">
+                3k <span className="text-sm font-medium text-slate-500">followers</span>
               </p>
-              <p style={typography.paragraph.medium}>
-                100{' '}
-                <span style={{ ...typography.paragraph.smallMedium, color: colors.slate[500] }}>
-                  following
-                </span>
+              <p className="text-base font-medium">
+                100 <span className="text-sm font-medium text-slate-500">following</span>
               </p>
             </div>
           </div>
 
           <div className="flex flex-row gap-2">
-            <ProfileEditButton
-              variant="edit"
-              onClick={toggleMode}
-              className={`bg-${colors.indigo[950]}`}
-            />
+            <ProfileEditButton variant="edit" onClick={toggleMode} className="bg-indigo-950" />
           </div>
         </div>
       )}

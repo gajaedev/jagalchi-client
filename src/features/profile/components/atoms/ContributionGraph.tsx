@@ -1,7 +1,5 @@
 'use client';
 
-import { colors } from '@/constants/colors';
-import { typography } from '@/constants/typography';
 import {
   Contribution,
   COLORS,
@@ -22,14 +20,7 @@ export default function ContributionGraph({ data }: { data: Contribution[] }) {
   return (
     <div className="flex h-[137px] w-[552px] flex-col items-center justify-center rounded-md border">
       <div className="w-[100%] p-2">
-        <p
-          style={{
-            ...typography.paragraph.bold,
-            color: colors.slate[500],
-          }}
-        >
-          348일 연속 스트릭
-        </p>
+        <p className="text-base font-bold text-slate-500">348일 연속 스트릭</p>
       </div>
       <div className="flex gap-[3px] p-2">
         {weeks.map((week, i) => (

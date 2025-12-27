@@ -6,8 +6,6 @@ import { useAtomValue } from 'jotai';
 import { Link } from 'lucide-react';
 
 import { Input } from '@/components/ui/input';
-import { colors } from '@/constants/colors';
-import { typography } from '@/constants/typography';
 
 import { profileModeAtom } from '../../stores/profile-atoms';
 
@@ -57,7 +55,11 @@ export function ProfileCustomLink({ initialLinks = [] }: ProfileCustomLinkProps)
             </div>
           </div>
         ))}
-        <ProfileLinkAddButton onClick={() => setLinks([...links, { name: '', url: '' }])} />
+        <ProfileLinkAddButton
+          currentCount={links.length}
+          maxCount={5}
+          onClick={() => setLinks([...links, { name: '', url: '' }])}
+        />
       </div>
     );
   }
@@ -71,29 +73,11 @@ export function ProfileCustomLink({ initialLinks = [] }: ProfileCustomLinkProps)
           key={index}
           className="flex items-center gap-2 rounded-md border border-slate-200 px-4 py-2"
         >
-          <Link size={16} color={colors.slate[500]} />
+          <Link size={16} className="text-slate-500" />
 
-          {link.name && (
-            <p
-              style={{
-                ...typography.paragraph.smallMedium,
-                color: colors.slate[900],
-              }}
-            >
-              {link.name}
-            </p>
-          )}
+          {link.name && <p className="text-sm font-medium text-slate-900">{link.name}</p>}
 
-          <p
-            className="flex-1 truncate underline"
-            style={{
-              ...typography.paragraph.regular,
-              fontSize: '14px',
-              color: colors.slate[500],
-            }}
-          >
-            {link.url}
-          </p>
+          <p className="flex-1 truncate text-sm text-slate-500 underline">{link.url}</p>
         </div>
       ))}
     </div>

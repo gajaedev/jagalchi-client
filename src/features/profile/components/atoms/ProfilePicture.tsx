@@ -1,8 +1,12 @@
 import Image from 'next/image';
 
 import { useAtomValue } from 'jotai';
+import { Pencil } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
 
 import { profileModeAtom } from '../../stores/profile-atoms';
+
 interface ProfilePictureProps {
   src: string;
 }
@@ -36,23 +40,14 @@ export function ProfilePicture({ src }: ProfilePictureProps) {
           <ImageContainer>
             <StyledImage src={src} />
           </ImageContainer>
-          <button
-            className="absolute right-0 bottom-0 flex h-8 w-8 items-center justify-center rounded-full border border-gray-200 bg-white shadow-sm hover:bg-gray-50"
+          <Button
+            variant="outline"
+            size="icon"
+            className="absolute right-0 bottom-0 h-8 w-8 rounded-full border-gray-200 bg-white shadow-sm hover:bg-gray-50"
             onClick={() => document.getElementById('profile-upload')?.click()}
           >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
-            </svg>
-          </button>
+            <Pencil size={16} />
+          </Button>
           <input id="profile-upload" type="file" className="hidden" accept="image/*" />
         </div>
       )}
