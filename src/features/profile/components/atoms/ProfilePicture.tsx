@@ -14,7 +14,13 @@ const ImageContainer = ({ children }: { children: React.ReactNode }) => (
 );
 
 const StyledImage = ({ src }: { src: string }) => (
-  <Image src={src} alt="profile picture" className="h-full w-full object-cover" />
+  <Image
+    src={src}
+    alt="profile picture"
+    className="h-full w-full object-cover"
+    width={100}
+    height={100}
+  />
 );
 
 export function ProfilePicture({ src }: ProfilePictureProps) {
