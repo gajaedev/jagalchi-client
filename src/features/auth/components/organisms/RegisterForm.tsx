@@ -20,8 +20,10 @@ import { useVerificationCode } from '../../hooks/use-verification-code';
 import {
   registerStep1Schema,
   registerStep2Schema,
+  registerStep3Schema,
   type RegisterStep1Schema,
   type RegisterStep2Schema,
+  type RegisterStep3Schema,
 } from '../../schemas/auth.schema';
 import { GoogleAuthButton } from '../atoms/GoogleAuthButton';
 import { PasswordInput } from '../molecules/PasswordInput';
@@ -53,6 +55,18 @@ export function RegisterForm({ onStepChange }: RegisterFormProps) {
     },
   });
 
+  const step3Form = useForm<RegisterStep3Schema>({
+    resolver: zodResolver(registerStep3Schema),
+    defaultValues: {
+      link1Name: '',
+      link1Url: '',
+      link2Name: '',
+      link2Url: '',
+      link3Name: '',
+      link3Url: '',
+    },
+  });
+
   const onStep1Submit = (_data: RegisterStep1Schema) => {
     // TODO: API 연동 - 이메일 인증 확인
     setStep(2);
@@ -60,12 +74,177 @@ export function RegisterForm({ onStepChange }: RegisterFormProps) {
   };
 
   const onStep2Submit = (_data: RegisterStep2Schema) => {
+    setStep(3);
+    onStepChange?.(3, '유저 프로필 링크 추가', '유저 프로필에 표시할 링크를 입력해주세요');
+  };
+
+  const onStep3Submit = (_data: RegisterStep3Schema) => {
     // TODO: API 연동 - 회원가입 완료
+  };
+
+  const handleSkip = () => {
+    // TODO: API 연동 - 링크 없이 회원가입 완료
   };
 
   const handleGoogleRegister = () => {
     // TODO: Google OAuth
   };
+
+  if (step === 3) {
+    return (
+      <Form {...step3Form}>
+        <form
+          key="step3"
+          onSubmit={step3Form.handleSubmit(onStep3Submit)}
+          noValidate
+          className="flex flex-col gap-7"
+        >
+          <div className="flex flex-col gap-7">
+            {/* 1번 링크 */}
+            <div className="flex flex-col gap-1.5">
+              <FormField
+                control={step3Form.control}
+                name="link1Name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>1번 링크</FormLabel>
+                    <div className="flex gap-1.5">
+                      <FormControl>
+                        <Input
+                          type="text"
+                          placeholder="링크 이름"
+                          className="w-[120px]"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormField
+                        control={step3Form.control}
+                        name="link1Url"
+                        render={({ field: urlField }) => (
+                          <FormItem className="flex-1">
+                            <FormControl>
+                              <Input type="url" placeholder="링크 URL" {...urlField} />
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={step3Form.control}
+                name="link1Url"
+                render={() => (
+                  <FormItem>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            {/* 2번 링크 */}
+            <div className="flex flex-col gap-1.5">
+              <FormField
+                control={step3Form.control}
+                name="link2Name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>2번 링크</FormLabel>
+                    <div className="flex gap-1.5">
+                      <FormControl>
+                        <Input
+                          type="text"
+                          placeholder="링크 이름"
+                          className="w-[120px]"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormField
+                        control={step3Form.control}
+                        name="link2Url"
+                        render={({ field: urlField }) => (
+                          <FormItem className="flex-1">
+                            <FormControl>
+                              <Input type="url" placeholder="링크 URL" {...urlField} />
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={step3Form.control}
+                name="link2Url"
+                render={() => (
+                  <FormItem>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            {/* 3번 링크 */}
+            <div className="flex flex-col gap-1.5">
+              <FormField
+                control={step3Form.control}
+                name="link3Name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>3번 링크</FormLabel>
+                    <div className="flex gap-1.5">
+                      <FormControl>
+                        <Input
+                          type="text"
+                          placeholder="링크 이름"
+                          className="w-[120px]"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormField
+                        control={step3Form.control}
+                        name="link3Url"
+                        render={({ field: urlField }) => (
+                          <FormItem className="flex-1">
+                            <FormControl>
+                              <Input type="url" placeholder="링크 URL" {...urlField} />
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={step3Form.control}
+                name="link3Url"
+                render={() => (
+                  <FormItem>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-3">
+            <Button type="submit" className="w-full">
+              확인
+            </Button>
+            <Button type="button" variant="secondary" className="w-full" onClick={handleSkip}>
+              건너뛰기
+            </Button>
+          </div>
+        </form>
+      </Form>
+    );
+  }
 
   if (step === 2) {
     return (
