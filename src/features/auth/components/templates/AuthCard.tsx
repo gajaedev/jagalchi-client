@@ -22,7 +22,7 @@ export function AuthCard({ title, description, children, footer, className }: Au
   return (
     <Card className={cn('w-[400px] gap-6 p-6 shadow-sm', className)}>
       <CardHeader className="gap-1 p-0">
-        <CardTitle className="text-base font-semibold">{title}</CardTitle>
+        <CardTitle className="text-base font-bold">{title}</CardTitle>
         {description && (
           <CardDescription className="text-sm tracking-[0.07px]">{description}</CardDescription>
         )}
