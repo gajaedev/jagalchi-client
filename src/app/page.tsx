@@ -17,21 +17,25 @@ export default function Home() {
 
   return (
     <div className="flex min-h-screen items-center justify-center gap-8 bg-white p-8">
-      {images.map((num) => (
-        <div
-          key={num}
-          className={`flex items-center justify-center ${num === 6 ? 'max-w-3xl' : 'max-w-xl'}`}
-        >
-          <Image
-            src={`/images/landing/landing-${num}.png`}
-            alt={`Landing image ${num}`}
-            width={num === 6 ? 768 : 300}
-            height={num === 6 ? 512 : 200}
-            className="h-auto w-full"
-            priority={num === 1}
-          />
-        </div>
-      ))}
+      {images.map((num) => {
+        const isSpecial = num === 6;
+        const maxWidth = isSpecial ? 'max-w-3xl' : 'max-w-xl';
+        const width = isSpecial ? 768 : 300;
+        const height = isSpecial ? 512 : 200;
+
+        return (
+          <div key={num} className={`flex items-center justify-center ${maxWidth}`}>
+            <Image
+              src={`/images/landing/landing-${num}.png`}
+              alt={`Landing image ${num}`}
+              width={width}
+              height={height}
+              className="h-auto w-full"
+              priority={num === 1}
+            />
+          </div>
+        );
+      })}
     </div>
   );
 }
