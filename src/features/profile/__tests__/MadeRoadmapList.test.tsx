@@ -3,20 +3,21 @@ import { Provider, WritableAtom } from 'jotai';
 import { useHydrateAtoms } from 'jotai/utils';
 import { describe, it, expect, vi } from 'vitest';
 
-import CreatedRoadmapList from '../components/atoms/MadeRoadmapList';
+import { MadeRoadmapList } from '../components/organisms/MadeRoadmapList';
 import { profileModeAtom } from '../stores/profile-atoms';
 
 vi.mock('../components/atoms/RoadmapCard', () => ({
   RoadmapCard: ({ title }: { title: string }) => <div data-testid="roadmap-card">{title}</div>,
 }));
 
-vi.mock('../components/atoms/AddRoadmapModal', () => ({
-  default: ({ children }: { children: React.ReactNode }) => (
+vi.mock('../components/organisms/AddRoadmapModal', () => ({
+  AddRoadmapModal: ({ children }: { children: React.ReactNode }) => (
     <div data-testid="add-roadmap-modal">{children}</div>
   ),
 }));
 
 interface WrapperProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   initialValues: (readonly [WritableAtom<unknown, any[], any>, unknown])[];
   children: React.ReactNode;
 }
@@ -36,7 +37,7 @@ describe('MadeRoadmapList', () => {
   it('renders list of roadmaps in view mode', () => {
     render(
       <Wrapper initialValues={[[profileModeAtom, 'show']]}>
-        <CreatedRoadmapList />
+        <MadeRoadmapList />
       </Wrapper>,
     );
     expect(screen.getByText('만든 로드맵')).toBeInTheDocument();
@@ -47,7 +48,7 @@ describe('MadeRoadmapList', () => {
   it('renders add button in edit mode', () => {
     render(
       <Wrapper initialValues={[[profileModeAtom, 'edit']]}>
-        <CreatedRoadmapList />
+        <MadeRoadmapList />
       </Wrapper>,
     );
     expect(screen.getByText('공개 로드맵 추가')).toBeInTheDocument();

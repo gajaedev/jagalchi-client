@@ -3,9 +3,9 @@ import { useAtom } from 'jotai';
 import { Button } from '@/components/ui/button';
 
 import { profileModeAtom } from '../../stores/profile-atoms';
+import { RoadmapCard } from '../atoms/RoadmapCard';
 
-import AddRoadmapModal from './AddRoadmapModal';
-import { RoadmapCard } from './RoadmapCard';
+import { AddRoadmapModal } from './AddRoadmapModal';
 
 const MOCK_ROADMAPS = [
   { id: 1, title: 'Roadmap Name', author: '홍길동' },
@@ -17,7 +17,7 @@ const MOCK_ROADMAPS = [
   { id: 7, title: 'Roadmap Name', author: '홍길동' },
 ];
 
-export default function CreatedRoadmapList() {
+export function MadeRoadmapList() {
   const [mode] = useAtom(profileModeAtom);
 
   return (
@@ -31,7 +31,7 @@ export default function CreatedRoadmapList() {
       </div>
       {mode === 'edit' && (
         <AddRoadmapModal>
-          <Button className="w-full rounded-xl !bg-indigo-950 py-6 text-[14px] font-bold text-white hover:bg-slate-800">
+          <Button className="w-full rounded-xl bg-indigo-950! py-6 text-[14px] font-bold text-white hover:bg-slate-800">
             공개 로드맵 추가
           </Button>
         </AddRoadmapModal>

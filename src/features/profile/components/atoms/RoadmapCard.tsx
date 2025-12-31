@@ -7,12 +7,12 @@ interface RoadmapCardProps {
 
 export function RoadmapCard({ title, author }: RoadmapCardProps) {
   return (
-    <Card className="h-[200px] w-[304px] overflow-hidden rounded-xl border border-slate-200 bg-white shadow-none">
-      <div className="mt-[-30px] h-[190px] border-b border-slate-200 bg-slate-100" />
+    <Card className="flex h-[200px] w-[304px] flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-none">
+      <div className="h-[140px] border-b border-slate-200 bg-slate-100" />
 
-      <CardContent className="flex h-[10px] flex-col justify-center py-0">
-        <p className="text-sm font-normal text-gray-900">{title}</p>
-        <p className="text-xs font-normal tracking-[1.5px] text-gray-500">By {author}</p>
+      <CardContent className="flex flex-1 flex-col justify-center p-4">
+        <p className="line-clamp-1 text-sm font-normal text-gray-900">{title}</p>
+        <p className="text-xs font-normal tracking-[0.5px] text-gray-500">By {author}</p>
       </CardContent>
     </Card>
   );

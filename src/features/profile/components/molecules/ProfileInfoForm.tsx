@@ -5,15 +5,14 @@ import { useAtom } from 'jotai';
 import { Input } from '@/components/ui/input';
 
 import { profileModeAtom } from '../../stores/profile-atoms';
+import { ProfileEditButton } from '../atoms/ProfileEditButton';
 
-import { ProfileEditButton } from './ProfileEditButton';
-
-interface ProfileInfomationProps {
+interface ProfileInfoFormProps {
   name: string;
   email: string;
 }
 
-export function ProfileInfomation({ name, email }: ProfileInfomationProps) {
+export function ProfileInfoForm({ name, email }: ProfileInfoFormProps) {
   const [mode, setMode] = useAtom(profileModeAtom);
 
   const toggleMode = () => {

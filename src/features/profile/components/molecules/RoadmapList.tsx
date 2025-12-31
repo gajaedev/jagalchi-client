@@ -1,9 +1,10 @@
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+
 interface RoadmapListProps {
   variant: 'end' | 'process';
 }
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 
-export default function RoadmapList({ variant }: RoadmapListProps) {
+export function RoadmapList({ variant }: RoadmapListProps) {
   return variant === 'end' ? (
     <Card className="h-[240px] w-[468px] overflow-scroll rounded-xl border border-slate-200 bg-white shadow-none">
       <CardHeader>

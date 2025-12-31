@@ -4,9 +4,6 @@ import { useState } from 'react';
 
 import { useAtomValue } from 'jotai';
 
-import { colors } from '@/constants/colors';
-import { typography } from '@/constants/typography';
-
 import { profileModeAtom } from '../../stores/profile-atoms';
 
 interface ProfileBioProps {
@@ -17,21 +14,16 @@ export function ProfileBio({ bio }: ProfileBioProps) {
   const mode = useAtomValue(profileModeAtom);
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const [bios, setbio] = useState(bio);
+  const [bios, setBios] = useState(bio);
 
   if (mode === 'edit') {
     return (
       <div className="flex flex-col gap-4">
-        <p style={{ ...typography.paragraph.small, fontWeight: 600 }}>자기소개</p>
+        <p className="text-sm font-semibold">자기소개</p>
         <textarea
-          className="h-[280px] w-full resize-none rounded-lg border bg-white p-2 outline-none focus:border-slate-500"
-          style={{
-            ...typography.paragraph.small,
-            color: colors.slate[500],
-            borderColor: colors.slate[200],
-          }}
+          className="h-[280px] w-full resize-none rounded-lg border border-slate-200 bg-white p-2 text-sm text-slate-500 outline-none focus:border-slate-500"
           value={bios}
-          onChange={(e) => setbio(e.target.value)}
+          onChange={(e) => setBios(e.target.value)}
         />
       </div>
     );
@@ -39,22 +31,15 @@ export function ProfileBio({ bio }: ProfileBioProps) {
 
   return (
     <div className="flex flex-col gap-4">
-      <p style={{ ...typography.paragraph.small, fontWeight: 600 }}>자기소개</p>
-      <div className="flex flex-col gap-2 rounded-lg border p-2">
-        <p
-          className={`${!isExpanded ? 'line-clamp-3' : ''} text-justify`}
-          style={{
-            ...typography.paragraph.small,
-            color: colors.slate[500],
-          }}
-        >
+      <p className="text-sm font-semibold">자기소개</p>
+      <div className="flex flex-col gap-2 rounded-lg border border-slate-200 p-2">
+        <p className={`${!isExpanded ? 'line-clamp-3' : ''} text-justify text-sm text-slate-500`}>
           {bios}
         </p>
 
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="flex flex-row items-center gap-1 self-end text-slate-500 hover:text-slate-700"
-          style={typography.paragraph.small}
+          className="flex flex-row items-center gap-1 self-end text-sm text-slate-500 hover:text-slate-700"
         >
           <span>{isExpanded ? '접기' : '전체 보기'}</span>
           <svg

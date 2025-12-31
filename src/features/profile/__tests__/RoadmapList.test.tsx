@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 
-import RoadmapList from '../components/atoms/RoadmapList';
+import { RoadmapList } from '../components/molecules/RoadmapList';
 
 describe('RoadmapList', () => {
   it('renders correctly for "end" variant', () => {

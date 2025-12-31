@@ -1,21 +1,9 @@
-/* =========================
- * Types
- * ========================= */
 export interface Contribution {
-  date: string; // YYYY-MM-DD
+  date: string;
   count: number;
 }
 
-/* =========================
- * Color & Level
- * ========================= */
-export const COLORS = [
-  '#ebedf0', // 0 contributions
-  '#9be9a8',
-  '#40c463',
-  '#30a14e',
-  '#216e39',
-];
+export const COLORS = ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39'];
 
 export function getLevel(count: number): number {
   if (count <= 0) return 0;
@@ -25,11 +13,6 @@ export function getLevel(count: number): number {
   return 4;
 }
 
-/* =========================
- * Date Utils
- * ========================= */
-
-// 최근 1년(365일) 날짜 생성
 export function getLastYearDates(): string[] {
   const dates: string[] = [];
   const today = new Date();
@@ -43,16 +26,13 @@ export function getLastYearDates(): string[] {
   return dates;
 }
 
-// 첫 날짜의 요일만큼 앞에 null padding
-// (GitHub 잔디 핵심 로직)
 export function padStartByWeekday(dates: string[]): (string | null)[] {
   const firstDate = new Date(dates[0]);
-  const weekday = firstDate.getDay(); // 0 = Sunday
+  const weekday = firstDate.getDay();
 
   return [...Array(weekday).fill(null), ...dates];
 }
 
-// 7일 단위로 쪼개서 week 배열 생성
 export function chunkByWeek<T>(arr: T[]): T[][] {
   const weeks: T[][] = [];
 
@@ -61,4 +41,36 @@ export function chunkByWeek<T>(arr: T[]): T[][] {
   }
 
   return weeks;
+}
+
+export function calculateStreak(data: Contribution[]): number {
+  if (!data || data.length === 0) return 0;
+
+  const sortedData = [...data].sort((a, b) => b.date.localeCompare(a.date));
+  let streak = 0;
+  const today = new Date().toISOString().slice(0, 10);
+  const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+
+  const mostRecent = sortedData.find((d) => d.count > 0);
+  if (!mostRecent || (mostRecent.date !== today && mostRecent.date !== yesterday)) {
+    return 0;
+  }
+
+  let expectedDate = mostRecent.date;
+  for (const contribution of sortedData) {
+    if (contribution.date === expectedDate) {
+      if (contribution.count > 0) {
+        streak++;
+        const date = new Date(expectedDate);
+        date.setDate(date.getDate() - 1);
+        expectedDate = date.toISOString().slice(0, 10);
+      } else {
+        break;
+      }
+    } else if (contribution.date < expectedDate) {
+      break;
+    }
+  }
+
+  return streak;
 }

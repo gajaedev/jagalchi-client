@@ -1,11 +1,11 @@
-import ProfileCustomBoxArea from '../molecules/ProfileCustomBoxArea';
-import ProfileStric from '../molecules/ProfileStric';
+import { ProfileCustomBoxArea } from '../molecules/ProfileCustomBoxArea';
+import { ProfileStreak } from '../molecules/ProfileStreak';
 
-export default function ProfileSecondBox() {
+export function ProfileSecondBox() {
   return (
     <div className="flex flex-row justify-between">
       <ProfileCustomBoxArea />
-      <ProfileStric />
+      <ProfileStreak />
     </div>
   );
 }

@@ -3,7 +3,7 @@ import { describe, it, expect, vi } from 'vitest';
 
 import { Button } from '@/components/ui/button';
 
-import AddRoadmapModal from '../components/atoms/AddRoadmapModal';
+import { AddRoadmapModal } from '../components/organisms/AddRoadmapModal';
 
 vi.mock('lucide-react', () => ({
   ChevronRight: () => <span data-testid="chevron-right" />,

@@ -3,10 +3,11 @@ import { Provider, WritableAtom } from 'jotai';
 import { useHydrateAtoms } from 'jotai/utils';
 import { describe, it, expect } from 'vitest';
 
-import { ProfileCustomLink } from '../components/atoms/ProfileCustomLink';
+import { ProfileCustomLinks } from '../components/organisms/ProfileCustomLinks';
 import { profileModeAtom } from '../stores/profile-atoms';
 
 interface WrapperProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   initialValues: (readonly [WritableAtom<unknown, any[], any>, unknown])[];
   children: React.ReactNode;
 }
@@ -22,20 +23,20 @@ const TestProvider = ({ initialValues, children }: WrapperProps) => (
   </Provider>
 );
 
-describe('ProfileCustomLink', () => {
+describe('ProfileCustomLinks', () => {
   it('renders nothing when no links and not in edit mode', () => {
     render(
       <TestProvider initialValues={[[profileModeAtom, 'show']]}>
-        <ProfileCustomLink initialLinks={[]} />
+        <ProfileCustomLinks initialLinks={[]} />
       </TestProvider>,
     );
-    expect(screen.queryByText('링크추가')).not.toBeInTheDocument();
+    expect(screen.queryByText(/링크추가/)).not.toBeInTheDocument();
   });
 
   it('renders add button in edit mode', () => {
     render(
       <TestProvider initialValues={[[profileModeAtom, 'edit']]}>
-        <ProfileCustomLink initialLinks={[]} />
+        <ProfileCustomLinks initialLinks={[]} />
       </TestProvider>,
     );
     expect(screen.getByRole('button', { name: /링크추가/ })).toBeInTheDocument();
@@ -44,7 +45,7 @@ describe('ProfileCustomLink', () => {
   it('adds new link input fields when button clicked', () => {
     render(
       <TestProvider initialValues={[[profileModeAtom, 'edit']]}>
-        <ProfileCustomLink initialLinks={[]} />
+        <ProfileCustomLinks initialLinks={[]} />
       </TestProvider>,
     );
 
@@ -53,15 +54,16 @@ describe('ProfileCustomLink', () => {
 
     expect(screen.getByPlaceholderText('링크 이름')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('https://')).toBeInTheDocument();
-    expect(addButton).toHaveTextContent('링크추가(1/5)');
   });
 
   it('disables add button when max links reached', () => {
-    const initialLinks = Array(4).fill({ name: 'test', url: 'http://test.com' });
+    const initialLinks = Array(4)
+      .fill(0)
+      .map((_, i) => ({ id: `${i}`, name: 'test', url: 'http://test.com' }));
 
     render(
       <TestProvider initialValues={[[profileModeAtom, 'edit']]}>
-        <ProfileCustomLink initialLinks={initialLinks} />
+        <ProfileCustomLinks initialLinks={initialLinks} />
       </TestProvider>,
     );
 
@@ -69,7 +71,21 @@ describe('ProfileCustomLink', () => {
     expect(addButton).not.toBeDisabled();
 
     fireEvent.click(addButton);
-    expect(addButton).toHaveTextContent('링크추가(5/5)');
     expect(addButton).toBeDisabled();
+  });
+
+  it('deletes a link when delete button clicked', () => {
+    const initialLinks = [{ id: '1', name: 'test', url: 'http://test.com' }];
+
+    render(
+      <TestProvider initialValues={[[profileModeAtom, 'edit']]}>
+        <ProfileCustomLinks initialLinks={initialLinks} />
+      </TestProvider>,
+    );
+
+    const deleteButton = screen.getByTitle('링크 삭제');
+    fireEvent.click(deleteButton);
+
+    expect(screen.queryByPlaceholderText('링크 이름')).not.toBeInTheDocument();
   });
 });

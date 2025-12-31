@@ -3,10 +3,11 @@ import { Provider, WritableAtom } from 'jotai';
 import { useHydrateAtoms } from 'jotai/utils';
 import { describe, it, expect } from 'vitest';
 
-import { ProfileInfomation } from '../components/atoms/ProfileInfomation';
+import { ProfileInfoForm } from '../components/molecules/ProfileInfoForm';
 import { profileModeAtom } from '../stores/profile-atoms';
 
 interface WrapperProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   initialValues: (readonly [WritableAtom<unknown, any[], any>, unknown])[];
   children: React.ReactNode;
 }
@@ -22,7 +23,7 @@ const Wrapper = ({ initialValues, children }: WrapperProps) => (
   </Provider>
 );
 
-describe('ProfileInfomation', () => {
+describe('ProfileInfoForm', () => {
   const defaultProps = {
     name: 'Test User',
     email: 'test@example.com',
@@ -31,7 +32,7 @@ describe('ProfileInfomation', () => {
   it('renders correctly in view mode', () => {
     render(
       <Wrapper initialValues={[[profileModeAtom, 'show']]}>
-        <ProfileInfomation {...defaultProps} />
+        <ProfileInfoForm {...defaultProps} />
       </Wrapper>,
     );
     expect(screen.getByText('Test User')).toBeInTheDocument();
@@ -42,7 +43,7 @@ describe('ProfileInfomation', () => {
   it('renders inputs in edit mode', () => {
     render(
       <Wrapper initialValues={[[profileModeAtom, 'edit']]}>
-        <ProfileInfomation {...defaultProps} />
+        <ProfileInfoForm {...defaultProps} />
       </Wrapper>,
     );
     expect(screen.getByDisplayValue('Test User')).toBeInTheDocument();
@@ -52,7 +53,7 @@ describe('ProfileInfomation', () => {
   it('updates inputs when typed', () => {
     render(
       <Wrapper initialValues={[[profileModeAtom, 'edit']]}>
-        <ProfileInfomation {...defaultProps} />
+        <ProfileInfoForm {...defaultProps} />
       </Wrapper>,
     );
 

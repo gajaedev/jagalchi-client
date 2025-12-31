@@ -1,6 +1,6 @@
-import RoadmapList from '../atoms/RoadmapList';
+import { RoadmapList } from '../molecules/RoadmapList';
 
-export default function ProfileThirdBox() {
+export function ProfileThirdBox() {
   return (
     <div className="flex flex-row justify-between">
       <RoadmapList variant="end" />

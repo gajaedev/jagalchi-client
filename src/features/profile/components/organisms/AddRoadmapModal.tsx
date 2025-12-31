@@ -1,6 +1,4 @@
-'use client';
-
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { ChevronRight, FileText, Folder, Search } from 'lucide-react';
 
@@ -21,7 +19,7 @@ type FileNode = {
   id: string;
   name: string;
   type: 'folder' | 'file';
-  author?: string; // For roadmaps
+  author?: string;
   children?: FileNode[];
 };
 
@@ -58,10 +56,17 @@ type FileTreeItemProps = {
   depth?: number;
   selectedId: string | null;
   onSelect: (id: string) => void;
+  initiallyOpen?: boolean;
 };
 
-function FileTreeItem({ node, depth = 0, selectedId, onSelect }: FileTreeItemProps) {
-  const [isOpen, setIsOpen] = useState(false);
+function FileTreeItem({
+  node,
+  depth = 0,
+  selectedId,
+  onSelect,
+  initiallyOpen = false,
+}: FileTreeItemProps) {
+  const [isOpen, setIsOpen] = useState(initiallyOpen);
 
   if (node.type === 'folder') {
     return (
@@ -88,6 +93,7 @@ function FileTreeItem({ node, depth = 0, selectedId, onSelect }: FileTreeItemPro
                 depth={depth + 1}
                 selectedId={selectedId}
                 onSelect={onSelect}
+                initiallyOpen={initiallyOpen}
               />
             ))}
           </div>
@@ -96,7 +102,6 @@ function FileTreeItem({ node, depth = 0, selectedId, onSelect }: FileTreeItemPro
     );
   }
 
-  // File Item
   const isSelected = selectedId === node.id;
 
   return (
@@ -130,10 +135,41 @@ function FileTreeItem({ node, depth = 0, selectedId, onSelect }: FileTreeItemPro
   );
 }
 
-export default function AddRoadmapModal({ children }: { children: React.ReactNode }) {
+export function AddRoadmapModal({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
   const [selectedFileId, setSelectedFileId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+
+  const filteredTree = useMemo(() => {
+    if (!searchQuery.trim()) return MOCK_FILE_TREE;
+
+    const filterNodes = (nodes: FileNode[]): FileNode[] => {
+      const result: FileNode[] = [];
+
+      nodes.forEach((node) => {
+        if (node.type === 'file') {
+          if (node.name.toLowerCase().includes(searchQuery.toLowerCase())) {
+            result.push(node);
+          }
+        } else if (node.type === 'folder' && node.children) {
+          const filteredChildren = filterNodes(node.children);
+          if (
+            filteredChildren.length > 0 ||
+            node.name.toLowerCase().includes(searchQuery.toLowerCase())
+          ) {
+            result.push({
+              ...node,
+              children: filteredChildren,
+            });
+          }
+        }
+      });
+
+      return result;
+    };
+
+    return filterNodes(MOCK_FILE_TREE);
+  }, [searchQuery]);
 
   const handleSelect = (id: string) => {
     setSelectedFileId((prev) => (prev === id ? null : id));
@@ -168,14 +204,21 @@ export default function AddRoadmapModal({ children }: { children: React.ReactNod
         <div className="flex-1 overflow-hidden p-6">
           <div className="h-full overflow-y-auto rounded-lg border border-slate-200 p-2">
             <div className="flex flex-col gap-0.5">
-              {MOCK_FILE_TREE.map((node) => (
-                <FileTreeItem
-                  key={node.id}
-                  node={node}
-                  selectedId={selectedFileId}
-                  onSelect={handleSelect}
-                />
-              ))}
+              {filteredTree.length > 0 ? (
+                filteredTree.map((node) => (
+                  <FileTreeItem
+                    key={node.id}
+                    node={node}
+                    selectedId={selectedFileId}
+                    onSelect={handleSelect}
+                    initiallyOpen={searchQuery.length > 0}
+                  />
+                ))
+              ) : (
+                <div className="py-10 text-center text-sm text-slate-400">
+                  검색 결과가 없습니다.
+                </div>
+              )}
             </div>
           </div>
         </div>
