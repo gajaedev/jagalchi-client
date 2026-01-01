@@ -13,12 +13,7 @@ export function ProfileEditButton({ variant, className, onClick }: ProfileEditBu
   const label = variant === 'show' ? '프로필 수정' : '수정 완료';
 
   return (
-    <Button
-      type="button"
-      variant="outline"
-      className={cn('border-foreground text-foreground w-full font-semibold', className)}
-      onClick={onClick}
-    >
+    <Button type="button" className={cn('w-full font-semibold', className)} onClick={onClick}>
       {label}
     </Button>
   );

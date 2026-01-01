@@ -54,7 +54,7 @@ export function ProfileCustomOrganization({
 
   return (
     <div className="flex w-full flex-col gap-2">
-      <div className="border-border flex items-center gap-2 rounded-md border px-4 py-2">
+      <div className="border-border flex items-center gap-4 rounded-md border px-4 py-2">
         <Building2 size={16} className="text-muted-foreground" />
         <p className="text-foreground text-sm font-medium">{value}</p>
       </div>

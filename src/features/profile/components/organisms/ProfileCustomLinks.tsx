@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 
 import { useAtomValue } from 'jotai';
-import { Link as LinkIcon, Trash2 } from 'lucide-react';
+import { ArrowUpRight, Link as LinkIcon, Trash2 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -51,7 +51,7 @@ export function ProfileCustomLinks({ initialLinks = [], onChange }: ProfileCusto
 
   if (mode === 'edit') {
     return (
-      <div className="flex w-full flex-col gap-3">
+      <div className="flex w-full flex-col gap-2">
         {links.map((link, index) => (
           <div key={link.id || index} className="flex w-full items-center gap-2">
             <div className="flex flex-1 gap-4">
@@ -68,7 +68,7 @@ export function ProfileCustomLinks({ initialLinks = [], onChange }: ProfileCusto
                   className="text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2"
                 />
                 <Input
-                  className="pl-9"
+                  className="truncate pl-9"
                   placeholder="https://"
                   value={link.url}
                   onChange={(e) => handleUpdateLink(index, 'url', e.target.value)}
@@ -102,9 +102,9 @@ export function ProfileCustomLinks({ initialLinks = [], onChange }: ProfileCusto
           href={link.url.startsWith('http') ? link.url : `https://${link.url}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="border-border hover:bg-accent flex items-center gap-2 rounded-md border px-4 py-2 transition-colors"
+          className="border-border hover:bg-accent flex items-center gap-4 rounded-md border px-4 py-2 transition-colors"
         >
-          <LinkIcon size={16} className="text-muted-foreground" />
+          <ArrowUpRight size={16} className="text-muted-foreground" />
           {link.name && <span className="text-foreground text-sm font-medium">{link.name}</span>}
           <span className="text-muted-foreground flex-1 truncate text-sm underline">
             {link.url}
