@@ -158,14 +158,10 @@ export function AddRoadmapModal({
             result.push(node);
           }
         } else if (node.type === 'folder' && node.children) {
-          const isMatch = node.name.toLowerCase().includes(searchQuery.toLowerCase());
           const filteredChildren = filterNodes(node.children);
 
-          if (isMatch) {
-            // Include all children if folder matches
-            result.push(node);
-          } else if (filteredChildren.length > 0) {
-            // Include folder if passing children exist
+          // Only include folder if it has matching children
+          if (filteredChildren.length > 0) {
             result.push({
               ...node,
               children: filteredChildren,
@@ -192,7 +188,16 @@ export function AddRoadmapModal({
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog
+      open={open}
+      onOpenChange={(isOpen) => {
+        setOpen(isOpen);
+        if (!isOpen) {
+          setSelectedFileId(null);
+          setSearchQuery('');
+        }
+      }}
+    >
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent
         showCloseButton={false}

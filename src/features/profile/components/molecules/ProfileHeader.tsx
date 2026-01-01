@@ -7,7 +7,19 @@ import { ProfilePicture } from '../atoms/ProfilePicture';
 
 import { ProfileInfoForm } from './ProfileInfoForm';
 
-export function ProfileHeader() {
+interface ProfileHeaderProps {
+  userName: string;
+  email: string;
+  followerCount?: number;
+  followingCount?: number;
+}
+
+export function ProfileHeader({
+  userName,
+  email,
+  followerCount = 0,
+  followingCount = 0,
+}: ProfileHeaderProps) {
   const [imageSrc, setImageSrc] = useAtom(profileImageAtom);
 
   const handleImageUpload = (file: File) => {
@@ -23,10 +35,15 @@ export function ProfileHeader() {
 
   return (
     <div className="flex w-full flex-row items-center gap-8">
-      <ProfilePicture src={imageSrc} userName="John Doe" onUpload={handleImageUpload} />
+      <ProfilePicture src={imageSrc} userName={userName} onUpload={handleImageUpload} />
 
       <div className="w-full">
-        <ProfileInfoForm name="John Doe" email="john.doe@example.com" />
+        <ProfileInfoForm
+          name={userName}
+          email={email}
+          followerCount={followerCount}
+          followingCount={followingCount}
+        />
       </div>
     </div>
   );
