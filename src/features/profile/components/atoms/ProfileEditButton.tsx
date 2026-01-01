@@ -16,10 +16,7 @@ export function ProfileEditButton({ variant, className, onClick }: ProfileEditBu
     <Button
       type="button"
       variant="outline"
-      className={cn(
-        'border-border bg-primary text-primary-foreground w-full font-semibold',
-        className,
-      )}
+      className={cn('border-foreground text-foreground w-full font-semibold', className)}
       onClick={onClick}
     >
       {label}
