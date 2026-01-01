@@ -1,9 +1,10 @@
 'use client';
 
+import { ProfileBio } from '../molecules/ProfileBio';
+import { ProfileCustomBoxArea } from '../molecules/ProfileCustomBoxArea';
 import { ProfileHeader } from '../molecules/ProfileHeader';
 import { ProfileStreak } from '../molecules/ProfileStreak';
 import { MadeRoadmapList } from '../organisms/MadeRoadmapList';
-import { ProfileSecondBox } from '../organisms/ProfileSecondBox';
 import { ProfileThirdBox } from '../organisms/ProfileThirdBox';
 
 // TODO: Replace with actual user data from API/state
@@ -12,7 +13,7 @@ const MOCK_USER_DATA = {
   email: 'john.doe@example.com',
   followerCount: 3000,
   followingCount: 100,
-  bio: '안녕하세요! 새로운 기술을 배우고 공유하는 것을 좋아하는 개발자입니다. 현재 프론트엔드 개발에 집중하고 있으며, 보다 나은 사용자 경험을 제공하기 위해 노력하고 있습니다.',
+  bio: '안녕하세요! 새로운 기술을 배우고 공유하는 것을 좋아하는 개발자입니다. 현재 프론트엔드 개발에 집중하고 있으며, 보다 나은 사용자 경험을 제공하기 위해 노력하고 있습니다. React, Next.js, TypeScript를 주력으로 사용하며, 효율적인 컴포넌트 설계와 상태 관리에 관심이 많습니다. 오픈 소스 기여와 기술 블로그 운영을 통해 지식을 나누는 것을 즐깁니다. 함께 성장하는 개발 문화를 지향합니다. 안녕하세요! 새로운 기술을 배우고 공유하는 것을 좋아하는 개발자입니다. 현재 프론트엔드 개발에 집중하고 있으며, 보다 나은 사용자 경험을 제공하기 위해 노력하고 있습니다.',
 };
 
 export function Profile() {
@@ -24,8 +25,13 @@ export function Profile() {
         followerCount={MOCK_USER_DATA.followerCount}
         followingCount={MOCK_USER_DATA.followingCount}
       />
-      <ProfileSecondBox bio={MOCK_USER_DATA.bio} />
-      <ProfileStreak />
+      <ProfileBio bio={MOCK_USER_DATA.bio} />
+      <div className="flex w-full flex-row gap-6">
+        <ProfileCustomBoxArea />
+        <div className="flex-1">
+          <ProfileStreak />
+        </div>
+      </div>
       <ProfileThirdBox />
       <MadeRoadmapList />
     </div>

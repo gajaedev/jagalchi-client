@@ -13,7 +13,7 @@ interface RoadmapListProps {
 
 function RoadmapCardItem({ item }: { item: RoadmapItem }) {
   return (
-    <Card className="h-[53px] w-[444px] justify-center rounded-lg shadow-none">
+    <Card className="h-[53px] w-full justify-center rounded-lg shadow-none">
       <CardContent className="flex items-center gap-3">
         <div className="h-6 w-6" />
         <p className="text-foreground">{item.title}</p>
@@ -26,7 +26,7 @@ export function RoadmapList({ variant, items = [] }: RoadmapListProps) {
   const title = variant === 'end' ? '완주한 로드맵' : '진행중인 로드맵';
 
   return (
-    <Card className="h-[240px] w-[468px] rounded-xl shadow-none">
+    <Card className="h-[240px] w-full overflow-hidden rounded-xl shadow-none">
       <CardHeader>
         <CardTitle className="text-foreground text-lg">{title}</CardTitle>
       </CardHeader>

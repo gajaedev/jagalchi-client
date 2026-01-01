@@ -22,7 +22,7 @@ export function MadeRoadmapList() {
   const [mode] = useAtom(profileModeAtom);
 
   return (
-    <Card className="mb-10 w-[950px] rounded-xl shadow-none">
+    <Card className="mb-10 w-full rounded-xl shadow-none">
       <CardHeader className="pb-4">
         <CardTitle className="text-muted-foreground text-base font-bold">만든 로드맵</CardTitle>
       </CardHeader>

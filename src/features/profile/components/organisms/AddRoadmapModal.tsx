@@ -112,13 +112,13 @@ function FileTreeItem({
   return (
     <div
       className={cn(
-        'group hover:bg-accent flex cursor-pointer items-center justify-between rounded-md px-2 py-1',
+        'group hover:bg-accent flex cursor-pointer items-center justify-between rounded-md px-4 py-1',
         depth > 0 && 'ml-8',
         isSelected && 'bg-indigo-50 ring-1 ring-indigo-500 hover:bg-indigo-50',
       )}
       onClick={() => onSelect(node.id)}
     >
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1">
         <FileText
           className={cn(
             'text-muted-foreground h-4 w-4',
@@ -227,8 +227,8 @@ export function AddRoadmapModal({
         <Separator />
 
         <div className="flex-1 overflow-hidden p-6">
-          <ScrollArea className="border-border h-full rounded-lg border p-2">
-            <div className="flex flex-col gap-0.5">
+          <ScrollArea className="border-border h-full rounded-lg border">
+            <div className="flex flex-col gap-0.5 p-2">
               {filteredTree.length > 0 ? (
                 filteredTree.map((node) => (
                   <FileTreeItem
