@@ -1,65 +1,97 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { useAtomValue } from 'jotai';
+import { ChevronDown, ChevronUp } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Textarea } from '@/components/ui/textarea';
+import { cn } from '@/lib/utils';
 
 import { profileModeAtom } from '../../stores/profile-atoms';
 
 interface ProfileBioProps {
   bio: string;
+  onChange?: (bio: string) => void;
 }
 
-export function ProfileBio({ bio }: ProfileBioProps) {
+export function ProfileBio({ bio, onChange }: ProfileBioProps) {
   const mode = useAtomValue(profileModeAtom);
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [userBio, setUserBio] = useState(bio);
 
-  const [bios, setBios] = useState(bio);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [isOverflowing, setIsOverflowing] = useState(false);
+  const bioRef = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => {
+    setUserBio(bio);
+  }, [bio]);
+
+  useEffect(() => {
+    const checkOverflow = () => {
+      if (bioRef.current) {
+        setIsOverflowing(bioRef.current.scrollHeight > bioRef.current.clientHeight);
+      }
+    };
+
+    checkOverflow();
+    window.addEventListener('resize', checkOverflow);
+    return () => window.removeEventListener('resize', checkOverflow);
+  }, [userBio]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newValue = e.target.value;
+    setUserBio(newValue);
+    onChange?.(newValue);
+  };
 
   if (mode === 'edit') {
     return (
       <div className="flex flex-col gap-4">
         <p className="text-sm font-semibold">자기소개</p>
-        <textarea
-          className="h-[280px] w-full resize-none rounded-lg border border-slate-200 bg-white p-2 text-sm text-slate-500 outline-none focus:border-slate-500"
-          value={bios}
-          onChange={(e) => setBios(e.target.value)}
+        <Textarea
+          className="h-[280px] w-full resize-none"
+          value={userBio}
+          onChange={handleChange}
         />
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      <p className="text-sm font-semibold">자기소개</p>
-      <div className="flex flex-col gap-2 rounded-lg border border-slate-200 p-2">
-        <p className={`${!isExpanded ? 'line-clamp-3' : ''} text-justify text-sm text-slate-500`}>
-          {bios}
+    <Card className="shadow-none">
+      <CardHeader>
+        <CardTitle className="text-sm font-semibold">자기소개</CardTitle>
+      </CardHeader>
+      <CardContent className="flex flex-col gap-2">
+        <p
+          ref={bioRef}
+          className={cn(
+            'text-muted-foreground text-justify text-sm leading-relaxed whitespace-pre-wrap',
+            !isExpanded && 'line-clamp-3',
+          )}
+        >
+          {userBio}
         </p>
 
-        <button
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="flex flex-row items-center gap-1 self-end text-sm text-slate-500 hover:text-slate-700"
-        >
-          <span>{isExpanded ? '접기' : '전체 보기'}</span>
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className={`transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}
+        {(isOverflowing || isExpanded) && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="text-muted-foreground hover:text-foreground h-auto self-end p-0 hover:bg-transparent"
           >
-            <path
-              d="M6 9L12 15L18 9"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </button>
-      </div>
-    </div>
+            <span className="text-xs">{isExpanded ? '접기' : '전체 보기'}</span>
+            {isExpanded ? (
+              <ChevronUp className="ml-1 h-3 w-3" />
+            ) : (
+              <ChevronDown className="ml-1 h-3 w-3" />
+            )}
+          </Button>
+        )}
+      </CardContent>
+    </Card>
   );
 }
