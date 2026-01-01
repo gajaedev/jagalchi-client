@@ -8,6 +8,18 @@ import { describe, it, expect, vi } from 'vitest';
 import { ProfilePicture } from '../components/atoms/ProfilePicture';
 import { profileModeAtom } from '../stores/profile-atoms';
 
+vi.mock('@/components/ui/avatar', () => ({
+  Avatar: ({ children, className }: { children: React.ReactNode; className?: string }) => (
+    <div className={className}>{children}</div>
+  ),
+  AvatarImage: ({ src, alt, className }: { src: string; alt: string; className?: string }) => (
+    <img src={src} alt={alt} className={className} />
+  ),
+  AvatarFallback: ({ children, className }: { children: React.ReactNode; className?: string }) => (
+    <div className={className}>{children}</div>
+  ),
+}));
+
 vi.mock('next/image', () => ({
   default: ({ src, alt }: { src: string; alt: string }) => React.createElement('img', { src, alt }),
 }));
@@ -39,7 +51,7 @@ describe('ProfilePicture', () => {
         <ProfilePicture src={src} />
       </Wrapper>,
     );
-    expect(screen.getByAltText('사용자의 프로필 사진')).toBeInTheDocument();
+    expect(screen.getByAltText('프로필 사진')).toBeInTheDocument();
   });
 
   it('renders image in view mode with custom userName alt', () => {
