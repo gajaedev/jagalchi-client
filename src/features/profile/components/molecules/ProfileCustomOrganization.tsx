@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useAtomValue } from 'jotai';
 import { Building2 } from 'lucide-react';
@@ -11,11 +11,25 @@ import { profileModeAtom } from '../../stores/profile-atoms';
 
 interface ProfileCustomOrganizationProps {
   initialValue?: string;
+  onChange?: (value: string) => void;
 }
 
-export function ProfileCustomOrganization({ initialValue = '' }: ProfileCustomOrganizationProps) {
+export function ProfileCustomOrganization({
+  initialValue = '',
+  onChange,
+}: ProfileCustomOrganizationProps) {
   const mode = useAtomValue(profileModeAtom);
   const [value, setValue] = useState(initialValue);
+
+  useEffect(() => {
+    setValue(initialValue);
+  }, [initialValue]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    setValue(newValue);
+    onChange?.(newValue);
+  };
 
   if (mode === 'edit') {
     return (
@@ -29,7 +43,7 @@ export function ProfileCustomOrganization({ initialValue = '' }: ProfileCustomOr
             className="pl-9"
             placeholder="소속을 입력해주세요"
             value={value}
-            onChange={(e) => setValue(e.target.value)}
+            onChange={handleChange}
           />
         </div>
       </div>

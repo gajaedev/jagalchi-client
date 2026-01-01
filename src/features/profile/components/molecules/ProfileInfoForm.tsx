@@ -1,4 +1,6 @@
-import { useState } from 'react';
+'use client';
+
+import { useEffect, useState } from 'react';
 
 import { useAtom } from 'jotai';
 
@@ -10,17 +12,44 @@ import { ProfileEditButton } from '../atoms/ProfileEditButton';
 interface ProfileInfoFormProps {
   name: string;
   email: string;
+  onNameChange?: (name: string) => void;
+  onEmailChange?: (email: string) => void;
 }
 
-export function ProfileInfoForm({ name, email }: ProfileInfoFormProps) {
+export function ProfileInfoForm({
+  name,
+  email,
+  onNameChange,
+  onEmailChange,
+}: ProfileInfoFormProps) {
   const [mode, setMode] = useAtom(profileModeAtom);
 
   const toggleMode = () => {
     setMode((prev) => (prev === 'show' ? 'edit' : 'show'));
   };
 
-  const [names, setName] = useState(name);
-  const [emails, setEmail] = useState(email);
+  const [userName, setUserName] = useState(name);
+  const [userEmail, setUserEmail] = useState(email);
+
+  useEffect(() => {
+    setUserName(name);
+  }, [name]);
+
+  useEffect(() => {
+    setUserEmail(email);
+  }, [email]);
+
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    setUserName(newValue);
+    onNameChange?.(newValue);
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    setUserEmail(newValue);
+    onEmailChange?.(newValue);
+  };
 
   return (
     <div>
@@ -28,8 +57,8 @@ export function ProfileInfoForm({ name, email }: ProfileInfoFormProps) {
         <div className="flex w-full flex-row items-center justify-between">
           <div className="flex flex-col justify-between">
             <div className="flex flex-row gap-2">
-              <p className="text-xl font-semibold">{names}</p>
-              <p className="text-base font-medium text-slate-500">{emails}</p>
+              <p className="text-xl font-semibold">{userName}</p>
+              <p className="text-base font-medium text-slate-500">{userEmail}</p>
             </div>
 
             <div className="flex flex-row gap-2">
@@ -50,8 +79,8 @@ export function ProfileInfoForm({ name, email }: ProfileInfoFormProps) {
         <div className="flex flex-row items-center justify-between">
           <div className="flex flex-col gap-2">
             <div className="flex flex-row gap-2">
-              <Input type="text" value={names} onChange={(e) => setName(e.target.value)} />
-              <Input type="email" value={emails} onChange={(e) => setEmail(e.target.value)} />
+              <Input type="text" value={userName} onChange={handleNameChange} />
+              <Input type="email" value={userEmail} onChange={handleEmailChange} />
             </div>
 
             <div className="flex flex-row gap-2">

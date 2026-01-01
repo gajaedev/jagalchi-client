@@ -135,7 +135,13 @@ function FileTreeItem({
   );
 }
 
-export function AddRoadmapModal({ children }: { children: React.ReactNode }) {
+export function AddRoadmapModal({
+  children,
+  onConfirm,
+}: {
+  children: React.ReactNode;
+  onConfirm?: (fileId: string) => void;
+}) {
   const [open, setOpen] = useState(false);
   const [selectedFileId, setSelectedFileId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -152,11 +158,14 @@ export function AddRoadmapModal({ children }: { children: React.ReactNode }) {
             result.push(node);
           }
         } else if (node.type === 'folder' && node.children) {
+          const isMatch = node.name.toLowerCase().includes(searchQuery.toLowerCase());
           const filteredChildren = filterNodes(node.children);
-          if (
-            filteredChildren.length > 0 ||
-            node.name.toLowerCase().includes(searchQuery.toLowerCase())
-          ) {
+
+          if (isMatch) {
+            // Include all children if folder matches
+            result.push(node);
+          } else if (filteredChildren.length > 0) {
+            // Include folder if passing children exist
             result.push({
               ...node,
               children: filteredChildren,
@@ -177,6 +186,7 @@ export function AddRoadmapModal({ children }: { children: React.ReactNode }) {
 
   const handleConfirm = () => {
     if (selectedFileId) {
+      onConfirm?.(selectedFileId);
       setOpen(false);
     }
   };

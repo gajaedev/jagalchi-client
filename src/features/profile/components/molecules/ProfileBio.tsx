@@ -1,20 +1,33 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useAtomValue } from 'jotai';
+
+import { cn } from '@/lib/utils';
 
 import { profileModeAtom } from '../../stores/profile-atoms';
 
 interface ProfileBioProps {
   bio: string;
+  onChange?: (bio: string) => void;
 }
 
-export function ProfileBio({ bio }: ProfileBioProps) {
+export function ProfileBio({ bio, onChange }: ProfileBioProps) {
   const mode = useAtomValue(profileModeAtom);
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const [bios, setBios] = useState(bio);
+  const [userBio, setUserBio] = useState(bio);
+
+  useEffect(() => {
+    setUserBio(bio);
+  }, [bio]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newValue = e.target.value;
+    setUserBio(newValue);
+    onChange?.(newValue);
+  };
 
   if (mode === 'edit') {
     return (
@@ -22,8 +35,8 @@ export function ProfileBio({ bio }: ProfileBioProps) {
         <p className="text-sm font-semibold">자기소개</p>
         <textarea
           className="h-[280px] w-full resize-none rounded-lg border border-slate-200 bg-white p-2 text-sm text-slate-500 outline-none focus:border-slate-500"
-          value={bios}
-          onChange={(e) => setBios(e.target.value)}
+          value={userBio}
+          onChange={handleChange}
         />
       </div>
     );
@@ -33,8 +46,8 @@ export function ProfileBio({ bio }: ProfileBioProps) {
     <div className="flex flex-col gap-4">
       <p className="text-sm font-semibold">자기소개</p>
       <div className="flex flex-col gap-2 rounded-lg border border-slate-200 p-2">
-        <p className={`${!isExpanded ? 'line-clamp-3' : ''} text-justify text-sm text-slate-500`}>
-          {bios}
+        <p className={cn('text-justify text-sm text-slate-500', !isExpanded && 'line-clamp-3')}>
+          {userBio}
         </p>
 
         <button
@@ -48,7 +61,7 @@ export function ProfileBio({ bio }: ProfileBioProps) {
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            className={`transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}
+            className={cn('transition-transform duration-200', isExpanded && 'rotate-180')}
           >
             <path
               d="M6 9L12 15L18 9"

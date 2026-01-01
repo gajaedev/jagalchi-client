@@ -37,7 +37,7 @@ export function ProfileCustomLinks({ initialLinks = [], onChange }: ProfileCusto
   };
 
   const handleAddLink = () => {
-    const next = [...links, { id: Math.random().toString(36).substr(2, 9), name: '', url: '' }];
+    const next = [...links, { id: crypto.randomUUID(), name: '', url: '' }];
     setLinks(next);
     onChange?.(next);
   };
@@ -75,6 +75,7 @@ export function ProfileCustomLinks({ initialLinks = [], onChange }: ProfileCusto
               </div>
             </div>
             <button
+              type="button"
               onClick={() => handleDeleteLink(index)}
               className="p-1 text-slate-400 transition-colors hover:text-red-500"
               title="링크 삭제"
