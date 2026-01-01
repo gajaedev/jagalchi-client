@@ -1,11 +1,16 @@
+import { ProfileBio } from '../molecules/ProfileBio';
 import { ProfileCustomBoxArea } from '../molecules/ProfileCustomBoxArea';
-import { ProfileStreak } from '../molecules/ProfileStreak';
 
-export function ProfileSecondBox() {
+interface ProfileSecondBoxProps {
+  bio: string;
+  onBioChange?: (bio: string) => void;
+}
+
+export function ProfileSecondBox({ bio, onBioChange }: ProfileSecondBoxProps) {
   return (
-    <div className="flex flex-row gap-6">
+    <div className="flex w-full flex-row justify-between">
+      <ProfileBio bio={bio} onChange={onBioChange} />
       <ProfileCustomBoxArea />
-      <ProfileStreak />
     </div>
   );
 }

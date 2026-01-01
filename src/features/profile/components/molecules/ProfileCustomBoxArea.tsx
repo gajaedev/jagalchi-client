@@ -6,7 +6,7 @@ import { ProfileCustomOrganization } from './ProfileCustomOrganization';
 
 export function ProfileCustomBoxArea() {
   return (
-    <div className="flex w-[384px] flex-col gap-2">
+    <div className="flex h-[280px] w-[384px] flex-col gap-2">
       <ProfileCustomOrganization initialValue="부산소프트웨어마이스터고등학교" />
 
       <ProfileCustomLinks

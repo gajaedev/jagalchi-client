@@ -3,11 +3,8 @@
 import { useEffect, useState } from 'react';
 
 import { useAtomValue } from 'jotai';
-import { ChevronDown } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { cn } from '@/lib/utils';
 
 import { profileModeAtom } from '../../stores/profile-atoms';
 
@@ -18,8 +15,6 @@ interface ProfileBioProps {
 
 export function ProfileBio({ bio, onChange }: ProfileBioProps) {
   const mode = useAtomValue(profileModeAtom);
-  const [isExpanded, setIsExpanded] = useState(false);
-
   const [userBio, setUserBio] = useState(bio);
 
   useEffect(() => {
@@ -42,31 +37,9 @@ export function ProfileBio({ bio, onChange }: ProfileBioProps) {
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="border-border flex h-[280px] w-[500px] flex-col gap-4 overflow-hidden rounded-lg border p-4">
       <p className="text-sm font-semibold">자기소개</p>
-      <div className="border-border flex flex-col gap-2 rounded-lg border p-2">
-        <p
-          className={cn(
-            'text-muted-foreground text-justify text-sm',
-            !isExpanded && 'line-clamp-3',
-          )}
-        >
-          {userBio}
-        </p>
-
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="text-muted-foreground hover:text-foreground h-auto self-end p-0 text-sm"
-        >
-          <span>{isExpanded ? '접기' : '전체 보기'}</span>
-          <ChevronDown
-            size={20}
-            className={cn('transition-transform duration-200', isExpanded && 'rotate-180')}
-          />
-        </Button>
-      </div>
+      <p className="text-muted-foreground line-clamp-6 w-full text-justify text-sm">{userBio}</p>
     </div>
   );
 }

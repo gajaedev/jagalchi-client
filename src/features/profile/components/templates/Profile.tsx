@@ -1,7 +1,7 @@
 'use client';
 
-import { ProfileBio } from '../molecules/ProfileBio';
 import { ProfileHeader } from '../molecules/ProfileHeader';
+import { ProfileStreak } from '../molecules/ProfileStreak';
 import { MadeRoadmapList } from '../organisms/MadeRoadmapList';
 import { ProfileSecondBox } from '../organisms/ProfileSecondBox';
 import { ProfileThirdBox } from '../organisms/ProfileThirdBox';
@@ -17,15 +17,15 @@ const MOCK_USER_DATA = {
 
 export function Profile() {
   return (
-    <div className="flex w-[950px] flex-col gap-12">
+    <div className="flex w-[960px] flex-col gap-10">
       <ProfileHeader
         userName={MOCK_USER_DATA.userName}
         email={MOCK_USER_DATA.email}
         followerCount={MOCK_USER_DATA.followerCount}
         followingCount={MOCK_USER_DATA.followingCount}
       />
-      <ProfileBio bio={MOCK_USER_DATA.bio} />
-      <ProfileSecondBox />
+      <ProfileSecondBox bio={MOCK_USER_DATA.bio} />
+      <ProfileStreak />
       <ProfileThirdBox />
       <MadeRoadmapList />
     </div>

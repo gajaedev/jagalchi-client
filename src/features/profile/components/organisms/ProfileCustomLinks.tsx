@@ -102,11 +102,11 @@ export function ProfileCustomLinks({ initialLinks = [], onChange }: ProfileCusto
           href={link.url.startsWith('http') ? link.url : `https://${link.url}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="border-border hover:bg-accent flex items-center gap-4 rounded-md border px-4 py-2 transition-colors"
+          className="border-border hover:bg-accent flex h-[54px] items-center gap-4 rounded-md border px-4 transition-colors"
         >
           <ArrowUpRight size={16} className="text-muted-foreground" />
           {link.name && <span className="text-foreground text-sm font-medium">{link.name}</span>}
-          <span className="text-muted-foreground flex-1 truncate text-sm underline">
+          <span className="text-muted-foreground w-[224px] truncate text-sm underline">
             {link.url}
           </span>
         </a>
