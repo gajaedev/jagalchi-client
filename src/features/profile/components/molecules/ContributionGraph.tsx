@@ -2,6 +2,8 @@
 
 import { useMemo } from 'react';
 
+import { Card, CardContent } from '@/components/ui/card';
+
 import {
   Contribution,
   COLORS,
@@ -10,7 +12,7 @@ import {
   padStartByWeekday,
   chunkByWeek,
   calculateStreak,
-} from '@/features/profile/utils/contribution-utils';
+} from '../../utils/contribution-utils';
 
 export function ContributionGraph({ data }: { data: Contribution[] }) {
   const { weeks, streak } = useMemo(() => {
@@ -25,32 +27,32 @@ export function ContributionGraph({ data }: { data: Contribution[] }) {
   }, [data]);
 
   return (
-    <div className="border-border flex h-[137px] w-full flex-col items-start justify-center rounded-md border p-4">
-      <div className="mb-2">
-        <p className="text-muted-foreground text-base font-bold">{streak}일 연속 스트릭</p>
-      </div>
-      <div className="flex gap-[1px]">
-        {weeks.map((week, i) => (
-          <div key={i} className="flex flex-col gap-[1px]">
-            {week.map((day, j) =>
-              day ? (
-                <div
-                  key={day.date}
-                  title={`${day.date}: ${day.count} contributions`}
-                  style={{
-                    width: 7,
-                    height: 7,
-                    borderRadius: 1,
-                    backgroundColor: COLORS[getLevel(day.count)],
-                  }}
-                />
-              ) : (
-                <div key={j} style={{ width: 7, height: 7 }} />
-              ),
-            )}
-          </div>
-        ))}
-      </div>
-    </div>
+    <Card className="h-[137px] w-full shadow-none">
+      <CardContent className="flex h-full flex-col items-start justify-center p-4">
+        <p className="text-muted-foreground mb-2 text-base font-bold">{streak}일 연속 스트릭</p>
+        <div className="flex gap-[1px]">
+          {weeks.map((week, i) => (
+            <div key={i} className="flex flex-col gap-[1px]">
+              {week.map((day, j) =>
+                day ? (
+                  <div
+                    key={day.date}
+                    title={`${day.date}: ${day.count} contributions`}
+                    style={{
+                      width: 7,
+                      height: 7,
+                      borderRadius: 1,
+                      backgroundColor: COLORS[getLevel(day.count)],
+                    }}
+                  />
+                ) : (
+                  <div key={j} style={{ width: 7, height: 7 }} />
+                ),
+              )}
+            </div>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
   );
 }

@@ -13,6 +13,8 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 
 type FileNode = {
@@ -209,7 +211,7 @@ export function AddRoadmapModal({
         showCloseButton={false}
         className="flex h-[600px] w-[600px] flex-col gap-0 p-0 sm:max-w-[600px]"
       >
-        <DialogHeader className="flex flex-row items-center justify-between space-y-0 border-b px-6 py-4">
+        <DialogHeader className="flex flex-row items-center justify-between space-y-0 px-6 py-4">
           <DialogTitle className="text-lg font-bold">로드맵 선택</DialogTitle>
           <div className="relative w-[240px]">
             <Search className="text-muted-foreground absolute top-1/2 left-2.5 h-4 w-4 -translate-y-1/2" />
@@ -222,8 +224,10 @@ export function AddRoadmapModal({
           </div>
         </DialogHeader>
 
+        <Separator />
+
         <div className="flex-1 overflow-hidden p-6">
-          <div className="border-border h-full overflow-y-auto rounded-lg border p-2">
+          <ScrollArea className="border-border h-full rounded-lg border p-2">
             <div className="flex flex-col gap-0.5">
               {filteredTree.length > 0 ? (
                 filteredTree.map((node) => (
@@ -241,21 +245,18 @@ export function AddRoadmapModal({
                 </div>
               )}
             </div>
-          </div>
+          </ScrollArea>
         </div>
 
-        <DialogFooter className="gap-2 border-t p-4 sm:justify-end">
+        <Separator />
+
+        <DialogFooter className="gap-2 p-4 sm:justify-end">
           <DialogClose asChild>
             <Button variant="outline" type="button">
               취소
             </Button>
           </DialogClose>
-          <Button
-            type="button"
-            className="bg-primary text-primary-foreground hover:bg-primary/90"
-            disabled={!selectedFileId}
-            onClick={handleConfirm}
-          >
+          <Button type="button" disabled={!selectedFileId} onClick={handleConfirm}>
             확인
           </Button>
         </DialogFooter>

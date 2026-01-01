@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { useAtomValue } from 'jotai';
 import { Link as LinkIcon, Trash2 } from 'lucide-react';
 
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
 import { profileModeAtom } from '../../stores/profile-atoms';
@@ -74,14 +75,16 @@ export function ProfileCustomLinks({ initialLinks = [], onChange }: ProfileCusto
                 />
               </div>
             </div>
-            <button
+            <Button
               type="button"
+              variant="ghost"
+              size="icon"
               onClick={() => handleDeleteLink(index)}
-              className="text-muted-foreground hover:text-destructive p-1 transition-colors"
+              className="text-muted-foreground hover:text-destructive h-8 w-8"
               title="링크 삭제"
             >
               <Trash2 size={16} />
-            </button>
+            </Button>
           </div>
         ))}
         <ProfileLinkAddButton currentCount={links.length} maxCount={5} onClick={handleAddLink} />

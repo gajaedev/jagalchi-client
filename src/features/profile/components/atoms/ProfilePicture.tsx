@@ -2,12 +2,12 @@
 
 import { useRef } from 'react';
 
-import Image from 'next/image';
-
 import { useAtomValue } from 'jotai';
 import { Pencil } from 'lucide-react';
 
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 import { profileModeAtom } from '../../stores/profile-atoms';
 
@@ -16,22 +16,6 @@ interface ProfilePictureProps {
   userName?: string;
   onUpload?: (file: File) => void;
 }
-
-const ImageContainer = ({ children }: { children: React.ReactNode }) => (
-  <div className="border-border relative h-[128px] w-[128px] overflow-hidden rounded-[64px] border">
-    {children}
-  </div>
-);
-
-const StyledImage = ({ src, userName }: { src: string; userName?: string }) => (
-  <Image
-    src={src}
-    alt={userName ? `${userName}의 프로필 사진` : '사용자의 프로필 사진'}
-    className="h-full w-full object-cover"
-    width={128}
-    height={128}
-  />
-);
 
 export function ProfilePicture({ src, userName, onUpload }: ProfilePictureProps) {
   const mode = useAtomValue(profileModeAtom);
@@ -48,17 +32,24 @@ export function ProfilePicture({ src, userName, onUpload }: ProfilePictureProps)
     }
   };
 
+  const getInitials = (name?: string) => {
+    if (!name) return '?';
+    return name.charAt(0).toUpperCase();
+  };
+
   return (
     <div>
       {mode === 'show' ? (
-        <ImageContainer>
-          <StyledImage src={src} userName={userName} />
-        </ImageContainer>
+        <Avatar className="border-border h-[128px] w-[128px] border">
+          <AvatarImage src={src} alt={userName ? `${userName}의 프로필 사진` : '프로필 사진'} />
+          <AvatarFallback className="text-2xl">{getInitials(userName)}</AvatarFallback>
+        </Avatar>
       ) : (
         <div className="relative h-[128px] w-[128px]">
-          <ImageContainer>
-            <StyledImage src={src} userName={userName} />
-          </ImageContainer>
+          <Avatar className="border-border h-[128px] w-[128px] border">
+            <AvatarImage src={src} alt={userName ? `${userName}의 프로필 사진` : '프로필 사진'} />
+            <AvatarFallback className="text-2xl">{getInitials(userName)}</AvatarFallback>
+          </Avatar>
           <Button
             variant="outline"
             size="icon"
@@ -67,7 +58,7 @@ export function ProfilePicture({ src, userName, onUpload }: ProfilePictureProps)
           >
             <Pencil size={16} />
           </Button>
-          <input
+          <Input
             ref={fileInputRef}
             type="file"
             className="hidden"

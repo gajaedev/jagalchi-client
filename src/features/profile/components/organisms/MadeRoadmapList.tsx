@@ -1,6 +1,7 @@
 import { useAtom } from 'jotai';
 
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 import { profileModeAtom } from '../../stores/profile-atoms';
 import { RoadmapCard } from '../atoms/RoadmapCard';
@@ -21,21 +22,25 @@ export function MadeRoadmapList() {
   const [mode] = useAtom(profileModeAtom);
 
   return (
-    <div className="border-border mb-10 flex w-[950px] flex-col gap-4 rounded-xl border p-4">
-      <h2 className="text-muted-foreground text-base font-bold">만든 로드맵</h2>
+    <Card className="mb-10 w-[950px] rounded-xl shadow-none">
+      <CardHeader className="pb-4">
+        <CardTitle className="text-muted-foreground text-base font-bold">만든 로드맵</CardTitle>
+      </CardHeader>
 
-      <div className="grid grid-cols-3 gap-4">
-        {MOCK_ROADMAPS.map((roadmap) => (
-          <RoadmapCard key={roadmap.id} title={roadmap.title} author={roadmap.author} />
-        ))}
-      </div>
-      {mode === 'edit' && (
-        <AddRoadmapModal>
-          <Button className="bg-primary text-primary-foreground hover:bg-primary/90 w-full rounded-xl py-6 text-[14px] font-bold">
-            공개 로드맵 추가
-          </Button>
-        </AddRoadmapModal>
-      )}
-    </div>
+      <CardContent className="flex flex-col gap-4">
+        <div className="grid grid-cols-3 gap-4">
+          {MOCK_ROADMAPS.map((roadmap) => (
+            <RoadmapCard key={roadmap.id} title={roadmap.title} author={roadmap.author} />
+          ))}
+        </div>
+        {mode === 'edit' && (
+          <AddRoadmapModal>
+            <Button className="w-full rounded-xl py-6 text-[14px] font-bold">
+              공개 로드맵 추가
+            </Button>
+          </AddRoadmapModal>
+        )}
+      </CardContent>
+    </Card>
   );
 }

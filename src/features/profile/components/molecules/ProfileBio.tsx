@@ -3,7 +3,10 @@
 import { useEffect, useState } from 'react';
 
 import { useAtomValue } from 'jotai';
+import { ChevronDown } from 'lucide-react';
 
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 
 import { profileModeAtom } from '../../stores/profile-atoms';
@@ -33,11 +36,7 @@ export function ProfileBio({ bio, onChange }: ProfileBioProps) {
     return (
       <div className="flex flex-col gap-4">
         <p className="text-sm font-semibold">자기소개</p>
-        <textarea
-          className="border-border bg-background text-muted-foreground focus:border-ring h-[280px] w-full resize-none rounded-lg border p-2 text-sm outline-none"
-          value={userBio}
-          onChange={handleChange}
-        />
+        <Textarea className="h-[280px] resize-none" value={userBio} onChange={handleChange} />
       </div>
     );
   }
@@ -55,28 +54,18 @@ export function ProfileBio({ bio, onChange }: ProfileBioProps) {
           {userBio}
         </p>
 
-        <button
+        <Button
+          variant="ghost"
+          size="sm"
           onClick={() => setIsExpanded(!isExpanded)}
-          className="text-muted-foreground hover:text-foreground flex flex-row items-center gap-1 self-end text-sm"
+          className="text-muted-foreground hover:text-foreground h-auto self-end p-0 text-sm"
         >
           <span>{isExpanded ? '접기' : '전체 보기'}</span>
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+          <ChevronDown
+            size={20}
             className={cn('transition-transform duration-200', isExpanded && 'rotate-180')}
-          >
-            <path
-              d="M6 9L12 15L18 9"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </button>
+          />
+        </Button>
       </div>
     </div>
   );
