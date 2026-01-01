@@ -15,7 +15,7 @@ const MOCK_ROADMAPS = [
   { id: 4, title: 'Roadmap Name', author: '홍길동' },
   { id: 5, title: 'Roadmap Name', author: '홍길동' },
   { id: 6, title: 'Roadmap Name', author: '홍길동' },
-  { id: 7, title: 'Roadmap Name', author: '홍길동' },
+  { id: 7, title: 'Roadmap Name', author: '홍길동', imageUrl: '/jagalchi.svg' },
 ];
 
 export function MadeRoadmapList() {
@@ -30,7 +30,12 @@ export function MadeRoadmapList() {
       <CardContent className="flex flex-col gap-4">
         <div className="grid grid-cols-3 gap-4">
           {MOCK_ROADMAPS.map((roadmap) => (
-            <RoadmapCard key={roadmap.id} title={roadmap.title} author={roadmap.author} />
+            <RoadmapCard
+              key={roadmap.id}
+              title={roadmap.title}
+              author={roadmap.author}
+              imageUrl={roadmap.imageUrl}
+            />
           ))}
         </div>
         {mode === 'edit' && (

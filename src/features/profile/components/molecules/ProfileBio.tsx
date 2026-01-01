@@ -67,13 +67,15 @@ export function ProfileBio({ bio, onChange }: ProfileBioProps) {
       </CardHeader>
       <CardContent className="flex flex-col gap-2">
         <p
+          id="profile-bio-text"
           ref={bioRef}
           className={cn(
-            'text-muted-foreground text-justify text-sm leading-relaxed whitespace-pre-wrap',
+            'text-justify text-sm leading-relaxed whitespace-pre-wrap',
+            userBio ? 'text-muted-foreground' : 'text-muted-foreground/50',
             !isExpanded && 'line-clamp-3',
           )}
         >
-          {userBio}
+          {userBio || '자기소개가 없습니다.'}
         </p>
 
         {(isOverflowing || isExpanded) && (
@@ -82,6 +84,9 @@ export function ProfileBio({ bio, onChange }: ProfileBioProps) {
             size="sm"
             onClick={() => setIsExpanded(!isExpanded)}
             className="text-muted-foreground hover:text-foreground h-auto self-end p-0 hover:bg-transparent"
+            aria-expanded={isExpanded}
+            aria-controls="profile-bio-text"
+            aria-label={isExpanded ? '자기소개 접기' : '자기소개 전체 보기'}
           >
             <span className="text-xs">{isExpanded ? '접기' : '전체 보기'}</span>
             {isExpanded ? (
