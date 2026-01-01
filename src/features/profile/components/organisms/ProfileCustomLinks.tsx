@@ -64,7 +64,7 @@ export function ProfileCustomLinks({ initialLinks = [], onChange }: ProfileCusto
               <div className="relative flex-1">
                 <LinkIcon
                   size={16}
-                  className="absolute top-1/2 left-3 -translate-y-1/2 text-slate-500"
+                  className="text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2"
                 />
                 <Input
                   className="pl-9"
@@ -77,7 +77,7 @@ export function ProfileCustomLinks({ initialLinks = [], onChange }: ProfileCusto
             <button
               type="button"
               onClick={() => handleDeleteLink(index)}
-              className="p-1 text-slate-400 transition-colors hover:text-red-500"
+              className="text-muted-foreground hover:text-destructive p-1 transition-colors"
               title="링크 삭제"
             >
               <Trash2 size={16} />
@@ -99,11 +99,13 @@ export function ProfileCustomLinks({ initialLinks = [], onChange }: ProfileCusto
           href={link.url.startsWith('http') ? link.url : `https://${link.url}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-2 rounded-md border border-slate-200 px-4 py-2 transition-colors hover:bg-slate-50"
+          className="border-border hover:bg-accent flex items-center gap-2 rounded-md border px-4 py-2 transition-colors"
         >
-          <LinkIcon size={16} className="text-slate-500" />
-          {link.name && <span className="text-sm font-medium text-slate-900">{link.name}</span>}
-          <span className="flex-1 truncate text-sm text-slate-500 underline">{link.url}</span>
+          <LinkIcon size={16} className="text-muted-foreground" />
+          {link.name && <span className="text-foreground text-sm font-medium">{link.name}</span>}
+          <span className="text-muted-foreground flex-1 truncate text-sm underline">
+            {link.url}
+          </span>
         </a>
       ))}
     </div>

@@ -18,7 +18,7 @@ interface ProfilePictureProps {
 }
 
 const ImageContainer = ({ children }: { children: React.ReactNode }) => (
-  <div className="relative h-[128px] w-[128px] overflow-hidden rounded-[64px] border border-[#e2e8f0]">
+  <div className="border-border relative h-[128px] w-[128px] overflow-hidden rounded-[64px] border">
     {children}
   </div>
 );
@@ -62,7 +62,7 @@ export function ProfilePicture({ src, userName, onUpload }: ProfilePictureProps)
           <Button
             variant="outline"
             size="icon"
-            className="absolute right-0 bottom-0 h-8 w-8 rounded-full border-slate-200 bg-white shadow-sm hover:bg-slate-50"
+            className="border-border bg-background hover:bg-accent absolute right-0 bottom-0 h-8 w-8 rounded-full shadow-sm"
             onClick={handleButtonClick}
           >
             <Pencil size={16} />

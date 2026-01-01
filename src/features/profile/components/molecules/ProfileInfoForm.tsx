@@ -69,23 +69,23 @@ export function ProfileInfoForm({
           <div className="flex flex-col justify-between">
             <div className="flex flex-row gap-2">
               <p className="text-xl font-semibold">{userName}</p>
-              <p className="text-base font-medium text-slate-500">{userEmail}</p>
+              <p className="text-muted-foreground text-base font-medium">{userEmail}</p>
             </div>
 
             <div className="flex flex-row gap-2">
               <p className="text-base font-medium">
                 {formatCount(followerCount)}{' '}
-                <span className="text-sm font-medium text-slate-500">followers</span>
+                <span className="text-muted-foreground text-sm font-medium">followers</span>
               </p>
               <p className="text-base font-medium">
                 {formatCount(followingCount)}{' '}
-                <span className="text-sm font-medium text-slate-500">following</span>
+                <span className="text-muted-foreground text-sm font-medium">following</span>
               </p>
             </div>
           </div>
 
           <div>
-            <ProfileEditButton variant="show" onClick={toggleMode} className="bg-slate-900" />
+            <ProfileEditButton variant="show" onClick={toggleMode} className="bg-primary" />
           </div>
         </div>
       ) : (
@@ -104,17 +104,17 @@ export function ProfileInfoForm({
             <div className="flex flex-row gap-2">
               <p className="text-base font-medium">
                 {formatCount(followerCount)}{' '}
-                <span className="text-sm font-medium text-slate-500">followers</span>
+                <span className="text-muted-foreground text-sm font-medium">followers</span>
               </p>
               <p className="text-base font-medium">
                 {formatCount(followingCount)}{' '}
-                <span className="text-sm font-medium text-slate-500">following</span>
+                <span className="text-muted-foreground text-sm font-medium">following</span>
               </p>
             </div>
           </div>
 
           <div className="flex flex-row gap-2">
-            <ProfileEditButton variant="edit" onClick={toggleMode} className="bg-slate-900" />
+            <ProfileEditButton variant="edit" onClick={toggleMode} className="bg-primary" />
           </div>
         </div>
       )}

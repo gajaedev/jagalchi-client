@@ -37,7 +37,7 @@ export function ProfileCustomOrganization({
         <div className="relative">
           <Building2
             size={16}
-            className="absolute top-1/2 left-3 -translate-y-1/2 text-slate-500"
+            className="text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2"
           />
           <Input
             className="pl-9"
@@ -54,9 +54,9 @@ export function ProfileCustomOrganization({
 
   return (
     <div className="flex w-full flex-col gap-2">
-      <div className="flex items-center gap-2 rounded-md border border-slate-200 px-4 py-2">
-        <Building2 size={16} className="text-slate-500" />
-        <p className="text-sm font-medium text-slate-900">{value}</p>
+      <div className="border-border flex items-center gap-2 rounded-md border px-4 py-2">
+        <Building2 size={16} className="text-muted-foreground" />
+        <p className="text-foreground text-sm font-medium">{value}</p>
       </div>
     </div>
   );

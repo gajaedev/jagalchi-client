@@ -25,9 +25,9 @@ export function ContributionGraph({ data }: { data: Contribution[] }) {
   }, [data]);
 
   return (
-    <div className="flex h-[137px] w-full flex-col items-start justify-center rounded-md border border-slate-200 p-4">
+    <div className="border-border flex h-[137px] w-full flex-col items-start justify-center rounded-md border p-4">
       <div className="mb-2">
-        <p className="text-base font-bold text-slate-500">{streak}일 연속 스트릭</p>
+        <p className="text-muted-foreground text-base font-bold">{streak}일 연속 스트릭</p>
       </div>
       <div className="flex gap-[1px]">
         {weeks.map((week, i) => (

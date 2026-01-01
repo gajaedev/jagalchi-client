@@ -34,7 +34,7 @@ export function ProfileBio({ bio, onChange }: ProfileBioProps) {
       <div className="flex flex-col gap-4">
         <p className="text-sm font-semibold">자기소개</p>
         <textarea
-          className="h-[280px] w-full resize-none rounded-lg border border-slate-200 bg-white p-2 text-sm text-slate-500 outline-none focus:border-slate-500"
+          className="border-border bg-background text-muted-foreground focus:border-ring h-[280px] w-full resize-none rounded-lg border p-2 text-sm outline-none"
           value={userBio}
           onChange={handleChange}
         />
@@ -45,14 +45,19 @@ export function ProfileBio({ bio, onChange }: ProfileBioProps) {
   return (
     <div className="flex flex-col gap-4">
       <p className="text-sm font-semibold">자기소개</p>
-      <div className="flex flex-col gap-2 rounded-lg border border-slate-200 p-2">
-        <p className={cn('text-justify text-sm text-slate-500', !isExpanded && 'line-clamp-3')}>
+      <div className="border-border flex flex-col gap-2 rounded-lg border p-2">
+        <p
+          className={cn(
+            'text-muted-foreground text-justify text-sm',
+            !isExpanded && 'line-clamp-3',
+          )}
+        >
           {userBio}
         </p>
 
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="flex flex-row items-center gap-1 self-end text-sm text-slate-500 hover:text-slate-700"
+          className="text-muted-foreground hover:text-foreground flex flex-row items-center gap-1 self-end text-sm"
         >
           <span>{isExpanded ? '접기' : '전체 보기'}</span>
           <svg

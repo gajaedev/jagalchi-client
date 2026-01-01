@@ -73,16 +73,19 @@ function FileTreeItem({
       <div className="text-[14px] select-none">
         <div
           className={cn(
-            'flex cursor-pointer items-center gap-2 rounded-md px-2 py-1 hover:bg-slate-100',
+            'hover:bg-accent flex cursor-pointer items-center gap-2 rounded-md px-2 py-1',
             depth > 0 && 'ml-4',
           )}
           onClick={() => setIsOpen(!isOpen)}
         >
           <ChevronRight
-            className={cn('h-4 w-4 text-slate-500 transition-transform', isOpen && 'rotate-90')}
+            className={cn(
+              'text-muted-foreground h-4 w-4 transition-transform',
+              isOpen && 'rotate-90',
+            )}
           />
           <Folder className="h-4 w-4 fill-sky-200 text-sky-500" />
-          <span className="font-semibold text-slate-700">{node.name}</span>
+          <span className="text-foreground font-semibold">{node.name}</span>
         </div>
         {isOpen && node.children && (
           <div className="flex flex-col">
@@ -107,7 +110,7 @@ function FileTreeItem({
   return (
     <div
       className={cn(
-        'group flex cursor-pointer items-center justify-between rounded-md px-2 py-1 hover:bg-slate-100',
+        'group hover:bg-accent flex cursor-pointer items-center justify-between rounded-md px-2 py-1',
         depth > 0 && 'ml-8',
         isSelected && 'bg-indigo-50 ring-1 ring-indigo-500 hover:bg-indigo-50',
       )}
@@ -115,11 +118,14 @@ function FileTreeItem({
     >
       <div className="flex items-center gap-2">
         <FileText
-          className={cn('h-4 w-4 text-slate-400', isSelected && 'fill-indigo-100 text-indigo-500')}
+          className={cn(
+            'text-muted-foreground h-4 w-4',
+            isSelected && 'fill-indigo-100 text-indigo-500',
+          )}
         />
         <span
           className={cn(
-            'text-[14px] text-slate-600 group-hover:text-slate-900',
+            'text-foreground group-hover:text-foreground text-[14px]',
             isSelected && 'font-medium text-indigo-900',
           )}
         >
@@ -127,7 +133,7 @@ function FileTreeItem({
         </span>
       </div>
       {node.author && (
-        <span className={cn('text-[12px] text-slate-400', isSelected && 'text-indigo-400')}>
+        <span className={cn('text-muted-foreground text-[12px]', isSelected && 'text-indigo-400')}>
           By {node.author}
         </span>
       )}
@@ -206,7 +212,7 @@ export function AddRoadmapModal({
         <DialogHeader className="flex flex-row items-center justify-between space-y-0 border-b px-6 py-4">
           <DialogTitle className="text-lg font-bold">로드맵 선택</DialogTitle>
           <div className="relative w-[240px]">
-            <Search className="absolute top-1/2 left-2.5 h-4 w-4 -translate-y-1/2 text-slate-500" />
+            <Search className="text-muted-foreground absolute top-1/2 left-2.5 h-4 w-4 -translate-y-1/2" />
             <Input
               placeholder="로드맵 검색"
               className="h-9 pl-9 text-sm"
@@ -217,7 +223,7 @@ export function AddRoadmapModal({
         </DialogHeader>
 
         <div className="flex-1 overflow-hidden p-6">
-          <div className="h-full overflow-y-auto rounded-lg border border-slate-200 p-2">
+          <div className="border-border h-full overflow-y-auto rounded-lg border p-2">
             <div className="flex flex-col gap-0.5">
               {filteredTree.length > 0 ? (
                 filteredTree.map((node) => (
@@ -230,7 +236,7 @@ export function AddRoadmapModal({
                   />
                 ))
               ) : (
-                <div className="py-10 text-center text-sm text-slate-400">
+                <div className="text-muted-foreground py-10 text-center text-sm">
                   검색 결과가 없습니다.
                 </div>
               )}
@@ -246,7 +252,7 @@ export function AddRoadmapModal({
           </DialogClose>
           <Button
             type="button"
-            className="bg-slate-900 text-white hover:bg-slate-800"
+            className="bg-primary text-primary-foreground hover:bg-primary/90"
             disabled={!selectedFileId}
             onClick={handleConfirm}
           >

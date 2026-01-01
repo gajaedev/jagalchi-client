@@ -23,7 +23,10 @@ export function ProfileLinkAddButton({
       type="button"
       variant="outline"
       disabled={isFull}
-      className={cn('border-border w-full bg-slate-900 font-semibold text-white', className)}
+      className={cn(
+        'border-border bg-primary text-primary-foreground w-full font-semibold',
+        className,
+      )}
       onClick={onClick}
     >
       링크추가({currentCount}/{maxCount})
