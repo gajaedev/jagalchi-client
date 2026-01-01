@@ -85,7 +85,7 @@ export function ProfileInfoForm({
           </div>
 
           <div>
-            <ProfileEditButton variant="show" onClick={toggleMode} className="bg-indigo-950" />
+            <ProfileEditButton variant="show" onClick={toggleMode} className="bg-slate-900" />
           </div>
         </div>
       ) : (
@@ -114,7 +114,7 @@ export function ProfileInfoForm({
           </div>
 
           <div className="flex flex-row gap-2">
-            <ProfileEditButton variant="edit" onClick={toggleMode} className="bg-indigo-950" />
+            <ProfileEditButton variant="edit" onClick={toggleMode} className="bg-slate-900" />
           </div>
         </div>
       )}

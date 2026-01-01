@@ -22,7 +22,7 @@ export function MadeRoadmapList() {
 
   return (
     <div className="mb-10 flex w-[950px] flex-col gap-4 rounded-xl border border-slate-200 p-4">
-      <h2 className="text-base font-bold text-gray-600">만든 로드맵</h2>
+      <h2 className="text-base font-bold text-slate-500">만든 로드맵</h2>
 
       <div className="grid grid-cols-3 gap-4">
         {MOCK_ROADMAPS.map((roadmap) => (
@@ -31,7 +31,7 @@ export function MadeRoadmapList() {
       </div>
       {mode === 'edit' && (
         <AddRoadmapModal>
-          <Button className="w-full rounded-xl bg-indigo-950! py-6 text-[14px] font-bold text-white hover:bg-slate-800">
+          <Button className="w-full rounded-xl bg-slate-900 py-6 text-[14px] font-bold text-white hover:bg-slate-800">
             공개 로드맵 추가
           </Button>
         </AddRoadmapModal>

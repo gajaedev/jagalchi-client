@@ -11,8 +11,8 @@ export function RoadmapCard({ title, author }: RoadmapCardProps) {
       <div className="h-[140px] border-b border-slate-200 bg-slate-100" />
 
       <CardContent className="flex flex-1 flex-col justify-center p-4">
-        <p className="line-clamp-1 text-sm font-normal text-gray-900">{title}</p>
-        <p className="text-xs font-normal tracking-[0.5px] text-gray-500">By {author}</p>
+        <p className="line-clamp-1 text-sm font-normal text-slate-950">{title}</p>
+        <p className="text-xs font-normal tracking-[0.5px] text-slate-500">By {author}</p>
       </CardContent>
     </Card>
   );

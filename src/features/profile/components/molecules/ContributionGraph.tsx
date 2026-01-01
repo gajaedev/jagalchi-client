@@ -25,7 +25,7 @@ export function ContributionGraph({ data }: { data: Contribution[] }) {
   }, [data]);
 
   return (
-    <div className="flex h-[137px] w-[468px] flex-col items-start justify-center rounded-md border border-slate-200 p-4">
+    <div className="flex h-[137px] w-full flex-col items-start justify-center rounded-md border border-slate-200 p-4">
       <div className="mb-2">
         <p className="text-base font-bold text-slate-500">{streak}일 연속 스트릭</p>
       </div>

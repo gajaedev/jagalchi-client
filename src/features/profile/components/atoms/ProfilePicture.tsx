@@ -62,7 +62,7 @@ export function ProfilePicture({ src, userName, onUpload }: ProfilePictureProps)
           <Button
             variant="outline"
             size="icon"
-            className="absolute right-0 bottom-0 h-8 w-8 rounded-full border-gray-200 bg-white shadow-sm hover:bg-gray-50"
+            className="absolute right-0 bottom-0 h-8 w-8 rounded-full border-slate-200 bg-white shadow-sm hover:bg-slate-50"
             onClick={handleButtonClick}
           >
             <Pencil size={16} />
