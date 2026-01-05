@@ -1,7 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -26,7 +26,7 @@ interface RegisterStep1FormProps {
 }
 
 export function RegisterStep1Form({ onSubmit, onGoogleRegister }: RegisterStep1FormProps) {
-  const { isCodeSent, handleSendCode } = useVerificationCode();
+  const { isCodeSent, handleSendCode, isPending } = useVerificationCode({ type: 'register' });
 
   const form = useForm<RegisterStep1Schema>({
     resolver: zodResolver(registerStep1Schema),
@@ -36,6 +36,14 @@ export function RegisterStep1Form({ onSubmit, onGoogleRegister }: RegisterStep1F
       verificationCode: '',
     },
   });
+
+  const email = useWatch({ control: form.control, name: 'email' });
+
+  const onSendCode = () => {
+    if (email) {
+      handleSendCode(email);
+    }
+  };
 
   return (
     <Form {...form}>
@@ -82,9 +90,10 @@ export function RegisterStep1Form({ onSubmit, onGoogleRegister }: RegisterStep1F
                     type="button"
                     aria-label="인증번호 재전송"
                     className="cursor-pointer text-sm tracking-[0.07px] text-neutral-900 underline transition-colors hover:text-neutral-700"
-                    onClick={handleSendCode}
+                    onClick={onSendCode}
+                    disabled={isPending}
                   >
-                    재전송
+                    {isPending ? '전송 중...' : '재전송'}
                   </button>
                 )}
               </div>
@@ -102,8 +111,13 @@ export function RegisterStep1Form({ onSubmit, onGoogleRegister }: RegisterStep1F
               다음
             </Button>
           ) : (
-            <Button type="button" className="w-full" onClick={handleSendCode}>
-              인증번호 전송
+            <Button
+              type="button"
+              className="w-full"
+              onClick={onSendCode}
+              disabled={isPending || !email}
+            >
+              {isPending ? '전송 중...' : '인증번호 전송'}
             </Button>
           )}
           <GoogleAuthButton variant="register" onClick={onGoogleRegister} />

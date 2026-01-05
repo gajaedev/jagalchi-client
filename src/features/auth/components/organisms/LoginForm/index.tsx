@@ -16,11 +16,15 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 
+import { authApi } from '../../../api/auth.api';
+import { useLogin } from '../../../hooks/use-auth-mutations';
 import { loginSchema, type LoginSchema } from '../../../schemas/auth.schema';
 import { GoogleAuthButton } from '../../atoms/GoogleAuthButton';
 import { PasswordInput } from '../../molecules/PasswordInput';
 
 export function LoginForm() {
+  const loginMutation = useLogin();
+
   const form = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -29,17 +33,27 @@ export function LoginForm() {
     },
   });
 
-  const onSubmit = (_data: LoginSchema) => {
-    // TODO: API 연동
+  const onSubmit = (data: LoginSchema) => {
+    loginMutation.mutate(data, {
+      onError: (error) => {
+        form.setError('root', {
+          message: error.message || '로그인에 실패했습니다.',
+        });
+      },
+    });
   };
 
   const handleGoogleLogin = () => {
-    // TODO: Google OAuth
+    window.location.href = authApi.getGoogleLoginUrl();
   };
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} noValidate className="flex flex-col gap-7">
+        {form.formState.errors.root && (
+          <p className="text-destructive text-sm">{form.formState.errors.root.message}</p>
+        )}
+
         <FormField
           control={form.control}
           name="email"
@@ -77,8 +91,8 @@ export function LoginForm() {
         />
 
         <div className="flex flex-col gap-3">
-          <Button type="submit" className="w-full">
-            로그인
+          <Button type="submit" className="w-full" disabled={loginMutation.isPending}>
+            {loginMutation.isPending ? '로그인 중...' : '로그인'}
           </Button>
           <GoogleAuthButton variant="login" onClick={handleGoogleLogin} />
         </div>

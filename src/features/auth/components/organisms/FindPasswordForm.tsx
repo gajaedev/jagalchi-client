@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 
+import { useResetPassword, useVerifyPasswordReset } from '../../hooks/use-auth-mutations';
 import { useVerificationCode } from '../../hooks/use-verification-code';
 import {
   findPasswordStep1Schema,
@@ -34,7 +35,15 @@ interface FindPasswordFormProps {
 
 export function FindPasswordForm({ onStepChange }: FindPasswordFormProps) {
   const [step, setStep] = useState<FindPasswordStep>(1);
-  const { isCodeSent, handleSendCode } = useVerificationCode();
+  const [email, setEmail] = useState('');
+
+  const {
+    isCodeSent,
+    handleSendCode,
+    isPending: isSendingCode,
+  } = useVerificationCode({ type: 'password-reset' });
+  const verifyPasswordResetMutation = useVerifyPasswordReset();
+  const resetPasswordMutation = useResetPassword();
 
   const step1Form = useForm<FindPasswordStep1Schema>({
     resolver: zodResolver(findPasswordStep1Schema),
@@ -52,14 +61,32 @@ export function FindPasswordForm({ onStepChange }: FindPasswordFormProps) {
     },
   });
 
-  const onStep1Submit = (_data: FindPasswordStep1Schema) => {
-    // TODO: API 연동 - 이메일 인증 확인
-    setStep(2);
-    onStepChange?.(2, '새 비밀번호 입력', '재설정할 비밀번호를 입력해주세요');
+  const watchedEmail = useWatch({ control: step1Form.control, name: 'email' });
+
+  const onSendCode = () => {
+    if (watchedEmail) {
+      handleSendCode(watchedEmail);
+    }
   };
 
-  const onStep2Submit = (_data: FindPasswordStep2Schema) => {
-    // TODO: API 연동 - 비밀번호 재설정
+  const onStep1Submit = (data: FindPasswordStep1Schema) => {
+    verifyPasswordResetMutation.mutate(
+      { email: data.email, code: data.verificationCode },
+      {
+        onSuccess: () => {
+          setEmail(data.email);
+          setStep(2);
+          onStepChange?.(2, '새 비밀번호 입력', '재설정할 비밀번호를 입력해주세요');
+        },
+      },
+    );
+  };
+
+  const onStep2Submit = (data: FindPasswordStep2Schema) => {
+    resetPasswordMutation.mutate({
+      email,
+      newPassword: data.newPassword,
+    });
   };
 
   if (step === 2) {
@@ -107,8 +134,8 @@ export function FindPasswordForm({ onStepChange }: FindPasswordFormProps) {
             )}
           />
 
-          <Button type="submit" className="w-full">
-            완료
+          <Button type="submit" className="w-full" disabled={resetPasswordMutation.isPending}>
+            {resetPasswordMutation.isPending ? '변경 중...' : '완료'}
           </Button>
         </form>
       </Form>
@@ -150,9 +177,10 @@ export function FindPasswordForm({ onStepChange }: FindPasswordFormProps) {
                     type="button"
                     aria-label="인증번호 재전송"
                     className="cursor-pointer text-sm tracking-[0.07px] text-neutral-900 underline transition-colors hover:text-neutral-700"
-                    onClick={handleSendCode}
+                    onClick={onSendCode}
+                    disabled={isSendingCode}
                   >
-                    재전송
+                    {isSendingCode ? '전송 중...' : '재전송'}
                   </button>
                 )}
               </div>
@@ -165,12 +193,17 @@ export function FindPasswordForm({ onStepChange }: FindPasswordFormProps) {
         />
 
         {isCodeSent ? (
-          <Button type="submit" className="w-full">
-            다음
+          <Button type="submit" className="w-full" disabled={verifyPasswordResetMutation.isPending}>
+            {verifyPasswordResetMutation.isPending ? '확인 중...' : '다음'}
           </Button>
         ) : (
-          <Button type="button" className="w-full" onClick={handleSendCode}>
-            인증번호 전송
+          <Button
+            type="button"
+            className="w-full"
+            onClick={onSendCode}
+            disabled={isSendingCode || !watchedEmail}
+          >
+            {isSendingCode ? '전송 중...' : '인증번호 전송'}
           </Button>
         )}
       </form>

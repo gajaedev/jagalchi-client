@@ -19,6 +19,7 @@ import { registerStep3Schema, type RegisterStep3Schema } from '../../../schemas/
 interface RegisterStep3FormProps {
   onSubmit: (data: RegisterStep3Schema) => void;
   onSkip: () => void;
+  isPending?: boolean;
 }
 
 const LINK_FIELDS = [
@@ -27,7 +28,7 @@ const LINK_FIELDS = [
   { nameField: 'link3Name' as const, urlField: 'link3Url' as const, label: '3번 링크' },
 ];
 
-export function RegisterStep3Form({ onSubmit, onSkip }: RegisterStep3FormProps) {
+export function RegisterStep3Form({ onSubmit, onSkip, isPending }: RegisterStep3FormProps) {
   const form = useForm<RegisterStep3Schema>({
     resolver: zodResolver(registerStep3Schema),
     defaultValues: {
@@ -88,10 +89,16 @@ export function RegisterStep3Form({ onSubmit, onSkip }: RegisterStep3FormProps) 
         </div>
 
         <div className="flex flex-col gap-3">
-          <Button type="submit" className="w-full">
-            확인
+          <Button type="submit" className="w-full" disabled={isPending}>
+            {isPending ? '가입 중...' : '확인'}
           </Button>
-          <Button type="button" variant="secondary" className="w-full" onClick={onSkip}>
+          <Button
+            type="button"
+            variant="secondary"
+            className="w-full"
+            onClick={onSkip}
+            disabled={isPending}
+          >
             건너뛰기
           </Button>
         </div>
