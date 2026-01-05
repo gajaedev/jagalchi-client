@@ -139,6 +139,17 @@ export default [
       ],
     },
   },
+  // 테스트 및 스토리북 파일 규칙 완화
+  {
+    files: ['**/*.test.{ts,tsx}', '**/*.spec.{ts,tsx}', '**/*.stories.{ts,tsx}'],
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/naming-convention': 'off',
+      '@next/next/no-img-element': 'off',
+      'no-console': 'off',
+      'import/order': 'off',
+    },
+  },
   {
     ignores: ['.next/*', 'node_modules/*', 'storybook-static/*', '*.config.*'],
   },

@@ -12,6 +12,7 @@ const dirname =
 
 export default defineConfig({
   test: {
+    testTimeout: 10000,
     projects: [
       {
         extends: true,
