@@ -33,7 +33,7 @@ export function ProfileHeader({
   };
 
   return (
-    <div className="flex w-full flex-row items-center gap-8">
+    <div className="flex w-full flex-col items-center gap-6 sm:flex-row sm:gap-8">
       <ProfilePicture src={imageSrc} userName={userName} onUpload={handleImageUpload} />
 
       <div className="w-full">
