@@ -101,14 +101,14 @@ export function ProfileInfoForm({
               />
             </div>
 
-            <div className="flex flex-row gap-4 sm:gap-2">
+            <div className="flex flex-row gap-2 sm:gap-4">
               <p className="text-sm font-medium sm:text-base">
                 {formatCount(followerCount)}{' '}
-                <span className="text-muted-foreground font-medium">followers</span>
+                <span className="text-muted-foreground text-sm font-medium">followers</span>
               </p>
               <p className="text-sm font-medium sm:text-base">
                 {formatCount(followingCount)}{' '}
-                <span className="text-muted-foreground font-medium">following</span>
+                <span className="text-muted-foreground text-sm font-medium">following</span>
               </p>
             </div>
           </div>
