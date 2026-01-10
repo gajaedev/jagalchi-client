@@ -32,27 +32,29 @@ export function ContributionGraph({ data }: { data: Contribution[] }) {
         <p className="text-muted-foreground w-full py-3 text-sm font-bold">
           {streak}일 연속 스트릭
         </p>
-        <div className="flex gap-[1px] py-2">
-          {weeks.map((week, i) => (
-            <div key={i} className="flex flex-col gap-[1px]">
-              {week.map((day, j) =>
-                day ? (
-                  <div
-                    key={day.date}
-                    title={`${day.date}: ${day.count} contributions`}
-                    style={{
-                      width: 8,
-                      height: 8,
-                      borderRadius: 2,
-                      backgroundColor: COLORS[getLevel(day.count)],
-                    }}
-                  />
-                ) : (
-                  <div key={j} style={{ width: 8, height: 8 }} />
-                ),
-              )}
-            </div>
-          ))}
+        <div className="w-full overflow-x-auto py-2">
+          <div className="flex min-w-max gap-[1px]">
+            {weeks.map((week, i) => (
+              <div key={i} className="flex flex-col gap-[1px]">
+                {week.map((day, j) =>
+                  day ? (
+                    <div
+                      key={day.date}
+                      title={`${day.date}: ${day.count} contributions`}
+                      style={{
+                        width: 8,
+                        height: 8,
+                        borderRadius: 2,
+                        backgroundColor: COLORS[getLevel(day.count)],
+                      }}
+                    />
+                  ) : (
+                    <div key={j} style={{ width: 8, height: 8 }} />
+                  ),
+                )}
+              </div>
+            ))}
+          </div>
         </div>
       </CardContent>
     </Card>

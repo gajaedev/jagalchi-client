@@ -28,7 +28,7 @@ export function RoadmapList({ variant, items = [] }: RoadmapListProps) {
   const title = variant === 'end' ? '완주한 로드맵' : '진행중인 로드맵';
 
   return (
-    <Card className="h-[240px] w-[468px] overflow-hidden rounded-xl p-4 shadow-none">
+    <Card className="h-[240px] w-full overflow-hidden rounded-xl p-4 shadow-none">
       <CardHeader>
         <CardTitle className="text-foreground text-lg">{title}</CardTitle>
       </CardHeader>
