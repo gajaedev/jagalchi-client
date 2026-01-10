@@ -18,7 +18,7 @@ const MOCK_USER_DATA = {
 
 export function Profile() {
   return (
-    <div className="flex w-full max-w-[960px] flex-col gap-10">
+    <div className="flex w-full max-w-[960px] flex-col gap-6 sm:gap-10">
       <ProfileHeader
         userName={MOCK_USER_DATA.userName}
         email={MOCK_USER_DATA.email}
@@ -26,7 +26,7 @@ export function Profile() {
         followingCount={MOCK_USER_DATA.followingCount}
       />
       <ProfileBio bio={MOCK_USER_DATA.bio} />
-      <div className="flex w-full flex-col gap-6 md:flex-row">
+      <div className="flex w-full flex-col gap-4 md:flex-row md:gap-6">
         <ProfileCustomBoxArea />
         <div className="flex-1">
           <ProfileStreak />
