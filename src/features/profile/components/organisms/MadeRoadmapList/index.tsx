@@ -1,10 +1,10 @@
 import { useAtom } from 'jotai';
 
+import { RoadmapCard } from '@/components/atoms/RoadmapCard';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 import { profileModeAtom } from '../../../stores/profile-atoms';
-import { RoadmapCard } from '../../atoms/RoadmapCard';
 import { AddRoadmapModal } from '../AddRoadmapModal';
 
 const MOCK_ROADMAPS = [
