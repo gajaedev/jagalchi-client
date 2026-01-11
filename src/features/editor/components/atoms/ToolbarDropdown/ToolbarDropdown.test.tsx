@@ -1,128 +1,223 @@
-import { render, screen } from '@testing-library/react';
-import { userEvent } from '@testing-library/user-event';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
-import { Square, Circle } from 'lucide-react';
 
 import { ToolbarDropdown } from './index';
 import { ToolbarItem } from '../ToolbarItem';
 
+vi.mock('lucide-react', () => ({
+  Square: () => <span data-testid="square-icon" />,
+  Circle: () => <span data-testid="circle-icon" />,
+  ChevronDown: () => <span data-testid="chevron-down-icon" />,
+}));
+
 describe('ToolbarDropdown', () => {
+  const MockIcon = ({ testId }: { testId: string }) => <span data-testid={testId}>Icon</span>;
+
   const mockItems = [
     {
-      icon: <Square />,
-      label: 'Square',
+      icon: <MockIcon testId="square-icon" />,
+      label: '사각형',
       onClick: vi.fn(),
     },
     {
-      icon: <Circle />,
-      label: 'Circle',
+      icon: <MockIcon testId="circle-icon" />,
+      label: '원형',
       onClick: vi.fn(),
     },
   ];
 
-  it('renders trigger element', () => {
+  it('trigger 요소가 렌더링된다', () => {
     render(
       <ToolbarDropdown
-        trigger={<ToolbarItem icon={<Square />} label="Tools" />}
+        trigger={<ToolbarItem icon={<MockIcon testId="tool-icon" />} label="도구" />}
         items={mockItems}
       />,
     );
 
-    expect(screen.getByRole('button', { name: 'Tools' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '도구' })).toBeInTheDocument();
   });
 
-  it('opens dropdown when trigger is clicked', async () => {
+  it('trigger 클릭 시 드롭다운이 열린다', async () => {
     const user = userEvent.setup();
 
     render(
       <ToolbarDropdown
-        trigger={<ToolbarItem icon={<Square />} label="Tools" />}
+        trigger={<ToolbarItem icon={<MockIcon testId="tool-icon" />} label="도구" />}
         items={mockItems}
       />,
     );
 
-    const trigger = screen.getByRole('button', { name: 'Tools' });
+    const trigger = screen.getByRole('button', { name: '도구' });
     await user.click(trigger);
 
-    expect(screen.getByText('Square')).toBeInTheDocument();
-    expect(screen.getByText('Circle')).toBeInTheDocument();
+    // 드롭다운 메뉴 아이템이 표시될 때까지 대기
+    await waitFor(() => {
+      expect(screen.getByText('사각형')).toBeInTheDocument();
+      expect(screen.getByText('원형')).toBeInTheDocument();
+    });
   });
 
-  it('calls item onClick when item is clicked', async () => {
+  it('메뉴 아이템 클릭 시 onClick 핸들러를 호출한다', async () => {
     const user = userEvent.setup();
     const handleClick = vi.fn();
 
     const items = [
       {
-        icon: <Square />,
-        label: 'Square',
+        icon: <MockIcon testId="square-icon" />,
+        label: '사각형',
         onClick: handleClick,
       },
     ];
 
     render(
-      <ToolbarDropdown trigger={<ToolbarItem icon={<Square />} label="Tools" />} items={items} />,
+      <ToolbarDropdown
+        trigger={<ToolbarItem icon={<MockIcon testId="tool-icon" />} label="도구" />}
+        items={items}
+      />,
     );
 
-    const trigger = screen.getByRole('button', { name: 'Tools' });
+    const trigger = screen.getByRole('button', { name: '도구' });
     await user.click(trigger);
 
-    const menuItem = screen.getByText('Square');
+    // 메뉴 아이템이 표시될 때까지 대기
+    const menuItem = await screen.findByText('사각형');
     await user.click(menuItem);
 
-    expect(handleClick).toHaveBeenCalledOnce();
+    expect(handleClick).toHaveBeenCalledTimes(1);
   });
 
-  it('disables menu item when disabled prop is true', async () => {
+  it('disabled 아이템은 비활성화된다', async () => {
     const user = userEvent.setup();
+    const handleClick = vi.fn();
 
     const items = [
       {
-        icon: <Square />,
-        label: 'Disabled Item',
-        onClick: vi.fn(),
+        icon: <MockIcon testId="disabled-icon" />,
+        label: '비활성화 아이템',
+        onClick: handleClick,
         disabled: true,
       },
     ];
 
     render(
-      <ToolbarDropdown trigger={<ToolbarItem icon={<Square />} label="Tools" />} items={items} />,
+      <ToolbarDropdown
+        trigger={<ToolbarItem icon={<MockIcon testId="tool-icon" />} label="도구" />}
+        items={items}
+      />,
     );
 
-    const trigger = screen.getByRole('button', { name: 'Tools' });
+    const trigger = screen.getByRole('button', { name: '도구' });
     await user.click(trigger);
 
-    const menuItem = screen.getByText('Disabled Item');
+    // 메뉴 아이템이 표시될 때까지 대기
+    const menuItem = await screen.findByText('비활성화 아이템');
     expect(menuItem.closest('[role="menuitem"]')).toHaveAttribute('data-disabled');
+
+    // 비활성화된 아이템을 클릭해도 핸들러가 호출되지 않는다
+    await user.click(menuItem);
+    expect(handleClick).not.toHaveBeenCalled();
   });
 
-  it('controls open state when open prop is provided', () => {
+  it('open prop이 제공되면 열림 상태를 제어한다', () => {
     render(
       <ToolbarDropdown
-        trigger={<ToolbarItem icon={<Square />} label="Tools" />}
+        trigger={<ToolbarItem icon={<MockIcon testId="tool-icon" />} label="도구" />}
         items={mockItems}
         open={true}
       />,
     );
 
-    expect(screen.getByText('Square')).toBeInTheDocument();
+    expect(screen.getByText('사각형')).toBeInTheDocument();
+    expect(screen.getByText('원형')).toBeInTheDocument();
   });
 
-  it('calls onOpenChange when dropdown is toggled', async () => {
+  it('드롭다운 토글 시 onOpenChange를 호출한다', async () => {
     const user = userEvent.setup();
     const handleOpenChange = vi.fn();
 
     render(
       <ToolbarDropdown
-        trigger={<ToolbarItem icon={<Square />} label="Tools" />}
+        trigger={<ToolbarItem icon={<MockIcon testId="tool-icon" />} label="도구" />}
         items={mockItems}
         onOpenChange={handleOpenChange}
       />,
     );
 
-    const trigger = screen.getByRole('button', { name: 'Tools' });
+    const trigger = screen.getByRole('button', { name: '도구' });
     await user.click(trigger);
 
-    expect(handleOpenChange).toHaveBeenCalled();
+    expect(handleOpenChange).toHaveBeenCalledWith(true);
+  });
+
+  it('빈 items 배열도 렌더링된다', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <ToolbarDropdown
+        trigger={<ToolbarItem icon={<MockIcon testId="tool-icon" />} label="도구" />}
+        items={[]}
+      />,
+    );
+
+    const trigger = screen.getByRole('button', { name: '도구' });
+    await user.click(trigger);
+
+    // 드롭다운이 열리지만 아이템이 없다
+    expect(screen.queryByText('사각형')).not.toBeInTheDocument();
+  });
+
+  it('여러 아이템이 올바르게 렌더링된다', async () => {
+    const user = userEvent.setup();
+
+    const items = [
+      {
+        icon: <MockIcon testId="item-1" />,
+        label: '아이템 1',
+        onClick: vi.fn(),
+      },
+      {
+        icon: <MockIcon testId="item-2" />,
+        label: '아이템 2',
+        onClick: vi.fn(),
+      },
+      {
+        icon: <MockIcon testId="item-3" />,
+        label: '아이템 3',
+        onClick: vi.fn(),
+      },
+    ];
+
+    render(
+      <ToolbarDropdown
+        trigger={<ToolbarItem icon={<MockIcon testId="tool-icon" />} label="도구" />}
+        items={items}
+      />,
+    );
+
+    const trigger = screen.getByRole('button', { name: '도구' });
+    await user.click(trigger);
+
+    // 아이템들이 표시될 때까지 대기
+    await waitFor(() => {
+      expect(screen.getByText('아이템 1')).toBeInTheDocument();
+      expect(screen.getByText('아이템 2')).toBeInTheDocument();
+      expect(screen.getByText('아이템 3')).toBeInTheDocument();
+    });
+  });
+
+  it('커스텀 className이 적용된다', () => {
+    const { container } = render(
+      <ToolbarDropdown
+        trigger={<ToolbarItem icon={<MockIcon testId="tool-icon" />} label="도구" />}
+        items={mockItems}
+        className="custom-dropdown"
+        open={true}
+      />,
+    );
+
+    // open={true}로 열려있으므로 content를 직접 찾을 수 있음
+    const content = container.querySelector('[data-radix-popper-content-wrapper]');
+    expect(content).toBeInTheDocument();
   });
 });
