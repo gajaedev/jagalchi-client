@@ -1,4 +1,4 @@
-import { RoadmapDetail } from '@/features/community/components/templates/RoadmapDetail';
+import { RoadmapDetail } from '@/features/community';
 
 interface PageProps {
   params: Promise<{ id: string }>;
