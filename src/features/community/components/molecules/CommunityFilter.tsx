@@ -54,7 +54,7 @@ export function CommunityFilter() {
           variant="outline"
           onClick={() => setActiveTab('latest')}
           className={cn(
-            'h-9 gap-2 rounded-lg px-4 transition-colors',
+            'h-9 gap-2 rounded-lg border-none px-4 transition-colors',
             activeTab === 'latest'
               ? 'border-none bg-slate-900 text-white hover:bg-slate-800'
               : 'bg-white text-slate-900 hover:bg-slate-50',
@@ -67,7 +67,7 @@ export function CommunityFilter() {
           variant="outline"
           onClick={() => setActiveTab('saved')}
           className={cn(
-            'h-9 gap-2 rounded-lg px-4 transition-colors',
+            'h-9 gap-2 rounded-lg border-none px-4 transition-colors',
             activeTab === 'saved'
               ? 'border-none bg-slate-900 text-white hover:bg-slate-800'
               : 'bg-white text-slate-900 hover:bg-slate-50',
