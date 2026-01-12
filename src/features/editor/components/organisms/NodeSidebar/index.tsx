@@ -28,16 +28,18 @@ export function NodeSidebar({ open, onOpenChange, nodeData, onSave, className }:
   const [description, setDescription] = useState(nodeData?.description || '');
   const [resources, setResources] = useState<Resource[]>(nodeData?.resources || []);
   const [color, setColor] = useState(nodeData?.color || '#3B82F6');
+  const [colorText, setColorText] = useState(nodeData?.color || '#3B82F6');
   const [locked, setLocked] = useState(nodeData?.locked || false);
 
   // Sync local state with prop changes for controlled component pattern
-  /* eslint-disable react-hooks/set-state-in-effect */
+
   useEffect(() => {
     if (nodeData) {
       setTitle(nodeData.title);
       setDescription(nodeData.description);
       setResources(nodeData.resources);
       setColor(nodeData.color);
+      setColorText(nodeData.color);
       setLocked(nodeData.locked);
     } else {
       // Reset to defaults when nodeData is cleared
@@ -45,10 +47,15 @@ export function NodeSidebar({ open, onOpenChange, nodeData, onSave, className }:
       setDescription('');
       setResources([]);
       setColor('#3B82F6');
+      setColorText('#3B82F6');
       setLocked(false);
     }
   }, [nodeData]);
-  /* eslint-enable react-hooks/set-state-in-effect */
+
+  // Sync colorText with color changes from color picker
+  useEffect(() => {
+    setColorText(color);
+  }, [color]);
 
   const handleSave = () => {
     onSave?.({
@@ -60,8 +67,16 @@ export function NodeSidebar({ open, onOpenChange, nodeData, onSave, className }:
     });
   };
 
+  const handleColorTextChange = (value: string) => {
+    setColorText(value);
+    // Only update color if it's a valid hex color
+    if (/^#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})$/.test(value)) {
+      setColor(value);
+    }
+  };
+
   const handleAddResource = () => {
-    setResources([...resources, { url: '', title: '' }]);
+    setResources([...resources, { id: crypto.randomUUID(), url: '', title: '' }]);
   };
 
   const handleRemoveResource = (index: number) => {
@@ -159,8 +174,8 @@ export function NodeSidebar({ open, onOpenChange, nodeData, onSave, className }:
                 />
                 <Input
                   type="text"
-                  value={color}
-                  onChange={(e) => setColor(e.target.value)}
+                  value={colorText}
+                  onChange={(e) => handleColorTextChange(e.target.value)}
                   placeholder="#3B82F6"
                   className="h-10 flex-1 font-mono text-sm"
                 />
@@ -176,7 +191,7 @@ export function NodeSidebar({ open, onOpenChange, nodeData, onSave, className }:
                 <div className="space-y-2">
                   {resources.map((resource, index) => (
                     <ResourceInput
-                      key={index}
+                      key={resource.id}
                       url={resource.url}
                       title={resource.title}
                       onUrlChange={(url) => handleResourceUrlChange(index, url)}
@@ -214,12 +229,7 @@ export function NodeSidebar({ open, onOpenChange, nodeData, onSave, className }:
                   <p className="text-muted-foreground text-xs">노드를 잠가 수정을 방지합니다</p>
                 </div>
               </div>
-              <Switch
-                id="node-lock"
-                checked={locked}
-                onCheckedChange={setLocked}
-                aria-checked={locked}
-              />
+              <Switch id="node-lock" checked={locked} onCheckedChange={setLocked} />
             </div>
           </div>
 

@@ -14,7 +14,7 @@ describe('NodeSidebar', () => {
   const defaultNodeData = {
     title: '테스트 노드',
     description: '테스트 설명',
-    resources: [{ url: 'https://example.com', title: 'Example' }],
+    resources: [{ id: 'test-resource-1', url: 'https://example.com', title: 'Example' }],
     color: '#3B82F6',
     locked: false,
   };
@@ -169,8 +169,8 @@ describe('NodeSidebar', () => {
     const multipleResources = {
       ...defaultNodeData,
       resources: [
-        { url: 'https://example1.com', title: 'Example 1' },
-        { url: 'https://example2.com', title: 'Example 2' },
+        { id: 'test-resource-1', url: 'https://example1.com', title: 'Example 1' },
+        { id: 'test-resource-2', url: 'https://example2.com', title: 'Example 2' },
       ],
     };
 
@@ -220,7 +220,7 @@ describe('NodeSidebar', () => {
     expect(handleSave).toHaveBeenCalledWith({
       title: '테스트 노드',
       description: '테스트 설명',
-      resources: [{ url: 'https://example.com', title: 'Example' }],
+      resources: [{ id: 'test-resource-1', url: 'https://example.com', title: 'Example' }],
       color: '#3B82F6',
       locked: false,
     });
@@ -292,7 +292,7 @@ describe('NodeSidebar', () => {
     expect(handleSave).toHaveBeenCalledWith({
       title: '변경된 노드',
       description: '변경된 설명',
-      resources: [{ url: 'https://example.com', title: 'Example' }],
+      resources: [{ id: 'test-resource-1', url: 'https://example.com', title: 'Example' }],
       color: '#ff0000',
       locked: true,
     });

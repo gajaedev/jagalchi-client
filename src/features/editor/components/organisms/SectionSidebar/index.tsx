@@ -30,23 +30,30 @@ export function SectionSidebar({
 }: SectionSidebarProps) {
   const [title, setTitle] = useState(sectionData?.title || '');
   const [color, setColor] = useState(sectionData?.color || '#3B82F6');
+  const [colorText, setColorText] = useState(sectionData?.color || '#3B82F6');
   const [locked, setLocked] = useState(sectionData?.locked || false);
 
   // Sync local state with prop changes for controlled component pattern
-  /* eslint-disable react-hooks/set-state-in-effect */
+
   useEffect(() => {
     if (sectionData) {
       setTitle(sectionData.title);
       setColor(sectionData.color);
+      setColorText(sectionData.color);
       setLocked(sectionData.locked);
     } else {
       // Reset to defaults when sectionData is cleared
       setTitle('');
       setColor('#3B82F6');
+      setColorText('#3B82F6');
       setLocked(false);
     }
   }, [sectionData]);
-  /* eslint-enable react-hooks/set-state-in-effect */
+
+  // Sync colorText with color changes from color picker
+  useEffect(() => {
+    setColorText(color);
+  }, [color]);
 
   const handleSave = () => {
     onSave?.({
@@ -54,6 +61,14 @@ export function SectionSidebar({
       color,
       locked,
     });
+  };
+
+  const handleColorTextChange = (value: string) => {
+    setColorText(value);
+    // Only update color if it's a valid hex color
+    if (/^#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})$/.test(value)) {
+      setColor(value);
+    }
   };
 
   if (!open) return null;
@@ -120,8 +135,8 @@ export function SectionSidebar({
                 />
                 <Input
                   type="text"
-                  value={color}
-                  onChange={(e) => setColor(e.target.value)}
+                  value={colorText}
+                  onChange={(e) => handleColorTextChange(e.target.value)}
                   placeholder="#3B82F6"
                   className="h-10 flex-1 font-mono text-sm"
                 />
@@ -141,12 +156,7 @@ export function SectionSidebar({
                   <p className="text-muted-foreground text-xs">섹션을 잠가 수정을 방지합니다</p>
                 </div>
               </div>
-              <Switch
-                id="section-lock"
-                checked={locked}
-                onCheckedChange={setLocked}
-                aria-checked={locked}
-              />
+              <Switch id="section-lock" checked={locked} onCheckedChange={setLocked} />
             </div>
           </div>
 

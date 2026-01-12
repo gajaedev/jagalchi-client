@@ -29,23 +29,30 @@ const LINE_STYLES: { value: LineStyle; label: string }[] = [
 export function LineSidebar({ open, onOpenChange, lineData, onSave, className }: LineSidebarProps) {
   const [style, setStyle] = useState<LineStyle>(lineData?.style || 'solid');
   const [color, setColor] = useState(lineData?.color || '#000000');
+  const [colorText, setColorText] = useState(lineData?.color || '#000000');
   const [label, setLabel] = useState(lineData?.label || '');
 
   // Sync local state with prop changes for controlled component pattern
-  /* eslint-disable react-hooks/set-state-in-effect */
+
   useEffect(() => {
     if (lineData) {
       setStyle(lineData.style);
       setColor(lineData.color);
+      setColorText(lineData.color);
       setLabel(lineData.label || '');
     } else {
       // Reset to defaults when lineData is cleared
       setStyle('solid');
       setColor('#000000');
+      setColorText('#000000');
       setLabel('');
     }
   }, [lineData]);
-  /* eslint-enable react-hooks/set-state-in-effect */
+
+  // Sync colorText with color changes from color picker
+  useEffect(() => {
+    setColorText(color);
+  }, [color]);
 
   const handleSave = () => {
     onSave?.({
@@ -53,6 +60,14 @@ export function LineSidebar({ open, onOpenChange, lineData, onSave, className }:
       color,
       label: label || undefined,
     });
+  };
+
+  const handleColorTextChange = (value: string) => {
+    setColorText(value);
+    // Only update color if it's a valid hex color
+    if (/^#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})$/.test(value)) {
+      setColor(value);
+    }
   };
 
   if (!open) return null;
@@ -131,8 +146,8 @@ export function LineSidebar({ open, onOpenChange, lineData, onSave, className }:
                 />
                 <Input
                   type="text"
-                  value={color}
-                  onChange={(e) => setColor(e.target.value)}
+                  value={colorText}
+                  onChange={(e) => handleColorTextChange(e.target.value)}
                   placeholder="#000000"
                   className="h-10 flex-1 font-mono text-sm"
                 />

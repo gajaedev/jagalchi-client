@@ -1,5 +1,6 @@
 // Core types
 export interface Resource {
+  id: string;
   url: string;
   title: string;
 }
