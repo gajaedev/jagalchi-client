@@ -27,20 +27,33 @@ export function TextSidebar({ open, onOpenChange, textData, onSave, className }:
   const [fontSize, setFontSize] = useState(textData?.fontSize || 16);
   const [fontWeight, setFontWeight] = useState<FontWeight>(textData?.fontWeight || 'normal');
   const [color, setColor] = useState(textData?.color || '#000000');
+  const [colorText, setColorText] = useState(textData?.color || '#000000');
   const [locked, setLocked] = useState(textData?.locked || false);
 
   // Sync local state with prop changes for controlled component pattern
-  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     if (textData) {
       setContent(textData.content);
       setFontSize(textData.fontSize);
       setFontWeight(textData.fontWeight);
       setColor(textData.color);
+      setColorText(textData.color);
       setLocked(textData.locked);
+    } else {
+      // Reset to defaults when textData is cleared
+      setContent('');
+      setFontSize(16);
+      setFontWeight('normal');
+      setColor('#000000');
+      setColorText('#000000');
+      setLocked(false);
     }
   }, [textData]);
-  /* eslint-enable react-hooks/set-state-in-effect */
+
+  // Sync colorText with color changes from color picker
+  useEffect(() => {
+    setColorText(color);
+  }, [color]);
 
   const handleSave = () => {
     onSave?.({
@@ -56,6 +69,14 @@ export function TextSidebar({ open, onOpenChange, textData, onSave, className }:
     const num = parseInt(value, 10);
     if (!isNaN(num) && num >= 8 && num <= 72) {
       setFontSize(num);
+    }
+  };
+
+  const handleColorTextChange = (value: string) => {
+    setColorText(value);
+    // Only update color if it's a valid hex color
+    if (/^#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})$/.test(value)) {
+      setColor(value);
     }
   };
 
@@ -187,8 +208,8 @@ export function TextSidebar({ open, onOpenChange, textData, onSave, className }:
                 />
                 <Input
                   type="text"
-                  value={color}
-                  onChange={(e) => setColor(e.target.value)}
+                  value={colorText}
+                  onChange={(e) => handleColorTextChange(e.target.value)}
                   placeholder="#000000"
                   className="h-10 flex-1 font-mono text-sm"
                 />

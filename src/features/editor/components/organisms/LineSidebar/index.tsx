@@ -38,6 +38,11 @@ export function LineSidebar({ open, onOpenChange, lineData, onSave, className }:
       setStyle(lineData.style);
       setColor(lineData.color);
       setLabel(lineData.label || '');
+    } else {
+      // Reset to defaults when lineData is cleared
+      setStyle('solid');
+      setColor('#000000');
+      setLabel('');
     }
   }, [lineData]);
   /* eslint-enable react-hooks/set-state-in-effect */

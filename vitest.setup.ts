@@ -28,6 +28,9 @@ global.IntersectionObserver = class IntersectionObserver {
   observe() {}
   unobserve() {}
   disconnect() {}
+  takeRecords() {
+    return [];
+  }
   root = null;
   rootMargin = '';
   thresholds = [];
@@ -56,7 +59,6 @@ global.PointerEvent = class FakePointerEvent extends MouseEvent {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(type: string, props: any = {}) {
-    // @ts-expect-error - MouseEvent constructor signature mismatch
     super(type, props);
     this._props = props;
   }

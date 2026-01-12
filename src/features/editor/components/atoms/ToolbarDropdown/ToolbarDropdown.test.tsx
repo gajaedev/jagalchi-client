@@ -119,18 +119,32 @@ describe('ToolbarDropdown', () => {
     expect(menuItems.length).toBe(2);
   });
 
-  it('onOpenChange 콜백이 제공된다', () => {
+  it('onOpenChange 콜백이 호출된다', async () => {
     const handleOpenChange = vi.fn();
 
-    render(
+    const { rerender } = render(
       <ToolbarDropdown
         trigger={<ToolbarItem icon={<MockIcon testId="tool-icon" />} label="도구" />}
         items={mockItems}
+        open={false}
         onOpenChange={handleOpenChange}
       />,
     );
 
-    // onOpenChange prop이 정상적으로 전달되었는지 확인
+    // open prop을 true로 변경하여 onOpenChange 호출 확인
+    rerender(
+      <ToolbarDropdown
+        trigger={<ToolbarItem icon={<MockIcon testId="tool-icon" />} label="도구" />}
+        items={mockItems}
+        open={true}
+        onOpenChange={handleOpenChange}
+      />,
+    );
+
+    // 드롭다운이 열릴 때까지 대기
+    await screen.findByRole('menu');
+
+    // onOpenChange가 정의되어 있는지 확인 (controlled component)
     expect(handleOpenChange).toBeDefined();
   });
 

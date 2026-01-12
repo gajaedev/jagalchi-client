@@ -39,6 +39,11 @@ export function SectionSidebar({
       setTitle(sectionData.title);
       setColor(sectionData.color);
       setLocked(sectionData.locked);
+    } else {
+      // Reset to defaults when sectionData is cleared
+      setTitle('');
+      setColor('#3B82F6');
+      setLocked(false);
     }
   }, [sectionData]);
   /* eslint-enable react-hooks/set-state-in-effect */

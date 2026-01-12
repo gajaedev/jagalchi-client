@@ -39,6 +39,13 @@ export function NodeSidebar({ open, onOpenChange, nodeData, onSave, className }:
       setResources(nodeData.resources);
       setColor(nodeData.color);
       setLocked(nodeData.locked);
+    } else {
+      // Reset to defaults when nodeData is cleared
+      setTitle('');
+      setDescription('');
+      setResources([]);
+      setColor('#3B82F6');
+      setLocked(false);
     }
   }, [nodeData]);
   /* eslint-enable react-hooks/set-state-in-effect */
