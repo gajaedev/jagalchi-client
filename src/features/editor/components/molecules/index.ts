@@ -1,2 +1,2 @@
-export * from './EditorHeader';
-export * from './EditorToolbar';
+export { EditorHeader } from './EditorHeader';
+export { EditorToolbar } from './EditorToolbar';
