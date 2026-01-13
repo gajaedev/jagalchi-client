@@ -17,7 +17,7 @@ const MOCK_IN_PROGRESS_ROADMAPS = [
 
 export function ProfileThirdBox() {
   return (
-    <div className="grid w-full grid-cols-2 gap-8">
+    <div className="grid w-full grid-cols-1 gap-4 sm:gap-8 md:grid-cols-2">
       <RoadmapList variant="end" items={MOCK_COMPLETED_ROADMAPS} />
       <RoadmapList variant="process" items={MOCK_IN_PROGRESS_ROADMAPS} />
     </div>

@@ -1,4 +1,4 @@
-export * from './AddRoadmapModal';
-export * from './MadeRoadmapList';
-export * from './ProfileCustomLinks';
-export * from './ProfileThirdBox';
+export { AddRoadmapModal } from './AddRoadmapModal';
+export { MadeRoadmapList } from './MadeRoadmapList';
+export { ProfileCustomLinks } from './ProfileCustomLinks';
+export { ProfileThirdBox } from './ProfileThirdBox';

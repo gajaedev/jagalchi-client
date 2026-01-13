@@ -65,11 +65,11 @@ export function ProfileInfoForm({
   return (
     <div>
       {mode === 'show' ? (
-        <div className="flex w-full flex-row items-center justify-between">
+        <div className="flex w-full flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
           <div className="flex flex-col justify-between">
-            <div className="flex flex-row gap-2">
+            <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-2">
               <p className="text-xl font-semibold">{userName}</p>
-              <p className="text-muted-foreground text-base font-medium">{userEmail}</p>
+              <p className="text-muted-foreground text-sm font-medium sm:text-base">{userEmail}</p>
             </div>
 
             <div className="flex flex-row gap-2">
@@ -89,9 +89,9 @@ export function ProfileInfoForm({
           </div>
         </div>
       ) : (
-        <div className="flex flex-row items-center justify-between">
+        <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
           <div className="flex flex-col gap-2">
-            <div className="flex flex-row gap-2">
+            <div className="flex flex-col gap-2 sm:flex-row">
               <Input type="text" value={userName} onChange={handleNameChange} aria-label="이름" />
               <Input
                 type="email"
@@ -101,12 +101,12 @@ export function ProfileInfoForm({
               />
             </div>
 
-            <div className="flex flex-row gap-2">
-              <p className="text-base font-medium">
+            <div className="flex flex-row gap-2 sm:gap-4">
+              <p className="text-sm font-medium sm:text-base">
                 {formatCount(followerCount)}{' '}
                 <span className="text-muted-foreground text-sm font-medium">followers</span>
               </p>
-              <p className="text-base font-medium">
+              <p className="text-sm font-medium sm:text-base">
                 {formatCount(followingCount)}{' '}
                 <span className="text-muted-foreground text-sm font-medium">following</span>
               </p>

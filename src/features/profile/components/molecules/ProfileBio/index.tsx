@@ -8,6 +8,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
+import { PROFILE_MESSAGES } from '@/constants/messages';
 import { cn } from '@/lib/utils';
 
 import { profileModeAtom } from '../../../stores/profile-atoms';
@@ -50,7 +51,7 @@ export function ProfileBio({ bio, onChange }: ProfileBioProps) {
   if (mode === 'edit') {
     return (
       <div className="flex flex-col gap-4">
-        <p className="text-sm font-semibold">자기소개</p>
+        <p className="text-sm font-semibold">{PROFILE_MESSAGES.BIO_TITLE}</p>
         <Textarea
           className="h-[280px] w-full resize-none"
           value={userBio}
@@ -63,7 +64,7 @@ export function ProfileBio({ bio, onChange }: ProfileBioProps) {
   return (
     <Card className="shadow-none">
       <CardHeader>
-        <CardTitle className="text-sm font-semibold">자기소개</CardTitle>
+        <CardTitle className="text-sm font-semibold">{PROFILE_MESSAGES.BIO_TITLE}</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-2">
         <p
@@ -75,7 +76,7 @@ export function ProfileBio({ bio, onChange }: ProfileBioProps) {
             !isExpanded && 'line-clamp-3',
           )}
         >
-          {userBio || '자기소개가 없습니다.'}
+          {userBio || `${PROFILE_MESSAGES.BIO_TITLE}가 없습니다.`}
         </p>
 
         {(isOverflowing || isExpanded) && (
@@ -86,7 +87,11 @@ export function ProfileBio({ bio, onChange }: ProfileBioProps) {
             className="text-muted-foreground hover:text-foreground h-auto self-end p-0 hover:bg-transparent"
             aria-expanded={isExpanded}
             aria-controls="profile-bio-text"
-            aria-label={isExpanded ? '자기소개 접기' : '자기소개 전체 보기'}
+            aria-label={
+              isExpanded
+                ? `${PROFILE_MESSAGES.BIO_TITLE} 접기`
+                : `${PROFILE_MESSAGES.BIO_TITLE} 전체 보기`
+            }
           >
             <span className="text-xs">{isExpanded ? '접기' : '전체 보기'}</span>
             {isExpanded ? (
