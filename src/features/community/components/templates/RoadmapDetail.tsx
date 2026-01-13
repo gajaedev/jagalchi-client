@@ -2,110 +2,116 @@
 
 import React from 'react';
 
-import Link from 'next/link';
+import NextImage from 'next/image';
 
-import { ArrowLeft, Heart, Copy } from 'lucide-react';
+import { Heart, FilePlus2 } from 'lucide-react';
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
+
+import { MOCK_COMMUNITY_DATA } from '../../constants/community.mock';
+import { ContributorItem } from '../atoms/ContributorItem';
 
 interface RoadmapDetailProps {
   id: string;
 }
 
-export function RoadmapDetail({ id: _id }: RoadmapDetailProps) {
+export function RoadmapDetail({ id }: RoadmapDetailProps) {
+  const item = MOCK_COMMUNITY_DATA.find((i) => i.id === id);
+
+  if (!item) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <p className="text-lg font-medium text-slate-500">로드맵을 찾을 수 없습니다.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="flex min-h-screen flex-col items-center bg-white">
-      <header className="sticky top-0 z-50 flex h-[44px] w-full items-center justify-between border-b border-slate-100 bg-white px-4">
-        <Link href="/community">
-          <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-900">
-            <ArrowLeft className="h-5 w-5" />
-          </Button>
-        </Link>
-        <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-slate-700">UserName</span>
-          <Avatar className="h-6 w-6">
-            <AvatarImage src="/avatar-placeholder.png" alt="User" />
-            <AvatarFallback>U</AvatarFallback>
-          </Avatar>
-        </div>
-      </header>
+      {/* Hero Section */}
+      <div className="relative h-[400px] w-full bg-[#F8FAFC]">
+        {item.imageUrl && (
+          <NextImage src={item.imageUrl} alt={item.title} fill className="object-cover" priority />
+        )}
+      </div>
 
-      <div className="relative h-[277px] w-full bg-[#F1F5F9]" />
+      {/* Content Section */}
+      <div className="flex w-full max-w-[960px] gap-[64px] pt-[40px] pb-[120px]">
+        {/* Main Content */}
+        <div className="flex w-[696px] flex-col">
+          {/* Header Area */}
+          <div className="mb-[52px] flex flex-col gap-[16px]">
+            <div className="flex items-center justify-between">
+              <h1 className="text-[30px] leading-none font-bold tracking-[-1px] text-[#020617]">
+                {item.title}
+              </h1>
+              <Button
+                variant="outline"
+                className="h-[36px] items-center gap-[8px] border-[#E2E8F0] px-[12px] py-[8px] text-[14px] font-semibold text-[#020617] hover:bg-slate-50"
+              >
+                <Heart className="h-4 w-4" />
+                좋아요
+              </Button>
+            </div>
 
-      <div className="flex w-full max-w-[960px] gap-[64px] py-[64px]">
-        <div className="flex flex-1 flex-col">
-          <div className="mb-8 flex items-start justify-between">
-            <h1 className="text-[24px] font-bold tracking-tight text-[#020617]">
-              ChoonJa&apos;s FrontEnd Roadmap
-            </h1>
-            <div className="flex items-center gap-1.5 text-slate-400">
-              <span className="text-sm font-medium">67</span>
-              <Heart className="h-4 w-4" />
+            <div className="flex items-center gap-[16px]">
+              <Button
+                variant="default"
+                className="h-[32px] rounded-[6px] bg-[#020617] px-[12px] py-[6px] text-[14px] font-bold text-white hover:bg-[#020617]/90"
+              >
+                로드맵 보기
+              </Button>
+              <Button
+                variant="outline"
+                className="h-[32px] items-center gap-[8px] rounded-[6px] border-[#E2E8F0] bg-white px-[12px] py-[6px] text-[14px] font-bold text-[#020617] hover:bg-slate-50"
+              >
+                <FilePlus2 className="h-4 w-4" />내 로드맵에 추가
+              </Button>
             </div>
           </div>
 
-          <div className="mb-12 flex items-center gap-2">
-            <Button className="h-9 rounded-md bg-slate-900 px-4 text-sm font-bold text-white hover:bg-slate-800">
-              로드맵 보기
-            </Button>
-            <Button
-              variant="outline"
-              className="h-9 gap-2 rounded-md border-slate-900 px-4 text-sm font-bold text-slate-900 hover:bg-slate-50"
-            >
-              <Copy className="h-4 w-4" />내 로드맵에 복사
-            </Button>
-          </div>
-
-          <div className="flex flex-col gap-10">
-            <section>
-              <h2 className="mb-3 text-[18px] font-bold text-[#020617]">About</h2>
-              <p className="text-[16px] leading-[24px] font-normal text-slate-700">
-                I&apos;m as real as they come, they get feeling get numb. You think you got a little
-                buzz, so now you can&apos;t get stuck. I keep a razor blade tuck on me, under my
-                toungue. Don&apos;t let me have to tell them niggas about the city I&apos;m from,
-                It&apos;s Brooklyn. Be the home of the hardest ever, where the nigga&apos;s
-                don&apos;t aim, just palm beretta&apos;s and bomb whatever. So we don&apos;t move
-                calmly never. It&apos;s for my niggas trapped in cells like salmonela.
-              </p>
-            </section>
-
-            <section>
-              <h2 className="mb-3 text-[18px] font-bold text-[#020617]">Look</h2>
-              <p className="text-[16px] leading-[24px] font-normal text-slate-700">
-                I could do this shit with no effort, no pressure, no gimmick shit, no radio records.
-                Just text textbook rhyme style with the raw texture. Punchlines, right hooks, now
-                that&apos;s a trifecta.
-              </p>
-            </section>
-          </div>
+          {/* About Section */}
+          <section className="flex flex-col gap-[16px]">
+            <h2 className="text-[20px] leading-none font-semibold text-[#020617]">About</h2>
+            <p className="text-[16px] leading-[28px] text-[#475569]">
+              {/* Using mock description or fallback */}
+              I’m as real as they come, they get feeling get numb. You think you got a little buzz,
+              so now you can’t get stuck. I keep a razor blade tuck on me, under my toungue. Don’t
+              let me have to tell them niggas about the city I’m from, It’s Brooklyn. Be the home of
+              the hardest ever, where the nigga’s don’t aim, just palm beretta’s and bomb whatever.
+              So we don’t move calmly never. It’s for my niggas trapped in cells like salmonela.
+              Look I could do this shit with no effort, no pressure, no gimmick shit, no radio
+              records. Just text book rhyme style with the raw texture. Punchlines, right hooks, now
+              that’s a trifecta.
+            </p>
+          </section>
         </div>
 
-        <aside className="flex w-[192px] shrink-0 flex-col border-l border-slate-100 pl-8">
-          <h3 className="mb-6 text-[18px] font-bold text-[#020617]">Made by</h3>
+        {/* Separator */}
+        <Separator orientation="vertical" className="h-[676px] bg-[#E2E8F0]" />
 
-          <div className="mb-8 flex flex-col gap-6">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="flex flex-col gap-1">
-                <div className="flex items-center gap-2">
-                  <Avatar className="h-8 w-8">
-                    <AvatarImage src="/avatar-placeholder.png" alt="Contributor" />
-                    <AvatarFallback>C</AvatarFallback>
-                  </Avatar>
-                  <div className="flex flex-col">
-                    <span className="text-[12px] leading-none font-bold text-[#020617]">
-                      Spring for J...
-                    </span>
-                    <span className="text-[10px] text-slate-400">5.8k Followers</span>
-                  </div>
-                </div>
-              </div>
-            ))}
+        {/* Sidebar */}
+        <aside className="flex w-[134px] flex-col gap-[40px]">
+          {/* Made by */}
+          <div className="flex flex-col gap-[24px]">
+            <h3 className="text-[18px] leading-none font-semibold text-[#020617]">Made by</h3>
+            <div className="flex flex-col gap-[16px]">
+              <ContributorItem name={item.author} />
+              <ContributorItem name="Co-author" />
+              <ContributorItem name="Contributor" />
+            </div>
           </div>
 
-          <div className="flex flex-col gap-1 border-t border-slate-100 pt-6">
-            <span className="text-[10px] font-bold text-slate-400 uppercase">마지막 업데이트</span>
-            <span className="text-[12px] font-medium text-slate-600">2달 전</span>
+          <Separator className="bg-[#E2E8F0]" />
+
+          {/* Update Info */}
+          <div className="flex flex-col gap-[8px]">
+            <span className="text-[12px] font-bold text-slate-400">마지막 업데이트</span>
+            <span className="text-[14px] font-medium text-slate-600">
+              {/* Deterministic calculation for "X months ago" could be added here */}
+              2달 전
+            </span>
           </div>
         </aside>
       </div>

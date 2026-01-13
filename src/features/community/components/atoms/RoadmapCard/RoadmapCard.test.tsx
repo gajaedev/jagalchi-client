@@ -1,0 +1,33 @@
+import { render, screen } from '@testing-library/react';
+import { describe, expect, it, vi } from 'vitest';
+
+import { RoadmapCard } from './index';
+
+vi.mock('next/image', () => ({
+  default: (props: any) => <img {...props} />,
+}));
+
+describe('RoadmapCard', () => {
+  it('renders the title and author correctly', () => {
+    render(<RoadmapCard title="Test Roadmap" author="John Doe" />);
+
+    expect(screen.getByText('Test Roadmap')).toBeInTheDocument();
+    expect(screen.getByText('By John Doe')).toBeInTheDocument();
+  });
+
+  it('renders the thumbnail placeholder when no imageUrl is provided', () => {
+    render(<RoadmapCard title="Test Roadmap" author="John Doe" />);
+
+    expect(screen.getByText('Thumbnail')).toBeInTheDocument();
+  });
+
+  it('renders the image when imageUrl is provided', () => {
+    const imageUrl = 'https://example.com/image.png';
+    render(<RoadmapCard title="Test Roadmap" author="John Doe" imageUrl={imageUrl} />);
+
+    const image = screen.getByAltText('Test Roadmap');
+    expect(image).toBeInTheDocument();
+    // Next.js Image component handles src transformation, so we just check for existence or partial match if needed
+    expect(image).toHaveAttribute('src');
+  });
+});
