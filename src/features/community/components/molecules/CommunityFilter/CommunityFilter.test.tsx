@@ -86,7 +86,6 @@ describe('CommunityFilter', () => {
     const latestTab = screen.getByText('최신').closest('button')!;
     fireEvent.click(latestTab);
 
-    // In actual app, atom would update. Here we just check interaction.
     expect(latestTab).toBeInTheDocument();
   });
 });

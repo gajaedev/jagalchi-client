@@ -63,10 +63,6 @@ describe('CommunityHero', () => {
     const input = screen.getByPlaceholderText('Type a roadmap name to find...');
     fireEvent.change(input, { target: { value: 'React' } });
     fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' });
-
-    // Since we can't easily check the atom value change in this test without more setup,
-    // we just verify it doesn't crash and the local state was updated.
-    // In a more robust test, we could check if a mock function or next selection reflects the change.
   });
 
   it('triggers search on button click', () => {

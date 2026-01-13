@@ -4,7 +4,7 @@ import {
   SortOrder,
   FilterCategory,
   ActiveTab,
-} from '../types/community.types';
+} from '../../types/community.types';
 
 export function filterAndSortCommunityItems(
   items: CommunityItem[],
@@ -33,7 +33,6 @@ export function filterAndSortCommunityItems(
   }
 
   if (activeTab === 'saved') {
-    // For now, return a slice as "saved" isn't fully implemented
     result = result.slice(0, 5);
   }
 

@@ -45,7 +45,6 @@ export function CommunityHero() {
 
   return (
     <div className="relative flex h-[277px] w-full flex-col items-center overflow-hidden border-b border-[#E2E8F0] bg-[#F1F5F9]">
-      {/* Decorative Elements */}
       {DECORATIVE_CIRCLES.map((circle, i) => (
         <div
           key={i}
@@ -63,7 +62,6 @@ export function CommunityHero() {
         />
       ))}
 
-      {/* Hero Content */}
       <div className="z-10 mt-[80px] flex flex-col items-center">
         <h1 className="mb-[40px] text-[24px] font-bold tracking-[-0.02em] text-[#020617]">
           어떤 로드맵을 찾고있나요?

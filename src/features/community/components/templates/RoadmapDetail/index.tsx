@@ -1,7 +1,5 @@
 'use client';
 
-import React from 'react';
-
 import NextImage from 'next/image';
 
 import { Heart, FilePlus2 } from 'lucide-react';
@@ -29,18 +27,14 @@ export function RoadmapDetail({ id }: RoadmapDetailProps) {
 
   return (
     <div className="flex min-h-screen flex-col items-center bg-white">
-      {/* Hero Section */}
       <div className="relative h-[400px] w-full bg-[#F8FAFC]">
         {item.imageUrl && (
           <NextImage src={item.imageUrl} alt={item.title} fill className="object-cover" priority />
         )}
       </div>
 
-      {/* Content Section */}
       <div className="flex w-full max-w-[960px] gap-[64px] pt-[40px] pb-[120px]">
-        {/* Main Content */}
         <div className="flex w-[696px] flex-col">
-          {/* Header Area */}
           <div className="mb-[52px] flex flex-col gap-[16px]">
             <div className="flex items-center justify-between">
               <h1 className="text-[30px] leading-none font-bold tracking-[-1px] text-[#020617]">
@@ -71,11 +65,9 @@ export function RoadmapDetail({ id }: RoadmapDetailProps) {
             </div>
           </div>
 
-          {/* About Section */}
           <section className="flex flex-col gap-[16px]">
             <h2 className="text-[20px] leading-none font-semibold text-[#020617]">About</h2>
             <p className="text-[16px] leading-[28px] text-[#475569]">
-              {/* Using mock description or fallback */}
               I’m as real as they come, they get feeling get numb. You think you got a little buzz,
               so now you can’t get stuck. I keep a razor blade tuck on me, under my toungue. Don’t
               let me have to tell them niggas about the city I’m from, It’s Brooklyn. Be the home of
@@ -88,12 +80,9 @@ export function RoadmapDetail({ id }: RoadmapDetailProps) {
           </section>
         </div>
 
-        {/* Separator */}
         <Separator orientation="vertical" className="h-[676px] bg-[#E2E8F0]" />
 
-        {/* Sidebar */}
         <aside className="flex w-[134px] flex-col gap-[40px]">
-          {/* Made by */}
           <div className="flex flex-col gap-[24px]">
             <h3 className="text-[18px] leading-none font-semibold text-[#020617]">Made by</h3>
             <div className="flex flex-col gap-[16px]">
@@ -105,13 +94,9 @@ export function RoadmapDetail({ id }: RoadmapDetailProps) {
 
           <Separator className="bg-[#E2E8F0]" />
 
-          {/* Update Info */}
           <div className="flex flex-col gap-[8px]">
             <span className="text-[12px] font-bold text-slate-400">마지막 업데이트</span>
-            <span className="text-[14px] font-medium text-slate-600">
-              {/* Deterministic calculation for "X months ago" could be added here */}
-              2달 전
-            </span>
+            <span className="text-[14px] font-medium text-slate-600">2달 전</span>
           </div>
         </aside>
       </div>

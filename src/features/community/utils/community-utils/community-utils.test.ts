@@ -58,8 +58,6 @@ describe('filterAndSortCommunityItems', () => {
   });
 
   it('sorts by likes (using name for now in mock logic, let me check)', () => {
-    // The actual logic uses sortBy: name, recent, size.
-    // Let's test size sorting.
     const result = filterAndSortCommunityItems(mockItems, {
       searchQuery: '',
       filterCategory: 'all',

@@ -11,5 +11,5 @@ export interface CommunityItem {
   likes: number;
   updatedAt: string;
   type: 'roadmap' | 'directory';
-  size?: number; // e.g., number of steps or sub-items
+  size?: number;
 }

@@ -4,7 +4,6 @@ import { describe, it, expect, vi } from 'vitest';
 
 import { Community } from './index';
 
-// Mock child components to keep template test light
 vi.mock('../../molecules/CommunityHero', () => ({
   CommunityHero: () => <div data-testid="community-hero">Hero</div>,
 }));
