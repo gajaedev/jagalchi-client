@@ -18,7 +18,14 @@ import { Button } from '@/components/ui/button';
 const meta = {
   title: 'UI/Form',
   component: Form,
-  parameters: { layout: 'centered' },
+  parameters: {
+    layout: 'centered',
+    docs: {
+      story: {
+        inline: false,
+      },
+    },
+  },
   tags: ['autodocs'],
 } satisfies Meta<typeof Form>;
 
@@ -31,6 +38,7 @@ const formSchema = z.object({
 });
 
 export const Default: Story = {
+  args: {} as any,
   render: () => {
     const FormExample = () => {
       const form = useForm<z.infer<typeof formSchema>>({
@@ -89,6 +97,7 @@ export const Default: Story = {
 };
 
 export const WithError: Story = {
+  args: {} as any,
   render: () => {
     const FormExample = () => {
       const form = useForm<z.infer<typeof formSchema>>({
@@ -153,6 +162,7 @@ const simpleSchema = z.object({
 });
 
 export const SingleField: Story = {
+  args: {} as any,
   render: () => {
     const FormExample = () => {
       const form = useForm<z.infer<typeof simpleSchema>>({

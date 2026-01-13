@@ -24,8 +24,8 @@ export {
   profileLinkAtom,
   profileImageAtom,
 } from './stores/profile-atoms';
+export type { Contribution } from './utils/contribution-utils';
 export {
-  Contribution,
   COLORS,
   getLevel,
   getLastYearDates,
