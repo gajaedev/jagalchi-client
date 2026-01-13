@@ -198,9 +198,9 @@ export function AddRoadmapModal({
   return (
     <Dialog
       open={isOpen}
-      onOpenChange={(isOpen) => {
-        setIsOpen(isOpen);
-        if (!isOpen) {
+      onOpenChange={(open) => {
+        setIsOpen(open);
+        if (!open) {
           setSelectedFileId(null);
           setSearchQuery('');
         }
