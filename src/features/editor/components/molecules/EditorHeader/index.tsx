@@ -4,6 +4,7 @@ import { ArrowLeft, Check, AlertCircle } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { EDITOR_MESSAGES } from '@/constants/messages';
 import type { SaveStatus } from '@/features/editor/types/editor.types';
 import { cn } from '@/lib/utils';
 
@@ -50,7 +51,7 @@ export function EditorHeader({
             aria-live="polite"
           >
             <Check className="size-4" />
-            <span>(저장됨)</span>
+            <span>({EDITOR_MESSAGES.SAVE_SUCCESS})</span>
           </div>
         )}
 
@@ -61,7 +62,7 @@ export function EditorHeader({
             aria-live="polite"
           >
             <AlertCircle className="size-4" />
-            <span>(저장 실패)</span>
+            <span>({EDITOR_MESSAGES.SAVE_FAILED})</span>
           </div>
         )}
       </div>
