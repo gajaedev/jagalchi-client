@@ -29,7 +29,7 @@ export function ContributionGraph({ data }: { data: Contribution[] }) {
   return (
     <Card className="w-full rounded-lg p-4 shadow-none sm:px-0 sm:py-2">
       <CardContent className="flex flex-col">
-        <p className="text-muted-foreground w-full py-3 text-sm font-bold sm:mb-0 sm:py-3">
+        <p className="text-muted-foreground w-full pb-4 text-sm font-bold">
           {streak}일 연속 스트릭
         </p>
         <div className="w-full overflow-x-auto py-2">
