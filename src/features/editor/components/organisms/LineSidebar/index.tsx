@@ -183,5 +183,3 @@ export function LineSidebar({ open, onOpenChange, lineData, onSave, className }:
     </div>
   );
 }
-
-export default LineSidebar;

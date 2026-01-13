@@ -74,5 +74,3 @@ export const ResourceInput = forwardRef<HTMLDivElement, ResourceInputProps>(
 );
 
 ResourceInput.displayName = 'ResourceInput';
-
-export default ResourceInput;

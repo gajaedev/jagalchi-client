@@ -220,5 +220,3 @@ export function MultiSelectionSidebar({
     </div>
   );
 }
-
-export default MultiSelectionSidebar;

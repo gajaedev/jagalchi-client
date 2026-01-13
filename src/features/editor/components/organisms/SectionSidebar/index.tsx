@@ -171,5 +171,3 @@ export function SectionSidebar({
     </div>
   );
 }
-
-export default SectionSidebar;

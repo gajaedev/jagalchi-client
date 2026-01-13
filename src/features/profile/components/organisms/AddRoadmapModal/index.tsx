@@ -150,7 +150,7 @@ export function AddRoadmapModal({
   children: React.ReactNode;
   onConfirm?: (fileId: string) => void;
 }) {
-  const [open, setOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [selectedFileId, setSelectedFileId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -191,15 +191,15 @@ export function AddRoadmapModal({
   const handleConfirm = () => {
     if (selectedFileId) {
       onConfirm?.(selectedFileId);
-      setOpen(false);
+      setIsOpen(false);
     }
   };
 
   return (
     <Dialog
-      open={open}
+      open={isOpen}
       onOpenChange={(isOpen) => {
-        setOpen(isOpen);
+        setIsOpen(isOpen);
         if (!isOpen) {
           setSelectedFileId(null);
           setSearchQuery('');

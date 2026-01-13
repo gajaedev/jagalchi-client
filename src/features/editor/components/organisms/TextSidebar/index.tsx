@@ -249,5 +249,3 @@ export function TextSidebar({ open, onOpenChange, textData, onSave, className }:
     </div>
   );
 }
-
-export default TextSidebar;
