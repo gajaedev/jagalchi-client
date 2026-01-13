@@ -27,8 +27,8 @@ export function ContributionGraph({ data }: { data: Contribution[] }) {
   }, [data]);
 
   return (
-    <Card className="w-full rounded-xl shadow-none">
-      <CardHeader className="px-6 pb-2">
+    <Card className="w-full gap-0 rounded-xl shadow-none">
+      <CardHeader className="px-6 pb-4">
         <CardTitle className="text-muted-foreground text-sm font-semibold">
           {streak}일 연속 스트릭
         </CardTitle>

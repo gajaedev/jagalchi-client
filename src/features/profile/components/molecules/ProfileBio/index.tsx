@@ -62,8 +62,8 @@ export function ProfileBio({ bio, onChange }: ProfileBioProps) {
   }
 
   return (
-    <Card className="shadow-none">
-      <CardHeader className="px-6 pb-2">
+    <Card className="gap-0 shadow-none">
+      <CardHeader className="px-6 pb-4">
         <CardTitle className="text-muted-foreground text-sm font-semibold">
           {PROFILE_MESSAGES.BIO_TITLE}
         </CardTitle>
