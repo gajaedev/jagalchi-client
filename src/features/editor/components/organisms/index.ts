@@ -1,5 +1,5 @@
-export * from './LineSidebar';
-export * from './MultiSelectionSidebar';
-export * from './NodeSidebar';
-export * from './SectionSidebar';
-export * from './TextSidebar';
+export { LineSidebar } from './LineSidebar';
+export { MultiSelectionSidebar } from './MultiSelectionSidebar';
+export { NodeSidebar } from './NodeSidebar';
+export { SectionSidebar } from './SectionSidebar';
+export { TextSidebar } from './TextSidebar';

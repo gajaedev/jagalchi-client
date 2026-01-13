@@ -59,5 +59,3 @@ export function EditorToolbar({ activeMode, onModeChange, className }: EditorToo
     </div>
   );
 }
-
-export default EditorToolbar;

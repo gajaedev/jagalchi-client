@@ -2,6 +2,10 @@
 
 import { useState } from 'react';
 
+/**
+ * Manages the state and logic for sending verification codes during authentication.
+ * @returns Object containing the code sent state and the handler to trigger sending
+ */
 export function useVerificationCode() {
   const [isCodeSent, setIsCodeSent] = useState(false);
 

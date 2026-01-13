@@ -9,23 +9,23 @@ import { cn } from '@/lib/utils';
 
 export const PasswordInput = forwardRef<HTMLInputElement, React.ComponentProps<'input'>>(
   ({ className, ...props }, ref) => {
-    const [showPassword, setShowPassword] = useState(false);
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
     return (
       <div className="relative">
         <Input
           ref={ref}
-          type={showPassword ? 'text' : 'password'}
+          type={isPasswordVisible ? 'text' : 'password'}
           className={cn('pr-10', className)}
           {...props}
         />
         <button
           type="button"
           className="text-muted-foreground hover:text-foreground absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer transition-colors"
-          onClick={() => setShowPassword(!showPassword)}
-          aria-label={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
+          onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+          aria-label={isPasswordVisible ? '비밀번호 숨기기' : '비밀번호 보기'}
         >
-          {showPassword ? <Eye className="size-5" /> : <EyeOff className="size-5" />}
+          {isPasswordVisible ? <Eye className="size-5" /> : <EyeOff className="size-5" />}
         </button>
       </div>
     );

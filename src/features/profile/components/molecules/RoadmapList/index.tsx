@@ -2,6 +2,7 @@ import Image from 'next/image';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { PROFILE_MESSAGES } from '@/constants/messages';
 
 interface RoadmapItem {
   id: string;
@@ -25,7 +26,8 @@ function RoadmapCardItem({ item }: { item: RoadmapItem }) {
 }
 
 export function RoadmapList({ variant, items = [] }: RoadmapListProps) {
-  const title = variant === 'end' ? '완주한 로드맵' : '진행중인 로드맵';
+  const title =
+    variant === 'end' ? PROFILE_MESSAGES.COMPLETED_ROADMAP : PROFILE_MESSAGES.IN_PROGRESS_ROADMAP;
 
   return (
     <Card className="h-[240px] w-full overflow-hidden rounded-xl p-4 shadow-none sm:h-[280px] sm:p-6">

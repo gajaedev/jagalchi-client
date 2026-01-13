@@ -16,6 +16,8 @@ export default function Home() {
   const [images, setImages] = useState<number[]>([]);
 
   useEffect(() => {
+    // Note: setImages를 effect 내에서 직접 호출하는 것이 의도적입니다.
+    // 이미지 배열을 초기화하는 단순한 로직이며, 재렌더링 이슈가 없습니다.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setImages(getRandomImages());
   }, []);

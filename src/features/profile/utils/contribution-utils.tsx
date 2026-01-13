@@ -3,8 +3,28 @@ export interface Contribution {
   count: number;
 }
 
+const MS_PER_DAY = 86_400_000;
+
+/**
+ * Formats a Date object to local YYYY-MM-DD string.
+ * Avoids timezone issues by using local date components instead of UTC.
+ * @param date - The date to format
+ * @returns Date string in YYYY-MM-DD format using local timezone
+ */
+function formatLocalDate(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
 export const COLORS = ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39'];
 
+/**
+ * Converts a contribution count to a color intensity level (0-4).
+ * @param count - The number of contributions on a given day
+ * @returns A level from 0 (no contributions) to 4 (highest intensity)
+ */
 export function getLevel(count: number): number {
   if (count <= 0) return 0;
   if (count < 3) return 1;
@@ -13,6 +33,11 @@ export function getLevel(count: number): number {
   return 4;
 }
 
+/**
+ * Generates an array of 364 dates (52 weeks) ending at the end of the current week.
+ * Ensures the contribution graph is perfectly aligned to a 52x7 grid with dates in YYYY-MM-DD format.
+ * @returns Array of 364 date strings in chronological order
+ */
 export function getLastYearDates(): string[] {
   const dates: string[] = [];
   const today = new Date();
@@ -90,19 +115,32 @@ export function getLastYearDates(): string[] {
     // If the date is in the future, it just has 0 count.
     // This ensures the grid is perfectly 52x7.
 
-    dates.push(d.toISOString().slice(0, 10));
+    dates.push(formatLocalDate(d));
   }
 
   return dates;
 }
 
+/**
+ * Pads the start of a date array with null values to align the first date to the correct weekday column.
+ * This ensures the date grid aligns properly with a calendar week structure (starting on Sunday).
+ * @param dates - Array of date strings to pad
+ * @returns Padded array with null values prepended to align the first date to the correct column
+ */
 export function padStartByWeekday(dates: string[]): (string | null)[] {
+  if (dates.length === 0) return [];
+
   const firstDate = new Date(dates[0]);
   const weekday = firstDate.getDay();
 
   return [...Array(weekday).fill(null), ...dates];
 }
 
+/**
+ * Divides an array into chunks of 7 elements each, representing weeks in a contribution grid.
+ * @param arr - The array to chunk (typically containing dates or contribution data)
+ * @returns A 2D array where each sub-array represents a week of 7 elements
+ */
 export function chunkByWeek<T>(arr: T[]): T[][] {
   const weeks: T[][] = [];
 
@@ -113,13 +151,20 @@ export function chunkByWeek<T>(arr: T[]): T[][] {
   return weeks;
 }
 
+/**
+ * Calculates the current contribution streak by counting consecutive days with contributions.
+ * The streak starts from today or yesterday and counts backwards until a day with no contributions is found.
+ * @param data - Array of contribution objects with date and count properties
+ * @returns The number of consecutive days with contributions (0 if streak is broken or no data)
+ */
 export function calculateStreak(data: Contribution[]): number {
   if (!data || data.length === 0) return 0;
 
   const sortedData = [...data].sort((a, b) => b.date.localeCompare(a.date));
   let streak = 0;
-  const today = new Date().toISOString().slice(0, 10);
-  const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+  const now = new Date();
+  const today = formatLocalDate(now);
+  const yesterday = formatLocalDate(new Date(now.getTime() - MS_PER_DAY));
 
   const mostRecent = sortedData.find((d) => d.count > 0);
   if (!mostRecent || (mostRecent.date !== today && mostRecent.date !== yesterday)) {
@@ -133,7 +178,7 @@ export function calculateStreak(data: Contribution[]): number {
         streak++;
         const date = new Date(expectedDate);
         date.setDate(date.getDate() - 1);
-        expectedDate = date.toISOString().slice(0, 10);
+        expectedDate = formatLocalDate(date);
       } else {
         break;
       }

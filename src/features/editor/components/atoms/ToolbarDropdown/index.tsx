@@ -43,5 +43,3 @@ export function ToolbarDropdown({
     </DropdownMenu>
   );
 }
-
-export default ToolbarDropdown;

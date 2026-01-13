@@ -29,7 +29,7 @@ export function NodeSidebar({ open, onOpenChange, nodeData, onSave, className }:
   const [resources, setResources] = useState<Resource[]>(nodeData?.resources || []);
   const [color, setColor] = useState(nodeData?.color || '#3B82F6');
   const [colorText, setColorText] = useState(nodeData?.color || '#3B82F6');
-  const [locked, setLocked] = useState(nodeData?.locked || false);
+  const [isLocked, setLocked] = useState(nodeData?.isLocked || false);
 
   // Sync local state with prop changes for controlled component pattern
 
@@ -40,7 +40,7 @@ export function NodeSidebar({ open, onOpenChange, nodeData, onSave, className }:
       setResources(nodeData.resources);
       setColor(nodeData.color);
       setColorText(nodeData.color);
-      setLocked(nodeData.locked);
+      setLocked(nodeData.isLocked);
     } else {
       // Reset to defaults when nodeData is cleared
       setTitle('');
@@ -63,7 +63,7 @@ export function NodeSidebar({ open, onOpenChange, nodeData, onSave, className }:
       description,
       resources,
       color,
-      locked,
+      isLocked,
     });
   };
 
@@ -229,7 +229,7 @@ export function NodeSidebar({ open, onOpenChange, nodeData, onSave, className }:
                   <p className="text-muted-foreground text-xs">노드를 잠가 수정을 방지합니다</p>
                 </div>
               </div>
-              <Switch id="node-lock" checked={locked} onCheckedChange={setLocked} />
+              <Switch id="node-lock" checked={isLocked} onCheckedChange={setLocked} />
             </div>
           </div>
 
@@ -244,5 +244,3 @@ export function NodeSidebar({ open, onOpenChange, nodeData, onSave, className }:
     </div>
   );
 }
-
-export default NodeSidebar;

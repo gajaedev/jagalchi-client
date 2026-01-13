@@ -1,3 +1,3 @@
-export * from './ResourceInput';
-export * from './ToolbarDropdown';
-export * from './ToolbarItem';
+export { ResourceInput } from './ResourceInput';
+export { ToolbarDropdown } from './ToolbarDropdown';
+export { ToolbarItem } from './ToolbarItem';

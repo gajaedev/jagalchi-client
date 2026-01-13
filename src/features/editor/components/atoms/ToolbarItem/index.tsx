@@ -42,5 +42,3 @@ export function ToolbarItem({
     </button>
   );
 }
-
-export default ToolbarItem;

@@ -1,8 +1,8 @@
-export * from './ContributionGraph';
-export * from './ProfileBio';
-export * from './ProfileCustomBoxArea';
-export * from './ProfileCustomOrganization';
-export * from './ProfileHeader';
-export * from './ProfileInfoForm';
-export * from './ProfileStreak';
-export * from './RoadmapList';
+export { ContributionGraph } from './ContributionGraph';
+export { ProfileBio } from './ProfileBio';
+export { ProfileCustomBoxArea } from './ProfileCustomBoxArea';
+export { ProfileCustomOrganization } from './ProfileCustomOrganization';
+export { ProfileHeader } from './ProfileHeader';
+export { ProfileInfoForm } from './ProfileInfoForm';
+export { ProfileStreak } from './ProfileStreak';
+export { RoadmapList } from './RoadmapList';

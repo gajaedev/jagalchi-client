@@ -1,4 +1,4 @@
-export * from './ProfileEditButton';
-export * from './ProfileLinkAddButton';
-export * from './ProfilePicture';
-export * from './RoadmapCard';
+export { ProfileEditButton } from './ProfileEditButton';
+export { ProfileLinkAddButton } from './ProfileLinkAddButton';
+export { ProfilePicture } from './ProfilePicture';
+export { RoadmapCard } from './RoadmapCard';

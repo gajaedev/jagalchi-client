@@ -2,6 +2,7 @@ import { useAtom } from 'jotai';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { PROFILE_MESSAGES } from '@/constants/messages';
 
 import { profileModeAtom } from '../../../stores/profile-atoms';
 import { RoadmapCard } from '../../atoms/RoadmapCard';
@@ -23,7 +24,9 @@ export function MadeRoadmapList() {
   return (
     <Card className="mb-10 w-full rounded-xl shadow-none">
       <CardHeader className="pb-4">
-        <CardTitle className="text-muted-foreground text-base font-bold">만든 로드맵</CardTitle>
+        <CardTitle className="text-muted-foreground text-base font-bold">
+          {PROFILE_MESSAGES.MADE_ROADMAP}
+        </CardTitle>
       </CardHeader>
 
       <CardContent className="flex flex-col gap-4">
