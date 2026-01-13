@@ -244,5 +244,3 @@ export function NodeSidebar({ open, onOpenChange, nodeData, onSave, className }:
     </div>
   );
 }
-
-export default NodeSidebar;

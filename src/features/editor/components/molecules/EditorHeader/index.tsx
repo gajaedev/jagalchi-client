@@ -68,5 +68,3 @@ export function EditorHeader({
     </header>
   );
 }
-
-export default EditorHeader;
