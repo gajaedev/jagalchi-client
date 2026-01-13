@@ -13,7 +13,7 @@ describe('SectionSidebar', () => {
   const defaultSectionData = {
     title: '테스트 섹션',
     color: '#3B82F6',
-    locked: false,
+    isLocked: false,
   };
 
   it('닫혀있을 때 렌더링되지 않는다', () => {
@@ -127,7 +127,7 @@ describe('SectionSidebar', () => {
     expect(handleSave).toHaveBeenCalledWith({
       title: '테스트 섹션',
       color: '#3B82F6',
-      locked: false,
+      isLocked: false,
     });
   });
 
@@ -192,7 +192,7 @@ describe('SectionSidebar', () => {
     expect(handleSave).toHaveBeenCalledWith({
       title: '변경된 섹션',
       color: '#ff0000',
-      locked: true,
+      isLocked: true,
     });
   });
 

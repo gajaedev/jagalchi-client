@@ -18,7 +18,7 @@ describe('TextSidebar', () => {
     fontSize: 16,
     fontWeight: 'normal' as const,
     color: '#000000',
-    locked: false,
+    isLocked: false,
   };
 
   it('닫혀있을 때 렌더링되지 않는다', () => {
@@ -261,7 +261,7 @@ describe('TextSidebar', () => {
       fontSize: 16,
       fontWeight: 'normal',
       color: '#000000',
-      locked: false,
+      isLocked: false,
     });
   });
 
@@ -337,7 +337,7 @@ describe('TextSidebar', () => {
       fontSize: 18,
       fontWeight: 'bold',
       color: '#ff0000',
-      locked: true,
+      isLocked: true,
     });
   });
 

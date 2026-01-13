@@ -28,7 +28,7 @@ export function TextSidebar({ open, onOpenChange, textData, onSave, className }:
   const [fontWeight, setFontWeight] = useState<FontWeight>(textData?.fontWeight || 'normal');
   const [color, setColor] = useState(textData?.color || '#000000');
   const [colorText, setColorText] = useState(textData?.color || '#000000');
-  const [locked, setLocked] = useState(textData?.locked || false);
+  const [isLocked, setLocked] = useState(textData?.isLocked || false);
 
   // Sync local state with prop changes for controlled component pattern
   useEffect(() => {
@@ -38,7 +38,7 @@ export function TextSidebar({ open, onOpenChange, textData, onSave, className }:
       setFontWeight(textData.fontWeight);
       setColor(textData.color);
       setColorText(textData.color);
-      setLocked(textData.locked);
+      setLocked(textData.isLocked);
     } else {
       // Reset to defaults when textData is cleared
       setContent('');
@@ -61,7 +61,7 @@ export function TextSidebar({ open, onOpenChange, textData, onSave, className }:
       fontSize,
       fontWeight,
       color,
-      locked,
+      isLocked,
     });
   };
 
@@ -231,9 +231,9 @@ export function TextSidebar({ open, onOpenChange, textData, onSave, className }:
               </div>
               <Switch
                 id="text-lock"
-                checked={locked}
+                checked={isLocked}
                 onCheckedChange={setLocked}
-                aria-checked={locked}
+                aria-checked={isLocked}
               />
             </div>
           </div>

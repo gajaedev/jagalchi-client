@@ -31,7 +31,7 @@ export function SectionSidebar({
   const [title, setTitle] = useState(sectionData?.title || '');
   const [color, setColor] = useState(sectionData?.color || '#3B82F6');
   const [colorText, setColorText] = useState(sectionData?.color || '#3B82F6');
-  const [locked, setLocked] = useState(sectionData?.locked || false);
+  const [isLocked, setLocked] = useState(sectionData?.isLocked || false);
 
   // Sync local state with prop changes for controlled component pattern
 
@@ -40,7 +40,7 @@ export function SectionSidebar({
       setTitle(sectionData.title);
       setColor(sectionData.color);
       setColorText(sectionData.color);
-      setLocked(sectionData.locked);
+      setLocked(sectionData.isLocked);
     } else {
       // Reset to defaults when sectionData is cleared
       setTitle('');
@@ -59,7 +59,7 @@ export function SectionSidebar({
     onSave?.({
       title,
       color,
-      locked,
+      isLocked,
     });
   };
 
@@ -156,7 +156,7 @@ export function SectionSidebar({
                   <p className="text-muted-foreground text-xs">섹션을 잠가 수정을 방지합니다</p>
                 </div>
               </div>
-              <Switch id="section-lock" checked={locked} onCheckedChange={setLocked} />
+              <Switch id="section-lock" checked={isLocked} onCheckedChange={setLocked} />
             </div>
           </div>
 
