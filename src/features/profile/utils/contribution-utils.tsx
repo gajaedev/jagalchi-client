@@ -3,6 +3,21 @@ export interface Contribution {
   count: number;
 }
 
+const MS_PER_DAY = 86_400_000;
+
+/**
+ * Formats a Date object to local YYYY-MM-DD string.
+ * Avoids timezone issues by using local date components instead of UTC.
+ * @param date - The date to format
+ * @returns Date string in YYYY-MM-DD format using local timezone
+ */
+function formatLocalDate(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
 export const COLORS = ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39'];
 
 /**
@@ -100,7 +115,7 @@ export function getLastYearDates(): string[] {
     // If the date is in the future, it just has 0 count.
     // This ensures the grid is perfectly 52x7.
 
-    dates.push(d.toISOString().slice(0, 10));
+    dates.push(formatLocalDate(d));
   }
 
   return dates;
@@ -147,8 +162,9 @@ export function calculateStreak(data: Contribution[]): number {
 
   const sortedData = [...data].sort((a, b) => b.date.localeCompare(a.date));
   let streak = 0;
-  const today = new Date().toISOString().slice(0, 10);
-  const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+  const now = new Date();
+  const today = formatLocalDate(now);
+  const yesterday = formatLocalDate(new Date(now.getTime() - MS_PER_DAY));
 
   const mostRecent = sortedData.find((d) => d.count > 0);
   if (!mostRecent || (mostRecent.date !== today && mostRecent.date !== yesterday)) {
@@ -162,7 +178,7 @@ export function calculateStreak(data: Contribution[]): number {
         streak++;
         const date = new Date(expectedDate);
         date.setDate(date.getDate() - 1);
-        expectedDate = date.toISOString().slice(0, 10);
+        expectedDate = formatLocalDate(date);
       } else {
         break;
       }
