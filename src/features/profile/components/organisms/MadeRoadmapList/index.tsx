@@ -22,9 +22,9 @@ export function MadeRoadmapList() {
   const [mode] = useAtom(profileModeAtom);
 
   return (
-    <Card className="mb-10 w-full rounded-xl shadow-none">
-      <CardHeader className="pb-4">
-        <CardTitle className="text-muted-foreground text-base font-bold">
+    <Card className="mb-10 w-full gap-0 rounded-xl shadow-none">
+      <CardHeader className="px-6 pb-4">
+        <CardTitle className="text-muted-foreground text-sm font-semibold">
           {PROFILE_MESSAGES.MADE_ROADMAP}
         </CardTitle>
       </CardHeader>
