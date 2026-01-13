@@ -10,7 +10,10 @@ interface RoadmapCardProps {
 
 export function RoadmapCard({ title, author, imageUrl }: RoadmapCardProps) {
   return (
-    <Card className="hover:bg-muted/40 w-full cursor-pointer overflow-hidden rounded-lg border p-0 shadow-none transition-colors">
+    <Card
+      data-testid="roadmap-card"
+      className="hover:bg-muted/40 w-full cursor-pointer overflow-hidden rounded-lg border p-0 shadow-none transition-colors"
+    >
       {imageUrl ? (
         <div className="bg-muted/50 relative aspect-[2/1] w-full">
           <Image
