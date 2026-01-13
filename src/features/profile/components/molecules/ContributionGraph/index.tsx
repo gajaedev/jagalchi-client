@@ -2,7 +2,7 @@
 
 import { useMemo } from 'react';
 
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 import {
   Contribution,
@@ -27,11 +27,13 @@ export function ContributionGraph({ data }: { data: Contribution[] }) {
   }, [data]);
 
   return (
-    <Card className="w-full rounded-lg p-4 shadow-none sm:px-0 sm:py-2">
-      <CardContent className="flex flex-col">
-        <p className="text-muted-foreground w-full pb-2 text-sm font-semibold">
+    <Card className="w-full rounded-xl shadow-none">
+      <CardHeader className="px-6 pb-2">
+        <CardTitle className="text-muted-foreground text-sm font-semibold">
           {streak}일 연속 스트릭
-        </p>
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="flex flex-col">
         <div className="w-full overflow-x-auto py-2">
           <div className="flex min-w-max gap-[1px]">
             {weeks.map((week, i) => (
