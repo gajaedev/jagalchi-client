@@ -51,7 +51,7 @@ export function ProfileBio({ bio, onChange }: ProfileBioProps) {
   if (mode === 'edit') {
     return (
       <div className="flex flex-col gap-4">
-        <p className="text-sm font-semibold">{PROFILE_MESSAGES.BIO_TITLE}</p>
+        <p className="text-muted-foreground text-sm font-bold">{PROFILE_MESSAGES.BIO_TITLE}</p>
         <Textarea
           className="h-[280px] w-full resize-none"
           value={userBio}
@@ -64,7 +64,9 @@ export function ProfileBio({ bio, onChange }: ProfileBioProps) {
   return (
     <Card className="shadow-none">
       <CardHeader>
-        <CardTitle className="text-sm font-semibold">{PROFILE_MESSAGES.BIO_TITLE}</CardTitle>
+        <CardTitle className="text-muted-foreground text-sm font-bold">
+          {PROFILE_MESSAGES.BIO_TITLE}
+        </CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-2">
         <p

@@ -32,7 +32,7 @@ export function RoadmapList({ variant, items = [] }: RoadmapListProps) {
   return (
     <Card className="h-[240px] w-full overflow-hidden rounded-xl p-4 shadow-none sm:h-[280px] sm:p-6">
       <CardHeader className="mb-2 p-0 sm:mb-4">
-        <CardTitle className="text-foreground text-lg">{title}</CardTitle>
+        <CardTitle className="text-muted-foreground text-sm font-bold">{title}</CardTitle>
       </CardHeader>
 
       <ScrollArea className="h-[165px] sm:h-[180px]">

@@ -24,7 +24,7 @@ export function MadeRoadmapList() {
   return (
     <Card className="mb-10 w-full rounded-xl shadow-none">
       <CardHeader className="pb-4">
-        <CardTitle className="text-muted-foreground text-base font-bold">
+        <CardTitle className="text-muted-foreground text-sm font-bold">
           {PROFILE_MESSAGES.MADE_ROADMAP}
         </CardTitle>
       </CardHeader>
