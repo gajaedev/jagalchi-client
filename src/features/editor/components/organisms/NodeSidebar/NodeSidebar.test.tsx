@@ -16,7 +16,7 @@ describe('NodeSidebar', () => {
     description: '테스트 설명',
     resources: [{ id: 'test-resource-1', url: 'https://example.com', title: 'Example' }],
     color: '#3B82F6',
-    locked: false,
+    isLocked: false,
   };
 
   it('닫혀있을 때 렌더링되지 않는다', () => {
@@ -222,7 +222,7 @@ describe('NodeSidebar', () => {
       description: '테스트 설명',
       resources: [{ id: 'test-resource-1', url: 'https://example.com', title: 'Example' }],
       color: '#3B82F6',
-      locked: false,
+      isLocked: false,
     });
   });
 
@@ -294,7 +294,7 @@ describe('NodeSidebar', () => {
       description: '변경된 설명',
       resources: [{ id: 'test-resource-1', url: 'https://example.com', title: 'Example' }],
       color: '#ff0000',
-      locked: true,
+      isLocked: true,
     });
   });
 

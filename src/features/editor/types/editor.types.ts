@@ -17,7 +17,7 @@ export interface NodeData {
   description: string;
   resources: Resource[];
   color: string;
-  locked: boolean;
+  isLocked: boolean;
 }
 
 export interface LineData {
@@ -29,7 +29,7 @@ export interface LineData {
 export interface SectionData {
   title: string;
   color: string;
-  locked: boolean;
+  isLocked: boolean;
 }
 
 export interface TextData {
@@ -37,7 +37,7 @@ export interface TextData {
   fontSize: number;
   fontWeight: FontWeight;
   color: string;
-  locked: boolean;
+  isLocked: boolean;
 }
 
 export interface ElementData
