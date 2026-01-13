@@ -76,7 +76,7 @@ export function ProfileBio({ bio, onChange }: ProfileBioProps) {
             !isExpanded && 'line-clamp-3',
           )}
         >
-          {userBio || '{PROFILE_MESSAGES.BIO_TITLE}가 없습니다.'}
+          {userBio || `${PROFILE_MESSAGES.BIO_TITLE}가 없습니다.`}
         </p>
 
         {(isOverflowing || isExpanded) && (

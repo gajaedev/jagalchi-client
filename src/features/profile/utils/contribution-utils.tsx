@@ -113,6 +113,8 @@ export function getLastYearDates(): string[] {
  * @returns Padded array with null values prepended to align the first date to the correct column
  */
 export function padStartByWeekday(dates: string[]): (string | null)[] {
+  if (dates.length === 0) return [];
+
   const firstDate = new Date(dates[0]);
   const weekday = firstDate.getDay();
 

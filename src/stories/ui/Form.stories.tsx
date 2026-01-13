@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -109,7 +110,9 @@ export const WithError: Story = {
       });
 
       // Trigger validation to show errors
-      form.trigger();
+      useEffect(() => {
+        form.trigger();
+      }, [form]);
 
       const onSubmit = (values: z.infer<typeof formSchema>) => {
         console.log(values);
