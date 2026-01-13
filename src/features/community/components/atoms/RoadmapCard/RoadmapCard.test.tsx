@@ -9,21 +9,21 @@ vi.mock('next/image', () => ({
 
 describe('RoadmapCard', () => {
   it('renders the title and author correctly', () => {
-    render(<RoadmapCard title="Test Roadmap" author="John Doe" />);
+    render(<RoadmapCard id="test-1" title="Test Roadmap" author="John Doe" />);
 
     expect(screen.getByText('Test Roadmap')).toBeInTheDocument();
     expect(screen.getByText('By John Doe')).toBeInTheDocument();
   });
 
   it('renders the thumbnail placeholder when no imageUrl is provided', () => {
-    render(<RoadmapCard title="Test Roadmap" author="John Doe" />);
+    render(<RoadmapCard id="test-2" title="Test Roadmap" author="John Doe" />);
 
     expect(screen.getByText('Thumbnail')).toBeInTheDocument();
   });
 
   it('renders the image when imageUrl is provided', () => {
     const imageUrl = 'https://example.com/image.png';
-    render(<RoadmapCard title="Test Roadmap" author="John Doe" imageUrl={imageUrl} />);
+    render(<RoadmapCard id="test-3" title="Test Roadmap" author="John Doe" imageUrl={imageUrl} />);
 
     const image = screen.getByAltText('Test Roadmap');
     expect(image).toBeInTheDocument();
