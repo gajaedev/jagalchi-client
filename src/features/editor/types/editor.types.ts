@@ -5,13 +5,23 @@ export interface Resource {
   title: string;
 }
 
+/**
+ * Represents the active mode of the editor toolbar, determining which element type can be created.
+ */
 export type EditorToolbarMode = 'node' | 'line' | 'section' | 'text' | 'ai';
 export type SaveStatus = 'default' | 'saved' | 'failed';
 export type LineStyle = 'solid' | 'dashed' | 'dotted';
 export type FontWeight = 'normal' | 'bold';
+/**
+ * Indicates what types of elements are currently selected in the editor canvas.
+ */
 export type SelectionType = 'node' | 'line' | 'section' | 'text' | 'mixed';
 
 // Editor element data
+/**
+ * Data structure for a learning node element containing title, description, resources, and styling.
+ * Nodes represent individual learning units that can be locked to prevent accidental editing.
+ */
 export interface NodeData {
   title: string;
   description: string;
@@ -26,12 +36,18 @@ export interface LineData {
   label?: string;
 }
 
+/**
+ * Data structure for a grouped section that can organize multiple elements visually.
+ */
 export interface SectionData {
   title: string;
   color: string;
   isLocked: boolean;
 }
 
+/**
+ * Data structure for free-form text element with customizable font size, weight, and color.
+ */
 export interface TextData {
   content: string;
   fontSize: number;
@@ -40,6 +56,10 @@ export interface TextData {
   isLocked: boolean;
 }
 
+/**
+ * Union type for any editor element data that can have properties from node, line, section, or text types.
+ * The 'type' field indicates which specific element type this represents.
+ */
 export interface ElementData
   extends Partial<NodeData>, Partial<LineData>, Partial<SectionData>, Partial<TextData> {
   type: 'node' | 'line' | 'section' | 'text';

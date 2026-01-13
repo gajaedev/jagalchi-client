@@ -5,6 +5,11 @@ export interface Contribution {
 
 export const COLORS = ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39'];
 
+/**
+ * Converts a contribution count to a color intensity level (0-4).
+ * @param count - The number of contributions on a given day
+ * @returns A level from 0 (no contributions) to 4 (highest intensity)
+ */
 export function getLevel(count: number): number {
   if (count <= 0) return 0;
   if (count < 3) return 1;
@@ -13,6 +18,11 @@ export function getLevel(count: number): number {
   return 4;
 }
 
+/**
+ * Generates an array of 364 dates (52 weeks) ending at the end of the current week.
+ * Ensures the contribution graph is perfectly aligned to a 52x7 grid with dates in YYYY-MM-DD format.
+ * @returns Array of 364 date strings in chronological order
+ */
 export function getLastYearDates(): string[] {
   const dates: string[] = [];
   const today = new Date();
@@ -96,6 +106,12 @@ export function getLastYearDates(): string[] {
   return dates;
 }
 
+/**
+ * Pads the start of a date array with null values to align the first date to the correct weekday column.
+ * This ensures the date grid aligns properly with a calendar week structure (starting on Sunday).
+ * @param dates - Array of date strings to pad
+ * @returns Padded array with null values prepended to align the first date to the correct column
+ */
 export function padStartByWeekday(dates: string[]): (string | null)[] {
   const firstDate = new Date(dates[0]);
   const weekday = firstDate.getDay();
@@ -103,6 +119,11 @@ export function padStartByWeekday(dates: string[]): (string | null)[] {
   return [...Array(weekday).fill(null), ...dates];
 }
 
+/**
+ * Divides an array into chunks of 7 elements each, representing weeks in a contribution grid.
+ * @param arr - The array to chunk (typically containing dates or contribution data)
+ * @returns A 2D array where each sub-array represents a week of 7 elements
+ */
 export function chunkByWeek<T>(arr: T[]): T[][] {
   const weeks: T[][] = [];
 
@@ -113,6 +134,12 @@ export function chunkByWeek<T>(arr: T[]): T[][] {
   return weeks;
 }
 
+/**
+ * Calculates the current contribution streak by counting consecutive days with contributions.
+ * The streak starts from today or yesterday and counts backwards until a day with no contributions is found.
+ * @param data - Array of contribution objects with date and count properties
+ * @returns The number of consecutive days with contributions (0 if streak is broken or no data)
+ */
 export function calculateStreak(data: Contribution[]): number {
   if (!data || data.length === 0) return 0;
 
