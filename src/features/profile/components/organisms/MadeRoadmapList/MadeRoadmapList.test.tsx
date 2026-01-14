@@ -7,7 +7,7 @@ import { profileModeAtom } from '../../../stores/profile-atoms';
 
 import { MadeRoadmapList } from './index';
 
-vi.mock('../../atoms/RoadmapCard', () => ({
+vi.mock('@/components/atoms/RoadmapCard', () => ({
   RoadmapCard: ({ title }: { title: string }) => <div data-testid="roadmap-card">{title}</div>,
 }));
 
