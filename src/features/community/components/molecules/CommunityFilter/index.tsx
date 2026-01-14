@@ -12,7 +12,7 @@ import {
   ArrowUpNarrowWide,
   ALargeSmall,
   TimerReset,
-  Map,
+  Map as MapIcon,
 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -40,7 +40,7 @@ function FilterDropdownItem({ label, isActive, onClick, icon }: FilterItemProps)
       onClick={onClick}
       className={cn(
         'flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-xs font-medium',
-        isActive ? 'bg-[#e2e8f0] text-slate-900' : 'text-slate-600 hover:bg-slate-50',
+        isActive ? 'bg-muted text-foreground' : 'text-slate-600 hover:bg-slate-50',
       )}
     >
       {icon}
@@ -79,11 +79,13 @@ export function CommunityFilter() {
               className={cn(
                 'flex h-[36px] items-center gap-[8px] rounded-[8px] border px-[12px] py-[8px] transition-all',
                 isActive
-                  ? 'border-[#020617] bg-[#020617] text-white'
-                  : 'border-[#E2E8F0] bg-white text-[#020617] hover:border-[#CBD5E1]',
+                  ? 'border-primary bg-primary text-primary-foreground'
+                  : 'border-border bg-background text-foreground hover:border-slate-300',
               )}
             >
-              <Icon className={cn('h-4 w-4', isActive ? 'text-white' : 'text-[#020617]')} />
+              <Icon
+                className={cn('h-4 w-4', isActive ? 'text-primary-foreground' : 'text-foreground')}
+              />
               <span className="text-[14px] leading-[20px] font-medium">{tab.label}</span>
             </button>
           );
@@ -94,21 +96,21 @@ export function CommunityFilter() {
         <Button
           variant="outline"
           onClick={() => setIsOpen(!isOpen)}
-          className="h-[36px] w-[116px] justify-between gap-[8px] rounded-[8px] border-[#E2E8F0] bg-white px-[12px] py-[8px] shadow-sm hover:bg-slate-50"
+          className="border-border bg-background h-[36px] w-[116px] justify-between gap-[8px] rounded-[8px] px-[12px] py-[8px] shadow-sm hover:bg-slate-50"
         >
           <div className="flex items-center gap-[8px]">
-            <ArrowDownWideNarrow className="h-4 w-4 text-[#020617]" />
-            <span className="text-[14px] leading-[20px] font-medium text-[#020617]">
+            <ArrowDownWideNarrow className="text-foreground h-4 w-4" />
+            <span className="text-foreground text-[14px] leading-[20px] font-medium">
               {sortOrder === 'desc' ? '내림차순' : '오름차순'}
             </span>
           </div>
           <ChevronDown
-            className={cn('h-4 w-4 text-[#94A3B8] transition-transform', isOpen && 'rotate-180')}
+            className={cn('h-4 w-4 text-slate-400 transition-transform', isOpen && 'rotate-180')}
           />
         </Button>
 
         {isOpen && (
-          <div className="animate-in fade-in zoom-in-95 absolute top-[44px] right-0 z-50 flex min-w-[360px] gap-6 rounded-xl border border-[#E2E8F0] bg-white p-4 shadow-lg duration-100">
+          <div className="animate-in fade-in zoom-in-95 border-border bg-background absolute top-[44px] right-0 z-50 flex min-w-[360px] gap-6 rounded-xl border p-4 shadow-lg duration-100">
             <div className="flex flex-1 flex-col gap-1">
               <h3 className="mb-1 px-2 text-[10px] font-bold tracking-wider text-slate-400 uppercase">
                 정렬순서
@@ -157,7 +159,7 @@ export function CommunityFilter() {
                   <div
                     className={cn(
                       'mx-1.5 h-1.5 w-1.5 rounded-full',
-                      filterCategory === 'all' ? 'bg-[#020617]' : 'bg-slate-300',
+                      filterCategory === 'all' ? 'bg-foreground' : 'bg-slate-300',
                     )}
                   />
                 }
@@ -166,7 +168,7 @@ export function CommunityFilter() {
                 label="로드맵"
                 isActive={filterCategory === 'roadmap'}
                 onClick={() => setFilterCategory('roadmap')}
-                icon={<Map className="h-4 w-4" />}
+                icon={<MapIcon className="h-4 w-4" />}
               />
             </div>
           </div>

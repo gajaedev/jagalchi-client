@@ -27,7 +27,7 @@ export function RoadmapDetail({ id }: RoadmapDetailProps) {
 
   return (
     <div className="flex min-h-screen flex-col items-center bg-white">
-      <div className="relative h-[400px] w-full bg-[#F8FAFC]">
+      <div className="relative h-[400px] w-full bg-slate-50">
         {item.imageUrl && (
           <NextImage src={item.imageUrl} alt={item.title} fill className="object-cover" priority />
         )}
@@ -37,12 +37,12 @@ export function RoadmapDetail({ id }: RoadmapDetailProps) {
         <div className="flex w-[696px] flex-col">
           <div className="mb-[52px] flex flex-col gap-[16px]">
             <div className="flex items-center justify-between">
-              <h1 className="text-[30px] leading-none font-bold tracking-[-1px] text-[#020617]">
+              <h1 className="text-foreground text-[30px] leading-none font-bold tracking-[-1px]">
                 {item.title}
               </h1>
               <Button
                 variant="outline"
-                className="h-[36px] items-center gap-[8px] border-[#E2E8F0] px-[12px] py-[8px] text-[14px] font-semibold text-[#020617] hover:bg-slate-50"
+                className="border-border text-foreground h-[36px] items-center gap-[8px] px-[12px] py-[8px] text-[14px] font-semibold hover:bg-slate-50"
               >
                 <Heart className="h-4 w-4" />
                 좋아요
@@ -52,13 +52,13 @@ export function RoadmapDetail({ id }: RoadmapDetailProps) {
             <div className="flex items-center gap-[16px]">
               <Button
                 variant="default"
-                className="h-[32px] rounded-[6px] bg-[#020617] px-[12px] py-[6px] text-[14px] font-bold text-white hover:bg-[#020617]/90"
+                className="bg-primary hover:bg-primary/90 h-[32px] rounded-[6px] px-[12px] py-[6px] text-[14px] font-bold text-white"
               >
                 로드맵 보기
               </Button>
               <Button
                 variant="outline"
-                className="h-[32px] items-center gap-[8px] rounded-[6px] border-[#E2E8F0] bg-white px-[12px] py-[6px] text-[14px] font-bold text-[#020617] hover:bg-slate-50"
+                className="border-border bg-background text-foreground h-[32px] items-center gap-[8px] rounded-[6px] px-[12px] py-[6px] text-[14px] font-bold hover:bg-slate-50"
               >
                 <FilePlus2 className="h-4 w-4" />내 로드맵에 추가
               </Button>
@@ -66,25 +66,21 @@ export function RoadmapDetail({ id }: RoadmapDetailProps) {
           </div>
 
           <section className="flex flex-col gap-[16px]">
-            <h2 className="text-[20px] leading-none font-semibold text-[#020617]">About</h2>
-            <p className="text-[16px] leading-[28px] text-[#475569]">
-              I’m as real as they come, they get feeling get numb. You think you got a little buzz,
-              so now you can’t get stuck. I keep a razor blade tuck on me, under my toungue. Don’t
-              let me have to tell them niggas about the city I’m from, It’s Brooklyn. Be the home of
-              the hardest ever, where the nigga’s don’t aim, just palm beretta’s and bomb whatever.
-              So we don’t move calmly never. It’s for my niggas trapped in cells like salmonela.
-              Look I could do this shit with no effort, no pressure, no gimmick shit, no radio
-              records. Just text book rhyme style with the raw texture. Punchlines, right hooks, now
-              that’s a trifecta.
+            <h2 className="text-foreground text-[20px] leading-none font-semibold">About</h2>
+            <p className="text-muted-foreground text-[16px] leading-[28px]">
+              이 로드맵은 프론트엔드 개발자로 성장하기 위한 학습 경로를 제공합니다. HTML, CSS,
+              JavaScript 기초부터 React, TypeScript, 그리고 최신 웹 개발 트렌드까지 체계적으로
+              학습할 수 있습니다. 단계별 커리큘럼과 실습 프로젝트를 통해 실무에 필요한 역량을
+              효과적으로 쌓을 수 있습니다.
             </p>
           </section>
         </div>
 
-        <Separator orientation="vertical" className="h-[676px] bg-[#E2E8F0]" />
+        <Separator orientation="vertical" className="bg-border h-[676px]" />
 
         <aside className="flex w-[134px] flex-col gap-[40px]">
           <div className="flex flex-col gap-[24px]">
-            <h3 className="text-[18px] leading-none font-semibold text-[#020617]">Made by</h3>
+            <h3 className="text-foreground text-[18px] leading-none font-semibold">Made by</h3>
             <div className="flex flex-col gap-[16px]">
               <ContributorItem name={item.author} />
               <ContributorItem name="Co-author" />
@@ -92,7 +88,7 @@ export function RoadmapDetail({ id }: RoadmapDetailProps) {
             </div>
           </div>
 
-          <Separator className="bg-[#E2E8F0]" />
+          <Separator className="bg-border" />
 
           <div className="flex flex-col gap-[8px]">
             <span className="text-[12px] font-bold text-slate-400">마지막 업데이트</span>

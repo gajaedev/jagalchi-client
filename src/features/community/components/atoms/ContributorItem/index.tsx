@@ -17,7 +17,7 @@ export function ContributorItem({ name, avatarUrl }: ContributorItemProps) {
         </AvatarFallback>
       </Avatar>
       <div className="flex flex-col">
-        <span className="text-[12px] leading-tight font-bold text-[#020617]">{name}</span>
+        <span className="text-foreground text-[12px] leading-tight font-bold">{name}</span>
         <span className="text-[10px] leading-none text-slate-400">Contributor</span>
       </div>
     </div>

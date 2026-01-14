@@ -60,7 +60,7 @@ describe('CommunityFilter', () => {
       </Wrapper>,
     );
     const popularTab = screen.getByText('인기').closest('button');
-    expect(popularTab).toHaveClass('bg-[#020617]');
+    expect(popularTab).toHaveClass('bg-primary');
   });
 
   it('opens sort dropdown on click', () => {
