@@ -1,11 +1,14 @@
 'use client';
 
+import { useState } from 'react';
+
 import NextImage from 'next/image';
 
 import { Heart, FilePlus2 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { cn } from '@/lib/utils';
 
 import { MOCK_COMMUNITY_DATA } from '../../../constants/community.mock';
 import { ContributorItem } from '../../atoms/ContributorItem';
@@ -15,6 +18,7 @@ interface RoadmapDetailProps {
 }
 
 export function RoadmapDetail({ id }: RoadmapDetailProps) {
+  const [isLiked, setIsLiked] = useState(false);
   const item = MOCK_COMMUNITY_DATA.find((i) => i.id === id);
 
   if (!item) {
@@ -42,9 +46,15 @@ export function RoadmapDetail({ id }: RoadmapDetailProps) {
               </h1>
               <Button
                 variant="outline"
-                className="border-border text-foreground h-[36px] items-center gap-[8px] px-[12px] py-[8px] text-[14px] font-semibold hover:bg-slate-50"
+                onClick={() => setIsLiked(!isLiked)}
+                className={cn(
+                  'h-[36px] items-center gap-[8px] px-[12px] py-[8px] text-[14px] font-semibold',
+                  isLiked
+                    ? 'border-red-500 bg-red-50 text-red-600 hover:bg-red-100'
+                    : 'border-border text-foreground hover:bg-slate-50',
+                )}
               >
-                <Heart className="h-4 w-4" />
+                <Heart className={cn('h-4 w-4', isLiked && 'fill-red-500 text-red-500')} />
                 좋아요
               </Button>
             </div>
