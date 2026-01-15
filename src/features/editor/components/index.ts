@@ -1,5 +1,5 @@
-export { ResourceInput, ToolbarDropdown, ToolbarItem } from './atoms';
-export { EditorHeader, EditorToolbar } from './molecules';
+export { AIMenu, ResourceInput, ToolbarDropdown, ToolbarItem } from './atoms';
+export { EditorHeader, EditorToolbar, ResourceDisplay } from './molecules';
 export {
   LineSidebar,
   MultiSelectionSidebar,
@@ -7,3 +7,4 @@ export {
   SectionSidebar,
   TextSidebar,
 } from './organisms';
+export { FlowNode, FlowSection, FlowText } from './flow-nodes';
