@@ -65,6 +65,15 @@ export interface ElementData
   type: 'node' | 'line' | 'section' | 'text';
 }
 
+// AI types
+export type AIAction = 'generate' | 'modify';
+
+export interface AIMenuItem {
+  action: AIAction;
+  label: string;
+  icon: React.ReactNode;
+}
+
 // Dropdown item type
 export interface ToolbarDropdownItem {
   icon: React.ReactNode;
