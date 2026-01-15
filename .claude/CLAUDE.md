@@ -171,3 +171,29 @@ Current status (as of 2026-01-13):
 - Profile: 59% coverage
 
 See `~/.claude/test-coverage-report.md` for detailed missing test list.
+
+## Git Worktree 컨벤션
+
+이 프로젝트에서 여러 worktree 사용 시:
+
+- **네이밍:** `../jagalchi-<issue-number>` (예: `../jagalchi-34`)
+- **위치:** 메인 저장소 디렉토리와 동일 레벨
+- **병렬 빌드:** `pnpm build`를 `run_in_background: true`로 실행
+- **정리:** PR 머지 후 worktree 삭제
+
+**예시:**
+
+```bash
+# 여러 worktree 생성
+for issue in 34 35 37; do
+  git worktree add ../jagalchi-${issue} feat/#${issue}
+done
+
+# 병렬 빌드 (Claude에서 run_in_background: true 사용)
+cd ../jagalchi-34 && pnpm build
+cd ../jagalchi-35 && pnpm build
+cd ../jagalchi-37 && pnpm build
+
+# 정리
+git worktree remove ../jagalchi-34
+```
