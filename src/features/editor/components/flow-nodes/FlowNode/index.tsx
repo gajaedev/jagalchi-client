@@ -1,4 +1,4 @@
-import { Handle, Position } from 'reactflow';
+import { Handle, Position } from '@xyflow/react';
 
 import type { FlowNodeData } from '@/features/editor/types/editor.types';
 import { getFlowNodeClasses } from '@/features/editor/utils';

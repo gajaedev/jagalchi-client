@@ -3,8 +3,8 @@ import { render, screen } from '@testing-library/react';
 import { FlowNode } from './index';
 import type { FlowNodeData } from '@/features/editor/types/editor.types';
 
-// Mock reactflow
-vi.mock('reactflow', () => ({
+// Mock @xyflow/react
+vi.mock('@xyflow/react', () => ({
   Handle: ({ position }: { position: string }) => <div data-testid={`handle-${position}`} />,
   Position: {
     Top: 'top',
