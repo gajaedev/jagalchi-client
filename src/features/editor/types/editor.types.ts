@@ -74,6 +74,38 @@ export interface AIMenuItem {
   icon: React.ReactNode;
 }
 
+// React Flow node types
+export type NodeColorVariant = 'white' | 'black' | 'blue' | 'purple' | 'red' | 'orange';
+export type NodeState = 'default' | 'focus';
+
+/**
+ * React Flow custom node data extending NodeData with visual variants
+ */
+export interface FlowNodeData extends NodeData {
+  variant: NodeColorVariant;
+  state: NodeState;
+  index?: number;
+}
+
+/**
+ * React Flow custom section data extending SectionData with visual variants
+ */
+export interface FlowSectionData extends SectionData {
+  variant: NodeColorVariant;
+  state: NodeState;
+}
+
+/**
+ * React Flow custom text data extending TextData with visual variants
+ */
+export interface FlowTextData extends TextData {
+  variant: NodeColorVariant;
+  state: NodeState;
+}
+
+export type FlowNodeType = 'custom-node' | 'custom-section' | 'custom-text';
+
+
 // Dropdown item type
 export interface ToolbarDropdownItem {
   icon: React.ReactNode;
