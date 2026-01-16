@@ -1,11 +1,15 @@
 'use client';
 
+import { cn } from '@/lib/utils';
+
 interface EditorTemplateProps {
   children: React.ReactNode; // Canvas
   header?: React.ReactNode;
   toolbar?: React.ReactNode;
   sidebar?: React.ReactNode; // Fixed right panel
 }
+
+const HEADER_HEIGHT = 56; // px
 
 export function EditorTemplate({ children, header, toolbar, sidebar }: EditorTemplateProps) {
   return (
@@ -16,7 +20,10 @@ export function EditorTemplate({ children, header, toolbar, sidebar }: EditorTem
       )}
 
       {/* Canvas + Sidebar area */}
-      <div className="absolute inset-0 top-[56px] flex">
+      <div
+        className={cn('absolute inset-0 flex', header && `top-[${HEADER_HEIGHT}px]`)}
+        style={header ? { top: `${HEADER_HEIGHT}px` } : undefined}
+      >
         {/* Canvas - Left expanding */}
         <div className="relative flex-1">{children}</div>
 
