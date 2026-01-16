@@ -1,3 +1,4 @@
+export { EditorCanvas } from './EditorCanvas';
 export { LineSidebar } from './LineSidebar';
 export { MultiSelectionSidebar } from './MultiSelectionSidebar';
 export { NodeSidebar } from './NodeSidebar';
