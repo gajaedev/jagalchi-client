@@ -1,159 +1,66 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, it, expect, vi } from 'vitest';
+import { useRouter } from 'next/navigation';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 import { EditorHeader } from './index';
 
+vi.mock('next/navigation', () => ({
+  useRouter: vi.fn(),
+}));
+
 vi.mock('lucide-react', () => ({
-  ArrowLeft: () => <span data-testid="arrow-left-icon" />,
-  Check: () => <span data-testid="check-icon" />,
-  AlertCircle: () => <span data-testid="alert-circle-icon" />,
+  ChevronLeft: () => <span data-testid="chevron-left-icon" />,
 }));
 
 describe('EditorHeader', () => {
-  it('기본 title이 렌더링된다', () => {
-    render(<EditorHeader title="테스트 로드맵" status="default" />);
-    expect(screen.getByText('테스트 로드맵')).toBeInTheDocument();
+  const mockRouter = {
+    back: vi.fn(),
+    forward: vi.fn(),
+    push: vi.fn(),
+    replace: vi.fn(),
+    refresh: vi.fn(),
+    prefetch: vi.fn(),
+  };
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    (useRouter as ReturnType<typeof vi.fn>).mockReturnValue(mockRouter);
   });
 
-  it('title이 없으면 기본 텍스트를 표시한다', () => {
-    render(<EditorHeader status="default" />);
-    expect(screen.getByText('로드맵 제목')).toBeInTheDocument();
+  it('renders "< Jagalchi Roadmap" text', () => {
+    render(<EditorHeader />);
+    expect(screen.getByText('Jagalchi Roadmap')).toBeInTheDocument();
   });
 
-  it('onTitleChange가 제공되면 편집 가능한 input이 렌더링된다', () => {
-    render(<EditorHeader title="테스트 로드맵" status="default" onTitleChange={vi.fn()} />);
-
-    const input = screen.getByRole('textbox');
-    expect(input).toHaveValue('테스트 로드맵');
-    expect(input).toHaveAttribute('placeholder', '로드맵 제목');
+  it('renders back button with chevron icon', () => {
+    render(<EditorHeader />);
+    const button = screen.getByRole('button', { name: '뒤로 가기' });
+    expect(button).toBeInTheDocument();
+    expect(screen.getByTestId('chevron-left-icon')).toBeInTheDocument();
   });
 
-  it('onTitleChange가 없으면 정적 heading이 렌더링된다', () => {
-    render(<EditorHeader title="테스트 로드맵" status="default" />);
-
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('테스트 로드맵');
-    expect(screen.queryByRole('textbox')).not.toBeInTheDocument();
-  });
-
-  it('title input 변경 시 onTitleChange를 호출한다', async () => {
+  it('calls router.back() when back button clicked', async () => {
     const user = userEvent.setup();
-    const handleTitleChange = vi.fn();
+    render(<EditorHeader />);
 
-    render(<EditorHeader title="" status="default" onTitleChange={handleTitleChange} />);
+    const button = screen.getByRole('button', { name: '뒤로 가기' });
+    await user.click(button);
 
-    const input = screen.getByRole('textbox');
-    await user.type(input, 'test');
-
-    // userEvent.type()은 각 글자마다 onChange를 호출함
-    expect(handleTitleChange).toHaveBeenCalled();
-    // 각 문자 입력마다 호출되므로 최소 1회 이상 호출됨
-    expect(handleTitleChange).toHaveBeenCalledTimes(4); // 't', 'e', 's', 't'
+    expect(mockRouter.back).toHaveBeenCalledTimes(1);
   });
 
-  it('onBack이 제공되면 뒤로 가기 버튼이 렌더링된다', () => {
-    render(<EditorHeader title="테스트" status="default" onBack={vi.fn()} />);
+  it('has correct styling classes', () => {
+    const { container } = render(<EditorHeader />);
+    const wrapper = container.firstChild as HTMLElement;
 
-    expect(screen.getByRole('button', { name: '뒤로 가기' })).toBeInTheDocument();
+    expect(wrapper).toHaveClass('flex', 'items-center', 'gap-2', 'px-4', 'py-3', 'h-14');
   });
 
-  it('onBack이 없으면 뒤로 가기 버튼이 렌더링되지 않는다', () => {
-    render(<EditorHeader title="테스트" status="default" />);
+  it('button has hover effect class', () => {
+    render(<EditorHeader />);
+    const button = screen.getByRole('button', { name: '뒤로 가기' });
 
-    expect(screen.queryByRole('button', { name: '뒤로 가기' })).not.toBeInTheDocument();
-  });
-
-  it('뒤로 가기 버튼 클릭 시 onBack을 호출한다', async () => {
-    const user = userEvent.setup();
-    const handleBack = vi.fn();
-
-    render(<EditorHeader title="테스트" status="default" onBack={handleBack} />);
-
-    const backButton = screen.getByRole('button', { name: '뒤로 가기' });
-    await user.click(backButton);
-
-    expect(handleBack).toHaveBeenCalledTimes(1);
-  });
-
-  it('saved 상태 인디케이터를 표시한다', () => {
-    render(<EditorHeader title="테스트" status="saved" />);
-
-    expect(screen.getByText('(저장됨)')).toBeInTheDocument();
-    expect(screen.getByTestId('check-icon')).toBeInTheDocument();
-  });
-
-  it('failed 상태 인디케이터를 표시한다', () => {
-    render(<EditorHeader title="테스트" status="failed" />);
-
-    expect(screen.getByText('(저장 실패)')).toBeInTheDocument();
-    expect(screen.getByTestId('alert-circle-icon')).toBeInTheDocument();
-  });
-
-  it('default 상태일 때 인디케이터를 표시하지 않는다', () => {
-    render(<EditorHeader title="테스트" status="default" />);
-
-    expect(screen.queryByText('(저장됨)')).not.toBeInTheDocument();
-    expect(screen.queryByText('(저장 실패)')).not.toBeInTheDocument();
-    expect(screen.queryByRole('status')).not.toBeInTheDocument();
-  });
-
-  it('상태 인디케이터가 적절한 접근성 속성을 갖는다', () => {
-    const { rerender } = render(<EditorHeader title="테스트" status="saved" />);
-
-    let statusElement = screen.getByRole('status');
-    expect(statusElement).toHaveAttribute('aria-live', 'polite');
-    expect(statusElement).toHaveClass('text-green-600');
-
-    rerender(<EditorHeader title="테스트" status="failed" />);
-
-    statusElement = screen.getByRole('status');
-    expect(statusElement).toHaveAttribute('aria-live', 'polite');
-    expect(statusElement).toHaveClass('text-destructive');
-  });
-
-  it('상태가 변경될 때 올바르게 업데이트된다', () => {
-    const { rerender } = render(<EditorHeader title="테스트" status="default" />);
-
-    expect(screen.queryByRole('status')).not.toBeInTheDocument();
-
-    rerender(<EditorHeader title="테스트" status="saved" />);
-    expect(screen.getByText('(저장됨)')).toBeInTheDocument();
-
-    rerender(<EditorHeader title="테스트" status="failed" />);
-    expect(screen.getByText('(저장 실패)')).toBeInTheDocument();
-    expect(screen.queryByText('(저장됨)')).not.toBeInTheDocument();
-
-    rerender(<EditorHeader title="테스트" status="default" />);
-    expect(screen.queryByRole('status')).not.toBeInTheDocument();
-  });
-
-  it('커스텀 className이 적용된다', () => {
-    const { container } = render(
-      <EditorHeader title="테스트" status="default" className="custom-header" />,
-    );
-
-    const header = container.querySelector('header');
-    expect(header).toHaveClass('custom-header');
-  });
-
-  it('헤더 요소가 올바른 시맨틱을 갖는다', () => {
-    render(<EditorHeader title="테스트" status="default" />);
-
-    const header = document.querySelector('header');
-    expect(header).toBeInTheDocument();
-  });
-
-  it('빈 title에서 시작하여 입력할 수 있다', async () => {
-    const user = userEvent.setup();
-    const handleTitleChange = vi.fn();
-
-    render(<EditorHeader title="" status="default" onTitleChange={handleTitleChange} />);
-
-    const input = screen.getByRole('textbox');
-    expect(input).toHaveValue('');
-
-    await user.type(input, '새로운 로드맵');
-
-    expect(handleTitleChange).toHaveBeenCalled();
+    expect(button).toHaveClass('hover:underline');
   });
 });
