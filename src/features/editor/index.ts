@@ -1,4 +1,5 @@
 export {
+  ColorPicker,
   ResourceInput,
   ToolbarDropdown,
   ToolbarItem,

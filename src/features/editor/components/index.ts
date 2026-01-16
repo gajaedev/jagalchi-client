@@ -1,4 +1,4 @@
-export { AIMenu, ResourceInput, ToolbarDropdown, ToolbarItem } from './atoms';
+export { AIMenu, ColorPicker, ResourceInput, ToolbarDropdown, ToolbarItem } from './atoms';
 export { EditorHeader, EditorToolbar, ResourceDisplay } from './molecules';
 export {
   LineSidebar,
