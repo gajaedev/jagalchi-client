@@ -1,0 +1,1 @@
+export { EditorTemplate } from './EditorTemplate';

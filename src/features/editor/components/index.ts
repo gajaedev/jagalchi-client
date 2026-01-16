@@ -8,3 +8,4 @@ export {
   TextSidebar,
 } from './organisms';
 export { FlowNode, FlowSection, FlowText } from './flow-nodes';
+export { EditorTemplate } from './templates';

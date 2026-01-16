@@ -4,12 +4,25 @@ export {
   ToolbarItem,
   EditorHeader,
   EditorToolbar,
+  EditorTemplate,
   LineSidebar,
   MultiSelectionSidebar,
   NodeSidebar,
   SectionSidebar,
   TextSidebar,
 } from './components';
+export {
+  editorToolbarModeAtom,
+  selectedNodeIdsAtom,
+  selectedEdgeIdsAtom,
+  selectionTypeAtom,
+  flowNodesAtom,
+  flowEdgesAtom,
+  sidebarOpenAtom,
+  saveStatusAtom,
+  roadmapTitleAtom,
+  roadmapIsLockedAtom,
+} from './stores/editor-atoms';
 export type {
   Resource,
   EditorToolbarMode,

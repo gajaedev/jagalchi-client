@@ -105,7 +105,6 @@ export interface FlowTextData extends TextData {
 
 export type FlowNodeType = 'custom-node' | 'custom-section' | 'custom-text';
 
-
 // Dropdown item type
 export interface ToolbarDropdownItem {
   icon: React.ReactNode;

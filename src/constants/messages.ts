@@ -15,4 +15,6 @@ export const EDITOR_MESSAGES = {
   FLOW_NODE_DEFAULT_TITLE: 'Node',
   FLOW_SECTION_DEFAULT_TITLE: '섹션',
   FLOW_TEXT_DEFAULT_CONTENT: '텍스트',
+  EDITOR_LOADING: '에디터 로딩 중...',
+  ROADMAP_UNTITLED: '새 로드맵',
 } as const;
