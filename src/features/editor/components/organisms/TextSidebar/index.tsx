@@ -141,7 +141,10 @@ export function TextSidebar() {
                   id="text-color"
                   type="color"
                   value={color}
-                  onChange={(e) => setColor(e.target.value)}
+                  onChange={(e) => {
+                    setColor(e.target.value);
+                    setColorText(e.target.value);
+                  }}
                   className="h-10 w-20 cursor-pointer"
                 />
                 <Input
