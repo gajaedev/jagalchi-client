@@ -15,4 +15,8 @@ export const EDITOR_MESSAGES = {
   FLOW_NODE_DEFAULT_TITLE: 'Node',
   FLOW_SECTION_DEFAULT_TITLE: '섹션',
   FLOW_TEXT_DEFAULT_CONTENT: '텍스트',
+  PAGE_NEW_TITLE: '새 로드맵',
+  PAGE_EDIT_TITLE: '로드맵 편집',
+  PAGE_LOADING: '로드맵을 불러오는 중...',
+  PAGE_NOT_FOUND: '로드맵을 찾을 수 없습니다',
 } as const;
