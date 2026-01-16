@@ -1,67 +1,20 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-import { X, Lock } from 'lucide-react';
+import { Lock } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
-import type { SectionData } from '@/features/editor/types/editor.types';
-import { cn } from '@/lib/utils';
 
-interface SectionSidebarProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  sectionData?: SectionData;
-  onSave?: (data: SectionData) => void;
-  className?: string;
-}
-
-export function SectionSidebar({
-  open,
-  onOpenChange,
-  sectionData,
-  onSave,
-  className,
-}: SectionSidebarProps) {
-  const [title, setTitle] = useState(sectionData?.title || '');
-  const [color, setColor] = useState(sectionData?.color || '#3B82F6');
-  const [colorText, setColorText] = useState(sectionData?.color || '#3B82F6');
-  const [isLocked, setLocked] = useState(sectionData?.isLocked || false);
-
-  // Sync local state with prop changes for controlled component pattern
-
-  useEffect(() => {
-    if (sectionData) {
-      setTitle(sectionData.title);
-      setColor(sectionData.color);
-      setColorText(sectionData.color);
-      setLocked(sectionData.isLocked);
-    } else {
-      // Reset to defaults when sectionData is cleared
-      setTitle('');
-      setColor('#3B82F6');
-      setColorText('#3B82F6');
-      setLocked(false);
-    }
-  }, [sectionData]);
-
-  // Sync colorText with color changes from color picker
-  useEffect(() => {
-    setColorText(color);
-  }, [color]);
-
-  const handleSave = () => {
-    onSave?.({
-      title,
-      color,
-      isLocked,
-    });
-  };
+export function SectionSidebar() {
+  const [title, setTitle] = useState('Section_1');
+  const [color, setColor] = useState('#3B82F6');
+  const [colorText, setColorText] = useState('#3B82F6');
+  const [isLocked, setLocked] = useState(false);
 
   const handleColorTextChange = (value: string) => {
     setColorText(value);
@@ -71,18 +24,8 @@ export function SectionSidebar({
     }
   };
 
-  if (!open) return null;
-
   return (
-    <div
-      className={cn(
-        'fixed top-0 right-0 z-50 h-full w-80',
-        'bg-card border-border border-l shadow-lg',
-        'transition-transform duration-300',
-        open ? 'translate-x-0' : 'translate-x-full',
-        className,
-      )}
-    >
+    <div className="border-border bg-card fixed top-0 right-0 z-50 h-full w-80 border-l shadow-lg">
       <ScrollArea className="h-full">
         <div className="flex h-full flex-col">
           {/* Header */}
@@ -91,14 +34,6 @@ export function SectionSidebar({
               <h2 className="text-lg font-semibold">섹션 편집</h2>
               <p className="text-muted-foreground text-sm">Section</p>
             </div>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => onOpenChange(false)}
-              aria-label="사이드바 닫기"
-            >
-              <X className="size-4" />
-            </Button>
           </div>
 
           {/* Content */}
@@ -120,7 +55,7 @@ export function SectionSidebar({
 
             <Separator />
 
-            {/* Color */}
+            {/* Color - TODO: Phase 2 머지 후 새 ColorPicker로 교체 */}
             <div className="space-y-2">
               <Label htmlFor="section-color" className="text-sm font-medium">
                 섹션 색상
@@ -158,13 +93,6 @@ export function SectionSidebar({
               </div>
               <Switch id="section-lock" checked={isLocked} onCheckedChange={setLocked} />
             </div>
-          </div>
-
-          {/* Footer */}
-          <div className="border-t p-4">
-            <Button onClick={handleSave} className="w-full" disabled={!onSave}>
-              저장
-            </Button>
           </div>
         </div>
       </ScrollArea>

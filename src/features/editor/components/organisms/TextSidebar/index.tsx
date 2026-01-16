@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-import { X, Lock, Minus, Plus, Bold } from 'lucide-react';
+import { Lock, Minus, Plus, Bold } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -11,59 +11,15 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
-import type { TextData, FontWeight } from '@/features/editor/types/editor.types';
-import { cn } from '@/lib/utils';
+import type { FontWeight } from '@/features/editor/types/editor.types';
 
-interface TextSidebarProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  textData?: TextData;
-  onSave?: (data: TextData) => void;
-  className?: string;
-}
-
-export function TextSidebar({ open, onOpenChange, textData, onSave, className }: TextSidebarProps) {
-  const [content, setContent] = useState(textData?.content || '');
-  const [fontSize, setFontSize] = useState(textData?.fontSize || 16);
-  const [fontWeight, setFontWeight] = useState<FontWeight>(textData?.fontWeight || 'normal');
-  const [color, setColor] = useState(textData?.color || '#000000');
-  const [colorText, setColorText] = useState(textData?.color || '#000000');
-  const [isLocked, setLocked] = useState(textData?.isLocked || false);
-
-  // Sync local state with prop changes for controlled component pattern
-  useEffect(() => {
-    if (textData) {
-      setContent(textData.content);
-      setFontSize(textData.fontSize);
-      setFontWeight(textData.fontWeight);
-      setColor(textData.color);
-      setColorText(textData.color);
-      setLocked(textData.isLocked);
-    } else {
-      // Reset to defaults when textData is cleared
-      setContent('');
-      setFontSize(16);
-      setFontWeight('normal');
-      setColor('#000000');
-      setColorText('#000000');
-      setLocked(false);
-    }
-  }, [textData]);
-
-  // Sync colorText with color changes from color picker
-  useEffect(() => {
-    setColorText(color);
-  }, [color]);
-
-  const handleSave = () => {
-    onSave?.({
-      content,
-      fontSize,
-      fontWeight,
-      color,
-      isLocked,
-    });
-  };
+export function TextSidebar() {
+  const [content, setContent] = useState('');
+  const [fontSize, setFontSize] = useState(16);
+  const [fontWeight, setFontWeight] = useState<FontWeight>('normal');
+  const [color, setColor] = useState('#000000');
+  const [colorText, setColorText] = useState('#000000');
+  const [isLocked, setLocked] = useState(false);
 
   const handleFontSizeChange = (value: string) => {
     const num = parseInt(value, 10);
@@ -80,18 +36,8 @@ export function TextSidebar({ open, onOpenChange, textData, onSave, className }:
     }
   };
 
-  if (!open) return null;
-
   return (
-    <div
-      className={cn(
-        'fixed top-0 right-0 z-50 h-full w-80',
-        'bg-card border-border border-l shadow-lg',
-        'transition-transform duration-300',
-        open ? 'translate-x-0' : 'translate-x-full',
-        className,
-      )}
-    >
+    <div className="border-border bg-card fixed top-0 right-0 z-50 h-full w-80 border-l shadow-lg">
       <ScrollArea className="h-full">
         <div className="flex h-full flex-col">
           {/* Header */}
@@ -100,14 +46,6 @@ export function TextSidebar({ open, onOpenChange, textData, onSave, className }:
               <h2 className="text-lg font-semibold">텍스트 편집</h2>
               <p className="text-muted-foreground text-sm">Text</p>
             </div>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => onOpenChange(false)}
-              aria-label="사이드바 닫기"
-            >
-              <X className="size-4" />
-            </Button>
           </div>
 
           {/* Content */}
@@ -193,7 +131,7 @@ export function TextSidebar({ open, onOpenChange, textData, onSave, className }:
 
             <Separator />
 
-            {/* Color */}
+            {/* Color - TODO: Phase 2 머지 후 새 ColorPicker로 교체 */}
             <div className="space-y-2">
               <Label htmlFor="text-color" className="text-sm font-medium">
                 글자 색상
@@ -236,13 +174,6 @@ export function TextSidebar({ open, onOpenChange, textData, onSave, className }:
                 aria-checked={isLocked}
               />
             </div>
-          </div>
-
-          {/* Footer */}
-          <div className="border-t p-4">
-            <Button onClick={handleSave} className="w-full" disabled={!onSave}>
-              저장
-            </Button>
           </div>
         </div>
       </ScrollArea>

@@ -4,6 +4,7 @@ export {
   ToolbarItem,
   EditorHeader,
   EditorToolbar,
+  DynamicSidebar,
   LineSidebar,
   MultiSelectionSidebar,
   NodeSidebar,
@@ -24,3 +25,4 @@ export type {
   ElementData,
   ToolbarDropdownItem,
 } from './types/editor.types';
+export * from './stores';
