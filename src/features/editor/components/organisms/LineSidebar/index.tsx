@@ -136,6 +136,8 @@ export function LineSidebar({ open, onOpenChange, lineData, onSave, className }:
               <Label htmlFor="line-color" className="text-sm font-medium">
                 선 색상
               </Label>
+              {/* TODO: #53 머지 후 ColorPicker로 교체 */}
+              {/* <ColorPicker value={color} onChange={setColor} /> */}
               <div className="flex gap-2">
                 <Input
                   id="line-color"

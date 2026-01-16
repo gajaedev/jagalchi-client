@@ -198,6 +198,8 @@ export function TextSidebar({ open, onOpenChange, textData, onSave, className }:
               <Label htmlFor="text-color" className="text-sm font-medium">
                 글자 색상
               </Label>
+              {/* TODO: #53 머지 후 ColorPicker로 교체 */}
+              {/* <ColorPicker value={color} onChange={setColor} /> */}
               <div className="flex gap-2">
                 <Input
                   id="text-color"

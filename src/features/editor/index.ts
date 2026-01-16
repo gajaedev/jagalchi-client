@@ -4,12 +4,22 @@ export {
   ToolbarItem,
   EditorHeader,
   EditorToolbar,
+  DynamicSidebar,
   LineSidebar,
   MultiSelectionSidebar,
   NodeSidebar,
   SectionSidebar,
   TextSidebar,
 } from './components';
+export { useSidebarData } from './hooks';
+export {
+  sidebarOpenAtom,
+  selectionTypeAtom,
+  flowNodesAtom,
+  flowEdgesAtom,
+  selectedNodeIdsAtom,
+  selectedEdgeIdsAtom,
+} from './stores';
 export type {
   Resource,
   EditorToolbarMode,

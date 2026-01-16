@@ -164,6 +164,8 @@ export function NodeSidebar({ open, onOpenChange, nodeData, onSave, className }:
               <Label htmlFor="node-color" className="text-sm font-medium">
                 기본 컬러
               </Label>
+              {/* TODO: #53 머지 후 ColorPicker로 교체 */}
+              {/* <ColorPicker value={color} onChange={setColor} /> */}
               <div className="flex gap-2">
                 <Input
                   id="node-color"

@@ -125,6 +125,8 @@ export function SectionSidebar({
               <Label htmlFor="section-color" className="text-sm font-medium">
                 섹션 색상
               </Label>
+              {/* TODO: #53 머지 후 ColorPicker로 교체 */}
+              {/* <ColorPicker value={color} onChange={setColor} /> */}
               <div className="flex gap-2">
                 <Input
                   id="section-color"

@@ -1,3 +1,4 @@
+export { DynamicSidebar } from './DynamicSidebar';
 export { LineSidebar } from './LineSidebar';
 export { MultiSelectionSidebar } from './MultiSelectionSidebar';
 export { NodeSidebar } from './NodeSidebar';
