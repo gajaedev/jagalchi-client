@@ -20,7 +20,7 @@ describe('FlowNode', () => {
     description: 'Test Description',
     resources: [],
     color: '#000000',
-    locked: false,
+    isLocked: false,
     variant: 'white',
     state: 'default',
     index: 1,
@@ -37,7 +37,6 @@ describe('FlowNode', () => {
 
     it('index가 없으면 기본값 1을 사용한다', () => {
       const data = createMockData();
-      // @ts-expect-error Testing without index
       delete data.index;
       render(<FlowNode data={data} />);
 
