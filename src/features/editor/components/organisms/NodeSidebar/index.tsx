@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-import { X, Lock, Plus } from 'lucide-react';
+import { Lock, Plus } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,60 +12,15 @@ import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { ResourceInput } from '@/features/editor/components/atoms/ResourceInput';
-import type { NodeData, Resource } from '@/features/editor/types/editor.types';
-import { cn } from '@/lib/utils';
+import type { Resource } from '@/features/editor/types/editor.types';
 
-interface NodeSidebarProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  nodeData?: NodeData;
-  onSave?: (data: NodeData) => void;
-  className?: string;
-}
-
-export function NodeSidebar({ open, onOpenChange, nodeData, onSave, className }: NodeSidebarProps) {
-  const [title, setTitle] = useState(nodeData?.title || '');
-  const [description, setDescription] = useState(nodeData?.description || '');
-  const [resources, setResources] = useState<Resource[]>(nodeData?.resources || []);
-  const [color, setColor] = useState(nodeData?.color || '#3B82F6');
-  const [colorText, setColorText] = useState(nodeData?.color || '#3B82F6');
-  const [isLocked, setLocked] = useState(nodeData?.isLocked || false);
-
-  // Sync local state with prop changes for controlled component pattern
-
-  useEffect(() => {
-    if (nodeData) {
-      setTitle(nodeData.title);
-      setDescription(nodeData.description);
-      setResources(nodeData.resources);
-      setColor(nodeData.color);
-      setColorText(nodeData.color);
-      setLocked(nodeData.isLocked);
-    } else {
-      // Reset to defaults when nodeData is cleared
-      setTitle('');
-      setDescription('');
-      setResources([]);
-      setColor('#3B82F6');
-      setColorText('#3B82F6');
-      setLocked(false);
-    }
-  }, [nodeData]);
-
-  // Sync colorText with color changes from color picker
-  useEffect(() => {
-    setColorText(color);
-  }, [color]);
-
-  const handleSave = () => {
-    onSave?.({
-      title,
-      description,
-      resources,
-      color,
-      isLocked,
-    });
-  };
+export function NodeSidebar() {
+  const [title, setTitle] = useState('Node_1');
+  const [description, setDescription] = useState('');
+  const [resources, setResources] = useState<Resource[]>([]);
+  const [color, setColor] = useState('#3B82F6');
+  const [colorText, setColorText] = useState('#3B82F6');
+  const [isLocked, setIsLocked] = useState(false);
 
   const handleColorTextChange = (value: string) => {
     setColorText(value);
@@ -95,18 +50,8 @@ export function NodeSidebar({ open, onOpenChange, nodeData, onSave, className }:
     setResources(newResources);
   };
 
-  if (!open) return null;
-
   return (
-    <div
-      className={cn(
-        'fixed top-0 right-0 z-50 h-full w-80',
-        'bg-card border-border border-l shadow-lg',
-        'transition-transform duration-300',
-        open ? 'translate-x-0' : 'translate-x-full',
-        className,
-      )}
-    >
+    <div className="border-border bg-card fixed top-0 right-0 z-50 h-full w-80 border-l shadow-lg">
       <ScrollArea className="h-full">
         <div className="flex h-full flex-col">
           {/* Header */}
@@ -115,13 +60,8 @@ export function NodeSidebar({ open, onOpenChange, nodeData, onSave, className }:
               <h2 className="text-lg font-semibold">{title || '노드 편집'}</h2>
               <p className="text-muted-foreground text-sm">Node</p>
             </div>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => onOpenChange(false)}
-              aria-label="사이드바 닫기"
-            >
-              <X className="size-4" />
+            <Button variant="ghost" size="icon" onClick={() => setIsLocked(!isLocked)}>
+              <Lock className="size-4" />
             </Button>
           </div>
 
@@ -154,12 +94,14 @@ export function NodeSidebar({ open, onOpenChange, nodeData, onSave, className }:
                 placeholder="노드 설명 입력"
                 className="min-h-[100px] resize-y"
               />
-              <p className="text-muted-foreground text-right text-xs">AI 생성</p>
+              <Button variant="outline" className="w-full text-sm">
+                AI 생성
+              </Button>
             </div>
 
             <Separator />
 
-            {/* Color */}
+            {/* Color - TODO: Phase 2 머지 후 새 ColorPicker로 교체 */}
             <div className="space-y-2">
               <Label htmlFor="node-color" className="text-sm font-medium">
                 기본 컬러
@@ -169,7 +111,10 @@ export function NodeSidebar({ open, onOpenChange, nodeData, onSave, className }:
                   id="node-color"
                   type="color"
                   value={color}
-                  onChange={(e) => setColor(e.target.value)}
+                  onChange={(e) => {
+                    setColor(e.target.value);
+                    setColorText(e.target.value);
+                  }}
                   className="h-10 w-20 cursor-pointer"
                 />
                 <Input
@@ -213,7 +158,9 @@ export function NodeSidebar({ open, onOpenChange, nodeData, onSave, className }:
                 <Plus className="size-4" />
                 자료 추가
               </Button>
-              <p className="text-muted-foreground text-right text-xs">AI 추천</p>
+              <Button variant="outline" size="sm" className="w-full text-sm">
+                AI 추천
+              </Button>
             </div>
 
             <Separator />
@@ -229,15 +176,8 @@ export function NodeSidebar({ open, onOpenChange, nodeData, onSave, className }:
                   <p className="text-muted-foreground text-xs">노드를 잠가 수정을 방지합니다</p>
                 </div>
               </div>
-              <Switch id="node-lock" checked={isLocked} onCheckedChange={setLocked} />
+              <Switch id="node-lock" checked={isLocked} onCheckedChange={setIsLocked} />
             </div>
-          </div>
-
-          {/* Footer */}
-          <div className="border-t p-4">
-            <Button onClick={handleSave} className="w-full" disabled={!onSave}>
-              저장
-            </Button>
           </div>
         </div>
       </ScrollArea>

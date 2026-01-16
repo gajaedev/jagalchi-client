@@ -1,6 +1,9 @@
 export { AIMenu, ResourceInput, ToolbarDropdown, ToolbarItem } from './atoms';
 export { EditorHeader, EditorToolbar, ResourceDisplay } from './molecules';
 export {
+  AIDialog,
+  DynamicSidebar,
+  EditorCanvas,
   LineSidebar,
   MultiSelectionSidebar,
   NodeSidebar,

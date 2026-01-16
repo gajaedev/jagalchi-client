@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import { HexColorPicker } from 'react-colorful';
-import 'react-colorful/dist/index.css';
+// import 'react-colorful/dist/index.css'; // CSS file doesn't exist in package
 
 import { cn } from '@/lib/utils';
 

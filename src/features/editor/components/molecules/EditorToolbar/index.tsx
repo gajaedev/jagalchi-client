@@ -1,7 +1,13 @@
 'use client';
 
-import { Box, Minus, Square, Type, Sparkles } from 'lucide-react';
+import { Box, Minus, Square, Type, Settings, Sparkles } from 'lucide-react';
 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { Separator } from '@/components/ui/separator';
 import { ToolbarItem } from '@/features/editor/components/atoms/ToolbarItem';
 import type { EditorToolbarMode } from '@/features/editor/types/editor.types';
@@ -10,10 +16,16 @@ import { cn } from '@/lib/utils';
 interface EditorToolbarProps {
   activeMode?: EditorToolbarMode | null;
   onModeChange?: (mode: EditorToolbarMode) => void;
+  onAIAction?: (action: 'generate' | 'modify') => void;
   className?: string;
 }
 
-export function EditorToolbar({ activeMode, onModeChange, className }: EditorToolbarProps) {
+export function EditorToolbar({
+  activeMode,
+  onModeChange,
+  onAIAction,
+  className,
+}: EditorToolbarProps) {
   return (
     <div
       className={cn('bg-card flex items-center gap-2 border p-2 shadow-md', className)}
@@ -50,12 +62,28 @@ export function EditorToolbar({ activeMode, onModeChange, className }: EditorToo
 
       <Separator orientation="vertical" className="h-8" />
 
-      <ToolbarItem
-        icon={<Sparkles />}
-        label="AI"
-        active={activeMode === 'ai'}
-        onClick={() => onModeChange?.('ai')}
-      />
+      {/* AI Dropdown */}
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <button
+            type="button"
+            className="hover:bg-accent hover:text-accent-foreground flex h-10 w-10 items-center justify-center rounded-md transition-colors"
+            aria-label="AI 기능"
+          >
+            <Settings className="h-4 w-4" />
+          </button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem onSelect={() => onAIAction?.('generate')}>
+            <Sparkles className="mr-2 h-4 w-4" />
+            로드맵 생성
+          </DropdownMenuItem>
+          <DropdownMenuItem onSelect={() => onAIAction?.('modify')}>
+            <Sparkles className="mr-2 h-4 w-4" />
+            로드맵 수정
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 }

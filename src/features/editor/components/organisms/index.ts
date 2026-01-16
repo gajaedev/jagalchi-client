@@ -1,3 +1,6 @@
+export { AIDialog } from './AIDialog';
+export { DynamicSidebar } from './DynamicSidebar';
+export { EditorCanvas } from './EditorCanvas';
 export { LineSidebar } from './LineSidebar';
 export { MultiSelectionSidebar } from './MultiSelectionSidebar';
 export { NodeSidebar } from './NodeSidebar';

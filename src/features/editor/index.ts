@@ -4,12 +4,17 @@ export {
   ToolbarItem,
   EditorHeader,
   EditorToolbar,
+  AIDialog,
+  DynamicSidebar,
+  EditorCanvas,
   LineSidebar,
   MultiSelectionSidebar,
   NodeSidebar,
   SectionSidebar,
   TextSidebar,
+  EditorTemplate,
 } from './components';
+export { useAIDialog, useMultiSelection, useEditorPage } from './hooks';
 export type {
   Resource,
   EditorToolbarMode,
@@ -24,3 +29,4 @@ export type {
   ElementData,
   ToolbarDropdownItem,
 } from './types/editor.types';
+export * from './stores';

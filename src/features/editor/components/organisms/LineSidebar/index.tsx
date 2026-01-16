@@ -1,24 +1,14 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-
-import { X } from 'lucide-react';
+import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
-import type { LineData, LineStyle } from '@/features/editor/types/editor.types';
+import type { LineStyle } from '@/features/editor/types/editor.types';
 import { cn } from '@/lib/utils';
-
-interface LineSidebarProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  lineData?: LineData;
-  onSave?: (data: LineData) => void;
-  className?: string;
-}
 
 const LINE_STYLES: { value: LineStyle; label: string }[] = [
   { value: 'solid', label: '실선' },
@@ -26,41 +16,11 @@ const LINE_STYLES: { value: LineStyle; label: string }[] = [
   { value: 'dotted', label: '점선 (작은)' },
 ];
 
-export function LineSidebar({ open, onOpenChange, lineData, onSave, className }: LineSidebarProps) {
-  const [style, setStyle] = useState<LineStyle>(lineData?.style || 'solid');
-  const [color, setColor] = useState(lineData?.color || '#000000');
-  const [colorText, setColorText] = useState(lineData?.color || '#000000');
-  const [label, setLabel] = useState(lineData?.label || '');
-
-  // Sync local state with prop changes for controlled component pattern
-
-  useEffect(() => {
-    if (lineData) {
-      setStyle(lineData.style);
-      setColor(lineData.color);
-      setColorText(lineData.color);
-      setLabel(lineData.label || '');
-    } else {
-      // Reset to defaults when lineData is cleared
-      setStyle('solid');
-      setColor('#000000');
-      setColorText('#000000');
-      setLabel('');
-    }
-  }, [lineData]);
-
-  // Sync colorText with color changes from color picker
-  useEffect(() => {
-    setColorText(color);
-  }, [color]);
-
-  const handleSave = () => {
-    onSave?.({
-      style,
-      color,
-      label: label || undefined,
-    });
-  };
+export function LineSidebar() {
+  const [style, setStyle] = useState<LineStyle>('solid');
+  const [color, setColor] = useState('#000000');
+  const [colorText, setColorText] = useState('#000000');
+  const [label, setLabel] = useState('');
 
   const handleColorTextChange = (value: string) => {
     setColorText(value);
@@ -70,18 +30,8 @@ export function LineSidebar({ open, onOpenChange, lineData, onSave, className }:
     }
   };
 
-  if (!open) return null;
-
   return (
-    <div
-      className={cn(
-        'fixed top-0 right-0 z-50 h-full w-80',
-        'bg-card border-border border-l shadow-lg',
-        'transition-transform duration-300',
-        open ? 'translate-x-0' : 'translate-x-full',
-        className,
-      )}
-    >
+    <div className="border-border bg-card fixed top-0 right-0 z-50 h-full w-80 border-l shadow-lg">
       <ScrollArea className="h-full">
         <div className="flex h-full flex-col">
           {/* Header */}
@@ -90,14 +40,6 @@ export function LineSidebar({ open, onOpenChange, lineData, onSave, className }:
               <h2 className="text-lg font-semibold">선 편집</h2>
               <p className="text-muted-foreground text-sm">Line</p>
             </div>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => onOpenChange(false)}
-              aria-label="사이드바 닫기"
-            >
-              <X className="size-4" />
-            </Button>
           </div>
 
           {/* Content */}
@@ -131,7 +73,7 @@ export function LineSidebar({ open, onOpenChange, lineData, onSave, className }:
 
             <Separator />
 
-            {/* Color */}
+            {/* Color - TODO: Phase 2 머지 후 새 ColorPicker로 교체 */}
             <div className="space-y-2">
               <Label htmlFor="line-color" className="text-sm font-medium">
                 선 색상
@@ -141,7 +83,10 @@ export function LineSidebar({ open, onOpenChange, lineData, onSave, className }:
                   id="line-color"
                   type="color"
                   value={color}
-                  onChange={(e) => setColor(e.target.value)}
+                  onChange={(e) => {
+                    setColor(e.target.value);
+                    setColorText(e.target.value);
+                  }}
                   className="h-10 w-20 cursor-pointer"
                 />
                 <Input
@@ -170,13 +115,6 @@ export function LineSidebar({ open, onOpenChange, lineData, onSave, className }:
                 className="h-10"
               />
             </div>
-          </div>
-
-          {/* Footer */}
-          <div className="border-t p-4">
-            <Button onClick={handleSave} className="w-full" disabled={!onSave}>
-              저장
-            </Button>
           </div>
         </div>
       </ScrollArea>

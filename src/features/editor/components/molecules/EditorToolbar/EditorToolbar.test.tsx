@@ -9,6 +9,7 @@ vi.mock('lucide-react', () => ({
   Minus: () => <span data-testid="minus-icon" />,
   Square: () => <span data-testid="square-icon" />,
   Type: () => <span data-testid="type-icon" />,
+  Settings: () => <span data-testid="settings-icon" />,
   Sparkles: () => <span data-testid="sparkles-icon" />,
 }));
 
@@ -20,7 +21,7 @@ describe('EditorToolbar', () => {
     expect(screen.getByRole('button', { name: '선' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: '섹션' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: '텍스트' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'AI' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'AI 기능' })).toBeInTheDocument();
   });
 
   it('활성 도구가 하이라이트된다', () => {
@@ -61,10 +62,7 @@ describe('EditorToolbar', () => {
     await user.click(screen.getByRole('button', { name: '텍스트' }));
     expect(handleModeChange).toHaveBeenLastCalledWith('text');
 
-    await user.click(screen.getByRole('button', { name: 'AI' }));
-    expect(handleModeChange).toHaveBeenLastCalledWith('ai');
-
-    expect(handleModeChange).toHaveBeenCalledTimes(5);
+    expect(handleModeChange).toHaveBeenCalledTimes(4);
   });
 
   it('적절한 접근성 속성을 갖는다', () => {
@@ -81,22 +79,25 @@ describe('EditorToolbar', () => {
     const lineButton = screen.getByRole('button', { name: '선' });
     const sectionButton = screen.getByRole('button', { name: '섹션' });
     const textButton = screen.getByRole('button', { name: '텍스트' });
-    const aiButton = screen.getByRole('button', { name: 'AI' });
 
     expect(nodeButton).toHaveAttribute('aria-pressed', 'false');
     expect(lineButton).toHaveAttribute('aria-pressed', 'true');
     expect(sectionButton).toHaveAttribute('aria-pressed', 'false');
     expect(textButton).toHaveAttribute('aria-pressed', 'false');
-    expect(aiButton).toHaveAttribute('aria-pressed', 'false');
   });
 
-  it('activeMode가 null일 때 모든 버튼이 비활성 상태이다', () => {
+  it('activeMode가 null일 때 모든 도구 버튼이 비활성 상태이다', () => {
     render(<EditorToolbar activeMode={null} />);
 
-    const buttons = screen.getAllByRole('button');
-    buttons.forEach((button) => {
-      expect(button).toHaveAttribute('aria-pressed', 'false');
-    });
+    const nodeButton = screen.getByRole('button', { name: '노드' });
+    const lineButton = screen.getByRole('button', { name: '선' });
+    const sectionButton = screen.getByRole('button', { name: '섹션' });
+    const textButton = screen.getByRole('button', { name: '텍스트' });
+
+    expect(nodeButton).toHaveAttribute('aria-pressed', 'false');
+    expect(lineButton).toHaveAttribute('aria-pressed', 'false');
+    expect(sectionButton).toHaveAttribute('aria-pressed', 'false');
+    expect(textButton).toHaveAttribute('aria-pressed', 'false');
   });
 
   it('activeMode가 변경될 때 올바르게 업데이트된다', () => {
@@ -117,6 +118,53 @@ describe('EditorToolbar', () => {
     expect(screen.getAllByRole('button')).toHaveLength(5);
   });
 
+  it('AI dropdown 버튼이 렌더링된다', () => {
+    render(<EditorToolbar />);
+
+    const aiButton = screen.getByRole('button', { name: 'AI 기능' });
+    expect(aiButton).toBeInTheDocument();
+    expect(screen.getByTestId('settings-icon')).toBeInTheDocument();
+  });
+
+  it('AI dropdown을 클릭하면 메뉴가 열린다', async () => {
+    const user = userEvent.setup();
+    render(<EditorToolbar />);
+
+    const aiButton = screen.getByRole('button', { name: 'AI 기능' });
+    await user.click(aiButton);
+
+    expect(screen.getByText('로드맵 생성')).toBeInTheDocument();
+    expect(screen.getByText('로드맵 수정')).toBeInTheDocument();
+  });
+
+  it('로드맵 생성 메뉴 선택 시 onAIAction이 호출된다', async () => {
+    const user = userEvent.setup();
+    const mockOnAIAction = vi.fn();
+    render(<EditorToolbar onAIAction={mockOnAIAction} />);
+
+    const aiButton = screen.getByRole('button', { name: 'AI 기능' });
+    await user.click(aiButton);
+
+    const generateItem = screen.getByText('로드맵 생성');
+    await user.click(generateItem);
+
+    expect(mockOnAIAction).toHaveBeenCalledWith('generate');
+  });
+
+  it('로드맵 수정 메뉴 선택 시 onAIAction이 호출된다', async () => {
+    const user = userEvent.setup();
+    const mockOnAIAction = vi.fn();
+    render(<EditorToolbar onAIAction={mockOnAIAction} />);
+
+    const aiButton = screen.getByRole('button', { name: 'AI 기능' });
+    await user.click(aiButton);
+
+    const modifyItem = screen.getByText('로드맵 수정');
+    await user.click(modifyItem);
+
+    expect(mockOnAIAction).toHaveBeenCalledWith('modify');
+  });
+
   it('onModeChange가 없으면 클릭해도 에러가 발생하지 않는다', async () => {
     const user = userEvent.setup();
 
@@ -135,7 +183,7 @@ describe('EditorToolbar', () => {
     expect(screen.getByTestId('minus-icon')).toBeInTheDocument();
     expect(screen.getByTestId('square-icon')).toBeInTheDocument();
     expect(screen.getByTestId('type-icon')).toBeInTheDocument();
-    expect(screen.getByTestId('sparkles-icon')).toBeInTheDocument();
+    expect(screen.getByTestId('settings-icon')).toBeInTheDocument();
   });
 
   it('Separator가 올바르게 렌더링된다', () => {
