@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { HexColorPicker } from 'react-colorful';
+import 'react-colorful/dist/index.css';
 
 import { cn } from '@/lib/utils';
 
@@ -21,6 +22,11 @@ export function ColorPicker({
 }: ColorPickerProps) {
   const [currentColor, setCurrentColor] = useState(value);
 
+  // Sync internal state with external value prop
+  useEffect(() => {
+    setCurrentColor(value);
+  }, [value]);
+
   const handleChange = (newColor: string) => {
     setCurrentColor(newColor);
     onChange(newColor);
@@ -33,10 +39,11 @@ export function ColorPicker({
         {presetColors.map((color) => (
           <button
             key={color}
+            type="button"
             onClick={() => handleChange(color)}
             className={cn(
               'h-8 w-8 rounded-full border-2 transition-all',
-              currentColor === color
+              currentColor.toLowerCase() === color.toLowerCase()
                 ? 'ring-primary ring-2 ring-offset-2'
                 : 'border-gray-300 hover:scale-110',
             )}
