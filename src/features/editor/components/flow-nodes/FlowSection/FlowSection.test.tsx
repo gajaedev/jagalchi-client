@@ -8,7 +8,7 @@ describe('FlowSection', () => {
   const createMockData = (overrides?: Partial<FlowSectionData>): FlowSectionData => ({
     title: '빈 섹션',
     color: '#000000',
-    locked: false,
+    isLocked: false,
     variant: 'white',
     state: 'default',
     ...overrides,
