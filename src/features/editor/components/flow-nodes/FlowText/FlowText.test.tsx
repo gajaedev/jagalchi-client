@@ -10,7 +10,7 @@ describe('FlowText', () => {
     fontSize: 14,
     fontWeight: 'normal',
     color: '#000000',
-    locked: false,
+    isLocked: false,
     variant: 'white',
     state: 'default',
     ...overrides,
@@ -56,7 +56,7 @@ describe('FlowText', () => {
       const { container } = render(<FlowText data={data} />);
 
       const textElement = container.firstChild as HTMLElement;
-      expect(textElement).toHaveStyle({ fontWeight: 400 });
+      expect(textElement).toHaveStyle({ fontWeight: '400' });
     });
 
     it('fontWeight bold를 적용한다', () => {
@@ -64,7 +64,7 @@ describe('FlowText', () => {
       const { container } = render(<FlowText data={data} />);
 
       const textElement = container.firstChild as HTMLElement;
-      expect(textElement).toHaveStyle({ fontWeight: 600 });
+      expect(textElement).toHaveStyle({ fontWeight: '600' });
     });
   });
 
