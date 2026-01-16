@@ -1,3 +1,4 @@
+export { AIDialog } from './AIDialog';
 export { LineSidebar } from './LineSidebar';
 export { MultiSelectionSidebar } from './MultiSelectionSidebar';
 export { NodeSidebar } from './NodeSidebar';
