@@ -8,4 +8,8 @@ export const PROFILE_MESSAGES = {
 export const EDITOR_MESSAGES = {
   SAVE_SUCCESS: '저장됨',
   SAVE_FAILED: '저장 실패',
+  // Phase 1: React Flow 노드 기본값
+  FLOW_NODE_DEFAULT_LABEL: 'New Node',
+  FLOW_SECTION_DEFAULT_TITLE: '빈 섹션',
+  FLOW_TEXT_DEFAULT_CONTENT: '텍스트',
 } as const;
