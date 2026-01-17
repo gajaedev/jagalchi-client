@@ -34,4 +34,9 @@ export const EDITOR_MESSAGES = {
   COLOR_PICKER_TITLE: '컬러 선택',
   COLOR_PICKER_CANCEL: '취소',
   COLOR_PICKER_APPLY: '적용',
+  // AI 기능
+  AI_GENERATE_ROADMAP: '로드맵 생성',
+  AI_MODIFY_ROADMAP: '로드맵 수정',
+  AI_MENU_LABEL: 'AI 메뉴',
+  RESOURCE_DELETE_CONFIRM: '자료를 삭제하시겠습니까?',
 } as const;
