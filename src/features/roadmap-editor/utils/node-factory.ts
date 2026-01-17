@@ -44,7 +44,11 @@ export function createJagalchiNode(options: CreateNodeOptions): JagalchiNodeType
 }
 
 export function createJagalchiSection(options: CreateSectionOptions): JagalchiSectionType {
-  const { position, variant = 'white', title = '' } = options;
+  const {
+    position,
+    variant = 'white',
+    title = EDITOR_MESSAGES.FLOW_SECTION_DEFAULT_TITLE,
+  } = options;
 
   return {
     id: crypto.randomUUID(),
