@@ -17,7 +17,7 @@ interface ColorSelectorProps {
   type: 'node' | 'text';
   nodeId: string;
   currentVariant: NodeColorVariant | TextColorVariant;
-  presets: { variant: string; hex: string; label: string }[];
+  presets: { variant: NodeColorVariant | TextColorVariant; hex: string; label: string }[];
   onPresetSelect: (variant: NodeColorVariant | TextColorVariant) => void;
 }
 
@@ -47,7 +47,7 @@ export const ColorSelector = memo(function ColorSelector({
               hex={preset.hex}
               label={preset.label}
               isSelected={currentVariant === preset.variant}
-              onClick={() => onPresetSelect(preset.variant as never)}
+              onClick={() => onPresetSelect(preset.variant)}
             />
           ))}
         </div>
@@ -66,7 +66,9 @@ export const ColorSelector = memo(function ColorSelector({
           </Button>
           <div
             className="h-8 w-8 rounded border"
-            style={{ backgroundColor: presets.find((p) => p.variant === currentVariant)?.hex }}
+            style={{
+              backgroundColor: presets.find((p) => p.variant === currentVariant)?.hex ?? '#ffffff',
+            }}
           />
         </div>
       </div>

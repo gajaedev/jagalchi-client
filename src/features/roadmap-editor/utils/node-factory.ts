@@ -26,11 +26,19 @@ interface CreateTextOptions {
   content?: string;
 }
 
+/**
+ * Generate unique ID with fallback for environments without crypto.randomUUID
+ */
+const createId = (): string =>
+  typeof globalThis.crypto?.randomUUID === 'function'
+    ? globalThis.crypto.randomUUID()
+    : `tmp-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+
 export function createJagalchiNode(options: CreateNodeOptions): JagalchiNodeType {
   const { position, variant = 'white', label = EDITOR_MESSAGES.FLOW_NODE_DEFAULT_LABEL } = options;
 
   return {
-    id: crypto.randomUUID(),
+    id: createId(),
     type: 'jagalchi-node',
     position,
     data: {
@@ -51,7 +59,7 @@ export function createJagalchiSection(options: CreateSectionOptions): JagalchiSe
   } = options;
 
   return {
-    id: crypto.randomUUID(),
+    id: createId(),
     type: 'jagalchi-section',
     position,
     style: { width: 200, height: 200 },
@@ -71,7 +79,7 @@ export function createJagalchiText(options: CreateTextOptions): JagalchiTextType
   } = options;
 
   return {
-    id: crypto.randomUUID(),
+    id: createId(),
     type: 'jagalchi-text',
     position,
     data: {

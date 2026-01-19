@@ -40,7 +40,12 @@ export const TextPropertiesPanel = memo(function TextPropertiesPanel({
             id="text-size"
             type="number"
             value={node.data.fontSize}
-            onChange={(e) => updateNode({ fontSize: Number(e.target.value) })}
+            onChange={(e) => {
+              const value = Number(e.target.value);
+              if (!Number.isNaN(value)) {
+                updateNode({ fontSize: value });
+              }
+            }}
             className="w-20"
             min={8}
             max={72}

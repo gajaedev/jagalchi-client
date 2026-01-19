@@ -28,6 +28,8 @@ export const ToolbarButton = memo(function ToolbarButton({
             size="icon"
             className={cn('h-10 w-10', isActive && 'bg-primary text-primary-foreground')}
             onClick={onClick}
+            aria-label={label}
+            aria-pressed={isActive}
           >
             {icon}
           </Button>

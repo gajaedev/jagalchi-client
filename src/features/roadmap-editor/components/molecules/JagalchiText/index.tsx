@@ -13,7 +13,7 @@ interface JagalchiTextProps {
 
 export const JagalchiText = memo(function JagalchiText({ data }: JagalchiTextProps) {
   const textColor = getTextColor(data.variant);
-  const displayContent = data.content || EDITOR_MESSAGES.FLOW_TEXT_DEFAULT_CONTENT;
+  const displayContent = data.content ?? EDITOR_MESSAGES.FLOW_TEXT_DEFAULT_CONTENT;
 
   return (
     <div

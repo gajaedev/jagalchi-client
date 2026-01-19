@@ -51,7 +51,7 @@ export const JagalchiSection = memo(function JagalchiSection({
         minWidth={200}
         minHeight={200}
         onResize={handleResize}
-        handleClassName="!h-3 !w-3 !rounded-sm !border-2 !border-blue-600 !bg-background"
+        handleClassName="h-3! w-3! rounded-sm! border-2! border-blue-600! bg-background!"
       />
 
       {/* 타이틀 뱃지 */}
