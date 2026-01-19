@@ -42,7 +42,7 @@ export const TextPropertiesPanel = memo(function TextPropertiesPanel({
             value={node.data.fontSize}
             onChange={(e) => {
               const value = Number(e.target.value);
-              if (!Number.isNaN(value)) {
+              if (!Number.isNaN(value) && value >= 8 && value <= 72) {
                 updateNode({ fontSize: value });
               }
             }}

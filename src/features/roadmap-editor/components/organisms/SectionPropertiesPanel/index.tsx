@@ -69,7 +69,7 @@ export const SectionPropertiesPanel = memo(function SectionPropertiesPanel({
               value={node.style?.width ?? 200}
               onChange={(e) => {
                 const value = Number(e.target.value);
-                if (!Number.isNaN(value)) {
+                if (!Number.isNaN(value) && value >= 200) {
                   updateSize('width', value);
                 }
               }}
@@ -84,7 +84,7 @@ export const SectionPropertiesPanel = memo(function SectionPropertiesPanel({
               value={node.style?.height ?? 200}
               onChange={(e) => {
                 const value = Number(e.target.value);
-                if (!Number.isNaN(value)) {
+                if (!Number.isNaN(value) && value >= 200) {
                   updateSize('height', value);
                 }
               }}
