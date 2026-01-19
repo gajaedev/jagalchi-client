@@ -1,28 +1,42 @@
 'use client';
 
 import { ReactFlowProvider } from '@xyflow/react';
+import { Provider as JotaiProvider } from 'jotai';
 
-import type { RoadmapNode } from '@/features/roadmap-editor/types/editor.types';
+import { useLocalStorage } from '@/features/roadmap-editor/hooks/use-local-storage';
 
+import { ColorPicker } from '../../molecules/ColorPicker';
+import { EditorHeader } from '../../organisms/EditorHeader';
+import { EditorSidebar } from '../../organisms/EditorSidebar';
+import { EditorToolbar } from '../../organisms/EditorToolbar';
 import { RoadmapCanvas } from '../../organisms/RoadmapCanvas';
 
-import type { Edge } from '@xyflow/react';
+function EditorContent() {
+  useLocalStorage();
 
-interface RoadmapEditorProps {
-  initialNodes?: RoadmapNode[];
-  initialEdges?: Edge[];
+  return (
+    <div className="flex h-screen w-screen flex-col">
+      <EditorHeader />
+
+      <div className="relative flex flex-1 overflow-hidden">
+        <div className="flex-1">
+          <RoadmapCanvas />
+        </div>
+        <EditorSidebar />
+      </div>
+
+      <EditorToolbar />
+      <ColorPicker />
+    </div>
+  );
 }
 
-export function RoadmapEditor({ initialNodes, initialEdges }: RoadmapEditorProps) {
+export function RoadmapEditor() {
   return (
-    <ReactFlowProvider>
-      <div className="relative h-screen w-screen">
-        {/* Phase 2: 헤더 영역 (좌상단) */}
-        {/* Phase 2: 툴바 영역 (하단 중앙) */}
-        {/* Phase 2: 사이드바 영역 (우측) */}
-
-        <RoadmapCanvas initialNodes={initialNodes} initialEdges={initialEdges} />
-      </div>
-    </ReactFlowProvider>
+    <JotaiProvider>
+      <ReactFlowProvider>
+        <EditorContent />
+      </ReactFlowProvider>
+    </JotaiProvider>
   );
 }
