@@ -9,10 +9,13 @@ import {
   addEdge,
   applyNodeChanges,
   applyEdgeChanges,
+  useReactFlow,
+  type Edge,
   type OnConnect,
   type OnNodesChange,
   type OnEdgesChange,
   type OnSelectionChangeFunc,
+  type OnConnectEnd,
   type NodeTypes,
   BackgroundVariant,
   ConnectionMode,
@@ -30,6 +33,7 @@ import {
 import type { RoadmapNode } from '@/features/roadmap-editor/types/editor.types';
 
 import { useKeyboardShortcuts } from '../../../hooks/use-keyboard-shortcuts';
+import { ConnectionLine } from '../../molecules/ConnectionLine';
 import { JagalchiNode } from '../../molecules/JagalchiNode';
 import { JagalchiSection } from '../../molecules/JagalchiSection';
 import { JagalchiText } from '../../molecules/JagalchiText';
@@ -45,6 +49,7 @@ export function RoadmapCanvas() {
   const [edges, setEdges] = useAtom(edgesAtom);
   const setSelectedNodeIds = useSetAtom(selectedNodeIdsAtom);
   const setSelectedEdgeIds = useSetAtom(selectedEdgeIdsAtom);
+  const { screenToFlowPosition } = useReactFlow();
 
   // 키보드 단축키 활성화
   useKeyboardShortcuts();
@@ -78,6 +83,50 @@ export function RoadmapCanvas() {
     [setSelectedNodeIds, setSelectedEdgeIds],
   );
 
+  const onConnectEnd: OnConnectEnd = useCallback(
+    (event, connectionState) => {
+      // Only create node if connection ended on empty space (not on another node)
+      if (connectionState.toNode) return;
+
+      // Get mouse position
+      const targetIsPane = (event.target as HTMLElement).classList.contains('react-flow__pane');
+      if (!targetIsPane) return;
+
+      const { clientX, clientY } = 'changedTouches' in event ? event.changedTouches[0] : event;
+      const position = screenToFlowPosition({ x: clientX, y: clientY });
+
+      // Create new node at drop position
+      const newNodeId = `node-${Date.now()}`;
+      const newNode: RoadmapNode = {
+        id: newNodeId,
+        type: 'jagalchi-node',
+        position: { x: position.x - 100, y: position.y - 24 }, // Center the node
+        data: {
+          label: 'New Node',
+          description: '',
+          resources: [],
+          variant: 'white',
+          isLocked: false,
+        },
+      };
+
+      // Add new node
+      setNodes((nds) => [...nds, newNode]);
+
+      // Create edge connecting source to new node
+      if (connectionState.fromNode) {
+        const newEdge: Edge = {
+          id: `edge-${Date.now()}`,
+          source: connectionState.fromNode.id,
+          target: newNodeId,
+          sourceHandle: connectionState.fromHandle?.id ?? null,
+        };
+        setEdges((eds) => [...eds, newEdge]);
+      }
+    },
+    [screenToFlowPosition, setNodes, setEdges],
+  );
+
   return (
     <div className="h-full w-full">
       <ReactFlow
@@ -86,8 +135,10 @@ export function RoadmapCanvas() {
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
+        onConnectEnd={onConnectEnd}
         onSelectionChange={onSelectionChange}
         nodeTypes={nodeTypes}
+        connectionLineComponent={ConnectionLine}
         multiSelectionKeyCode="Shift"
         selectionKeyCode="Shift"
         deleteKeyCode="Delete"
