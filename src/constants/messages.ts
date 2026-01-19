@@ -30,6 +30,9 @@ export const EDITOR_MESSAGES = {
   TOOLBAR_SECTION_TOOLTIP: '섹션 추가',
   TOOLBAR_TEXT_TOOLTIP: '텍스트 추가',
   TOOLBAR_GEAR_TOOLTIP: '설정',
+  // Phase 3: AI Menu
+  AI_MENU_GENERATE_LABEL: '로드맵 생성',
+  AI_MENU_MODIFY_LABEL: '로드맵 수정',
   // Phase 2: ColorPicker
   COLOR_PICKER_TITLE: '컬러 선택',
   COLOR_PICKER_CANCEL: '취소',
