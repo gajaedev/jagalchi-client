@@ -27,6 +27,7 @@ export const EditorHeader = memo(function EditorHeader() {
         onChange={(e) => setTitle(e.target.value)}
         className="max-w-md border-none text-lg font-semibold focus-visible:ring-0"
         placeholder="Jagalchi Roadmap"
+        aria-label="로드맵 제목"
       />
     </header>
   );

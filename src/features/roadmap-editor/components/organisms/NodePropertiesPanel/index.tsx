@@ -84,6 +84,7 @@ export const NodePropertiesPanel = memo(function NodePropertiesPanel({
               value={resource}
               onChange={(e) => handleResourceChange(index, e.target.value)}
               placeholder="URL"
+              aria-label={`자료 URL ${index + 1}`}
             />
           ))}
           <Button variant="outline" size="sm" onClick={handleResourceAdd} className="w-full">
