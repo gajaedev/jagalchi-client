@@ -11,4 +11,10 @@ export {
   isColorPickerOpenAtom,
   colorPickerTargetAtom,
   activeToolAtom,
+  undoAtom,
+  redoAtom,
+  canUndoAtom,
+  canRedoAtom,
+  nodesHistoryAtom,
+  edgesHistoryAtom,
 } from './editor-atoms';
