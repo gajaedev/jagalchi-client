@@ -20,7 +20,7 @@ export const nodesAtom = atom(
   (get, set, update: RoadmapNode[] | ((prev: RoadmapNode[]) => RoadmapNode[])) => {
     const [current] = get(nodesHistoryAtom);
     const newValue = typeof update === 'function' ? update(current) : update;
-    set(nodesBaseAtom, newValue);
+    set(nodesHistoryAtom, newValue);
   },
 );
 
@@ -32,7 +32,7 @@ export const edgesAtom = atom(
   (get, set, update: Edge[] | ((prev: Edge[]) => Edge[])) => {
     const [current] = get(edgesHistoryAtom);
     const newValue = typeof update === 'function' ? update(current) : update;
-    set(edgesBaseAtom, newValue);
+    set(edgesHistoryAtom, newValue);
   },
 );
 export const roadmapTitleAtom = atom<string>('Jagalchi Roadmap');
