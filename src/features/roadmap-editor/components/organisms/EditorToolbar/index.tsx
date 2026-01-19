@@ -3,7 +3,7 @@
 import { memo } from 'react';
 
 import { useAtom, useSetAtom } from 'jotai';
-import { Square, Minus, RectangleHorizontal, Type, Settings } from 'lucide-react';
+import { Square, Minus, RectangleHorizontal, Type } from 'lucide-react';
 
 import { EDITOR_MESSAGES } from '@/constants/messages';
 
@@ -15,6 +15,7 @@ import {
   createJagalchiText,
 } from '../../../utils/node-factory';
 import { ToolbarButton } from '../../atoms/ToolbarButton';
+import { EditorAiMenu } from '../../molecules/EditorAiMenu';
 
 export const EditorToolbar = memo(function EditorToolbar() {
   const [activeTool, setActiveTool] = useAtom(activeToolAtom);
@@ -47,10 +48,6 @@ export const EditorToolbar = memo(function EditorToolbar() {
     setActiveTool('line');
   };
 
-  const handleGearClick = () => {
-    // Phase 3: AI 기능 드롭다운
-  };
-
   return (
     <div className="fixed bottom-8 left-1/2 z-50 -translate-x-1/2">
       <div className="bg-background flex items-center gap-2 rounded-lg border p-2 shadow-lg">
@@ -81,12 +78,7 @@ export const EditorToolbar = memo(function EditorToolbar() {
 
         <div className="bg-border mx-1 h-6 w-px" />
 
-        <ToolbarButton
-          icon={<Settings className="h-5 w-5" />}
-          label={EDITOR_MESSAGES.TOOLBAR_GEAR_TOOLTIP}
-          isActive={false}
-          onClick={handleGearClick}
-        />
+        <EditorAiMenu />
       </div>
     </div>
   );
