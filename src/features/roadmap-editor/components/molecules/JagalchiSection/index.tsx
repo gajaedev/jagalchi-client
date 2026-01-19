@@ -2,7 +2,7 @@
 
 import { memo } from 'react';
 
-import { NodeResizer, type NodeProps } from '@xyflow/react';
+import { NodeResizer } from '@xyflow/react';
 import { useSetAtom } from 'jotai';
 
 import { EDITOR_MESSAGES } from '@/constants/messages';
@@ -14,7 +14,11 @@ import type {
 } from '@/features/roadmap-editor/types/editor.types';
 import { cn } from '@/lib/utils';
 
-type JagalchiSectionProps = NodeProps<JagalchiSectionData>;
+interface JagalchiSectionProps {
+  id: string;
+  data: JagalchiSectionData;
+  selected?: boolean;
+}
 
 export const JagalchiSection = memo(function JagalchiSection({
   id,

@@ -89,7 +89,6 @@ export function RoadmapCanvas() {
         deleteKeyCode="Delete"
         panOnDrag={[1, 2]}
         panOnScroll
-        selectionMode="partial"
         fitView
         fitViewOptions={{ padding: 0.2 }}
         defaultEdgeOptions={{
