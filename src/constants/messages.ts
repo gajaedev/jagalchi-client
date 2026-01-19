@@ -8,11 +8,8 @@ export const PROFILE_MESSAGES = {
 export const EDITOR_MESSAGES = {
   SAVE_SUCCESS: '저장됨',
   SAVE_FAILED: '저장 실패',
-  AI_GENERATE_ROADMAP: '로드맵 생성',
-  AI_MODIFY_ROADMAP: '로드맵 수정',
-  AI_MENU_LABEL: 'AI 메뉴',
-  RESOURCE_DELETE_CONFIRM: '자료를 삭제하시겠습니까?',
-  FLOW_NODE_DEFAULT_TITLE: 'Node',
-  FLOW_SECTION_DEFAULT_TITLE: '섹션',
+  // Phase 1: React Flow 노드 기본값
+  FLOW_NODE_DEFAULT_LABEL: '새 노드',
+  FLOW_SECTION_DEFAULT_TITLE: '빈 섹션',
   FLOW_TEXT_DEFAULT_CONTENT: '텍스트',
 } as const;
