@@ -61,7 +61,11 @@ export function RoadmapCard({
             {isDirectory ? `${fileCount ?? 0}개의 파일` : `By ${author ?? '홍길동'}`}
           </p>
         </div>
-        <button className="text-muted-foreground/60 hover:text-foreground shrink-0 p-1 transition-colors">
+        <button
+          type="button"
+          aria-label="더 보기"
+          className="text-muted-foreground/60 hover:text-foreground shrink-0 p-1 transition-colors"
+        >
           <Ellipsis className="h-4 w-4" />
         </button>
       </div>

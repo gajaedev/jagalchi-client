@@ -6,6 +6,8 @@ import { cn } from '@/lib/utils';
 
 interface MyRoadmapsSidebarProps {
   className?: string;
+  userName?: string;
+  userEmail?: string;
 }
 
 const SIDEBAR_ITEMS = [
@@ -16,7 +18,11 @@ const SIDEBAR_ITEMS = [
   { icon: Star, label: '즐겨찾기' },
 ];
 
-export function MyRoadmapsSidebar({ className }: MyRoadmapsSidebarProps) {
+export function MyRoadmapsSidebar({
+  className,
+  userName = 'UserName',
+  userEmail = 'user@example.com',
+}: MyRoadmapsSidebarProps) {
   return (
     <div className={cn('bg-sidebar flex min-h-screen w-52 flex-col border-r', className)}>
       <div className="flex h-full flex-col">
@@ -27,9 +33,9 @@ export function MyRoadmapsSidebar({ className }: MyRoadmapsSidebarProps) {
             <AvatarFallback>U</AvatarFallback>
           </Avatar>
           <div className="flex min-w-0 flex-1 flex-col">
-            <span className="truncate text-xs font-semibold text-[#1F2937]">UserName</span>
+            <span className="truncate text-xs font-semibold text-[#1F2937]">{userName}</span>
             <span className="text-muted-foreground truncate text-[10px] leading-none">
-              highspeed1633@g...
+              {userEmail}
             </span>
           </div>
           <ChevronDown className="text-muted-foreground h-4 w-4" />
@@ -51,6 +57,7 @@ export function MyRoadmapsSidebar({ className }: MyRoadmapsSidebarProps) {
           {SIDEBAR_ITEMS.map((item) => (
             <button
               key={item.label}
+              type="button"
               className={cn(
                 'flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-[13px] font-medium transition-colors',
                 item.active ? 'bg-[#E5E7EB] text-[#1F2937]' : 'text-[#4B5563] hover:bg-black/5',
