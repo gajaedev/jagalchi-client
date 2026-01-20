@@ -1,34 +1,40 @@
-import { RoadmapCard } from '@/features/community/components/atoms/RoadmapCard';
 import { MyRoadmapsToolbar } from '@/features/my-roadmaps/components/molecules/MyRoadmapsToolbar';
+import { MyRoadmapsGrid } from '@/features/my-roadmaps/components/organisms/MyRoadmapsGrid';
 import { MyRoadmapsHeader } from '@/features/my-roadmaps/components/organisms/MyRoadmapsHeader';
 import { MyRoadmapsLayout } from '@/features/my-roadmaps/components/templates/MyRoadmapsLayout';
+import type { RoadmapData } from '@/features/my-roadmaps/types/my-roadmaps.types';
 
 // Mock data for development
-const MY_ROADMAPS = [
+const MY_ROADMAPS: RoadmapData[] = [
   {
     id: '1',
     title: 'Frontend Developer Roadmap',
-    author: 'User',
+    author: '홍길동',
+    type: 'Roadmap',
   },
   {
     id: '2',
-    title: 'React Mastery',
-    author: 'User',
+    title: 'Directory Name',
+    type: 'Directory',
+    fileCount: 67,
   },
   {
     id: '3',
-    title: 'Backend Essentials',
-    author: 'User',
+    title: 'React Mastery',
+    author: '홍길동',
+    type: 'Roadmap',
   },
   {
     id: '4',
-    title: 'DevOps Guide',
-    author: 'User',
+    title: 'Backend Essentials',
+    author: '홍길동',
+    type: 'Roadmap',
   },
   {
     id: '5',
-    title: 'Full Stack Journey',
-    author: 'User',
+    title: 'DevOps Guide',
+    author: '홍길동',
+    type: 'Roadmap',
   },
 ];
 
@@ -39,15 +45,8 @@ export default function MyRoadmapsPage() {
         <MyRoadmapsHeader />
         <div className="flex-1 px-20 pb-20">
           <MyRoadmapsToolbar />
-          <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {MY_ROADMAPS.map((roadmap) => (
-              <RoadmapCard
-                key={roadmap.id}
-                id={roadmap.id}
-                title={roadmap.title}
-                author={roadmap.author}
-              />
-            ))}
+          <div className="mt-6">
+            <MyRoadmapsGrid roadmaps={MY_ROADMAPS} />
           </div>
         </div>
       </div>

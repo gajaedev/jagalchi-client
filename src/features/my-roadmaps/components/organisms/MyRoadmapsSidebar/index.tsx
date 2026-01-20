@@ -1,7 +1,7 @@
-import { BookOpen, Clock, Files, Star, User } from 'lucide-react';
+import { ChevronDown, Clock, LayoutGrid, Search, Star, Users, Share2 } from 'lucide-react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Separator } from '@/components/ui/separator';
+import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 
 interface MyRoadmapsSidebarProps {
@@ -9,44 +9,60 @@ interface MyRoadmapsSidebarProps {
 }
 
 const SIDEBAR_ITEMS = [
-  { icon: Clock, label: 'Recents' },
-  { icon: Star, label: 'Favorites' },
-  { icon: Files, label: 'My Roadmaps', active: true },
-  { icon: BookOpen, label: 'Shared with me' },
-  { icon: User, label: 'Created by me' },
+  { icon: Clock, label: '최근' },
+  { icon: LayoutGrid, label: '커뮤니티' },
+  { icon: Share2, label: '내 로드맵', active: true },
+  { icon: Users, label: '공유된 로드맵' },
+  { icon: Star, label: '즐겨찾기' },
 ];
 
 export function MyRoadmapsSidebar({ className }: MyRoadmapsSidebarProps) {
   return (
-    <div className={cn('bg-background flex w-[240px] flex-col border-r', className)}>
-      <div className="p-6">
-        <div className="mb-6 flex items-center gap-3">
-          <Avatar className="h-10 w-10">
+    <div className={cn('bg-sidebar flex min-h-screen w-52 flex-col border-r', className)}>
+      <div className="flex h-full flex-col">
+        {/* Profile Section */}
+        <div className="mb-2 flex items-center gap-2 p-4">
+          <Avatar className="h-8 w-8">
             <AvatarImage src="/placeholder-avatar.png" />
             <AvatarFallback>U</AvatarFallback>
           </Avatar>
-          <div className="flex flex-col">
-            <span className="text-sm font-medium">User Name</span>
-            <span className="text-muted-foreground text-xs">user@example.com</span>
+          <div className="flex min-w-0 flex-1 flex-col">
+            <span className="truncate text-xs font-semibold text-[#1F2937]">UserName</span>
+            <span className="text-muted-foreground truncate text-[10px] leading-none">
+              highspeed1633@g...
+            </span>
+          </div>
+          <ChevronDown className="text-muted-foreground h-4 w-4" />
+        </div>
+
+        {/* Sidebar Search */}
+        <div className="mb-4 px-3">
+          <div className="relative">
+            <Search className="text-muted-foreground/60 absolute top-1/2 left-2.5 h-4 w-4 -translate-y-1/2" />
+            <Input
+              placeholder="Search"
+              className="h-9 border-none bg-white pl-9 text-xs shadow-xs"
+            />
           </div>
         </div>
 
-        <Separator className="my-4" />
-
-        <div className="space-y-1">
+        {/* Navigation Items */}
+        <nav className="flex-1 space-y-0.5 px-2">
           {SIDEBAR_ITEMS.map((item) => (
             <button
               key={item.label}
               className={cn(
-                'hover:bg-muted flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
-                item.active ? 'bg-muted text-foreground' : 'text-muted-foreground',
+                'flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-[13px] font-medium transition-colors',
+                item.active ? 'bg-[#E5E7EB] text-[#1F2937]' : 'text-[#4B5563] hover:bg-black/5',
               )}
             >
-              <item.icon className="h-4 w-4" />
+              <item.icon
+                className={cn('h-4 w-4', item.active ? 'text-[#1F2937]' : 'text-[#6B7280]')}
+              />
               {item.label}
             </button>
           ))}
-        </div>
+        </nav>
       </div>
     </div>
   );

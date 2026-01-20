@@ -1,4 +1,4 @@
-import { Plus, Search, Settings2 } from 'lucide-react';
+import { ListFilter, Plus, Search } from 'lucide-react';
 
 import {
   Breadcrumb,
@@ -14,28 +14,36 @@ import { Input } from '@/components/ui/input';
 export function MyRoadmapsToolbar() {
   return (
     <div className="flex w-full items-center justify-between py-6">
-      <Breadcrumb>
+      <Breadcrumb className="flex h-9 items-center">
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink href="/">Home</BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>My Roadmaps</BreadcrumbPage>
+            <BreadcrumbPage>Components</BreadcrumbPage>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Breadcrumb</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-[10px]">
         <div className="relative">
-          <Search className="text-muted-foreground absolute top-2.5 left-2.5 h-4 w-4" />
-          <Input type="search" placeholder="Search..." className="w-[200px] pl-8" />
+          <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
+          <Input
+            type="search"
+            placeholder="로드맵 검색"
+            className="border-border h-9 w-[240px] bg-white pl-9 text-xs"
+          />
         </div>
-        <Button variant="outline" size="icon" className="h-10 w-10">
-          <Settings2 className="h-4 w-4" />
+        <Button variant="outline" size="icon" className="border-border h-9 w-9">
+          <ListFilter className="text-muted-foreground h-4 w-4" />
         </Button>
-        <Button className="h-10 px-4">
-          <Plus className="mr-2 h-4 w-4" />
-          Create
+        <Button className="h-9 rounded-md bg-[#2563EB] px-4 text-sm font-semibold text-white hover:bg-[#1D4ED8]">
+          New
+          <Plus className="ml-1.5 h-4 w-4" />
         </Button>
       </div>
     </div>
