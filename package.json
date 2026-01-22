@@ -10,6 +10,7 @@
     "prepare": "husky",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
+    "chromatic": "chromatic --exit-zero-on-changes",
     "test": "vitest",
     "test:run": "vitest run --passWithNoTests"
   },

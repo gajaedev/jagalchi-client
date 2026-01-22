@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { useState } from 'react';
 
 import { EdgePropertiesPanel } from '@/features/roadmap-editor/components/organisms/EdgePropertiesPanel';
