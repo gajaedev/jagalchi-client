@@ -50,10 +50,10 @@ jobs:
             const total = additions + deletions;
 
             let sizeLabel;
-            if (total <= 10) sizeLabel = 'size: XS';
-            else if (total <= 50) sizeLabel = 'size: S';
-            else if (total <= 200) sizeLabel = 'size: M';
-            else if (total <= 500) sizeLabel = 'size: L';
+            if (total <= 50) sizeLabel = 'size: XS';
+            else if (total <= 200) sizeLabel = 'size: S';
+            else if (total <= 500) sizeLabel = 'size: M';
+            else if (total <= 1000) sizeLabel = 'size: L';
             else sizeLabel = 'size: XL';
 
             // 기존 사이즈 라벨 제거
