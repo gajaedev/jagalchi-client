@@ -15,11 +15,11 @@ describe('NodePropertiesPanel', () => {
     onColorChange: vi.fn(),
   };
 
-  it('320px 너비(w-80)로 렌더링된다', () => {
+  it('272px 너비(w-68)로 렌더링된다', () => {
     const { container } = render(<NodePropertiesPanel {...mockProps} />);
     const panel = container.firstChild as HTMLElement;
 
-    expect(panel.className).toContain('w-80');
+    expect(panel.className).toContain('w-68');
   });
 
   it('헤더를 렌더링한다', () => {

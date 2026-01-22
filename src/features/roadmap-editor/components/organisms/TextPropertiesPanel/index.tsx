@@ -34,7 +34,7 @@ export function TextPropertiesPanel({
   const [recentColors] = useState<string[]>(['#111827', '#374151', '#6b7280', '#9ca3af']);
 
   return (
-    <div className="w-80 space-y-5">
+    <div className="w-68 space-y-5">
       {/* Header */}
       <div className="flex items-center justify-between">
         <h3 className="text-sm font-semibold text-neutral-900">Text Properties</h3>

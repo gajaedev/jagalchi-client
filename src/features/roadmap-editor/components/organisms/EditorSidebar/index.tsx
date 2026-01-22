@@ -26,7 +26,7 @@ export function EditorSidebar({
         className={cn(
           'bg-neutral-0 border-neutral-200 transition-all duration-300',
           side === 'left' ? 'border-r' : 'border-l',
-          isOpen ? 'w-80' : 'w-0',
+          isOpen ? 'w-68' : 'w-0',
           className,
         )}
         aria-label="Editor sidebar"
@@ -41,7 +41,7 @@ export function EditorSidebar({
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
           'bg-neutral-0 focus:ring-primary-500 absolute top-1/2 z-10 flex h-12 w-6 -translate-y-1/2 items-center justify-center rounded-md border border-neutral-200 hover:bg-neutral-50 focus:ring-2 focus:outline-none',
-          side === 'left' ? (isOpen ? 'left-80' : 'left-0') : isOpen ? 'right-80' : 'right-0',
+          side === 'left' ? (isOpen ? 'left-68' : 'left-0') : isOpen ? 'right-68' : 'right-0',
         )}
         aria-label={isOpen ? 'Close sidebar' : 'Open sidebar'}
         aria-expanded={isOpen}
