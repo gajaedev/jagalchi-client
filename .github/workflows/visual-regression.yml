@@ -46,3 +46,94 @@ jobs:
           buildScriptName: build-storybook
           exitZeroOnChanges: true
           autoAcceptChanges: develop
+
+  figma-comparison:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install chromium
+
+      - name: Start Storybook
+        run: |
+          pnpm storybook &
+          npx wait-on http://localhost:6006 --timeout 60000
+
+      - name: Export Figma designs
+        env:
+          FIGMA_ACCESS_TOKEN: ${{ secrets.FIGMA_ACCESS_TOKEN }}
+          FIGMA_FILE_KEY: ${{ secrets.FIGMA_FILE_KEY }}
+        run: pnpm figma:export
+
+      - name: Capture Storybook screenshots
+        run: pnpm figma:screenshots
+
+      - name: Compare images
+        id: compare
+        continue-on-error: true
+        run: pnpm figma:compare
+
+      - name: Generate HTML report
+        if: always()
+        run: pnpm figma:report
+
+      - name: Upload visual test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-test-results
+          path: visual-tests/
+          retention-days: 30
+
+      - name: Comment PR with results
+        if: always() && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = JSON.parse(fs.readFileSync('visual-tests/comparison-report.json', 'utf8'));
+
+            const status = report.failed === 0 ? '✅ All components match Figma designs!' : `❌ ${report.failed} component(s) differ from Figma designs`;
+            const body = `## 🎨 Figma Visual Regression Results
+
+            ${status}
+
+            **Summary:**
+            - Total: ${report.total}
+            - ✅ Passed: ${report.passed}
+            - ❌ Failed: ${report.failed}
+            - Threshold: ${report.threshold * 100}%
+
+            ${report.failed > 0 ? `
+            **Failed components:**
+            ${report.results.filter(r => !r.passed).map(r => `- **${r.name}**: ${r.diffPercentage}% different`).join('\n')}
+
+            📊 [View detailed report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            ` : ''}
+            `;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });
