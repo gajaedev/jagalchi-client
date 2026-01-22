@@ -29,6 +29,7 @@ import {
 } from '@/features/roadmap-editor/stores/editor-atoms';
 import type { RoadmapNode } from '@/features/roadmap-editor/types/editor.types';
 
+import { useKeyboardShortcuts } from '../../../hooks/use-keyboard-shortcuts';
 import { JagalchiNode } from '../../molecules/JagalchiNode';
 import { JagalchiSection } from '../../molecules/JagalchiSection';
 import { JagalchiText } from '../../molecules/JagalchiText';
@@ -44,6 +45,9 @@ export function RoadmapCanvas() {
   const [edges, setEdges] = useAtom(edgesAtom);
   const setSelectedNodeIds = useSetAtom(selectedNodeIdsAtom);
   const setSelectedEdgeIds = useSetAtom(selectedEdgeIdsAtom);
+
+  // 키보드 단축키 활성화
+  useKeyboardShortcuts();
 
   const onNodesChange: OnNodesChange = useCallback(
     (changes) => {

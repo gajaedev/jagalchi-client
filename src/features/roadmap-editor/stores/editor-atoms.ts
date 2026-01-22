@@ -1,11 +1,40 @@
 import { atom } from 'jotai';
+import { withHistory, UNDO, REDO } from 'jotai-history';
 
 import type { RoadmapNode } from '../types/editor.types';
 import type { Edge } from '@xyflow/react';
 
-// Core state
-export const nodesAtom = atom<RoadmapNode[]>([]);
-export const edgesAtom = atom<Edge[]>([]);
+// Core state with history
+const nodesBaseAtom = atom<RoadmapNode[]>([]);
+const edgesBaseAtom = atom<Edge[]>([]);
+
+export const nodesHistoryAtom = withHistory(nodesBaseAtom, 100);
+export const edgesHistoryAtom = withHistory(edgesBaseAtom, 100);
+
+// Current state atoms (for compatibility)
+export const nodesAtom = atom(
+  (get) => {
+    const [current] = get(nodesHistoryAtom);
+    return current;
+  },
+  (get, set, update: RoadmapNode[] | ((prev: RoadmapNode[]) => RoadmapNode[])) => {
+    const [current] = get(nodesHistoryAtom);
+    const newValue = typeof update === 'function' ? update(current) : update;
+    set(nodesHistoryAtom, newValue);
+  },
+);
+
+export const edgesAtom = atom(
+  (get) => {
+    const [current] = get(edgesHistoryAtom);
+    return current;
+  },
+  (get, set, update: Edge[] | ((prev: Edge[]) => Edge[])) => {
+    const [current] = get(edgesHistoryAtom);
+    const newValue = typeof update === 'function' ? update(current) : update;
+    set(edgesHistoryAtom, newValue);
+  },
+);
 export const roadmapTitleAtom = atom<string>('Jagalchi Roadmap');
 
 // Selection state
@@ -44,3 +73,26 @@ export const colorPickerTargetAtom = atom<{
 
 // Toolbar state
 export const activeToolAtom = atom<'select' | 'node' | 'line' | 'section' | 'text'>('select');
+
+// Undo/Redo atoms
+export const undoAtom = atom(null, (get, set) => {
+  set(nodesHistoryAtom, UNDO);
+  set(edgesHistoryAtom, UNDO);
+});
+
+export const redoAtom = atom(null, (get, set) => {
+  set(nodesHistoryAtom, REDO);
+  set(edgesHistoryAtom, REDO);
+});
+
+export const canUndoAtom = atom((get) => {
+  const nodesHistory = get(nodesHistoryAtom);
+  const edgesHistory = get(edgesHistoryAtom);
+  return nodesHistory.canUndo || edgesHistory.canUndo;
+});
+
+export const canRedoAtom = atom((get) => {
+  const nodesHistory = get(nodesHistoryAtom);
+  const edgesHistory = get(edgesHistoryAtom);
+  return nodesHistory.canRedo || edgesHistory.canRedo;
+});

@@ -78,7 +78,7 @@ export const NodePropertiesPanel = memo(function NodePropertiesPanel({
       <div>
         <Label>{EDITOR_MESSAGES.SIDEBAR_RESOURCES_LABEL}</Label>
         <div className="mt-2 space-y-2">
-          {node.data.resources.map((resource: string, index: number) => (
+          {node.data.resources.map((resource, index) => (
             <Input
               key={index}
               value={resource}
