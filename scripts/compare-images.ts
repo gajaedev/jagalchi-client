@@ -94,20 +94,24 @@ async function main() {
 
   const results: ComparisonResult[] = [];
 
+  // Get all actual files for case-insensitive matching
+  const actualFiles = await fs.readdir(actualDir);
+  const actualFilesMap = new Map(actualFiles.map((f) => [f.toLowerCase(), f]));
+
   for (const fileName of figmaFiles) {
     const figmaPath = path.join(figmaDir, fileName);
-    const actualPath = path.join(actualDir, fileName);
+
+    // Find actual file (case-insensitive)
+    const actualFileName = actualFilesMap.get(fileName.toLowerCase());
+    if (!actualFileName) {
+      console.log(`⚠ Skipped: ${fileName} (no actual screenshot)`);
+      continue;
+    }
+
+    const actualPath = path.join(actualDir, actualFileName);
     const diffPath = path.join(diffDir, fileName);
 
     try {
-      // Check if actual screenshot exists
-      try {
-        await fs.access(actualPath);
-      } catch {
-        console.log(`⚠ Skipped: ${fileName} (no actual screenshot)`);
-        continue;
-      }
-
       const { diffPixels, width, height } = await compareImages(figmaPath, actualPath, diffPath);
 
       const totalPixels = width * height;

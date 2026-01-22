@@ -19,17 +19,22 @@ interface FigmaComponent {
   fileKey: string;
 }
 
-interface FigmaComponentMapping {
-  storybookName: string;
-  figmaName: string;
+interface FigmaVariant {
+  name: string;
   nodeId: string;
-  fileKey: string;
+  storybookName: string;
+}
+
+interface ComponentData {
+  componentName: string;
+  frameNodeId: string;
+  variants: FigmaVariant[];
 }
 
 interface SyncResult {
   timestamp: string;
   fileKey: string;
-  mappings: FigmaComponentMapping[];
+  components: ComponentData[];
 }
 
 /**
@@ -101,15 +106,22 @@ async function loadComponentMappings(): Promise<Record<string, FigmaComponent>> 
     const content = await fs.readFile(mappingPath, 'utf-8');
     const syncResult: SyncResult = JSON.parse(content);
 
-    console.log(`📋 Loaded ${syncResult.mappings.length} mappings from figma-components.json`);
-    console.log(`   (Synced at: ${new Date(syncResult.timestamp).toLocaleString()})\n`);
+    // Flatten variants from all components
+    const allVariants: FigmaVariant[] = [];
+    for (const component of syncResult.components) {
+      allVariants.push(...component.variants);
+    }
+
+    console.log(`📋 Loaded ${allVariants.length} variants from figma-components.json`);
+    console.log(`   (Synced at: ${new Date(syncResult.timestamp).toLocaleString()})`);
+    console.log(`   Components: ${syncResult.components.length}\n`);
 
     const components: Record<string, FigmaComponent> = {};
-    for (const mapping of syncResult.mappings) {
-      components[mapping.storybookName] = {
-        name: mapping.figmaName,
-        nodeId: mapping.nodeId,
-        fileKey: mapping.fileKey,
+    for (const variant of allVariants) {
+      components[variant.storybookName] = {
+        name: variant.name,
+        nodeId: variant.nodeId,
+        fileKey: syncResult.fileKey,
       };
     }
 
@@ -137,7 +149,7 @@ async function exportFigmaImage(
   }
 
   // Get image URL from Figma API
-  const imageUrl = `https://api.figma.com/v1/images/${fileKey}?ids=${nodeId}&format=png&scale=2`;
+  const imageUrl = `https://api.figma.com/v1/images/${fileKey}?ids=${nodeId}&format=png&scale=1`;
   const response = await fetch(imageUrl, {
     headers: {
       'X-Figma-Token': token,

@@ -222,21 +222,23 @@ Summary:
 
 ## Component Mapping
 
-Current mapped components:
+**✨ Automatic Variant Detection**: The system automatically detects all Figma component variants!
 
-| Storybook Story                 | Figma Component          | Status  |
-| ------------------------------- | ------------------------ | ------- |
-| NodePropertiesPanel-Default     | Node Properties Panel    | ⚠️ TODO |
-| EdgePropertiesPanel-Default     | Edge Properties Panel    | ⚠️ TODO |
-| SectionPropertiesPanel-Default  | Section Properties Panel | ⚠️ TODO |
-| TextPropertiesPanel-Default     | Text Properties Panel    | ⚠️ TODO |
-| ResourcePropertiesPanel-Default | Resource Properties      | ⚠️ TODO |
-| ContextMenu-Default             | Context Menu             | ⚠️ TODO |
-| ToolbarButton-Default           | Toolbar Button           | ⚠️ TODO |
-| EditorButton-Default            | Editor Button            | ⚠️ TODO |
-| RoadmapAiModal-Default          | AI Modal                 | ⚠️ TODO |
+Current mapped components (automatically generated):
 
-**⚠️ Action Required**: Update node IDs in `scripts/figma-export.ts`
+| Component            | Variants Detected | Storybook Stories                                               | Status         |
+| -------------------- | ----------------- | --------------------------------------------------------------- | -------------- |
+| EditorNodeSidebar    | 4 variants        | NodePropertiesPanel-Default, Locked, Closed, ClosedLocked       | ✅ Auto-synced |
+| EditorLineSidebar    | 2 variants        | EdgePropertiesPanel-Default, Closed                             | ✅ Auto-synced |
+| EditorSectionSidebar | 4 variants        | SectionPropertiesPanel-Default, Locked, Closed, ClosedLocked    | ✅ Auto-synced |
+| EditorTextSidebar    | 4 variants        | TextPropertiesPanel-Default, Locked, Closed, ClosedLocked       | ✅ Auto-synced |
+| EditorResource       | 2 variants        | ResourcePropertiesPanel-Default, Hover                          | ✅ Auto-synced |
+| EditorToolbarItem    | 8 variants        | ToolbarButton-Default, Hover, Active, Disabled, WithDropdown... | ✅ Auto-synced |
+| EditorAIMenu         | 1 variant         | RoadmapAiModal-Default                                          | ✅ Auto-synced |
+
+**Total**: 25 variants automatically tested
+
+📖 **See**: [Figma Variant System Documentation](./FIGMA-VARIANT-SYSTEM.md) for details
 
 ## Troubleshooting
 
