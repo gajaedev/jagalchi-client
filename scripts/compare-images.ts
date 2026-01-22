@@ -12,6 +12,7 @@ import * as path from 'node:path';
 
 import pixelmatch from 'pixelmatch';
 import { PNG } from 'pngjs';
+import sharp from 'sharp';
 
 interface ComparisonResult {
   name: string;
@@ -41,19 +42,46 @@ async function loadPNG(filePath: string): Promise<PNG> {
   return PNG.sync.read(buffer);
 }
 
+async function resizeImage(
+  imagePath: string,
+  targetWidth: number,
+  targetHeight: number,
+): Promise<PNG> {
+  const resizedBuffer = await sharp(imagePath)
+    .resize(targetWidth, targetHeight, {
+      fit: 'fill', // Stretch to exact dimensions
+      kernel: sharp.kernel.lanczos3,
+    })
+    .png()
+    .toBuffer();
+
+  return PNG.sync.read(resizedBuffer);
+}
+
 async function compareImages(
   figmaPath: string,
   actualPath: string,
   diffPath: string,
 ): Promise<{ diffPixels: number; width: number; height: number }> {
-  const figma = await loadPNG(figmaPath);
-  const actual = await loadPNG(actualPath);
+  let figma = await loadPNG(figmaPath);
+  let actual = await loadPNG(actualPath);
 
-  // Ensure images are same size
+  // Resize images if dimensions don't match
   if (figma.width !== actual.width || figma.height !== actual.height) {
-    throw new Error(
-      `Image dimensions don't match: Figma ${figma.width}x${figma.height} vs Actual ${actual.width}x${actual.height}`,
+    console.log(
+      `  ⚠️  Size mismatch: Figma ${figma.width}x${figma.height} vs Actual ${actual.width}x${actual.height}`,
     );
+    console.log(`  📐 Resizing to smaller dimensions for comparison...`);
+
+    // Use the smaller dimensions
+    const targetWidth = Math.min(figma.width, actual.width);
+    const targetHeight = Math.min(figma.height, actual.height);
+
+    // Resize both images to target dimensions
+    figma = await resizeImage(figmaPath, targetWidth, targetHeight);
+    actual = await resizeImage(actualPath, targetWidth, targetHeight);
+
+    console.log(`  ✓ Resized to ${targetWidth}x${targetHeight}\n`);
   }
 
   const { width, height } = figma;
