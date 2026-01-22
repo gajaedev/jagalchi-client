@@ -25,13 +25,15 @@ export const EdgePropertiesPanel = memo(function EdgePropertiesPanel({
     setEdges((prev) => prev.map((e) => (e.id === edge.id ? { ...e, label } : e)));
   };
 
+  const labelValue = typeof edge.label === 'string' ? edge.label : '';
+
   return (
     <div className="space-y-4 p-4">
       <div>
         <Label htmlFor="edge-label">{EDITOR_MESSAGES.SIDEBAR_EDGE_LABEL_LABEL}</Label>
         <Input
           id="edge-label"
-          value={(edge.label as string) ?? ''}
+          value={labelValue}
           onChange={(e) => updateEdge(e.target.value)}
           className="mt-1"
         />

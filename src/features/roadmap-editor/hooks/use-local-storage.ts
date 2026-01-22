@@ -28,10 +28,10 @@ export function useLocalStorage() {
 
   // Load from localStorage on mount
   useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (!stored) return;
-
     try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (!stored) return;
+
       const data: StoredData = JSON.parse(stored);
       setNodes(data.nodes);
       setEdges(data.edges);
@@ -45,13 +45,18 @@ export function useLocalStorage() {
   // Save to localStorage on change (debounced)
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      const data: StoredData = {
-        title,
-        nodes,
-        edges,
-        version: '1.0',
-      };
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      try {
+        const data: StoredData = {
+          title,
+          nodes,
+          edges,
+          version: '1.0',
+        };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error('Failed to save to localStorage:', error);
+      }
     }, 500); // 500ms debounce
 
     return () => clearTimeout(timeoutId);

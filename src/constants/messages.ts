@@ -47,4 +47,9 @@ export const EDITOR_MESSAGES = {
   MULTI_SELECT_ALIGN_TOP: '위쪽 정렬',
   MULTI_SELECT_ALIGN_MIDDLE: '중간 정렬',
   MULTI_SELECT_ALIGN_BOTTOM: '아래쪽 정렬',
+  // AI 기능
+  AI_GENERATE_ROADMAP: '로드맵 생성',
+  AI_MODIFY_ROADMAP: '로드맵 수정',
+  AI_MENU_LABEL: 'AI 메뉴',
+  RESOURCE_DELETE_CONFIRM: '자료를 삭제하시겠습니까?',
 } as const;
