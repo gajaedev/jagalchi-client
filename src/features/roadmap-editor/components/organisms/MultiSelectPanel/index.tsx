@@ -1,174 +1,139 @@
 'use client';
 
-import { memo } from 'react';
+import { useState } from 'react';
 
-import { useAtomValue, useSetAtom } from 'jotai';
-import {
-  AlignStartVertical,
-  AlignCenterVertical,
-  AlignEndVertical,
-  AlignStartHorizontal,
-  AlignCenterHorizontal,
-  AlignEndHorizontal,
-  LockKeyhole,
-} from 'lucide-react';
+import { ColorPicker } from '../../atoms/ColorPicker';
+import { CollapseSection } from '../../molecules/CollapseSection';
 
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { EDITOR_MESSAGES } from '@/constants/messages';
+interface SelectedItem {
+  id: string;
+  type: 'node' | 'edge' | 'section' | 'text';
+  title?: string;
+}
 
-import { NODE_PRESET_COLORS } from '../../../constants/preset-colors';
-import { nodesAtom, selectedNodeIdsAtom } from '../../../stores/editor-atoms';
-import { alignNodes } from '../../../utils/align-nodes';
-import { ColorSelector } from '../../molecules/ColorSelector';
+interface MultiSelectPanelProps {
+  selectedItems: SelectedItem[];
+  onColorChange: (color: string) => void;
+  onDelete: () => void;
+  onClear: () => void;
+}
 
-import type { NodeColorVariant } from '../../../types/editor.types';
-import type { AlignDirection } from '../../../utils/align-nodes';
+export function MultiSelectPanel({
+  selectedItems,
+  onColorChange,
+  onDelete,
+  onClear,
+}: MultiSelectPanelProps) {
+  const [color, setColor] = useState('#3b82f6');
+  const [recentColors] = useState<string[]>(['#3b82f6', '#10b981', '#f59e0b', '#ef4444']);
 
-export const MultiSelectPanel = memo(function MultiSelectPanel() {
-  const setNodes = useSetAtom(nodesAtom);
-  const selectedIds = useAtomValue(selectedNodeIdsAtom);
-  const selectedCount = selectedIds.length;
-
-  const handleAlign = (direction: AlignDirection) => {
-    setNodes((prev) => alignNodes(prev, selectedIds, direction));
+  const handleColorChange = (newColor: string) => {
+    setColor(newColor);
+    onColorChange(newColor);
   };
 
-  const handleBulkColorChange = (variant: NodeColorVariant) => {
-    setNodes((prev) =>
-      prev.map((node) => {
-        if (!selectedIds.includes(node.id)) return node;
-        // Only update nodes and sections (not text)
-        if (node.type === 'jagalchi-node') {
-          return { ...node, data: { ...node.data, variant } } as typeof node;
-        }
-        if (node.type === 'jagalchi-section') {
-          return { ...node, data: { ...node.data, variant } } as typeof node;
-        }
-        return node;
-      }),
-    );
-  };
+  const nodeCount = selectedItems.filter((item) => item.type === 'node').length;
+  const edgeCount = selectedItems.filter((item) => item.type === 'edge').length;
+  const sectionCount = selectedItems.filter((item) => item.type === 'section').length;
+  const textCount = selectedItems.filter((item) => item.type === 'text').length;
 
   return (
-    <div className="space-y-4 p-4">
+    <div className="w-80 space-y-5">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <h3 className="font-semibold">{EDITOR_MESSAGES.MULTI_SELECT_TITLE}</h3>
-          <span className="text-muted-foreground text-sm">
-            {selectedCount}
-            {EDITOR_MESSAGES.MULTI_SELECT_COUNT}
-          </span>
+        <h3 className="text-sm font-semibold text-neutral-900">
+          Multi-Select ({selectedItems.length})
+        </h3>
+        <button
+          type="button"
+          onClick={onClear}
+          className="focus:ring-primary-500 rounded-md p-1 text-neutral-700 hover:bg-neutral-100 focus:ring-2 focus:outline-none"
+          aria-label="Clear selection"
+        >
+          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+      </div>
+
+      {/* Selection Summary */}
+      <CollapseSection title="Selection Summary" defaultOpen>
+        <div className="space-y-2 text-sm">
+          {nodeCount > 0 && (
+            <div className="flex justify-between">
+              <span className="text-neutral-700">Nodes:</span>
+              <span className="font-medium text-neutral-900">{nodeCount}</span>
+            </div>
+          )}
+          {edgeCount > 0 && (
+            <div className="flex justify-between">
+              <span className="text-neutral-700">Edges:</span>
+              <span className="font-medium text-neutral-900">{edgeCount}</span>
+            </div>
+          )}
+          {sectionCount > 0 && (
+            <div className="flex justify-between">
+              <span className="text-neutral-700">Sections:</span>
+              <span className="font-medium text-neutral-900">{sectionCount}</span>
+            </div>
+          )}
+          {textCount > 0 && (
+            <div className="flex justify-between">
+              <span className="text-neutral-700">Texts:</span>
+              <span className="font-medium text-neutral-900">{textCount}</span>
+            </div>
+          )}
         </div>
-        <Button variant="ghost" size="icon" disabled>
-          <LockKeyhole className="h-4 w-4" />
-        </Button>
-      </div>
+      </CollapseSection>
 
-      {/* Alignment Section */}
-      <div>
-        <Label className="mb-2 block">{EDITOR_MESSAGES.MULTI_SELECT_ALIGN_LABEL}</Label>
-        <div className="flex flex-col gap-2">
-          {/* Horizontal alignment */}
-          <div className="flex gap-1">
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => handleAlign('left')}
-              title={EDITOR_MESSAGES.MULTI_SELECT_ALIGN_LEFT}
-              className="flex-1"
-            >
-              <AlignStartVertical className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => handleAlign('center')}
-              title={EDITOR_MESSAGES.MULTI_SELECT_ALIGN_CENTER}
-              className="flex-1"
-            >
-              <AlignCenterVertical className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => handleAlign('right')}
-              title={EDITOR_MESSAGES.MULTI_SELECT_ALIGN_RIGHT}
-              className="flex-1"
-            >
-              <AlignEndVertical className="h-4 w-4" />
-            </Button>
-          </div>
-
-          {/* Vertical alignment */}
-          <div className="flex gap-1">
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => handleAlign('top')}
-              title={EDITOR_MESSAGES.MULTI_SELECT_ALIGN_TOP}
-              className="flex-1"
-            >
-              <AlignStartHorizontal className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => handleAlign('middle')}
-              title={EDITOR_MESSAGES.MULTI_SELECT_ALIGN_MIDDLE}
-              className="flex-1"
-            >
-              <AlignCenterHorizontal className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => handleAlign('bottom')}
-              title={EDITOR_MESSAGES.MULTI_SELECT_ALIGN_BOTTOM}
-              className="flex-1"
-            >
-              <AlignEndHorizontal className="h-4 w-4" />
-            </Button>
-          </div>
-        </div>
-      </div>
-
-      {/* Spacing Section (Phase 4) */}
-      <div>
-        <Label className="mb-2 block">{EDITOR_MESSAGES.MULTI_SELECT_SPACING_LABEL}</Label>
-        <div className="flex gap-2">
-          <Input placeholder="X" disabled />
-          <Input placeholder="Y" disabled />
-        </div>
-      </div>
-
-      {/* Mixed inputs for name/description */}
-      <div>
-        <Label>{EDITOR_MESSAGES.SIDEBAR_NODE_NAME_LABEL}</Label>
-        <Input value={EDITOR_MESSAGES.MULTI_SELECT_NAME_MIXED} disabled className="mt-1" />
-      </div>
-
-      <div>
-        <Label>{EDITOR_MESSAGES.SIDEBAR_NODE_DESC_LABEL}</Label>
-        <Textarea
-          value={EDITOR_MESSAGES.MULTI_SELECT_DESC_MIXED}
-          disabled
-          className="mt-1"
-          rows={3}
+      {/* Bulk Actions */}
+      <CollapseSection title="Bulk Actions" defaultOpen>
+        <ColorPicker
+          label="Apply Color to All"
+          value={color}
+          onChange={handleColorChange}
+          recentColors={recentColors}
         />
-      </div>
+        <button
+          type="button"
+          onClick={onDelete}
+          className="flex w-full items-center justify-center gap-2 rounded-md border border-red-300 bg-red-50 px-4 py-2 text-sm font-medium text-red-700 hover:bg-red-100 focus:ring-2 focus:ring-red-500 focus:outline-none"
+        >
+          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+            />
+          </svg>
+          Delete All ({selectedItems.length})
+        </button>
+      </CollapseSection>
 
-      {/* Color selector for bulk editing */}
-      <ColorSelector
-        type="node"
-        nodeId={selectedIds[0] ?? ''}
-        currentVariant="white"
-        presets={NODE_PRESET_COLORS}
-        onPresetSelect={(variant) => handleBulkColorChange(variant as NodeColorVariant)}
-      />
+      {/* Selected Items List */}
+      <CollapseSection title="Selected Items" defaultOpen={false}>
+        <div className="max-h-64 space-y-2 overflow-y-auto">
+          {selectedItems.map((item) => (
+            <div
+              key={item.id}
+              className="flex items-center justify-between rounded-md border border-neutral-200 p-2"
+            >
+              <div className="flex items-center gap-2">
+                <span className="rounded bg-neutral-100 px-2 py-0.5 text-xs font-medium text-neutral-700">
+                  {item.type}
+                </span>
+                <span className="text-sm text-neutral-900">{item.title || item.id}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </CollapseSection>
     </div>
   );
-});
+}
