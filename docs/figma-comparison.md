@@ -46,6 +46,25 @@ Creates an HTML report with side-by-side comparisons:
 - Pass/fail status for each component
 - Opens automatically in browser
 
+## Workflow: MCP Hybrid Automation
+
+This system uses a **hybrid approach** combining MCP (Model Context Protocol) for setup and REST API for CI/CD:
+
+```
+1. [MCP] Sync Component Mappings → 2. [REST API] Export → 3. [Playwright] Capture → 4. [pixelmatch] Compare
+```
+
+### Why Hybrid?
+
+| Approach     | Pros                                                                | Cons                                       | Used For      |
+| ------------ | ------------------------------------------------------------------- | ------------------------------------------ | ------------- |
+| **MCP**      | ✅ Auto-detects node IDs<br>✅ No manual setup<br>✅ Real-time sync | ❌ Requires Figma Desktop<br>❌ Local only | Initial setup |
+| **REST API** | ✅ Works in CI/CD<br>✅ No Desktop needed<br>✅ Team-wide           | ❌ Manual node IDs                         | Automation    |
+
+**Best of Both**: Use MCP once for setup, then REST API handles everything.
+
+---
+
 ## Setup
 
 ### 1. Get Figma Access Token
@@ -84,9 +103,25 @@ Add these secrets in GitHub repository settings:
 2. Add `FIGMA_ACCESS_TOKEN`
 3. Add `FIGMA_FILE_KEY`
 
-### 4. Configure Component Mapping
+### 4. Configure Component Mapping (MCP Auto-Sync)
 
-Edit `scripts/figma-export.ts` to map Storybook stories to Figma nodes:
+**Option A: Automatic (Recommended) - MCP-based**
+
+```bash
+# Open Figma Desktop with your design file, then run:
+pnpm figma:sync
+```
+
+This will:
+
+- Scan Figma file using MCP
+- Auto-detect component node IDs
+- Generate `scripts/figma-components.json`
+- Match Figma components with Storybook stories
+
+**Option B: Manual Fallback**
+
+If MCP is unavailable, manually edit `scripts/figma-export.ts`:
 
 ```typescript
 const FIGMA_COMPONENTS: Record<string, FigmaComponent> = {
@@ -99,7 +134,7 @@ const FIGMA_COMPONENTS: Record<string, FigmaComponent> = {
 };
 ```
 
-**How to get Figma node ID:**
+**How to get Figma node ID manually:**
 
 1. Right-click component in Figma
 2. Select "Copy link"
@@ -107,6 +142,15 @@ const FIGMA_COMPONENTS: Record<string, FigmaComponent> = {
 4. Node ID is `1:2` (replace `-` with `:`)
 
 ## Local Usage
+
+### Initial Setup (Once)
+
+```bash
+# 1. Sync component mappings using MCP (Figma Desktop must be open)
+pnpm figma:sync
+
+# This generates scripts/figma-components.json with auto-detected node IDs
+```
 
 ### Run Full Pipeline
 
@@ -117,7 +161,7 @@ pnpm figma:test
 
 This will:
 
-1. Export designs from Figma
+1. Export designs from Figma (uses mappings from figma-components.json)
 2. Start Storybook (if not running)
 3. Capture screenshots
 4. Compare images
@@ -127,6 +171,9 @@ This will:
 ### Run Individual Steps
 
 ```bash
+# 0. Re-sync if Figma components changed (optional)
+pnpm figma:sync
+
 # 1. Export Figma designs only
 pnpm figma:export
 
@@ -192,6 +239,19 @@ Current mapped components:
 **⚠️ Action Required**: Update node IDs in `scripts/figma-export.ts`
 
 ## Troubleshooting
+
+### Error: "Figma Desktop MCP unavailable"
+
+**Cause**: Figma Desktop is not running or MCP integration is not enabled
+
+**Solution**:
+
+1. Open Figma Desktop application
+2. Open your design file
+3. Ensure Claude Code has MCP access to Figma
+4. Run `pnpm figma:sync` through Claude Code (not terminal)
+
+**Alternative**: Use manual fallback (edit `scripts/figma-export.ts`)
 
 ### Error: "FIGMA_ACCESS_TOKEN is required"
 
@@ -323,6 +383,14 @@ const mask = new PNG({ width, height });
 ```
 
 ## FAQ
+
+### Do I need Figma Desktop for MCP sync?
+
+**Initial setup**: Yes, run `pnpm figma:sync` once with Figma Desktop open
+
+**After setup**: No, CI/CD uses REST API automatically
+
+**Team members**: Only one person needs to run sync, others use generated `figma-components.json`
 
 ### Do I need a Figma paid plan?
 
