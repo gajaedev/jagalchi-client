@@ -6,8 +6,13 @@ import { useAtomValue } from 'jotai';
 
 import { EDITOR_MESSAGES } from '@/constants/messages';
 
-import { singleSelectedNodeAtom, singleSelectedEdgeAtom } from '../../../stores/editor-atoms';
+import {
+  singleSelectedNodeAtom,
+  singleSelectedEdgeAtom,
+  selectedNodeIdsAtom,
+} from '../../../stores/editor-atoms';
 import { EdgePropertiesPanel } from '../EdgePropertiesPanel';
+import { MultiSelectPanel } from '../MultiSelectPanel';
 import { NodePropertiesPanel } from '../NodePropertiesPanel';
 import { SectionPropertiesPanel } from '../SectionPropertiesPanel';
 import { TextPropertiesPanel } from '../TextPropertiesPanel';
@@ -21,6 +26,16 @@ import type {
 export const EditorSidebar = memo(function EditorSidebar() {
   const selectedNode = useAtomValue(singleSelectedNodeAtom);
   const selectedEdge = useAtomValue(singleSelectedEdgeAtom);
+  const selectedNodeIds = useAtomValue(selectedNodeIdsAtom);
+
+  // Multi-select (2개 이상 노드 선택)
+  if (selectedNodeIds.length >= 2) {
+    return (
+      <aside className="bg-muted/30 w-60 border-l">
+        <MultiSelectPanel />
+      </aside>
+    );
+  }
 
   // Edge가 선택된 경우
   if (selectedEdge) {

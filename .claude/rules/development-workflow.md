@@ -3,6 +3,7 @@
 **Purpose**: 모든 개발 작업의 필수 프로세스를 명시합니다. Claude Code가 이 워크플로우를 **무조건 따라야** 합니다.
 
 **Enforcement Policy**:
+
 - ⚠️ **MUST** - 필수 단계 (위반 시 작업 중단, 사용자 확인 필요)
 - 💡 **SHOULD** - 권장 단계 (경고 후 계속 진행 가능)
 
@@ -23,6 +24,7 @@ refactor/#101-editor-state
 ```
 
 **체크리스트**:
+
 - [ ] ⚠️ Issue 번호 확인 (이슈 없으면 생성 필요)
 - [ ] ⚠️ 브랜치 생성 (`git checkout -b feat/#<issue>-<desc>`)
 - [ ] ⚠️ `.github/ISSUE_TEMPLATE/` 템플릿 확인
@@ -40,6 +42,7 @@ refactor/#101-editor-state
 ```
 
 **체크리스트**:
+
 - [ ] ⚠️ 파일 변경 개수 추정 (3개 이상 → Plan 필수)
 - [ ] ⚠️ EnterPlanMode 사용 여부 결정
 - [ ] ⚠️ TodoWrite로 작업 계획 수립
@@ -48,11 +51,13 @@ refactor/#101-editor-state
 
 ```markdown
 # 단순 작업 (Plan 불필요)
+
 - 1개 파일 버그 수정
 - 단일 컴포넌트 스타일 변경
 - 오타 수정
 
 # 복잡한 작업 (Plan 필수)
+
 - 새 기능 추가 (3+ 파일)
 - 아키텍처 리팩토링
 - API 통합
@@ -62,6 +67,7 @@ refactor/#101-editor-state
 ### 💡 SHOULD: UI 작업 전 확인
 
 **UI 작업 시**:
+
 - [ ] Figma 디자인 확인 (`/intake` 사용 권장)
 - [ ] `src/components/ui/` 기존 컴포넌트 먼저 확인
 - [ ] `design_system_rules.md` 참고
@@ -74,6 +80,7 @@ refactor/#101-editor-state
 ### ⚠️ MUST: 코드 수정 전 필수 작업
 
 **체크리스트**:
+
 - [ ] ⚠️ **기존 코드 먼저 Read** (Read tool 사용)
 - [ ] ⚠️ Feature 간 cross-import 금지 확인
 - [ ] ⚠️ Named exports 사용 (default export 금지)
@@ -100,6 +107,7 @@ import { LoginForm } from '@/features/auth/components/organisms/LoginForm';
 ### ⚠️ MUST: 실시간 진행 상황 추적
 
 **체크리스트**:
+
 - [ ] ⚠️ TodoWrite로 작업 상태 업데이트 (in_progress → completed)
 - [ ] ⚠️ 작업 완료 즉시 체크리스트 업데이트 (배치 금지)
 - [ ] ⚠️ 새 작업 발견 시 Todo 추가
@@ -125,6 +133,7 @@ TodoWrite([
 ### 💡 SHOULD: 코드 품질 유지
 
 **체크리스트**:
+
 - [ ] 변경마다 `pnpm lint` 실행
 - [ ] Boolean 변수는 `is/has/can/should` prefix 사용
 - [ ] UI 문자열은 `src/constants/messages.ts`에 정의
@@ -133,6 +142,7 @@ TodoWrite([
 ### 💡 SHOULD: 보안 & 성능
 
 **체크리스트**:
+
 - [ ] XSS 방지 (사용자 입력 sanitize)
 - [ ] 불필요한 리렌더링 방지 (memo, useMemo)
 - [ ] 민감 정보 커밋 금지 (API key, credentials)
@@ -157,6 +167,7 @@ TodoWrite([
 ### ⚠️ MUST: 빌드 & 린트 검증
 
 **체크리스트**:
+
 - [ ] ⚠️ `pnpm lint` 통과 (에러 0개)
 - [ ] ⚠️ `pnpm build` 성공
 - [ ] ⚠️ TypeScript 타입 에러 0개
@@ -173,6 +184,7 @@ pnpm build          # Production 빌드
 ### 💡 SHOULD: 테스트 & 문서
 
 **체크리스트**:
+
 - [ ] 새 기능 → 테스트 작성 (`*.test.tsx`)
 - [ ] UI 컴포넌트 → Storybook 추가 (주요 컴포넌트)
 - [ ] 복잡한 로직 → JSDoc 추가
@@ -181,6 +193,7 @@ pnpm build          # Production 빌드
 ### ⚠️ MUST: 셀프 코드 리뷰
 
 **체크리스트**:
+
 - [ ] ⚠️ 불필요한 console.log 제거
 - [ ] ⚠️ 주석 처리된 코드 제거
 - [ ] ⚠️ 사용하지 않는 import 제거
@@ -195,6 +208,7 @@ pnpm build          # Production 빌드
 **원칙**: 1 commit = 1 논리적 변경
 
 **체크리스트**:
+
 - [ ] ⚠️ Conventional Commits 형식 사용
 - [ ] ⚠️ Co-Authored-By 기본 제외 (사용자 명시 시만 추가)
 - [ ] ⚠️ Commit message 소문자 동사 시작
@@ -214,20 +228,21 @@ chore(deps): update dependencies
 
 **Types**:
 
-| Type | 사용 시기 |
-|------|----------|
-| feat | 새 기능 추가 |
-| fix | 버그 수정 |
-| refactor | 코드 리팩토링 |
-| perf | 성능 개선 |
-| format | 코드 포맷팅 |
-| test | 테스트 추가/수정 |
-| docs | 문서 변경 |
-| chore | 빌드/도구 변경 |
+| Type     | 사용 시기        |
+| -------- | ---------------- |
+| feat     | 새 기능 추가     |
+| fix      | 버그 수정        |
+| refactor | 코드 리팩토링    |
+| perf     | 성능 개선        |
+| format   | 코드 포맷팅      |
+| test     | 테스트 추가/수정 |
+| docs     | 문서 변경        |
+| chore    | 빌드/도구 변경   |
 
 ### ⚠️ MUST: PR 생성 전 확인
 
 **체크리스트**:
+
 - [ ] ⚠️ `.github/PULL_REQUEST_TEMPLATE.md` 작성
 - [ ] ⚠️ 관련 이슈 링크 (`Closes #<issue>`)
 - [ ] ⚠️ 체크리스트 완료
@@ -246,6 +261,7 @@ fix(#92): resolve login redirect error
 ### 💡 SHOULD: PR 최적화
 
 **체크리스트**:
+
 - [ ] PR 크기 < 500줄 (가능하면 분할)
 - [ ] 명확한 설명 (무엇을, 왜, 어떻게)
 - [ ] Breaking changes 명시
@@ -300,24 +316,24 @@ git worktree remove ../jagalchi-84
 
 ### 실행 명령어
 
-| Command | Phase | Usage |
-|---------|-------|-------|
-| `/intake <request>` | Phase 1 | 요구사항 정제 (Figma 통합) |
-| `/plan <task>` | Phase 1 | 계획 수립 (Prometheus) |
-| `/ultrawork <task>` | Phase 2 | 병렬 실행 최대 성능 |
-| `/ui <level> <scope>` | Phase 2 | Frontend 검증 (FVL) |
-| `/sisyphus <task>` | Phase 2 | 멀티 에이전트 오케스트레이션 |
-| `/git-master` | Phase 4 | Atomic commits 도움 |
+| Command               | Phase   | Usage                        |
+| --------------------- | ------- | ---------------------------- |
+| `/intake <request>`   | Phase 1 | 요구사항 정제 (Figma 통합)   |
+| `/plan <task>`        | Phase 1 | 계획 수립 (Prometheus)       |
+| `/ultrawork <task>`   | Phase 2 | 병렬 실행 최대 성능          |
+| `/ui <level> <scope>` | Phase 2 | Frontend 검증 (FVL)          |
+| `/sisyphus <task>`    | Phase 2 | 멀티 에이전트 오케스트레이션 |
+| `/git-master`         | Phase 4 | Atomic commits 도움          |
 
 ### 검증 명령어
 
-| Command | Usage |
-|---------|-------|
-| `pnpm lint` | ESLint 검사 |
-| `pnpm lint --fix` | 자동 수정 |
-| `pnpm build` | Production 빌드 |
-| `pnpm test` | 테스트 실행 |
-| `pnpm storybook` | Storybook 실행 |
+| Command           | Usage           |
+| ----------------- | --------------- |
+| `pnpm lint`       | ESLint 검사     |
+| `pnpm lint --fix` | 자동 수정       |
+| `pnpm build`      | Production 빌드 |
+| `pnpm test`       | 테스트 실행     |
+| `pnpm storybook`  | Storybook 실행  |
 
 ---
 
@@ -326,6 +342,7 @@ git worktree remove ../jagalchi-84
 ### High Severity (작업 중단 필수)
 
 **위반 시 즉시 중단, 사용자 확인 필요**:
+
 - Phase 1 없이 코딩 시작
 - 기존 코드 안 읽고 수정
 - Cross-feature import 사용
@@ -335,6 +352,7 @@ git worktree remove ../jagalchi-84
 ### Medium Severity (경고 후 계속)
 
 **경고 메시지 표시 후 계속 진행 가능**:
+
 - TodoWrite 미사용
 - 테스트 미작성 (신규 기능)
 - JSDoc 미작성 (복잡한 로직)
@@ -342,6 +360,7 @@ git worktree remove ../jagalchi-84
 ### Low Severity (무시 가능)
 
 **Best practice이지만 강제 안 함**:
+
 - Storybook 미작성
 - PR 크기 500줄 초과
 - 이미지 최적화 누락
