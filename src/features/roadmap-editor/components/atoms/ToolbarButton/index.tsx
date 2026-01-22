@@ -1,41 +1,43 @@
 'use client';
 
-import { memo, type ReactNode } from 'react';
+import { forwardRef } from 'react';
 
-import { Button } from '@/components/ui/button';
-import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 
-interface ToolbarButtonProps {
-  icon: ReactNode;
+interface ToolbarButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  icon: React.ReactNode;
   label: string;
-  isActive: boolean;
-  onClick: () => void;
+  isActive?: boolean;
+  variant?: 'default' | 'primary';
 }
 
-export const ToolbarButton = memo(function ToolbarButton({
-  icon,
-  label,
-  isActive,
-  onClick,
-}: ToolbarButtonProps) {
-  return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button
-            variant={isActive ? 'default' : 'ghost'}
-            size="icon"
-            className={cn('h-10 w-10', isActive && 'bg-primary text-primary-foreground')}
-            onClick={onClick}
-            aria-label={label}
-            aria-pressed={isActive}
-          >
-            {icon}
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent>{label}</TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
-  );
-});
+export const ToolbarButton = forwardRef<HTMLButtonElement, ToolbarButtonProps>(
+  ({ icon, label, isActive = false, variant = 'default', className, ...props }, ref) => {
+    return (
+      <button
+        ref={ref}
+        type="button"
+        aria-label={label}
+        aria-pressed={isActive}
+        className={cn(
+          'group focus:ring-primary-500 relative flex h-10 w-10 items-center justify-center rounded-md transition-colors focus:ring-2 focus:outline-none',
+          // Default state
+          !isActive && variant === 'default' && 'text-neutral-700 hover:bg-neutral-100',
+          // Active state
+          isActive && variant === 'default' && 'bg-neutral-100 text-neutral-900',
+          // Primary variant
+          variant === 'primary' && 'text-primary-500 hover:bg-primary-50',
+          isActive && variant === 'primary' && 'bg-primary-50 text-primary-500',
+          // Disabled state
+          'disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent',
+          className,
+        )}
+        {...props}
+      >
+        {icon}
+      </button>
+    );
+  },
+);
+
+ToolbarButton.displayName = 'ToolbarButton';
