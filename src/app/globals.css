@@ -4,6 +4,35 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  /* Figma Design Tokens - Neutral Colors */
+  --color-neutral-0: #ffffff;
+  --color-neutral-50: #f9fafb;
+  --color-neutral-100: #f3f4f6;
+  --color-neutral-200: #e5e7eb;
+  --color-neutral-300: #d1d5db;
+  --color-neutral-700: #374151;
+  --color-neutral-800: #1f2937;
+  --color-neutral-900: #111827;
+
+  /* Figma Design Tokens - Primary Colors */
+  --color-primary-500: #3b82f6;
+
+  /* Figma Design Tokens - Border Radius */
+  --radius-tooltip: 6px;
+  --radius-divider: 0px;
+
+  /* Figma Design Tokens - Spacing */
+  --spacing-divider-vertical: 12px;
+  --spacing-divider-horizontal: 12px;
+  --spacing-tooltip-x: 10px;
+  --spacing-tooltip-y: 6px;
+
+  /* Figma Design Tokens - Breakpoints (defined as custom properties for reference) */
+  --breakpoint-tablet: 768px;
+  --breakpoint-desktop: 1024px;
+  --breakpoint-wide: 1440px;
+
+  /* Existing shadcn/ui tokens */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
@@ -42,6 +71,11 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 }
+
+/* Figma Design Tokens - Responsive Breakpoints */
+@custom-media --tablet (min-width: 768px);
+@custom-media --desktop (min-width: 1024px);
+@custom-media --wide (min-width: 1440px);
 
 :root {
   --radius: 0.625rem;
