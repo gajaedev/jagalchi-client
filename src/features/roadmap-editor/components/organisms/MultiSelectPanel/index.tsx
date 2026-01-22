@@ -3,12 +3,14 @@
 import { useState } from 'react';
 
 import { ColorPicker } from '../../atoms/ColorPicker';
+import { EditorCheckbox } from '../../atoms/EditorCheckbox';
 import { CollapseSection } from '../../molecules/CollapseSection';
 
 interface SelectedItem {
   id: string;
   type: 'node' | 'edge' | 'section' | 'text';
   title?: string;
+  color?: string;
 }
 
 interface MultiSelectPanelProps {
@@ -37,8 +39,13 @@ export function MultiSelectPanel({
   const sectionCount = selectedItems.filter((item) => item.type === 'section').length;
   const textCount = selectedItems.filter((item) => item.type === 'text').length;
 
+  // Mixed state detection for color
+  const colors = selectedItems.map((item) => item.color).filter(Boolean);
+  const uniqueColors = new Set(colors);
+  const isColorMixed = uniqueColors.size > 1;
+
   return (
-    <div className="w-80 space-y-5">
+    <div className="w-68 space-y-5">
       {/* Header */}
       <div className="flex items-center justify-between">
         <h3 className="text-sm font-semibold text-neutral-900">
@@ -91,14 +98,37 @@ export function MultiSelectPanel({
         </div>
       </CollapseSection>
 
+      {/* Bulk Edit */}
+      <CollapseSection title="Bulk Edit" defaultOpen>
+        <div className="space-y-3">
+          {/* Color Picker with mixed state indicator */}
+          <div className="flex flex-col gap-2">
+            <ColorPicker
+              label={isColorMixed ? 'Color (Mixed)' : 'Color'}
+              value={color}
+              onChange={handleColorChange}
+              recentColors={recentColors}
+            />
+            {isColorMixed && (
+              <p className="text-xs text-neutral-500">
+                Selected items have different colors. Changing will apply to all.
+              </p>
+            )}
+          </div>
+
+          {/* Mixed state example with checkbox (for future properties) */}
+          <EditorCheckbox
+            id="apply-color"
+            label="Apply color to all items"
+            checked
+            disabled
+            className="opacity-50"
+          />
+        </div>
+      </CollapseSection>
+
       {/* Bulk Actions */}
       <CollapseSection title="Bulk Actions" defaultOpen>
-        <ColorPicker
-          label="Apply Color to All"
-          value={color}
-          onChange={handleColorChange}
-          recentColors={recentColors}
-        />
         <button
           type="button"
           onClick={onDelete}
@@ -130,6 +160,13 @@ export function MultiSelectPanel({
                 </span>
                 <span className="text-sm text-neutral-900">{item.title || item.id}</span>
               </div>
+              {item.color && (
+                <div
+                  className="h-4 w-4 rounded-full border border-neutral-300"
+                  style={{ backgroundColor: item.color }}
+                  aria-label={`Color: ${item.color}`}
+                />
+              )}
             </div>
           ))}
         </div>
