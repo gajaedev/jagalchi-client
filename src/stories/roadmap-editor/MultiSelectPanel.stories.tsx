@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { useState } from 'react';
 
 import { MultiSelectPanel } from '@/features/roadmap-editor/components/organisms/MultiSelectPanel';

@@ -36,7 +36,6 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Top: Story = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   args: {} as any,
   render: () => (
     <div className="flex h-[200px] items-center justify-center">
@@ -48,7 +47,6 @@ export const Top: Story = {
 };
 
 export const Right: Story = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   args: {} as any,
   render: () => (
     <div className="flex h-[200px] items-center justify-center">
@@ -60,7 +58,6 @@ export const Right: Story = {
 };
 
 export const Bottom: Story = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   args: {} as any,
   render: () => (
     <div className="flex h-[200px] items-center justify-center">
@@ -72,7 +69,6 @@ export const Bottom: Story = {
 };
 
 export const Left: Story = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   args: {} as any,
   render: () => (
     <div className="flex h-[200px] items-center justify-center">
@@ -84,7 +80,6 @@ export const Left: Story = {
 };
 
 export const LongText: Story = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   args: {} as any,
   render: () => (
     <div className="flex h-[200px] items-center justify-center">
@@ -100,7 +95,6 @@ export const LongText: Story = {
 };
 
 export const NoDelay: Story = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   args: {} as any,
   render: () => (
     <div className="flex h-[200px] items-center justify-center">
@@ -112,7 +106,6 @@ export const NoDelay: Story = {
 };
 
 export const KeyboardFocus: Story = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   args: {} as any,
   render: () => (
     <div className="flex h-[200px] items-center justify-center">

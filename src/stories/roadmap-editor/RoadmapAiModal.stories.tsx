@@ -39,3 +39,51 @@ export const Default: Story = {
   },
   render: InteractiveComponent,
 };
+
+const CreateTabComponent = () => {
+  const [isOpen, setIsOpen] = useState(true);
+
+  return (
+    <div>
+      <button
+        onClick={() => setIsOpen(true)}
+        className="bg-primary-500 text-neutral-0 rounded-md px-4 py-2 text-sm font-medium"
+      >
+        Open AI Modal (Create)
+      </button>
+      <RoadmapAiModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+    </div>
+  );
+};
+
+export const CreateTab: Story = {
+  args: {
+    isOpen: true,
+    onClose: () => {},
+  },
+  render: CreateTabComponent,
+};
+
+const EditTabComponent = () => {
+  const [isOpen, setIsOpen] = useState(true);
+
+  return (
+    <div>
+      <button
+        onClick={() => setIsOpen(true)}
+        className="bg-primary-500 text-neutral-0 rounded-md px-4 py-2 text-sm font-medium"
+      >
+        Open AI Modal (Edit)
+      </button>
+      <RoadmapAiModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+    </div>
+  );
+};
+
+export const EditTab: Story = {
+  args: {
+    isOpen: true,
+    onClose: () => {},
+  },
+  render: EditTabComponent,
+};
