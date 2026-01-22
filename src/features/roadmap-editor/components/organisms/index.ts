@@ -5,4 +5,5 @@ export { NodePropertiesPanel } from './NodePropertiesPanel';
 export { SectionPropertiesPanel } from './SectionPropertiesPanel';
 export { TextPropertiesPanel } from './TextPropertiesPanel';
 export { EdgePropertiesPanel } from './EdgePropertiesPanel';
+export { MultiSelectPanel } from './MultiSelectPanel';
 export { RoadmapCanvas } from './RoadmapCanvas';

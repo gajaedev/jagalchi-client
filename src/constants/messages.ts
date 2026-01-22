@@ -37,4 +37,22 @@ export const EDITOR_MESSAGES = {
   COLOR_PICKER_TITLE: '컬러 선택',
   COLOR_PICKER_CANCEL: '취소',
   COLOR_PICKER_APPLY: '적용',
+  // Phase 3: Multi-select
+  MULTI_SELECT_TITLE: '다중 선택',
+  MULTI_SELECT_COUNT: '개 선택됨',
+  MULTI_SELECT_ALIGN_LABEL: '정렬',
+  MULTI_SELECT_SPACING_LABEL: '간격',
+  MULTI_SELECT_NAME_MIXED: 'Mixed',
+  MULTI_SELECT_DESC_MIXED: 'Mixed',
+  MULTI_SELECT_ALIGN_LEFT: '왼쪽 정렬',
+  MULTI_SELECT_ALIGN_CENTER: '가운데 정렬',
+  MULTI_SELECT_ALIGN_RIGHT: '오른쪽 정렬',
+  MULTI_SELECT_ALIGN_TOP: '위쪽 정렬',
+  MULTI_SELECT_ALIGN_MIDDLE: '중간 정렬',
+  MULTI_SELECT_ALIGN_BOTTOM: '아래쪽 정렬',
+  // AI 기능
+  AI_GENERATE_ROADMAP: '로드맵 생성',
+  AI_MODIFY_ROADMAP: '로드맵 수정',
+  AI_MENU_LABEL: 'AI 메뉴',
+  RESOURCE_DELETE_CONFIRM: '자료를 삭제하시겠습니까?',
 } as const;

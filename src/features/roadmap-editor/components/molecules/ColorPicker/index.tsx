@@ -34,8 +34,16 @@ export const ColorPicker = memo(function ColorPicker() {
     setTarget(null);
   };
 
+  const handleOpenChange = (open: boolean) => {
+    if (!open) {
+      handleClose();
+    } else {
+      setIsOpen(open);
+    }
+  };
+
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>{EDITOR_MESSAGES.COLOR_PICKER_TITLE}</DialogTitle>

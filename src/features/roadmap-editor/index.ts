@@ -17,6 +17,7 @@ export { NodePropertiesPanel } from './components/organisms/NodePropertiesPanel'
 export { SectionPropertiesPanel } from './components/organisms/SectionPropertiesPanel';
 export { TextPropertiesPanel } from './components/organisms/TextPropertiesPanel';
 export { EdgePropertiesPanel } from './components/organisms/EdgePropertiesPanel';
+export { MultiSelectPanel } from './components/organisms/MultiSelectPanel';
 export { RoadmapCanvas } from './components/organisms/RoadmapCanvas';
 
 // Components - Templates
@@ -62,6 +63,8 @@ export {
   createJagalchiSection,
   createJagalchiText,
 } from './utils/node-factory';
+export { alignNodes } from './utils/align-nodes';
+export type { AlignDirection } from './utils/align-nodes';
 
 // Constants
 export { getNodeColors, getTextColor } from './constants/node-colors';
