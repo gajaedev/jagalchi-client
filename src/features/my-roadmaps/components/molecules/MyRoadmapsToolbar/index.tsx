@@ -9,6 +9,12 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 
 export function MyRoadmapsToolbar() {
@@ -41,10 +47,25 @@ export function MyRoadmapsToolbar() {
         <Button variant="outline" size="icon" className="border-border h-9 w-9">
           <ListFilter className="text-muted-foreground h-4 w-4" />
         </Button>
-        <Button className="h-9 rounded-md bg-[#2563EB] px-4 text-sm font-semibold text-white hover:bg-[#1D4ED8]">
-          New
-          <Plus className="ml-1.5 h-4 w-4" />
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button className="h-9 rounded-md bg-[#2563EB] px-4 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#1D4ED8]">
+              New
+              <Plus className="ml-1.5 h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            align="end"
+            className="w-[140px] rounded-xl border-[#E5E7EB] bg-white p-1.5 shadow-xl"
+          >
+            <DropdownMenuItem className="flex cursor-pointer items-center rounded-lg px-3 py-2.5 transition-colors outline-none focus:bg-[#F3F4F6]">
+              <span className="text-[13px] font-semibold text-[#374151]">로드맵</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="flex cursor-pointer items-center rounded-lg px-3 py-2.5 transition-colors outline-none focus:bg-[#F3F4F6]">
+              <span className="text-[13px] font-semibold text-[#374151]">폴더</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>
   );
