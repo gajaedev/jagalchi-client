@@ -64,6 +64,33 @@ export const singleSelectedEdgeAtom = atom((get) => {
   return selected.length === 1 ? selected[0] : null;
 });
 
+// Selection type (derived atom)
+export const selectionTypeAtom = atom<'node' | 'edge' | 'section' | 'text' | 'multi' | null>(
+  (get) => {
+    const nodeIds = get(selectedNodeIdsAtom);
+    const edgeIds = get(selectedEdgeIdsAtom);
+    const selectedNode = get(singleSelectedNodeAtom);
+
+    // No selection
+    if (nodeIds.length === 0 && edgeIds.length === 0) return null;
+
+    // Multi-selection
+    if (nodeIds.length >= 2 || edgeIds.length > 1) return 'multi';
+
+    // Single edge selection
+    if (edgeIds.length === 1) return 'edge';
+
+    // Single node selection - determine node type
+    if (selectedNode) {
+      if (selectedNode.type === 'jagalchi-node') return 'node';
+      if (selectedNode.type === 'jagalchi-section') return 'section';
+      if (selectedNode.type === 'jagalchi-text') return 'text';
+    }
+
+    return null;
+  },
+);
+
 // ColorPicker state
 export const isColorPickerOpenAtom = atom<boolean>(false);
 export const colorPickerTargetAtom = atom<{
