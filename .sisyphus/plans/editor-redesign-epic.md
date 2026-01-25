@@ -137,9 +137,34 @@
 4. Figma 비교 (pnpm figma:compare)
    → 차이 > 5% → 수정 → 재비교
 5. 단위 테스트 작성
-6. Atomic commit
+6. Atomic commit (⚠️ MUST: 한국어 커밋 메시지)
 7. PR 생성 (템플릿 준수)
 ```
+
+### ⚠️ MUST: 커밋 메시지 규칙
+
+**모든 커밋 메시지는 한국어로 작성해야 합니다.**
+
+```bash
+# ✅ Good - 한국어 커밋 메시지
+git commit -m "feat(atoms): EditorInput 구현 (Figma 디자인 기반)"
+
+# ❌ Bad - 영어 커밋 메시지
+git commit -m "feat(atoms): implement EditorInput with Figma design"
+```
+
+**형식**:
+
+```
+<type>(<scope>): <subject>
+
+# 예시
+feat(atoms): EditorInput 구현 (Figma 디자인 기반)
+fix(atoms): ColorPicker 색상 선택 버그 수정
+test(atoms): EditorInput 테스트 추가
+```
+
+**이유**: 이 프로젝트는 한국어 커밋 메시지를 표준으로 사용합니다.
 
 ---
 
@@ -263,9 +288,9 @@ cd ../jagalchi-atoms
 4. 테스트
    pnpm test EditorInput
 
-5. Commit
+5. Commit (⚠️ MUST: 한국어 커밋 메시지)
    git add .
-   git commit -m "feat(atoms): implement EditorInput with Figma design"
+   git commit -m "feat(atoms): EditorInput 구현 (Figma 디자인 기반)"
 
 # 반복 (2-9번 컴포넌트)
 
