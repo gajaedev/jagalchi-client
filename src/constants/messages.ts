@@ -13,7 +13,7 @@ export const EDITOR_MESSAGES = {
   FLOW_SECTION_DEFAULT_TITLE: '빈 섹션',
   FLOW_TEXT_DEFAULT_CONTENT: '텍스트',
   // Phase 2: Sidebar 라벨
-  SIDEBAR_EMPTY_STATE: '노드를 선택하세요',
+  SIDEBAR_EMPTY_STATE: '선택된 요소가 없습니다',
   SIDEBAR_NODE_NAME_LABEL: '노드 이름',
   SIDEBAR_NODE_DESC_LABEL: '노드 설명',
   SIDEBAR_SECTION_NAME_LABEL: '섹션 이름',

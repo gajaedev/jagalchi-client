@@ -8,6 +8,7 @@ export {
   selectedEdgesAtom,
   singleSelectedNodeAtom,
   singleSelectedEdgeAtom,
+  selectionTypeAtom,
   isColorPickerOpenAtom,
   colorPickerTargetAtom,
   activeToolAtom,
