@@ -1061,12 +1061,56 @@ describe('RoadmapCanvas', () => {
 - Components: 14개 + variants (위 매핑 테이블 참고)
 - Automation: `scripts/figma-*.ts`
 
+### Figma 컴포넌트 링크
+
+| 컴포넌트                  | Node ID    | Figma 링크                                                                                                   |
+| ------------------------- | ---------- | ------------------------------------------------------------------------------------------------------------ |
+| EditorHeader              | 4466:2207  | https://www.figma.com/design/L7Ai9cZPKaF09qZfg9xWhH/Jagalchi-s-Obra-shadcn-ui--Community-?node-id=4466-2207  |
+| EditorToolbarItem         | 4357:2996  | https://www.figma.com/design/L7Ai9cZPKaF09qZfg9xWhH/Jagalchi-s-Obra-shadcn-ui--Community-?node-id=4357-2996  |
+| EditorToolbarDropdown     | 4357:3019  | https://www.figma.com/design/L7Ai9cZPKaF09qZfg9xWhH/Jagalchi-s-Obra-shadcn-ui--Community-?node-id=4357-3019  |
+| EditorToolbar             | 4472:2494  | https://www.figma.com/design/L7Ai9cZPKaF09qZfg9xWhH/Jagalchi-s-Obra-shadcn-ui--Community-?node-id=4472-2494  |
+| EditorNodeSidebar         | 4472:1569  | https://www.figma.com/design/L7Ai9cZPKaF09qZfg9xWhH/Jagalchi-s-Obra-shadcn-ui--Community-?node-id=4472-1569  |
+| EditorResourceInput       | 4534:13436 | https://www.figma.com/design/L7Ai9cZPKaF09qZfg9xWhH/Jagalchi-s-Obra-shadcn-ui--Community-?node-id=4534-13436 |
+| EditorLineSidebar         | 4480:2347  | https://www.figma.com/design/L7Ai9cZPKaF09qZfg9xWhH/Jagalchi-s-Obra-shadcn-ui--Community-?node-id=4480-2347  |
+| EditorSectionSidebar      | 4480:3024  | https://www.figma.com/design/L7Ai9cZPKaF09qZfg9xWhH/Jagalchi-s-Obra-shadcn-ui--Community-?node-id=4480-3024  |
+| EditorTextSidebar         | 4530:3273  | https://www.figma.com/design/L7Ai9cZPKaF09qZfg9xWhH/Jagalchi-s-Obra-shadcn-ui--Community-?node-id=4530-3273  |
+| EditorMultiSectionSidebar | 4605:8058  | https://www.figma.com/design/L7Ai9cZPKaF09qZfg9xWhH/Jagalchi-s-Obra-shadcn-ui--Community-?node-id=4605-8058  |
+| EditorNode                | 4466:2390  | https://www.figma.com/design/L7Ai9cZPKaF09qZfg9xWhH/Jagalchi-s-Obra-shadcn-ui--Community-?node-id=4466-2390  |
+| EditorSection             | 4479:1101  | https://www.figma.com/design/L7Ai9cZPKaF09qZfg9xWhH/Jagalchi-s-Obra-shadcn-ui--Community-?node-id=4479-1101  |
+| EditorText                | 4508:3026  | https://www.figma.com/design/L7Ai9cZPKaF09qZfg9xWhH/Jagalchi-s-Obra-shadcn-ui--Community-?node-id=4508-3026  |
+| EditorAIMenu (생성)       | 4573:3099  | https://www.figma.com/design/L7Ai9cZPKaF09qZfg9xWhH/Jagalchi-s-Obra-shadcn-ui--Community-?node-id=4573-3099  |
+| EditorAIMenu (수정)       | 4573:3100  | https://www.figma.com/design/L7Ai9cZPKaF09qZfg9xWhH/Jagalchi-s-Obra-shadcn-ui--Community-?node-id=4573-3100  |
+| EditorResource            | 4630:4112  | https://www.figma.com/design/L7Ai9cZPKaF09qZfg9xWhH/Jagalchi-s-Obra-shadcn-ui--Community-?node-id=4630-4112  |
+
+### Figma 페이지 링크
+
+| 페이지                  | Node ID    | Figma 링크                                                                                                   |
+| ----------------------- | ---------- | ------------------------------------------------------------------------------------------------------------ |
+| 기본 페이지             | 4575:3693  | https://www.figma.com/design/L7Ai9cZPKaF09qZfg9xWhH/Jagalchi-s-Obra-shadcn-ui--Community-?node-id=4575-3693  |
+| 노드 많이 생성된 페이지 | 4472:1595  | https://www.figma.com/design/L7Ai9cZPKaF09qZfg9xWhH/Jagalchi-s-Obra-shadcn-ui--Community-?node-id=4472-1595  |
+| 노드 자료 추천 받을 때  | 4534:13898 | https://www.figma.com/design/L7Ai9cZPKaF09qZfg9xWhH/Jagalchi-s-Obra-shadcn-ui--Community-?node-id=4534-13898 |
+| 선 연결                 | 4480:1254  | https://www.figma.com/design/L7Ai9cZPKaF09qZfg9xWhH/Jagalchi-s-Obra-shadcn-ui--Community-?node-id=4480-1254  |
+| 섹션 생성               | 4489:1665  | https://www.figma.com/design/L7Ai9cZPKaF09qZfg9xWhH/Jagalchi-s-Obra-shadcn-ui--Community-?node-id=4489-1665  |
+| 텍스트 추가             | 4508:2712  | https://www.figma.com/design/L7Ai9cZPKaF09qZfg9xWhH/Jagalchi-s-Obra-shadcn-ui--Community-?node-id=4508-2712  |
+| 드롭다운 선택           | 4534:13586 | https://www.figma.com/design/L7Ai9cZPKaF09qZfg9xWhH/Jagalchi-s-Obra-shadcn-ui--Community-?node-id=4534-13586 |
+| 로드맵 생성             | 4573:2778  | https://www.figma.com/design/L7Ai9cZPKaF09qZfg9xWhH/Jagalchi-s-Obra-shadcn-ui--Community-?node-id=4573-2778  |
+| 로드맵 생성 중          | 4589:3335  | https://www.figma.com/design/L7Ai9cZPKaF09qZfg9xWhH/Jagalchi-s-Obra-shadcn-ui--Community-?node-id=4589-3335  |
+| 로드맵 수정             | 4589:3388  | https://www.figma.com/design/L7Ai9cZPKaF09qZfg9xWhH/Jagalchi-s-Obra-shadcn-ui--Community-?node-id=4589-3388  |
+| 로드맵 수정 중          | 4577:2684  | https://www.figma.com/design/L7Ai9cZPKaF09qZfg9xWhH/Jagalchi-s-Obra-shadcn-ui--Community-?node-id=4577-2684  |
+| 노드 다중 선택          | 4630:4183  | https://www.figma.com/design/L7Ai9cZPKaF09qZfg9xWhH/Jagalchi-s-Obra-shadcn-ui--Community-?node-id=4630-4183  |
+| 선 다중 선택            | 4630:4509  | https://www.figma.com/design/L7Ai9cZPKaF09qZfg9xWhH/Jagalchi-s-Obra-shadcn-ui--Community-?node-id=4630-4509  |
+| 섹션 다중 선택          | 4630:4736  | https://www.figma.com/design/L7Ai9cZPKaF09qZfg9xWhH/Jagalchi-s-Obra-shadcn-ui--Community-?node-id=4630-4736  |
+| 텍스트 다중 선택        | 4630:4963  | https://www.figma.com/design/L7Ai9cZPKaF09qZfg9xWhH/Jagalchi-s-Obra-shadcn-ui--Community-?node-id=4630-4963  |
+| 혼합 다중 선택          | 4630:5190  | https://www.figma.com/design/L7Ai9cZPKaF09qZfg9xWhH/Jagalchi-s-Obra-shadcn-ui--Community-?node-id=4630-5190  |
+
 ### Figma Node IDs (Quick Reference)
 
 ```json
 {
   "EditorHeader": "4466:2207",
   "EditorToolbarItem": "4357:2996",
+  "EditorToolbarDropdown": "4357:3019",
+  "EditorToolbar": "4472:2494",
   "EditorNodeSidebar": "4472:1569",
   "EditorResourceInput": "4534:13436",
   "EditorLineSidebar": "4480:2347",
