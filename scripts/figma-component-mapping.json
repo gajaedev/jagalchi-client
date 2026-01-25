@@ -1,0 +1,129 @@
+{
+  "fileKey": "L7Ai9cZPKaF09qZfg9xWhH",
+  "components": {
+    "EditorHeader": {
+      "figmaNodeId": "4466:2207",
+      "implName": "EditorHeader",
+      "category": "organism",
+      "scope": "editor-only",
+      "variants": 1
+    },
+    "EditorToolbarItem": {
+      "figmaNodeId": "4357:2996",
+      "implName": "EditorToolbarItem",
+      "category": "atom",
+      "scope": "editor-only",
+      "variants": 1
+    },
+    "EditorNodeSidebar": {
+      "figmaNodeId": "4472:1569",
+      "implName": "EditorNodeSidebar",
+      "category": "organism",
+      "scope": "editor-only",
+      "variants": 4,
+      "variantNodes": {
+        "Default_Unlocked": "4472:1567",
+        "Default_Locked": "4472:2132",
+        "Closed_Unlocked": "4472:1568",
+        "Closed_Locked": "4472:2166"
+      }
+    },
+    "EditorResourceInput": {
+      "figmaNodeId": "4534:13436",
+      "implName": "EditorResourceInput",
+      "category": "molecule",
+      "scope": "editor-only",
+      "variants": 1
+    },
+    "EditorLineSidebar": {
+      "figmaNodeId": "4480:2347",
+      "implName": "EditorLineSidebar",
+      "category": "organism",
+      "scope": "editor-only",
+      "variants": 1
+    },
+    "EditorSectionSidebar": {
+      "figmaNodeId": "4480:3024",
+      "implName": "EditorSectionSidebar",
+      "category": "organism",
+      "scope": "editor-only",
+      "variants": 1
+    },
+    "EditorTextSidebar": {
+      "figmaNodeId": "4530:3273",
+      "implName": "EditorTextSidebar",
+      "category": "organism",
+      "scope": "editor-only",
+      "variants": 1
+    },
+    "EditorMultiSectionSidebar": {
+      "figmaNodeId": "4605:8058",
+      "implName": "EditorMultiSectionSidebar",
+      "category": "organism",
+      "scope": "editor-only",
+      "variants": 1
+    },
+    "EditorNode": {
+      "figmaNodeId": "4466:2390",
+      "implName": "JagalchiNode",
+      "category": "molecule",
+      "scope": "shared",
+      "variants": 1,
+      "note": "에디터와 뷰어 모두에서 사용되므로 Jagalchi prefix 사용"
+    },
+    "EditorSection": {
+      "figmaNodeId": "4479:1101",
+      "implName": "JagalchiSection",
+      "category": "molecule",
+      "scope": "shared",
+      "variants": 1,
+      "note": "에디터와 뷰어 모두에서 사용되므로 Jagalchi prefix 사용"
+    },
+    "EditorText": {
+      "figmaNodeId": "4508:3026",
+      "implName": "JagalchiText",
+      "category": "molecule",
+      "scope": "shared",
+      "variants": 1,
+      "note": "에디터와 뷰어 모두에서 사용되므로 Jagalchi prefix 사용"
+    },
+    "EditorAIMenu_Create": {
+      "figmaNodeId": "4573:3099",
+      "implName": "EditorAIMenu",
+      "category": "organism",
+      "scope": "editor-only",
+      "variants": 2,
+      "variantType": "create",
+      "note": "EditorAIMenu 컴포넌트의 create variant"
+    },
+    "EditorAIMenu_Modify": {
+      "figmaNodeId": "4573:3100",
+      "implName": "EditorAIMenu",
+      "category": "organism",
+      "scope": "editor-only",
+      "variants": 2,
+      "variantType": "modify",
+      "note": "EditorAIMenu 컴포넌트의 modify variant"
+    },
+    "EditorResource": {
+      "figmaNodeId": "4630:4112",
+      "implName": "EditorResource",
+      "category": "molecule",
+      "scope": "editor-only",
+      "variants": 1
+    }
+  },
+  "summary": {
+    "totalComponents": 14,
+    "totalVariants": 18,
+    "categories": {
+      "atoms": 1,
+      "molecules": 5,
+      "organisms": 8
+    },
+    "scopes": {
+      "editor-only": 11,
+      "shared": 3
+    }
+  }
+}
