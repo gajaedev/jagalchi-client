@@ -147,8 +147,8 @@ describe('EditorSidebar', () => {
       </TestProvider>,
     );
 
-    expect(screen.getByText('텍스트 크기')).toBeInTheDocument();
-    expect(screen.getByDisplayValue('16')).toBeInTheDocument();
+    expect(screen.getByText('텍스트 내용')).toBeInTheDocument();
+    expect(screen.getByDisplayValue('Test Text')).toBeInTheDocument();
   });
 
   it('renders EdgePropertiesPanel when single edge is selected', () => {
@@ -165,7 +165,7 @@ describe('EditorSidebar', () => {
       </TestProvider>,
     );
 
-    expect(screen.getByText('라벨')).toBeInTheDocument();
+    expect(screen.getByText('라인 스타일')).toBeInTheDocument();
   });
 
   it('renders MultiSelectPanel when multiple nodes are selected', () => {
