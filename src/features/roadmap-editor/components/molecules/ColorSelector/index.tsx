@@ -8,7 +8,6 @@ import { Palette } from 'lucide-react';
 import { EDITOR_MESSAGES } from '@/constants/messages';
 
 import { isColorPickerOpenAtom, colorPickerTargetAtom } from '../../../stores/editor-atoms';
-import { ColorPicker } from '../../atoms/ColorPicker';
 import { ColorPresetButton } from '../../atoms/ColorPresetButton';
 
 import type { NodeColorVariant, TextColorVariant } from '../../../types/editor.types';
@@ -63,12 +62,14 @@ export const ColorSelector = memo(function ColorSelector({
           >
             <Palette className="size-6" />
           </button>
-          <ColorPicker
-            value={presets.find((p) => p.variant === currentVariant)?.hex ?? '#ffffff'}
-            onChange={() => {
-              // 실제 커스텀 컬러는 모달에서 처리
-              handleCustomColorClick();
+          <button
+            type="button"
+            onClick={handleCustomColorClick}
+            className="h-[36px] min-h-[36px] w-full flex-1 rounded-[8px] border border-slate-200 shadow-sm transition-all hover:scale-105 hover:shadow-md focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 focus-visible:outline-none active:scale-95"
+            style={{
+              backgroundColor: presets.find((p) => p.variant === currentVariant)?.hex ?? '#ffffff',
             }}
+            aria-label={`현재 색상: ${presets.find((p) => p.variant === currentVariant)?.hex ?? '#ffffff'}`}
           />
         </div>
       </div>

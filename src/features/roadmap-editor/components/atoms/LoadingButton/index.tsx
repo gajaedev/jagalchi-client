@@ -25,13 +25,21 @@ interface LoadingButtonProps extends ButtonProps {
 export const LoadingButton = forwardRef<HTMLButtonElement, LoadingButtonProps>(
   ({ isLoading = false, disabled, children, className, ...props }, ref) => {
     return (
-      <Button ref={ref} disabled={disabled || isLoading} className={cn(className)} {...props}>
+      <Button
+        ref={ref}
+        disabled={disabled || isLoading}
+        aria-busy={isLoading}
+        aria-live="polite"
+        className={cn(className)}
+        {...props}
+      >
         {isLoading && (
           <svg
             className="mr-2 h-4 w-4 animate-spin"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
+            aria-hidden="true"
           >
             <circle
               className="opacity-25"

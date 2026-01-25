@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import { forwardRef, useId } from 'react';
 
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
@@ -46,6 +46,9 @@ export const EditorInput = forwardRef<HTMLInputElement | HTMLTextAreaElement, Ed
     },
     ref,
   ) => {
+    const id = useId();
+    const errorId = `${id}-error`;
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       onChange?.(e.target.value);
     };
@@ -73,22 +76,27 @@ export const EditorInput = forwardRef<HTMLInputElement | HTMLTextAreaElement, Ed
     return (
       <div className="flex flex-col gap-1.5">
         {label && (
-          <Label htmlFor={label} className="text-sm font-medium text-slate-900">
+          <Label htmlFor={id} className="text-sm font-medium text-slate-900">
             {label}
           </Label>
         )}
         <Component
           ref={ref as never}
-          id={label}
+          id={id}
           value={value}
           placeholder={placeholder}
           onChange={handleChange}
           disabled={isDisabled}
           aria-invalid={hasError}
+          aria-describedby={hasError && errorMessage ? errorId : undefined}
           className={baseClasses}
           {...(isMultiline && { rows: 3 })}
         />
-        {hasError && errorMessage && <p className="text-xs text-red-500">{errorMessage}</p>}
+        {hasError && errorMessage && (
+          <p id={errorId} className="text-xs text-red-500">
+            {errorMessage}
+          </p>
+        )}
       </div>
     );
   },
