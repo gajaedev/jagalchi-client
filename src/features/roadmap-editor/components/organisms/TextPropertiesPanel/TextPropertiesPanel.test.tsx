@@ -39,9 +39,10 @@ describe('TextPropertiesPanel', () => {
     expect(screen.getByRole('button', { name: /잠금/ })).toBeInTheDocument();
   });
 
-  it('renders text content textarea', () => {
+  it('renders text size input', () => {
     renderWithProvider(mockText);
-    expect(screen.getByDisplayValue('Test Text Content')).toBeInTheDocument();
+    const fontSizeInput = screen.getByDisplayValue('14');
+    expect(fontSizeInput).toBeInTheDocument();
   });
 
   it('renders color selector', () => {
@@ -49,24 +50,23 @@ describe('TextPropertiesPanel', () => {
     expect(screen.getByText('기본 컬러')).toBeInTheDocument();
   });
 
-  it('disables text content textarea when locked', () => {
+  it('disables text size input when locked', () => {
     const lockedText = { ...mockText, data: { ...mockText.data, isLocked: true } };
     renderWithProvider(lockedText);
 
-    const contentTextarea = screen.getByDisplayValue('Test Text Content');
-    expect(contentTextarea).toBeDisabled();
+    const fontSizeInput = screen.getByDisplayValue('14');
+    expect(fontSizeInput).toBeDisabled();
   });
 
-  it('allows user to interact with content textarea when unlocked', async () => {
+  it('allows user to interact with text size input when unlocked', async () => {
     const user = userEvent.setup();
     renderWithProvider(mockText);
 
-    const contentTextarea = screen.getByDisplayValue('Test Text Content');
-    expect(contentTextarea).not.toBeDisabled();
+    const fontSizeInput = screen.getByDisplayValue('14');
+    expect(fontSizeInput).not.toBeDisabled();
 
-    // Verify textarea can receive focus
-    await user.click(contentTextarea);
-    expect(contentTextarea).toHaveFocus();
+    await user.click(fontSizeInput);
+    expect(fontSizeInput).toHaveFocus();
   });
 
   it('shows unlock icon when text is unlocked', () => {

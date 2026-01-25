@@ -57,7 +57,7 @@ export const MultiSelectPanel = memo(function MultiSelectPanel() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <h3 className="font-semibold">{EDITOR_MESSAGES.MULTI_SELECT_TITLE}</h3>
+          <h3 className="font-semibold">&gt;&gt; {EDITOR_MESSAGES.MULTI_SELECT_TITLE}</h3>
           <span className="text-muted-foreground text-sm">
             {selectedCount}
             {EDITOR_MESSAGES.MULTI_SELECT_COUNT}
@@ -71,68 +71,61 @@ export const MultiSelectPanel = memo(function MultiSelectPanel() {
       {/* Alignment Section */}
       <div>
         <Label className="mb-2 block">{EDITOR_MESSAGES.MULTI_SELECT_ALIGN_LABEL}</Label>
-        <div className="flex flex-col gap-2">
-          {/* Horizontal alignment */}
-          <div className="flex gap-1">
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => handleAlign('left')}
-              title={EDITOR_MESSAGES.MULTI_SELECT_ALIGN_LEFT}
-              className="flex-1"
-            >
-              <AlignStartVertical className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => handleAlign('center')}
-              title={EDITOR_MESSAGES.MULTI_SELECT_ALIGN_CENTER}
-              className="flex-1"
-            >
-              <AlignCenterVertical className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => handleAlign('right')}
-              title={EDITOR_MESSAGES.MULTI_SELECT_ALIGN_RIGHT}
-              className="flex-1"
-            >
-              <AlignEndVertical className="h-4 w-4" />
-            </Button>
-          </div>
-
-          {/* Vertical alignment */}
-          <div className="flex gap-1">
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => handleAlign('top')}
-              title={EDITOR_MESSAGES.MULTI_SELECT_ALIGN_TOP}
-              className="flex-1"
-            >
-              <AlignStartHorizontal className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => handleAlign('middle')}
-              title={EDITOR_MESSAGES.MULTI_SELECT_ALIGN_MIDDLE}
-              className="flex-1"
-            >
-              <AlignCenterHorizontal className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => handleAlign('bottom')}
-              title={EDITOR_MESSAGES.MULTI_SELECT_ALIGN_BOTTOM}
-              className="flex-1"
-            >
-              <AlignEndHorizontal className="h-4 w-4" />
-            </Button>
-          </div>
+        <div className="flex gap-1">
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => handleAlign('left')}
+            title={EDITOR_MESSAGES.MULTI_SELECT_ALIGN_LEFT}
+            className="flex-1"
+          >
+            <AlignStartVertical className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => handleAlign('center')}
+            title={EDITOR_MESSAGES.MULTI_SELECT_ALIGN_CENTER}
+            className="flex-1"
+          >
+            <AlignCenterVertical className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => handleAlign('right')}
+            title={EDITOR_MESSAGES.MULTI_SELECT_ALIGN_RIGHT}
+            className="flex-1"
+          >
+            <AlignEndVertical className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => handleAlign('top')}
+            title={EDITOR_MESSAGES.MULTI_SELECT_ALIGN_TOP}
+            className="flex-1"
+          >
+            <AlignStartHorizontal className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => handleAlign('middle')}
+            title={EDITOR_MESSAGES.MULTI_SELECT_ALIGN_MIDDLE}
+            className="flex-1"
+          >
+            <AlignCenterHorizontal className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => handleAlign('bottom')}
+            title={EDITOR_MESSAGES.MULTI_SELECT_ALIGN_BOTTOM}
+            className="flex-1"
+          >
+            <AlignEndHorizontal className="h-4 w-4" />
+          </Button>
         </div>
       </div>
 

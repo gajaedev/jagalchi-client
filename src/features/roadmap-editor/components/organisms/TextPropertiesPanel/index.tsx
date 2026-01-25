@@ -45,7 +45,10 @@ export const TextPropertiesPanel = memo(function TextPropertiesPanel({
     <div className="flex h-full flex-col">
       {/* Header */}
       <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3">
-        <h3 className="text-sm font-semibold text-slate-900">{node.id}</h3>
+        <div>
+          <h3 className="text-sm font-semibold text-slate-900">{node.id}</h3>
+          <p className="mt-0.5 text-xs text-slate-500">텍스트</p>
+        </div>
         <button
           type="button"
           onClick={toggleLock}
@@ -62,15 +65,23 @@ export const TextPropertiesPanel = memo(function TextPropertiesPanel({
 
       {/* Content */}
       <div className="flex-1 space-y-4 overflow-y-auto p-4">
-        {/* 텍스트 내용 */}
-        <EditorInput
-          label="텍스트 내용"
-          value={node.data.content}
-          onChange={(value) => updateNode({ content: value })}
-          placeholder="텍스트를 입력하세요"
-          isMultiline
-          isDisabled={node.data.isLocked}
-        />
+        {/* 텍스트 크기 */}
+        <div>
+          <label className="text-foreground mb-1.5 block text-sm font-medium">텍스트 크기</label>
+          <div className="flex items-center gap-2">
+            <EditorInput
+              value="14"
+              onChange={(value) => {
+                // TODO: Implement font size update
+                console.log('Font size:', value);
+              }}
+              placeholder="14"
+              isDisabled={node.data.isLocked}
+              className="flex-1"
+            />
+            <span className="text-muted-foreground text-sm">px</span>
+          </div>
+        </div>
 
         {/* 기본 컬러 */}
         <ColorSelector

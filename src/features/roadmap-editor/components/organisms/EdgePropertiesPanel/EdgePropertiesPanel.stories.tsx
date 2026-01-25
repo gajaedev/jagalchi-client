@@ -30,8 +30,12 @@ const baseEdge: Edge = {
   id: 'Line_1',
   source: 'node-1',
   target: 'node-2',
+  data: {
+    isLocked: false,
+  },
   style: {
     stroke: '#000000',
+    strokeWidth: 1,
   },
 };
 
@@ -41,27 +45,40 @@ export const Default: Story = {
   },
 };
 
-export const Dashed: Story = {
+export const Locked: Story = {
   args: {
     edge: {
       ...baseEdge,
       id: 'Line_2',
-      style: {
-        stroke: '#000000',
-        strokeDasharray: '5 5',
+      data: {
+        isLocked: true,
       },
     },
   },
 };
 
-export const Dotted: Story = {
+export const Dashed: Story = {
   args: {
     edge: {
       ...baseEdge,
       id: 'Line_3',
       style: {
         stroke: '#000000',
-        strokeDasharray: '2 2',
+        strokeWidth: 1,
+        strokeDasharray: '5 5',
+      },
+    },
+  },
+};
+
+export const ThickLine: Story = {
+  args: {
+    edge: {
+      ...baseEdge,
+      id: 'Line_4',
+      style: {
+        stroke: '#000000',
+        strokeWidth: 3,
       },
     },
   },
@@ -71,9 +88,10 @@ export const BlueEdge: Story = {
   args: {
     edge: {
       ...baseEdge,
-      id: 'Line_4',
+      id: 'Line_5',
       style: {
         stroke: '#155dfc',
+        strokeWidth: 1,
       },
     },
   },
@@ -83,22 +101,37 @@ export const PurpleEdge: Story = {
   args: {
     edge: {
       ...baseEdge,
-      id: 'Line_5',
+      id: 'Line_6',
       style: {
         stroke: '#9810fa',
+        strokeWidth: 1,
       },
     },
   },
 };
 
-export const RedDashed: Story = {
+export const RedDashedThick: Story = {
   args: {
     edge: {
       ...baseEdge,
-      id: 'Line_6',
+      id: 'Line_7',
       style: {
         stroke: '#ec003f',
+        strokeWidth: 2,
         strokeDasharray: '5 5',
+      },
+    },
+  },
+};
+
+export const OrangeEdge: Story = {
+  args: {
+    edge: {
+      ...baseEdge,
+      id: 'Line_8',
+      style: {
+        stroke: '#fe7a00',
+        strokeWidth: 1,
       },
     },
   },
