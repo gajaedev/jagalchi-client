@@ -51,10 +51,11 @@ describe('ColorPresetButton', () => {
     expect(button).toHaveClass('shadow-sm');
   });
 
-  it('flex-1 클래스를 가진다 (가변 너비)', () => {
+  it('고정 너비를 가진다 (36px x 36px 정사각형)', () => {
     render(<ColorPresetButton color="#155dfc" />);
     const button = screen.getByRole('button');
-    expect(button).toHaveClass('flex-1');
+    expect(button).toHaveClass('w-[36px]');
+    expect(button).toHaveClass('min-w-[36px]');
   });
 
   it('disabled 상태일 때 클릭이 동작하지 않는다', async () => {

@@ -36,8 +36,8 @@ export const ColorPresetButton = forwardRef<HTMLButtonElement, ColorPresetButton
         type="button"
         onClick={onClick}
         className={cn(
-          // Figma 정확한 스타일 (높이 36px, 8px border-radius)
-          'h-[36px] min-h-[36px] flex-1',
+          // Figma 정확한 스타일 (36px x 36px 정사각형, 8px border-radius)
+          'h-[36px] min-h-[36px] w-[36px] min-w-[36px]',
           'rounded-[8px]',
           // Border: white/black은 더 진하게
           isLightColor
