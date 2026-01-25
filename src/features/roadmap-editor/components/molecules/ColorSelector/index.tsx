@@ -54,13 +54,14 @@ export const ColorSelector = memo(function ColorSelector({
         <label className="text-sm font-medium text-slate-700">
           {EDITOR_MESSAGES.SIDEBAR_COLOR_PRESET_LABEL}
         </label>
-        <div className="mt-2 flex gap-2">
+        <div className="mt-2 flex h-[36px] w-full items-center gap-1">
           {presets.map((preset) => (
             <ColorPresetButton
               key={preset.variant}
               color={preset.hex}
               isSelected={currentVariant === preset.variant}
               onClick={() => onPresetSelect(preset.variant)}
+              className="flex-1"
             />
           ))}
         </div>
