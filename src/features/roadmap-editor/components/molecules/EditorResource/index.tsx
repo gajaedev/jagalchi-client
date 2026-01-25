@@ -53,7 +53,7 @@ export const EditorResource = memo(function EditorResource({
       onClick={handleClick}
       className={cn(
         'flex items-center gap-2 rounded-sm p-1',
-        'max-w-full',
+        'max-w-[400px]',
         'transition-colors hover:bg-slate-100',
         className,
       )}
