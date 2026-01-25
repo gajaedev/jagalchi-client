@@ -234,3 +234,151 @@ export const MultipleNodesSelected: Story = {
     ),
   ],
 };
+
+/**
+ * 여러 섹션 선택 시 (다중 섹션 선택)
+ */
+export const MultipleSectionsSelected: Story = {
+  decorators: [
+    (Story) => (
+      <JotaiDecorator
+        atoms={{
+          selectedNodeIds: ['section-1', 'section-2'],
+          selectedEdgeIds: [],
+          nodes: [
+            mockJagalchiSection,
+            {
+              ...mockJagalchiSection,
+              id: 'section-2',
+              data: { ...mockJagalchiSection.data, title: 'Backend Roadmap' },
+            },
+          ],
+          edges: [],
+        }}
+      >
+        <Story />
+      </JotaiDecorator>
+    ),
+  ],
+};
+
+/**
+ * 여러 텍스트 노드 선택 시
+ */
+export const MultipleTextsSelected: Story = {
+  decorators: [
+    (Story) => (
+      <JotaiDecorator
+        atoms={{
+          selectedNodeIds: ['text-1', 'text-2'],
+          selectedEdgeIds: [],
+          nodes: [
+            mockJagalchiText,
+            {
+              ...mockJagalchiText,
+              id: 'text-2',
+              data: { ...mockJagalchiText.data, content: '선수 지식' },
+            },
+          ],
+          edges: [],
+        }}
+      >
+        <Story />
+      </JotaiDecorator>
+    ),
+  ],
+};
+
+/**
+ * 혼합 선택: 노드 1개 + 섹션 1개 + 텍스트 1개
+ */
+export const MixedSelection: Story = {
+  decorators: [
+    (Story) => (
+      <JotaiDecorator
+        atoms={{
+          selectedNodeIds: ['node-1', 'section-1', 'text-1'],
+          selectedEdgeIds: [],
+          nodes: [mockJagalchiNode, mockJagalchiSection, mockJagalchiText],
+          edges: [],
+        }}
+      >
+        <Story />
+      </JotaiDecorator>
+    ),
+  ],
+};
+
+/**
+ * 매우 긴 콘텐츠를 가진 노드 선택
+ */
+export const NodeWithLongContent: Story = {
+  decorators: [
+    (Story) => (
+      <JotaiDecorator
+        atoms={{
+          selectedNodeIds: ['node-long'],
+          selectedEdgeIds: [],
+          nodes: [
+            {
+              id: 'node-long',
+              type: 'jagalchi-node',
+              position: { x: 0, y: 0 },
+              data: {
+                label: 'React와 TypeScript를 이용한 Advanced 패턴 학습 및 최적화 기법',
+                description:
+                  '이 섹션에서는 React와 TypeScript를 이용하여 대규모 애플리케이션을 구축하는 방법을 배웁니다. 고급 패턴, 성능 최적화, 메모리 관리 등의 주제를 다루며, 실제 프로젝트에 적용 가능한 실용적인 기술들을 학습합니다.',
+                variant: 'blue' as const,
+                isLocked: false,
+                resources: ['https://react.dev', 'https://www.typescriptlang.org'],
+              },
+            },
+          ],
+          edges: [],
+        }}
+      >
+        <Story />
+      </JotaiDecorator>
+    ),
+  ],
+};
+
+/**
+ * 5개 이상의 리소스를 가진 노드 선택
+ */
+export const NodeWithManyResources: Story = {
+  decorators: [
+    (Story) => (
+      <JotaiDecorator
+        atoms={{
+          selectedNodeIds: ['node-resources'],
+          selectedEdgeIds: [],
+          nodes: [
+            {
+              id: 'node-resources',
+              type: 'jagalchi-node',
+              position: { x: 0, y: 0 },
+              data: {
+                label: 'React 심화',
+                description: '다양한 학습 자료를 통해 React를 깊이 있게 학습합니다',
+                variant: 'purple' as const,
+                isLocked: false,
+                resources: [
+                  'https://react.dev',
+                  'https://velog.io/@example/react-advanced',
+                  'https://github.com/react-patterns',
+                  'https://youtube.com/watch?v=...',
+                  'https://egghead.io/courses/react',
+                  'https://udemy.com/course/react-complete-guide',
+                ],
+              },
+            },
+          ],
+          edges: [],
+        }}
+      >
+        <Story />
+      </JotaiDecorator>
+    ),
+  ],
+};

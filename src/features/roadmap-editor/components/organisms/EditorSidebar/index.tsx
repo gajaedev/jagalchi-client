@@ -31,7 +31,7 @@ export const EditorSidebar = memo(function EditorSidebar() {
   // No selection - render empty state
   if (!selectionType) {
     return (
-      <aside className="bg-muted/30 flex w-60 items-center justify-center border-l">
+      <aside className="flex w-60 items-center justify-center border-l border-slate-200 bg-white">
         <p className="text-muted-foreground text-sm">{EDITOR_MESSAGES.SIDEBAR_EMPTY_STATE}</p>
       </aside>
     );
@@ -57,5 +57,5 @@ export const EditorSidebar = memo(function EditorSidebar() {
     }
   };
 
-  return <aside className="bg-muted/30 w-60 border-l">{renderPanel()}</aside>;
+  return <aside className="w-60 border-l border-slate-200 bg-white">{renderPanel()}</aside>;
 });
