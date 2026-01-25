@@ -66,7 +66,7 @@ function createStoryWithSelection(selectedIds: string[]) {
     decorators: [
       (Story: React.ComponentType) => (
         <Provider store={store}>
-          <div className="h-[600px] w-[320px] border border-slate-200 bg-white">
+          <div className="h-[600px] w-[240px] border border-slate-200 bg-white">
             <Story />
           </div>
         </Provider>
