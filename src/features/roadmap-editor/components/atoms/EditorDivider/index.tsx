@@ -1,6 +1,8 @@
+import { forwardRef } from 'react';
+
 import { cn } from '@/lib/utils';
 
-interface EditorDividerProps {
+export interface EditorDividerProps {
   orientation?: 'horizontal' | 'vertical';
   className?: string;
 }
@@ -16,18 +18,21 @@ interface EditorDividerProps {
  * <EditorDivider orientation="vertical" />
  * ```
  */
-export const EditorDivider = ({ orientation = 'horizontal', className }: EditorDividerProps) => {
-  return (
-    <div
-      className={cn(
-        'bg-slate-200',
-        orientation === 'horizontal' ? 'h-px w-full' : 'h-full w-px',
-        className,
-      )}
-      role="separator"
-      aria-orientation={orientation}
-    />
-  );
-};
+export const EditorDivider = forwardRef<HTMLDivElement, EditorDividerProps>(
+  ({ orientation = 'horizontal', className }, ref) => {
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          'bg-slate-200',
+          orientation === 'horizontal' ? 'h-px w-full' : 'h-full w-px',
+          className,
+        )}
+        role="separator"
+        aria-orientation={orientation}
+      />
+    );
+  },
+);
 
 EditorDivider.displayName = 'EditorDivider';

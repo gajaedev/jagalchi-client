@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 
 import { cn } from '@/lib/utils';
 
-interface ColorPresetButtonProps {
+export interface ColorPresetButtonProps {
   color: string;
   isSelected?: boolean;
   onClick?: () => void;

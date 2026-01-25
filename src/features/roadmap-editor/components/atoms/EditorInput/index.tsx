@@ -3,7 +3,7 @@ import { forwardRef, useId } from 'react';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 
-interface EditorInputProps {
+export interface EditorInputProps {
   label?: string;
   value?: string;
   placeholder?: string;

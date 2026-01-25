@@ -4,27 +4,28 @@ import { HexColorPicker } from 'react-colorful';
 
 import { cn } from '@/lib/utils';
 
-interface ColorPickerProps {
+export interface ColorPickerInlineProps {
   value?: string;
   onChange?: (color: string) => void;
   className?: string;
 }
 
 /**
- * 커스텀 컬러 선택 컴포넌트
+ * 인라인 2D 그라디언트 컬러 피커 컴포넌트
  *
  * Figma EditorNodeSidebar (4472:1569)의 커스텀 컬러 섹션에서 추출.
  * react-colorful을 사용한 2D 그라디언트 컬러 피커.
+ * molecules/ColorPicker (Dialog 기반)과 구분하기 위해 Inline 접미사 사용.
  *
  * @example
  * ```tsx
- * <ColorPicker
+ * <ColorPickerInline
  *   value="#009689"
  *   onChange={(color) => setCustomColor(color)}
  * />
  * ```
  */
-export const ColorPicker = forwardRef<HTMLDivElement, ColorPickerProps>(
+export const ColorPickerInline = forwardRef<HTMLDivElement, ColorPickerInlineProps>(
   ({ value = '#009689', onChange, className }, ref) => {
     return (
       <div
@@ -48,6 +49,8 @@ export const ColorPicker = forwardRef<HTMLDivElement, ColorPickerProps>(
           '[&_.react-colorful__pointer]:shadow-md',
           className,
         )}
+        role="group"
+        aria-label="색상 선택"
       >
         <HexColorPicker color={value} onChange={onChange} />
       </div>
@@ -55,4 +58,4 @@ export const ColorPicker = forwardRef<HTMLDivElement, ColorPickerProps>(
   },
 );
 
-ColorPicker.displayName = 'ColorPicker';
+ColorPickerInline.displayName = 'ColorPickerInline';
