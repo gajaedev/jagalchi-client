@@ -28,8 +28,8 @@ import type {
  * EditorSidebar - 에디터 우측 사이드바
  *
  * Figma 디자인 (4472:1569) 기반 구조:
- * - 접기/펼치기 토글 버튼 (왼쪽 상단에 삐죽 튀어나옴)
- * - 펼쳐진 상태: 240px, 닫힌 상태: 16px
+ * - 접기/펼치기 토글 버튼 (24px × 24px, 왼쪽 상단에 삐죽 튀어나옴)
+ * - 펼쳐진 상태: 282px, 닫힌 상태: 24px
  * - 선택된 요소에 따라 다른 Properties Panel 표시
  */
 export const EditorSidebar = memo(function EditorSidebar() {
@@ -79,20 +79,20 @@ export const EditorSidebar = memo(function EditorSidebar() {
   return (
     <aside
       className={`relative border-l border-slate-200 bg-white transition-all duration-300 ${
-        isCollapsed ? 'w-4' : 'w-60'
+        isCollapsed ? 'w-6' : 'w-[282px]'
       }`}
     >
       {/* 토글 버튼 - 왼쪽 상단에 삐죽 튀어나옴 */}
       <button
         type="button"
         onClick={toggleCollapse}
-        className="absolute top-0 left-0 flex size-8 -translate-x-full items-center justify-center rounded-bl-lg border-b border-l border-slate-200 bg-white p-2.5 transition-colors hover:bg-slate-50 focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:outline-none"
+        className="absolute top-0 left-0 flex size-6 -translate-x-full items-center justify-center rounded-bl-md border-b border-l border-slate-200 bg-white transition-colors hover:bg-slate-50 focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:outline-none"
         aria-label={isCollapsed ? '사이드바 펼치기' : '사이드바 접기'}
       >
         {isCollapsed ? (
-          <ChevronsLeft className="size-4 text-slate-600" />
+          <ChevronsLeft className="size-3.5 text-slate-600" />
         ) : (
-          <ChevronsRight className="size-4 text-slate-600" />
+          <ChevronsRight className="size-3.5 text-slate-600" />
         )}
       </button>
 
