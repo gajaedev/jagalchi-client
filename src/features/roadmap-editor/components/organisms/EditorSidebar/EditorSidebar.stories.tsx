@@ -90,7 +90,7 @@ const JotaiDecorator = ({ children, atoms }: DecoratorProps) => {
   return (
     <Provider>
       <HydrateAtoms>
-        <div style={{ width: '240px', height: '600px' }}>{children}</div>
+        <div className="h-[600px] w-[240px] overflow-visible">{children}</div>
       </HydrateAtoms>
     </Provider>
   );
