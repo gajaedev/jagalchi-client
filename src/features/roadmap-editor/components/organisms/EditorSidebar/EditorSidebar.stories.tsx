@@ -90,7 +90,7 @@ const JotaiDecorator = ({ children, atoms }: DecoratorProps) => {
   return (
     <Provider>
       <HydrateAtoms>
-        <div className="h-[600px] w-[240px] overflow-visible">{children}</div>
+        <div className="flex h-screen w-full items-stretch justify-end bg-slate-50">{children}</div>
       </HydrateAtoms>
     </Provider>
   );
@@ -100,7 +100,7 @@ const meta = {
   title: 'Editor/Organisms/EditorSidebar',
   component: EditorSidebar,
   parameters: {
-    layout: 'centered',
+    layout: 'fullscreen',
   },
   tags: ['autodocs'],
 } satisfies Meta<typeof EditorSidebar>;
