@@ -73,6 +73,10 @@ export const Left: Story = {
 };
 
 export const AllDirections: Story = {
+  args: {
+    position: 'top',
+    onCreateNode: () => {},
+  },
   render: () => (
     <div className="relative flex h-[200px] w-[200px] items-center justify-center border border-dashed border-slate-300">
       <span className="text-slate-400">Node</span>

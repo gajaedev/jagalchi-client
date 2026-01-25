@@ -74,6 +74,10 @@ export const Orange: Story = {
 };
 
 export const AllPresets: Story = {
+  args: {
+    color: PRESET_COLORS.WHITE,
+    isSelected: false,
+  },
   render: () => (
     <div className="flex w-[240px] gap-1">
       <ColorPresetButton color={PRESET_COLORS.WHITE} />

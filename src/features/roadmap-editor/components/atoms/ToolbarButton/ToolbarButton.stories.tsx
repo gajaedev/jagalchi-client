@@ -52,6 +52,12 @@ export const Text: Story = {
 };
 
 export const ToolbarGroup: Story = {
+  args: {
+    icon: <MousePointer size={20} />,
+    label: '선택',
+    isActive: true,
+    onClick: () => {},
+  },
   render: () => (
     <div className="flex gap-1 rounded-lg border border-slate-200 bg-white p-2">
       <ToolbarButton icon={<MousePointer size={20} />} label="선택" isActive onClick={() => {}} />

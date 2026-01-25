@@ -37,6 +37,9 @@ export const Vertical: Story = {
 };
 
 export const InContent: Story = {
+  args: {
+    orientation: 'horizontal',
+  },
   render: () => (
     <div className="flex w-[240px] flex-col gap-4">
       <div>

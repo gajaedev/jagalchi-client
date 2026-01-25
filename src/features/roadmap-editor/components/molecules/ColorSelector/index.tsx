@@ -44,8 +44,7 @@ export const ColorSelector = memo(function ColorSelector({
           {presets.map((preset) => (
             <ColorPresetButton
               key={preset.variant}
-              hex={preset.hex}
-              label={preset.label}
+              color={preset.hex}
               isSelected={currentVariant === preset.variant}
               onClick={() => onPresetSelect(preset.variant)}
             />

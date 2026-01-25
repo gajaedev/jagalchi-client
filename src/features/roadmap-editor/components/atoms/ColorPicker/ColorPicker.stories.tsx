@@ -34,6 +34,9 @@ export const Red: Story = {
 };
 
 export const Interactive: Story = {
+  args: {
+    value: '#009689',
+  },
   render: () => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [color, setColor] = useState('#009689');
@@ -48,6 +51,9 @@ export const Interactive: Story = {
 };
 
 export const WithFixedWidth: Story = {
+  args: {
+    value: '#009689',
+  },
   render: () => (
     <div className="w-[208px]">
       <ColorPicker value="#009689" />
