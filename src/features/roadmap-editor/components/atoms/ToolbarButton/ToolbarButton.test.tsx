@@ -75,11 +75,55 @@ describe('ToolbarButton', () => {
     expect(tooltip).toHaveTextContent('노드');
   });
 
-  it('size가 10x10 (40px)이다', () => {
+  it('size가 8x8 (32px)이다', () => {
     render(<ToolbarButton icon={<Square />} label="노드" isActive={false} onClick={() => {}} />);
     const button = screen.getByRole('button');
-    expect(button).toHaveClass('h-10');
-    expect(button).toHaveClass('w-10');
+    expect(button).toHaveClass('h-8');
+    expect(button).toHaveClass('w-8');
+  });
+
+  it('disabled=true일 때 버튼이 비활성화된다', () => {
+    const handleClick = vi.fn();
+    render(
+      <ToolbarButton
+        icon={<Square />}
+        label="노드"
+        isActive={false}
+        onClick={handleClick}
+        disabled
+      />,
+    );
+    const button = screen.getByRole('button');
+    expect(button).toBeDisabled();
+  });
+
+  it('disabled=true일 때 opacity-50 클래스를 적용한다', () => {
+    render(
+      <ToolbarButton icon={<Square />} label="노드" isActive={false} onClick={() => {}} disabled />,
+    );
+    const button = screen.getByRole('button');
+    expect(button).toHaveClass('opacity-50');
+    expect(button).toHaveClass('cursor-not-allowed');
+    expect(button).toHaveClass('pointer-events-none');
+  });
+
+  it('disabled=true일 때 클릭 이벤트를 발생시키지 않는다', async () => {
+    const user = userEvent.setup();
+    const handleClick = vi.fn();
+
+    render(
+      <ToolbarButton
+        icon={<Square />}
+        label="노드"
+        isActive={false}
+        onClick={handleClick}
+        disabled
+      />,
+    );
+    const button = screen.getByRole('button');
+
+    await user.click(button);
+    expect(handleClick).not.toHaveBeenCalled();
   });
 
   it('shadcn/ui Button 컴포넌트를 사용한다', () => {

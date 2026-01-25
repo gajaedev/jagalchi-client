@@ -51,6 +51,26 @@ export const Text: Story = {
   },
 };
 
+export const Disabled: Story = {
+  args: {
+    icon: <MousePointer size={20} />,
+    label: '선택 (비활성)',
+    isActive: false,
+    disabled: true,
+    onClick: () => console.log('Select clicked'),
+  },
+};
+
+export const DisabledActive: Story = {
+  args: {
+    icon: <MousePointer size={20} />,
+    label: '선택 (활성 및 비활성)',
+    isActive: true,
+    disabled: true,
+    onClick: () => console.log('Select clicked'),
+  },
+};
+
 export const ToolbarGroup: Story = {
   args: {
     icon: <MousePointer size={20} />,

@@ -56,14 +56,14 @@ export const EditorInput = forwardRef<HTMLInputElement | HTMLTextAreaElement, Ed
     const baseClasses = cn(
       // Figma 정확한 스타일
       'w-full min-h-[36px] px-3 py-[7.5px]',
-      'bg-white border border-slate-200 rounded-lg',
+      'bg-background border border-input rounded-lg',
       'shadow-sm',
       // 폰트
       'text-sm leading-[21px] tracking-[0.07px]',
-      'text-slate-900 placeholder:text-slate-500',
+      'text-foreground placeholder:text-muted-foreground',
       // 인터랙션
       'outline-none transition-colors',
-      'focus-visible:border-slate-300 focus-visible:ring-2 focus-visible:ring-slate-100',
+      'focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/20',
       // 에러 상태
       hasError && ['border-red-500', 'focus-visible:border-red-500 focus-visible:ring-red-100'],
       // Disabled 상태
@@ -76,7 +76,7 @@ export const EditorInput = forwardRef<HTMLInputElement | HTMLTextAreaElement, Ed
     return (
       <div className="flex flex-col gap-1.5">
         {label && (
-          <Label htmlFor={id} className="text-sm font-medium text-slate-900">
+          <Label htmlFor={id} className="text-foreground text-sm font-medium">
             {label}
           </Label>
         )}
