@@ -26,6 +26,10 @@ interface ColorPresetButtonProps {
  */
 export const ColorPresetButton = forwardRef<HTMLButtonElement, ColorPresetButtonProps>(
   ({ color, isSelected = false, onClick, className }, ref) => {
+    // white/black 색상은 더 진한 border 사용
+    const isLightColor = color.toLowerCase() === 'white' || color.toLowerCase() === '#ffffff';
+    const isDarkColor = color.toLowerCase() === 'black' || color.toLowerCase() === '#000000';
+
     return (
       <button
         ref={ref}
@@ -35,7 +39,12 @@ export const ColorPresetButton = forwardRef<HTMLButtonElement, ColorPresetButton
           // Figma 정확한 스타일 (높이 36px, 8px border-radius)
           'h-[36px] min-h-[36px] flex-1',
           'rounded-[8px]',
-          'border border-slate-200',
+          // Border: white/black은 더 진하게
+          isLightColor
+            ? 'border-2 border-slate-300'
+            : isDarkColor
+              ? 'border-2 border-slate-700'
+              : 'border border-slate-200',
           'shadow-sm',
           // 인터랙션
           'transition-all duration-200',

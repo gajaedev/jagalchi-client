@@ -36,9 +36,9 @@ export const ToolbarButton = memo(function ToolbarButton({
             aria-label={label}
             aria-pressed={isActive}
             className={cn(
-              // 크기 및 레이아웃
+              // 크기 및 레이아웃 (Figma: 40px x 40px, 8px radius)
               'inline-flex h-10 w-10 items-center justify-center',
-              'rounded-md',
+              'rounded-lg',
               // 기본 스타일
               'transition-colors',
               // Active 상태
