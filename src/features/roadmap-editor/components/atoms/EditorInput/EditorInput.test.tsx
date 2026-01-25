@@ -84,6 +84,6 @@ describe('EditorInput', () => {
     expect(input).toHaveClass('min-h-[36px]');
     expect(input).toHaveClass('px-3');
     expect(input).toHaveClass('rounded-lg');
-    expect(input).toHaveClass('shadow-xs');
+    expect(input).toHaveClass('shadow-sm');
   });
 });

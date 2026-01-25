@@ -48,7 +48,7 @@ describe('ColorPresetButton', () => {
     expect(button).toHaveClass('rounded-[8px]');
     expect(button).toHaveClass('border');
     expect(button).toHaveClass('border-slate-200');
-    expect(button).toHaveClass('shadow-xs');
+    expect(button).toHaveClass('shadow-sm');
   });
 
   it('flex-1 클래스를 가진다 (가변 너비)', () => {

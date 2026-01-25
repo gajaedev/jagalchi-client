@@ -54,7 +54,7 @@ export const EditorInput = forwardRef<HTMLInputElement | HTMLTextAreaElement, Ed
       // Figma 정확한 스타일
       'w-full min-h-[36px] px-3 py-[7.5px]',
       'bg-white border border-slate-200 rounded-lg',
-      'shadow-xs',
+      'shadow-sm',
       // 폰트
       'text-sm leading-[21px] tracking-[0.07px]',
       'text-slate-900 placeholder:text-slate-500',

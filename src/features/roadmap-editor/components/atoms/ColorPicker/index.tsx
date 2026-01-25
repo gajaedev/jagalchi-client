@@ -52,7 +52,7 @@ export const ColorPicker = forwardRef<HTMLInputElement, ColorPickerProps>(
             'h-[36px] min-h-[36px] w-full flex-1',
             'rounded-[8px]',
             'border border-slate-200',
-            'shadow-xs',
+            'shadow-sm',
             // 인터랙션
             'transition-all duration-200',
             'hover:scale-105 hover:shadow-md',
