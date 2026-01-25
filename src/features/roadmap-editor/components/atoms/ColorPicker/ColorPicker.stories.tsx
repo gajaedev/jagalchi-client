@@ -19,18 +19,33 @@ export const Default: Story = {
   args: {
     value: '#009689',
   },
+  render: (args) => (
+    <div className="flex w-[208px]">
+      <ColorPicker {...args} />
+    </div>
+  ),
 };
 
 export const Blue: Story = {
   args: {
     value: '#155dfc',
   },
+  render: (args) => (
+    <div className="flex w-[208px]">
+      <ColorPicker {...args} />
+    </div>
+  ),
 };
 
 export const Red: Story = {
   args: {
     value: '#ec003f',
   },
+  render: (args) => (
+    <div className="flex w-[208px]">
+      <ColorPicker {...args} />
+    </div>
+  ),
 };
 
 export const Interactive: Story = {
@@ -55,7 +70,7 @@ export const WithFixedWidth: Story = {
     value: '#009689',
   },
   render: () => (
-    <div className="w-[208px]">
+    <div className="flex w-[208px]">
       <ColorPicker value="#009689" />
     </div>
   ),
