@@ -59,7 +59,7 @@ export const EditorResource = memo(function EditorResource({
       )}
       aria-label={`자료 열기: ${title}`}
     >
-      <p className="flex-1 overflow-hidden text-left text-sm font-medium text-ellipsis whitespace-nowrap text-slate-900">
+      <p className="flex-1 overflow-hidden text-left text-sm leading-[21px] font-medium tracking-[0.07px] text-ellipsis whitespace-nowrap text-slate-900">
         {title}
       </p>
       <ArrowUpRight className="size-4 shrink-0 text-slate-600" />

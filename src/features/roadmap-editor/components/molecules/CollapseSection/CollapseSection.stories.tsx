@@ -28,18 +28,6 @@ export const Default: Story = {
   },
 };
 
-export const Closed: Story = {
-  args: {
-    title: '첨부 자료',
-    defaultOpen: false,
-    children: (
-      <>
-        <EditorInput label="" value="" onChange={() => {}} placeholder="자료 링크 입력" />
-      </>
-    ),
-  },
-};
-
 export const WithResources: Story = {
   args: {
     title: '자료 목록',
@@ -58,9 +46,7 @@ export const LongContent: Story = {
     title: '상세 정보',
     children: (
       <div className="flex flex-col gap-3">
-        <p className="text-sm text-slate-700">
-          이 섹션에는 많은 내용이 들어있습니다. 접기/펼치기 기능을 통해 필요할 때만 볼 수 있습니다.
-        </p>
+        <p className="text-sm text-slate-700">이 섹션에는 여러 입력 필드가 있습니다.</p>
         <EditorInput label="항목 1" value="" onChange={() => {}} />
         <EditorInput label="항목 2" value="" onChange={() => {}} />
         <EditorInput label="항목 3" value="" onChange={() => {}} />

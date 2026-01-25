@@ -1,8 +1,6 @@
 'use client';
 
-import { memo, useState } from 'react';
-
-import { ChevronDown, ChevronRight } from 'lucide-react';
+import { memo } from 'react';
 
 import { cn } from '@/lib/utils';
 
@@ -16,50 +14,28 @@ interface CollapseSectionProps {
    */
   children: React.ReactNode;
   /**
-   * 기본 펼침 상태
-   */
-  defaultOpen?: boolean;
-  /**
    * 추가 CSS 클래스
    */
   className?: string;
 }
 
 /**
- * 접기/펼치기 가능한 섹션 컴포넌트
+ * 섹션 헤더 컴포넌트
  *
- * 용도:
- * - 노드 속성 패널의 "자료" 섹션 등
- * - 긴 콘텐츠를 숨기고 보여주기
+ * Figma 디자인 기반:
+ * - Node ID: 4534:12922 (첨부 자료 섹션)
+ * - 단순한 제목 + 콘텐츠
+ * - 접기/펼치기 기능 없음
  */
 export const CollapseSection = memo(function CollapseSection({
   title,
   children,
-  defaultOpen = true,
   className,
 }: CollapseSectionProps) {
-  const [isOpen, setIsOpen] = useState(defaultOpen);
-
   return (
-    <div className={cn('flex flex-col', className)}>
-      {/* Header */}
-      <button
-        type="button"
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 py-2 text-sm font-medium text-slate-900 transition-colors hover:text-slate-700"
-        aria-expanded={isOpen}
-        aria-label={isOpen ? `${title} 섹션 접기` : `${title} 섹션 펼치기`}
-      >
-        {isOpen ? (
-          <ChevronDown className="size-4 shrink-0 text-slate-600" />
-        ) : (
-          <ChevronRight className="size-4 shrink-0 text-slate-600" />
-        )}
-        <span>{title}</span>
-      </button>
-
-      {/* Content */}
-      {isOpen && <div className="flex flex-col gap-3 pt-2">{children}</div>}
+    <div className={cn('flex flex-col gap-1.5', className)}>
+      <p className="text-sm leading-[21px] font-medium tracking-[0.07px] text-slate-900">{title}</p>
+      <div className="flex flex-col gap-3">{children}</div>
     </div>
   );
 });
