@@ -5,10 +5,10 @@ import { memo } from 'react';
 import { useSetAtom } from 'jotai';
 import { Palette } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
 import { EDITOR_MESSAGES } from '@/constants/messages';
 
 import { isColorPickerOpenAtom, colorPickerTargetAtom } from '../../../stores/editor-atoms';
+import { ColorPicker } from '../../atoms/ColorPicker';
 import { ColorPresetButton } from '../../atoms/ColorPresetButton';
 
 import type { NodeColorVariant, TextColorVariant } from '../../../types/editor.types';
@@ -55,18 +55,19 @@ export const ColorSelector = memo(function ColorSelector({
       <div>
         <label className="text-sm font-medium">{EDITOR_MESSAGES.SIDEBAR_COLOR_CUSTOM_LABEL}</label>
         <div className="mt-2 flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="icon"
-            className="h-8 w-8"
+          <button
+            type="button"
             onClick={handleCustomColorClick}
+            className="shrink-0 transition-colors hover:text-slate-900 focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 focus-visible:outline-none"
+            aria-label="커스텀 색상 선택기 열기"
           >
-            <Palette className="h-4 w-4" />
-          </Button>
-          <div
-            className="h-8 w-8 rounded border"
-            style={{
-              backgroundColor: presets.find((p) => p.variant === currentVariant)?.hex ?? '#ffffff',
+            <Palette className="size-6" />
+          </button>
+          <ColorPicker
+            value={presets.find((p) => p.variant === currentVariant)?.hex ?? '#ffffff'}
+            onChange={() => {
+              // 실제 커스텀 컬러는 모달에서 처리
+              handleCustomColorClick();
             }}
           />
         </div>
