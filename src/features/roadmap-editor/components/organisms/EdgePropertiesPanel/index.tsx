@@ -91,7 +91,7 @@ export const EdgePropertiesPanel = memo(function EdgePropertiesPanel({
       </div>
 
       {/* Content */}
-      <div className="flex-1 space-y-0 overflow-y-auto pt-4 pb-4 pl-4">
+      <div className="flex-1 space-y-0 overflow-y-auto p-4">
         {/* 라벨 */}
         <div className="border-b border-slate-200 pb-4">
           <div className="space-y-2">

@@ -78,7 +78,7 @@ export const NodePropertiesPanel = memo(function NodePropertiesPanel({
       </div>
 
       {/* Content */}
-      <div className="flex-1 space-y-4 overflow-y-auto pt-4 pb-4 pl-4">
+      <div className="flex-1 space-y-4 overflow-y-auto p-4">
         {/* 노드 이름 */}
         <EditorInput
           label={EDITOR_MESSAGES.SIDEBAR_NODE_NAME_LABEL}

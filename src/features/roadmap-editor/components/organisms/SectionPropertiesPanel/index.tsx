@@ -63,7 +63,7 @@ export const SectionPropertiesPanel = memo(function SectionPropertiesPanel({
       </div>
 
       {/* Content */}
-      <div className="flex-1 space-y-4 overflow-y-auto pt-4 pb-4 pl-4">
+      <div className="flex-1 space-y-4 overflow-y-auto p-4">
         {/* 섹션 이름 */}
         <EditorInput
           label={EDITOR_MESSAGES.SIDEBAR_SECTION_NAME_LABEL}
@@ -92,7 +92,7 @@ export const SectionPropertiesPanel = memo(function SectionPropertiesPanel({
       </div>
 
       {/* Content */}
-      <div className="flex-1 space-y-0 overflow-y-auto pt-4 pb-4 pl-4">
+      <div className="flex-1 space-y-0 overflow-y-auto p-4">
         {/* 기본 컬러 */}
         <ColorSelector
           type="node"
