@@ -5,14 +5,6 @@ import { memo, useState } from 'react';
 import { useSetAtom } from 'jotai';
 import { Lock, Unlock } from 'lucide-react';
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-
 import { NODE_PRESET_COLORS } from '../../../constants/preset-colors';
 import { edgesAtom } from '../../../stores/editor-atoms';
 import { ColorSelector } from '../../molecules/ColorSelector';
@@ -78,9 +70,9 @@ export const EdgePropertiesPanel = memo(function EdgePropertiesPanel({
     'black';
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full w-60 flex-col">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3">
+      <div className="flex items-center justify-between gap-4 border-b border-slate-200 p-4">
         <h3 className="text-sm font-semibold text-slate-900">{edge.id}</h3>
         <button
           type="button"
@@ -97,30 +89,153 @@ export const EdgePropertiesPanel = memo(function EdgePropertiesPanel({
       </div>
 
       {/* Content */}
-      <div className="flex-1 space-y-4 overflow-y-auto p-4">
+      <div className="flex-1 space-y-0 overflow-y-auto pt-4 pb-4 pl-4">
+        {/* 라벨 */}
+        <div className="border-b border-slate-200 pb-4">
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-slate-900">라벨</label>
+            <input
+              type="text"
+              placeholder="Value"
+              disabled
+              className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm shadow-sm disabled:cursor-not-allowed disabled:opacity-50"
+            />
+          </div>
+        </div>
+
         {/* 라인 스타일 */}
-        <div className="space-y-2">
-          <label className="text-sm font-medium text-slate-900">라인 스타일</label>
-          <Select value={currentStyle} onValueChange={handleStyleChange} disabled={isLocked}>
-            <SelectTrigger className="h-[36px] w-full">
-              <SelectValue placeholder="스타일 선택" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="solid">실선</SelectItem>
-              <SelectItem value="dashed">점선</SelectItem>
-              <SelectItem value="dotted">점</SelectItem>
-            </SelectContent>
-          </Select>
+        <div className="border-b border-slate-200 py-4">
+          <div className="space-y-4">
+            <label className="text-sm font-medium text-slate-900">스타일</label>
+            <div className="space-y-4">
+              {/* 라인 스타일 */}
+              {/* 실선 */}
+              <div className="flex items-center gap-2">
+                <p className="w-10 text-sm text-black">실선</p>
+                <button
+                  onClick={() => handleStyleChange('solid')}
+                  disabled={isLocked}
+                  className={`h-9 flex-1 rounded-lg border ${
+                    currentStyle === 'solid'
+                      ? 'border-blue-500 bg-white'
+                      : 'border-slate-200 bg-white'
+                  } disabled:cursor-not-allowed disabled:opacity-50`}
+                >
+                  <div className="flex h-full w-full items-center justify-center">
+                    <div className="h-0.5 w-32 bg-black" />
+                  </div>
+                </button>
+              </div>
+
+              {/* 점선 */}
+              <div className="flex items-center gap-2">
+                <p className="w-10 text-sm text-black">점선</p>
+                <button
+                  onClick={() => handleStyleChange('dashed')}
+                  disabled={isLocked}
+                  className={`h-9 flex-1 rounded-lg border ${
+                    currentStyle === 'dashed'
+                      ? 'border-blue-500 bg-white'
+                      : 'border-slate-200 bg-white'
+                  } disabled:cursor-not-allowed disabled:opacity-50`}
+                >
+                  <div className="flex h-full w-full items-center justify-center">
+                    <div
+                      className="h-0.5 w-32 bg-black"
+                      style={{
+                        backgroundImage:
+                          'repeating-linear-gradient(to right, black 0, black 5px, transparent 5px, transparent 10px)',
+                      }}
+                    />
+                  </div>
+                </button>
+              </div>
+
+              {/* 꼬인선 */}
+              <div className="flex items-center gap-2">
+                <p className="w-10 text-sm text-black">꼬인선</p>
+                <button
+                  onClick={() => handleStyleChange('dotted')}
+                  disabled={isLocked}
+                  className="h-9 flex-1 rounded-lg border border-slate-200 bg-white disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  <div className="flex h-full w-full items-center px-3">
+                    <svg width="136" height="16" viewBox="0 0 136 16" fill="none">
+                      <path
+                        d="M0 8 Q 10 0, 20 8 T 40 8 T 60 8 T 80 8 T 100 8 T 120 8 T 136 8"
+                        stroke="black"
+                        strokeWidth="2"
+                        fill="none"
+                      />
+                    </svg>
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            {/* 화살표 */}
+            <div className="flex items-center gap-2">
+              <p className="w-10 text-sm text-black">화살표</p>
+              <div className="flex flex-1 gap-2">
+                <button
+                  disabled
+                  className="h-9 flex-1 rounded-lg border border-slate-200 bg-white disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  <div className="flex h-full w-full items-center justify-center">
+                    <svg width="20" height="16" viewBox="0 0 20 16" fill="none">
+                      <path
+                        d="M0 8 L 15 8 M 15 8 L 10 3 M 15 8 L 10 13"
+                        stroke="black"
+                        strokeWidth="2"
+                      />
+                    </svg>
+                  </div>
+                </button>
+                <button
+                  disabled
+                  className="h-9 flex-1 rounded-lg border border-slate-200 bg-white disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  <div className="flex h-full w-full items-center justify-center">
+                    <svg width="20" height="16" viewBox="0 0 20 16" fill="none">
+                      <path
+                        d="M5 3 L 0 8 L 5 13 M 0 8 L 20 8 M 15 3 L 20 8 L 15 13"
+                        stroke="black"
+                        strokeWidth="2"
+                      />
+                    </svg>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 두께 */}
+        <div className="border-b border-slate-200 py-4">
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-slate-900">두께</label>
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                placeholder="Value"
+                disabled
+                className="flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm shadow-sm disabled:cursor-not-allowed disabled:opacity-50"
+              />
+              <p className="text-sm text-black">px</p>
+            </div>
+          </div>
         </div>
 
         {/* 기본 컬러 */}
-        <ColorSelector
-          type="node"
-          nodeId={edge.id}
-          currentVariant={currentVariant}
-          presets={NODE_PRESET_COLORS}
-          onPresetSelect={handleColorChange}
-        />
+        <div className="border-b border-slate-200 py-4">
+          <ColorSelector
+            type="node"
+            nodeId={edge.id}
+            currentVariant={currentVariant}
+            presets={NODE_PRESET_COLORS}
+            onPresetSelect={handleColorChange}
+          />
+        </div>
       </div>
     </div>
   );

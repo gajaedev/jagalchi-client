@@ -44,9 +44,9 @@ export const SectionPropertiesPanel = memo(function SectionPropertiesPanel({
   };
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full w-60 flex-col">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3">
+      <div className="flex items-center justify-between gap-4 border-b border-slate-200 p-4">
         <h3 className="text-sm font-semibold text-slate-900">{node.id}</h3>
         <button
           type="button"
@@ -63,7 +63,7 @@ export const SectionPropertiesPanel = memo(function SectionPropertiesPanel({
       </div>
 
       {/* Content */}
-      <div className="flex-1 space-y-4 overflow-y-auto p-4">
+      <div className="flex-1 space-y-4 overflow-y-auto pt-4 pb-4 pl-4">
         {/* 섹션 이름 */}
         <EditorInput
           label={EDITOR_MESSAGES.SIDEBAR_SECTION_NAME_LABEL}
@@ -72,7 +72,27 @@ export const SectionPropertiesPanel = memo(function SectionPropertiesPanel({
           placeholder="섹션 이름을 입력하세요"
           isDisabled={node.data.isLocked}
         />
+      </div>
 
+      {/* 크기 */}
+      <div className="border-b border-slate-200 p-4">
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-slate-900">크기</label>
+          <div className="flex items-center gap-4">
+            <div className="flex flex-1 items-center gap-2">
+              <p className="text-sm text-black">W</p>
+              <EditorInput value="" onChange={() => {}} placeholder="Value" isDisabled />
+            </div>
+            <div className="flex flex-1 items-center gap-2">
+              <p className="text-sm text-black">H</p>
+              <EditorInput value="" onChange={() => {}} placeholder="Value" isDisabled />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="flex-1 space-y-0 overflow-y-auto pt-4 pb-4 pl-4">
         {/* 기본 컬러 */}
         <ColorSelector
           type="node"

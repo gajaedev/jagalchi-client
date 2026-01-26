@@ -6,7 +6,7 @@ export const NODE_PRESET_COLORS: { variant: NodeColorVariant; hex: string; label
   { variant: 'blue', hex: '#155dfc', label: 'Blue' },
   { variant: 'purple', hex: '#9810fa', label: 'Purple' },
   { variant: 'red', hex: '#ec003f', label: 'Red' },
-  { variant: 'orange', hex: '#f54a00', label: 'Orange' },
+  { variant: 'orange', hex: '#e17100', label: 'Orange' },
 ];
 
 export const TEXT_PRESET_COLORS: { variant: TextColorVariant; hex: string; label: string }[] = [

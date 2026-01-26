@@ -42,9 +42,9 @@ export const TextPropertiesPanel = memo(function TextPropertiesPanel({
   };
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full w-60 flex-col">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3">
+      <div className="flex items-center justify-between gap-4 border-b border-slate-200 p-4">
         <h3 className="text-sm font-semibold text-slate-900">{node.id}</h3>
         <button
           type="button"
@@ -61,25 +61,28 @@ export const TextPropertiesPanel = memo(function TextPropertiesPanel({
       </div>
 
       {/* Content */}
-      <div className="flex-1 space-y-4 overflow-y-auto p-4">
-        {/* 텍스트 내용 */}
-        <EditorInput
-          label="텍스트 내용"
-          value={node.data.content}
-          onChange={(value) => updateNode({ content: value })}
-          placeholder="텍스트를 입력하세요"
-          isMultiline
-          isDisabled={node.data.isLocked}
-        />
+      <div className="flex-1 space-y-0 overflow-y-auto pt-4 pb-4 pl-4">
+        {/* 텍스트 크기 */}
+        <div className="border-b border-slate-200 pb-4">
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-slate-900">텍스트 크기</label>
+            <div className="flex items-center gap-2">
+              <EditorInput value="" onChange={() => {}} placeholder="Value" isDisabled />
+              <p className="text-sm text-black">px</p>
+            </div>
+          </div>
+        </div>
 
         {/* 기본 컬러 */}
-        <ColorSelector
-          type="text"
-          nodeId={node.id}
-          currentVariant={node.data.variant}
-          presets={TEXT_PRESET_COLORS}
-          onPresetSelect={(variant) => updateNode({ variant: variant as TextColorVariant })}
-        />
+        <div className="border-b border-slate-200 py-4">
+          <ColorSelector
+            type="text"
+            nodeId={node.id}
+            currentVariant={node.data.variant}
+            presets={TEXT_PRESET_COLORS}
+            onPresetSelect={(variant) => updateNode({ variant: variant as TextColorVariant })}
+          />
+        </div>
       </div>
     </div>
   );

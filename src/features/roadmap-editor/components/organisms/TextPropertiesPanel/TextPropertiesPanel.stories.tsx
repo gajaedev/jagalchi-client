@@ -9,14 +9,16 @@ const meta = {
   title: 'Features/RoadmapEditor/Organisms/TextPropertiesPanel',
   component: TextPropertiesPanel,
   parameters: {
-    layout: 'centered',
+    layout: 'fullscreen',
   },
   tags: ['autodocs'],
   decorators: [
     (Story) => (
       <Provider>
-        <div className="h-[400px] w-[320px] border border-slate-200 bg-white">
-          <Story />
+        <div className="flex h-screen justify-end">
+          <aside className="h-full w-[272px] border-l bg-white">
+            <Story />
+          </aside>
         </div>
       </Provider>
     ),

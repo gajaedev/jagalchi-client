@@ -1,6 +1,6 @@
 'use client';
 
-import { memo, useState } from 'react';
+import { memo } from 'react';
 
 import { useSetAtom } from 'jotai';
 import { Lock, Unlock } from 'lucide-react';
@@ -10,7 +10,6 @@ import { EDITOR_MESSAGES } from '@/constants/messages';
 import { NODE_PRESET_COLORS } from '../../../constants/preset-colors';
 import { nodesAtom } from '../../../stores/editor-atoms';
 import { EditorInput } from '../../atoms/EditorInput';
-import { LoadingButton } from '../../atoms/LoadingButton';
 import { ColorSelector } from '../../molecules/ColorSelector';
 
 import type { JagalchiNodeType, NodeColorVariant } from '../../../types/editor.types';
@@ -34,8 +33,6 @@ export const NodePropertiesPanel = memo(function NodePropertiesPanel({
   node,
 }: NodePropertiesPanelProps) {
   const setNodes = useSetAtom(nodesAtom);
-  const [isGeneratingDescription, setIsGeneratingDescription] = useState(false);
-  const [isRecommendingResources, setIsRecommendingResources] = useState(false);
 
   const updateNode = (updates: Partial<JagalchiNodeType['data']>) => {
     setNodes((prev) =>
@@ -47,20 +44,6 @@ export const NodePropertiesPanel = memo(function NodePropertiesPanel({
 
   const toggleLock = () => {
     updateNode({ isLocked: !node.data.isLocked });
-  };
-
-  const handleGenerateDescription = async () => {
-    setIsGeneratingDescription(true);
-    // TODO: AI 생성 로직 추가
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setIsGeneratingDescription(false);
-  };
-
-  const handleRecommendResources = async () => {
-    setIsRecommendingResources(true);
-    // TODO: AI 추천 로직 추가
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setIsRecommendingResources(false);
   };
 
   const handleResourceChange = (index: number, value: string) => {
@@ -76,9 +59,9 @@ export const NodePropertiesPanel = memo(function NodePropertiesPanel({
   }
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full w-60 flex-col">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3">
+      <div className="flex items-center justify-between gap-4 border-b border-slate-200 p-4">
         <h3 className="text-sm font-semibold text-slate-900">{node.id}</h3>
         <button
           type="button"
@@ -95,7 +78,7 @@ export const NodePropertiesPanel = memo(function NodePropertiesPanel({
       </div>
 
       {/* Content */}
-      <div className="flex-1 space-y-4 overflow-y-auto p-4">
+      <div className="flex-1 space-y-4 overflow-y-auto pt-4 pb-4 pl-4">
         {/* 노드 이름 */}
         <EditorInput
           label={EDITOR_MESSAGES.SIDEBAR_NODE_NAME_LABEL}
@@ -114,18 +97,7 @@ export const NodePropertiesPanel = memo(function NodePropertiesPanel({
           isMultiline
           isDisabled={node.data.isLocked}
         />
-
-        {/* AI 생성 버튼 */}
-        <LoadingButton
-          variant="outline"
-          size="sm"
-          onClick={handleGenerateDescription}
-          isLoading={isGeneratingDescription}
-          disabled={node.data.isLocked}
-          className="w-full"
-        >
-          AI로 설명 생성
-        </LoadingButton>
+        <p className="text-muted-foreground text-right text-sm font-medium">AI 생성</p>
 
         {/* 기본 컬러 */}
         <ColorSelector
@@ -152,16 +124,7 @@ export const NodePropertiesPanel = memo(function NodePropertiesPanel({
               />
             ))}
           </div>
-          <LoadingButton
-            variant="outline"
-            size="sm"
-            onClick={handleRecommendResources}
-            isLoading={isRecommendingResources}
-            disabled={node.data.isLocked}
-            className="w-full"
-          >
-            AI 추천
-          </LoadingButton>
+          <p className="text-muted-foreground text-right text-sm font-medium">AI 추천</p>
         </div>
       </div>
     </div>

@@ -10,6 +10,7 @@ import {
   AlignStartHorizontal,
   AlignCenterHorizontal,
   AlignEndHorizontal,
+  AlignHorizontalJustifyCenter,
   LockKeyhole,
 } from 'lucide-react';
 
@@ -53,9 +54,9 @@ export const MultiSelectPanel = memo(function MultiSelectPanel() {
   };
 
   return (
-    <div className="space-y-4 p-4">
+    <div className="h-full w-60 space-y-4 p-4">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-2">
           <h3 className="font-semibold">{EDITOR_MESSAGES.MULTI_SELECT_TITLE}</h3>
           <span className="text-muted-foreground text-sm">
@@ -71,15 +72,15 @@ export const MultiSelectPanel = memo(function MultiSelectPanel() {
       {/* Alignment Section */}
       <div>
         <Label className="mb-2 block">{EDITOR_MESSAGES.MULTI_SELECT_ALIGN_LABEL}</Label>
-        <div className="flex flex-col gap-2">
+        <div className="flex items-start justify-between">
           {/* Horizontal alignment */}
-          <div className="flex gap-1">
+          <div className="flex items-center">
             <Button
               variant="outline"
               size="icon"
               onClick={() => handleAlign('left')}
               title={EDITOR_MESSAGES.MULTI_SELECT_ALIGN_LEFT}
-              className="flex-1"
+              className="h-8 w-8 rounded-r-none"
             >
               <AlignStartVertical className="h-4 w-4" />
             </Button>
@@ -88,7 +89,7 @@ export const MultiSelectPanel = memo(function MultiSelectPanel() {
               size="icon"
               onClick={() => handleAlign('center')}
               title={EDITOR_MESSAGES.MULTI_SELECT_ALIGN_CENTER}
-              className="flex-1"
+              className="h-8 w-8 rounded-none border-r-0 border-l-0"
             >
               <AlignCenterVertical className="h-4 w-4" />
             </Button>
@@ -97,20 +98,20 @@ export const MultiSelectPanel = memo(function MultiSelectPanel() {
               size="icon"
               onClick={() => handleAlign('right')}
               title={EDITOR_MESSAGES.MULTI_SELECT_ALIGN_RIGHT}
-              className="flex-1"
+              className="h-8 w-8 rounded-l-none"
             >
               <AlignEndVertical className="h-4 w-4" />
             </Button>
           </div>
 
           {/* Vertical alignment */}
-          <div className="flex gap-1">
+          <div className="flex items-center">
             <Button
               variant="outline"
               size="icon"
               onClick={() => handleAlign('top')}
               title={EDITOR_MESSAGES.MULTI_SELECT_ALIGN_TOP}
-              className="flex-1"
+              className="h-8 w-8 rounded-r-none"
             >
               <AlignStartHorizontal className="h-4 w-4" />
             </Button>
@@ -119,7 +120,7 @@ export const MultiSelectPanel = memo(function MultiSelectPanel() {
               size="icon"
               onClick={() => handleAlign('middle')}
               title={EDITOR_MESSAGES.MULTI_SELECT_ALIGN_MIDDLE}
-              className="flex-1"
+              className="h-8 w-8 rounded-none border-r-0 border-l-0"
             >
               <AlignCenterHorizontal className="h-4 w-4" />
             </Button>
@@ -128,7 +129,7 @@ export const MultiSelectPanel = memo(function MultiSelectPanel() {
               size="icon"
               onClick={() => handleAlign('bottom')}
               title={EDITOR_MESSAGES.MULTI_SELECT_ALIGN_BOTTOM}
-              className="flex-1"
+              className="h-8 w-8 rounded-l-none"
             >
               <AlignEndHorizontal className="h-4 w-4" />
             </Button>
@@ -136,12 +137,12 @@ export const MultiSelectPanel = memo(function MultiSelectPanel() {
         </div>
       </div>
 
-      {/* Spacing Section (Phase 4) */}
+      {/* Spacing Section */}
       <div>
         <Label className="mb-2 block">{EDITOR_MESSAGES.MULTI_SELECT_SPACING_LABEL}</Label>
-        <div className="flex gap-2">
-          <Input placeholder="X" disabled />
-          <Input placeholder="Y" disabled />
+        <div className="flex items-center gap-2">
+          <AlignHorizontalJustifyCenter className="h-6 w-6 shrink-0" />
+          <Input placeholder="Value" disabled className="flex-1" />
         </div>
       </div>
 
