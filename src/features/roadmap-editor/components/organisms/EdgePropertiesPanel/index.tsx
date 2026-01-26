@@ -5,6 +5,8 @@ import { memo, useState } from 'react';
 import { useSetAtom } from 'jotai';
 import { Lock, Unlock } from 'lucide-react';
 
+import { EDITOR_MESSAGES } from '@/constants/messages';
+
 import { NODE_PRESET_COLORS } from '../../../constants/preset-colors';
 import { edgesAtom } from '../../../stores/editor-atoms';
 import { ColorSelector } from '../../molecules/ColorSelector';
@@ -93,7 +95,9 @@ export const EdgePropertiesPanel = memo(function EdgePropertiesPanel({
         {/* 라벨 */}
         <div className="border-b border-slate-200 pb-4">
           <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-900">라벨</label>
+            <label className="text-sm font-medium text-slate-900">
+              {EDITOR_MESSAGES.SIDEBAR_EDGE_LABEL_LABEL}
+            </label>
             <input
               type="text"
               placeholder="Value"
@@ -106,12 +110,16 @@ export const EdgePropertiesPanel = memo(function EdgePropertiesPanel({
         {/* 라인 스타일 */}
         <div className="border-b border-slate-200 py-4">
           <div className="space-y-4">
-            <label className="text-sm font-medium text-slate-900">스타일</label>
+            <label className="text-sm font-medium text-slate-900">
+              {EDITOR_MESSAGES.SIDEBAR_EDGE_STYLE_LABEL}
+            </label>
             <div className="space-y-4">
               {/* 라인 스타일 */}
               {/* 실선 */}
               <div className="flex items-center gap-2">
-                <p className="w-10 text-sm text-black">실선</p>
+                <p className="w-10 text-sm text-black">
+                  {EDITOR_MESSAGES.SIDEBAR_EDGE_STYLE_SOLID}
+                </p>
                 <button
                   onClick={() => handleStyleChange('solid')}
                   disabled={isLocked}
@@ -129,7 +137,9 @@ export const EdgePropertiesPanel = memo(function EdgePropertiesPanel({
 
               {/* 점선 */}
               <div className="flex items-center gap-2">
-                <p className="w-10 text-sm text-black">점선</p>
+                <p className="w-10 text-sm text-black">
+                  {EDITOR_MESSAGES.SIDEBAR_EDGE_STYLE_DASHED}
+                </p>
                 <button
                   onClick={() => handleStyleChange('dashed')}
                   disabled={isLocked}
@@ -153,7 +163,7 @@ export const EdgePropertiesPanel = memo(function EdgePropertiesPanel({
 
               {/* 꼬인선 */}
               <div className="flex items-center gap-2">
-                <p className="w-10 text-sm text-black">꼬인선</p>
+                <p className="w-10 text-sm text-black">{EDITOR_MESSAGES.SIDEBAR_EDGE_STYLE_WAVY}</p>
                 <button
                   onClick={() => handleStyleChange('dotted')}
                   disabled={isLocked}
@@ -175,7 +185,7 @@ export const EdgePropertiesPanel = memo(function EdgePropertiesPanel({
 
             {/* 화살표 */}
             <div className="flex items-center gap-2">
-              <p className="w-10 text-sm text-black">화살표</p>
+              <p className="w-10 text-sm text-black">{EDITOR_MESSAGES.SIDEBAR_EDGE_ARROW_LABEL}</p>
               <div className="flex flex-1 gap-2">
                 <button
                   disabled
@@ -213,7 +223,9 @@ export const EdgePropertiesPanel = memo(function EdgePropertiesPanel({
         {/* 두께 */}
         <div className="border-b border-slate-200 py-4">
           <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-900">두께</label>
+            <label className="text-sm font-medium text-slate-900">
+              {EDITOR_MESSAGES.SIDEBAR_EDGE_THICKNESS_LABEL}
+            </label>
             <div className="flex items-center gap-2">
               <input
                 type="text"
