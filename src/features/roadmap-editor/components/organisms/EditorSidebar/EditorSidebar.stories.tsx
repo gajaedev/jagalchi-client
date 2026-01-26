@@ -4,9 +4,10 @@ import type { ReactNode } from 'react';
 
 import { EditorSidebar } from '.';
 import {
-  singleSelectedNodeAtom,
-  singleSelectedEdgeAtom,
+  nodesAtom,
+  edgesAtom,
   selectedNodeIdsAtom,
+  selectedEdgeIdsAtom,
 } from '../../../stores/editor-atoms';
 
 import type { Meta, StoryObj } from '@storybook/react';
@@ -103,7 +104,12 @@ export const NodeSelected: Story = {
   decorators: [
     (Story) => (
       <Provider>
-        <HydrateAtoms initialValues={[[singleSelectedNodeAtom, mockNode] as const]}>
+        <HydrateAtoms
+          initialValues={[
+            [nodesAtom, [mockNode]],
+            [selectedNodeIdsAtom, ['Node_1']],
+          ]}
+        >
           <div className="flex h-screen justify-end">
             <Story />
           </div>
@@ -117,7 +123,12 @@ export const EdgeSelected: Story = {
   decorators: [
     (Story) => (
       <Provider>
-        <HydrateAtoms initialValues={[[singleSelectedEdgeAtom, mockEdge] as const]}>
+        <HydrateAtoms
+          initialValues={[
+            [edgesAtom, [mockEdge]],
+            [selectedEdgeIdsAtom, ['Line_1']],
+          ]}
+        >
           <div className="flex h-screen justify-end">
             <Story />
           </div>
@@ -131,7 +142,12 @@ export const SectionSelected: Story = {
   decorators: [
     (Story) => (
       <Provider>
-        <HydrateAtoms initialValues={[[singleSelectedNodeAtom, mockSection] as const]}>
+        <HydrateAtoms
+          initialValues={[
+            [nodesAtom, [mockSection]],
+            [selectedNodeIdsAtom, ['Section_1']],
+          ]}
+        >
           <div className="flex h-screen justify-end">
             <Story />
           </div>
@@ -145,7 +161,12 @@ export const TextSelected: Story = {
   decorators: [
     (Story) => (
       <Provider>
-        <HydrateAtoms initialValues={[[singleSelectedNodeAtom, mockText] as const]}>
+        <HydrateAtoms
+          initialValues={[
+            [nodesAtom, [mockText]],
+            [selectedNodeIdsAtom, ['Text_1']],
+          ]}
+        >
           <div className="flex h-screen justify-end">
             <Story />
           </div>
@@ -160,7 +181,17 @@ export const MultiSelected: Story = {
     (Story) => (
       <Provider>
         <HydrateAtoms
-          initialValues={[[selectedNodeIdsAtom, ['node-1', 'node-2', 'node-3']] as const]}
+          initialValues={[
+            [
+              nodesAtom,
+              [
+                { ...mockNode, id: 'node-1' },
+                { ...mockNode, id: 'node-2', data: { ...mockNode.data, variant: 'purple' } },
+                { ...mockNode, id: 'node-3', data: { ...mockNode.data, variant: 'red' } },
+              ],
+            ],
+            [selectedNodeIdsAtom, ['node-1', 'node-2', 'node-3']],
+          ]}
         >
           <div className="flex h-screen justify-end">
             <Story />

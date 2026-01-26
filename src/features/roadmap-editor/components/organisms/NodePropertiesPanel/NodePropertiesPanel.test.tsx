@@ -49,9 +49,9 @@ describe('NodePropertiesPanel', () => {
     expect(screen.getByDisplayValue('Test Description')).toBeInTheDocument();
   });
 
-  it('renders AI description generation button', () => {
+  it('renders AI generation text indicator', () => {
     renderWithProvider(mockNode);
-    expect(screen.getByRole('button', { name: /AI로 설명 생성/ })).toBeInTheDocument();
+    expect(screen.getByText('AI 생성')).toBeInTheDocument();
   });
 
   it('renders 3 resource input fields', () => {
@@ -60,9 +60,9 @@ describe('NodePropertiesPanel', () => {
     expect(resourceInputs).toHaveLength(3);
   });
 
-  it('renders AI recommend resources button', () => {
+  it('renders AI recommendation text indicator', () => {
     renderWithProvider(mockNode);
-    expect(screen.getByRole('button', { name: /AI 추천/ })).toBeInTheDocument();
+    expect(screen.getByText('AI 추천')).toBeInTheDocument();
   });
 
   it('disables inputs when node is locked', () => {

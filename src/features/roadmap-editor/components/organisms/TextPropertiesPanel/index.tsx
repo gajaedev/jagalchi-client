@@ -62,8 +62,20 @@ export const TextPropertiesPanel = memo(function TextPropertiesPanel({
 
       {/* Content */}
       <div className="flex-1 space-y-0 overflow-y-auto pt-4 pb-4 pl-4">
-        {/* 텍스트 크기 */}
+        {/* 텍스트 내용 */}
         <div className="border-b border-slate-200 pb-4">
+          <EditorInput
+            label="텍스트 내용"
+            value={node.data.content}
+            onChange={(value) => updateNode({ content: value })}
+            placeholder="텍스트를 입력하세요"
+            isMultiline
+            isDisabled={node.data.isLocked}
+          />
+        </div>
+
+        {/* 텍스트 크기 */}
+        <div className="border-b border-slate-200 py-4">
           <div className="space-y-2">
             <label className="text-sm font-medium text-slate-900">텍스트 크기</label>
             <div className="flex items-center gap-2">

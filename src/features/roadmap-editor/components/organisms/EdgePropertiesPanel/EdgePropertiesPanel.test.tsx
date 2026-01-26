@@ -34,9 +34,9 @@ describe('EdgePropertiesPanel', () => {
     expect(screen.getByRole('button', { name: /잠금/ })).toBeInTheDocument();
   });
 
-  it('renders line style select', () => {
+  it('renders line style section', () => {
     renderWithProvider(mockEdge);
-    expect(screen.getByText('라인 스타일')).toBeInTheDocument();
+    expect(screen.getByText('스타일')).toBeInTheDocument();
   });
 
   it('renders color selector section', () => {
@@ -44,17 +44,10 @@ describe('EdgePropertiesPanel', () => {
     expect(screen.getByText('기본 컬러')).toBeInTheDocument();
   });
 
-  it('shows solid line style by default', () => {
+  it('renders line style buttons', () => {
     renderWithProvider(mockEdge);
-    expect(screen.getByRole('combobox')).toBeInTheDocument();
-  });
-
-  it('shows dashed line style for dashed edge', () => {
-    const dashedEdge = {
-      ...mockEdge,
-      style: { ...mockEdge.style, strokeDasharray: '5 5' },
-    };
-    renderWithProvider(dashedEdge);
-    expect(screen.getByRole('combobox')).toBeInTheDocument();
+    expect(screen.getByText('실선')).toBeInTheDocument();
+    expect(screen.getByText('점선')).toBeInTheDocument();
+    expect(screen.getByText('꼬인선')).toBeInTheDocument();
   });
 });
