@@ -54,6 +54,7 @@ type Story = StoryObj<typeof meta>;
 const defaultData: JagalchiSectionData = {
   title: 'Sample Section',
   variant: 'white',
+  isLocked: false,
 };
 
 export const White: Story = {
@@ -115,7 +116,7 @@ export const Selected: Story = {
 export const DefaultTitle: Story = {
   args: {
     id: 'section-8',
-    data: { variant: 'white' },
+    data: { title: '', variant: 'white', isLocked: false },
     selected: false,
   },
 };

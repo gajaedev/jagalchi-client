@@ -36,10 +36,10 @@ function HydrateAtoms({
   initialValues,
   children,
 }: {
-  initialValues: [typeof nodesAtom | typeof edgesAtom, any][];
+  initialValues: any[];
   children: React.ReactNode;
 }) {
-  useHydrateAtoms(initialValues);
+  useHydrateAtoms(initialValues as any);
   return <>{children}</>;
 }
 
@@ -205,6 +205,7 @@ export const WithSection: Story = {
           data: {
             title: 'Phase 1',
             variant: 'blue',
+            isLocked: false,
           },
           style: { width: 600, height: 400 },
         },
@@ -219,7 +220,7 @@ export const WithSection: Story = {
             resources: [],
             isLocked: false,
           },
-          parentNode: 'section-1',
+          parentId: 'section-1',
           extent: 'parent',
         },
         {
@@ -233,7 +234,7 @@ export const WithSection: Story = {
             resources: [],
             isLocked: false,
           },
-          parentNode: 'section-1',
+          parentId: 'section-1',
           extent: 'parent',
         },
       ];
@@ -266,6 +267,7 @@ export const WithText: Story = {
             variant: 'black',
             fontSize: 24,
             fontWeight: 'bold',
+            isLocked: false,
           },
         },
       ];

@@ -28,10 +28,10 @@ function HydrateAtoms({
   initialValues,
   children,
 }: {
-  initialValues: [typeof isColorPickerOpenAtom | typeof colorPickerTargetAtom, any][];
+  initialValues: any[];
   children: React.ReactNode;
 }) {
-  useHydrateAtoms(initialValues);
+  useHydrateAtoms(initialValues as any);
   return <>{children}</>;
 }
 

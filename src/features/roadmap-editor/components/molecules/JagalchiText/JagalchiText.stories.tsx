@@ -53,6 +53,7 @@ const defaultData: JagalchiTextData = {
   variant: 'black',
   fontSize: 14,
   fontWeight: 'normal',
+  isLocked: false,
 };
 
 export const Default: Story = {
@@ -61,9 +62,9 @@ export const Default: Story = {
   },
 };
 
-export const White: Story = {
+export const Gray: Story = {
   args: {
-    data: { ...defaultData, variant: 'white' },
+    data: { ...defaultData, content: 'Gray Text', variant: 'gray' },
   },
 };
 
@@ -117,7 +118,7 @@ export const BoldText: Story = {
 
 export const DefaultContent: Story = {
   args: {
-    data: { variant: 'black', fontSize: 14, fontWeight: 'normal' },
+    data: { variant: 'black', fontSize: 14, fontWeight: 'normal', content: '', isLocked: false },
   },
 };
 

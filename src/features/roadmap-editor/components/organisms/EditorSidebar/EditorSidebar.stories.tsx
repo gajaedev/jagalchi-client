@@ -1,11 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import type { Edge } from '@xyflow/react';
 import { Provider } from 'jotai';
 import { useHydrateAtoms } from 'jotai/utils';
 
 import { EditorSidebar } from '.';
 import { nodesAtom, edgesAtom } from '../../../stores/editor-atoms';
 
-import type { JagalchiNodeType, Edge as RoadmapEdge } from '../../../types/editor.types';
+import type { JagalchiNodeType } from '../../../types/editor.types';
+
+type RoadmapEdge = Edge;
 
 const meta = {
   title: 'Roadmap-Editor/Organisms/EditorSidebar',
