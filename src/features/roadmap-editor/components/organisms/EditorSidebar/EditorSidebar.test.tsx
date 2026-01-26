@@ -23,7 +23,7 @@ describe('EditorSidebar', () => {
 
     const aside = container.querySelector('aside');
     expect(aside).toBeInTheDocument();
-    expect(aside).toHaveClass('w-60');
+    expect(aside).toHaveClass('w-[272px]');
     expect(aside).toHaveClass('border-l');
   });
 
@@ -34,7 +34,7 @@ describe('EditorSidebar', () => {
       </Provider>,
     );
 
-    expect(screen.getByText(/속성을 보려면/)).toBeInTheDocument();
+    expect(screen.getByText(/노드를 선택하세요/)).toBeInTheDocument();
   });
 
   it('has correct width class', () => {
@@ -45,7 +45,7 @@ describe('EditorSidebar', () => {
     );
 
     const aside = container.querySelector('aside');
-    expect(aside).toHaveClass('w-60');
+    expect(aside).toHaveClass('w-[272px]');
   });
 
   it('has border on left side', () => {
