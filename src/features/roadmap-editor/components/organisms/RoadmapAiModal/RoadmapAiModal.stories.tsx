@@ -40,9 +40,19 @@ function ModifyModeWrapper() {
 }
 
 export const GenerateMode: Story = {
+  args: {
+    isOpen: false,
+    onClose: () => {},
+    mode: 'generate',
+  },
   render: () => <GenerateModeWrapper />,
 };
 
 export const ModifyMode: Story = {
+  args: {
+    isOpen: false,
+    onClose: () => {},
+    mode: 'modify',
+  },
   render: () => <ModifyModeWrapper />,
 };

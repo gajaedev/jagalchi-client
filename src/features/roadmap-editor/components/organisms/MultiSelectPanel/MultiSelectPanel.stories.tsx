@@ -5,7 +5,7 @@ import { useHydrateAtoms } from 'jotai/utils';
 import { MultiSelectPanel } from '.';
 import { nodesAtom } from '../../../stores/editor-atoms';
 
-import type { JagalchiNodeType } from '../../../types/editor.types';
+import type { JagalchiNodeType, RoadmapNode } from '../../../types/editor.types';
 
 const meta = {
   title: 'Roadmap-Editor/Organisms/MultiSelectPanel',
@@ -32,7 +32,7 @@ function HydrateAtoms({
   initialNodes,
   children,
 }: {
-  initialNodes: JagalchiNodeType[];
+  initialNodes: RoadmapNode[];
   children: React.ReactNode;
 }) {
   useHydrateAtoms([[nodesAtom, initialNodes]]);
@@ -145,7 +145,7 @@ export const ThreeNodesSelected: Story = {
 export const MixedTypes: Story = {
   decorators: [
     (Story) => {
-      const sampleNodes: JagalchiNodeType[] = [
+      const sampleNodes: RoadmapNode[] = [
         {
           id: 'node-1',
           type: 'jagalchi-node',
@@ -166,6 +166,7 @@ export const MixedTypes: Story = {
           data: {
             title: 'Section',
             variant: 'purple',
+            isLocked: false,
           },
           selected: true,
           style: { width: 600, height: 400 },

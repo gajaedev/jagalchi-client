@@ -48,9 +48,19 @@ function LongNodeNameWrapper() {
 }
 
 export const Default: Story = {
+  args: {
+    isOpen: false,
+    onClose: () => {},
+    nodeName: 'React',
+  },
   render: () => <DefaultWrapper />,
 };
 
 export const WithLongNodeName: Story = {
+  args: {
+    isOpen: false,
+    onClose: () => {},
+    nodeName: '프론트엔드 웹 개발 기초부터 심화까지',
+  },
   render: () => <LongNodeNameWrapper />,
 };
