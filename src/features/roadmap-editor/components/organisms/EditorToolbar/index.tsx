@@ -1,85 +1,61 @@
 'use client';
 
-import { memo } from 'react';
+import { cn } from '@/lib/utils';
 
-import { useAtom, useSetAtom } from 'jotai';
-import { Square, Minus, RectangleHorizontal, Type } from 'lucide-react';
-
-import { EDITOR_MESSAGES } from '@/constants/messages';
-
-import { useCanvasCenter } from '../../../hooks/use-canvas-center';
-import { activeToolAtom, nodesAtom } from '../../../stores/editor-atoms';
-import {
-  createJagalchiNode,
-  createJagalchiSection,
-  createJagalchiText,
-} from '../../../utils/node-factory';
+import { EditorDivider } from '../../atoms/EditorDivider';
 import { ToolbarButton } from '../../atoms/ToolbarButton';
-import { EditorAiMenu } from '../../molecules/EditorAiMenu';
 
-export const EditorToolbar = memo(function EditorToolbar() {
-  const [activeTool, setActiveTool] = useAtom(activeToolAtom);
-  const setNodes = useSetAtom(nodesAtom);
-  const getCanvasCenter = useCanvasCenter();
+interface Tool {
+  id: string;
+  icon: React.ReactNode;
+  label: string;
+  isActive?: boolean;
+  onClick?: () => void;
+}
 
-  const handleNodeAdd = () => {
-    const position = getCanvasCenter();
-    const newNode = createJagalchiNode({ position });
-    setNodes((prev) => [...prev, newNode]);
-    setActiveTool('select');
-  };
+interface EditorToolbarProps {
+  tools: Tool[];
+  className?: string;
+}
 
-  const handleSectionAdd = () => {
-    const position = getCanvasCenter();
-    const newSection = createJagalchiSection({ position });
-    setNodes((prev) => [...prev, newSection]);
-    setActiveTool('select');
-  };
+export function EditorToolbar({ tools, className }: EditorToolbarProps) {
+  // Group tools by separating them with dividers
+  // Assuming tools array can have a special "divider" tool
+  const renderTools = () => {
+    return tools.map((tool, index) => {
+      if (tool.id === 'divider') {
+        return (
+          <EditorDivider
+            key={`divider-${index}`}
+            orientation="horizontal"
+            className="my-2"
+            aria-label="Toolbar section divider"
+          />
+        );
+      }
 
-  const handleTextAdd = () => {
-    const position = getCanvasCenter();
-    const newText = createJagalchiText({ position });
-    setNodes((prev) => [...prev, newText]);
-    setActiveTool('select');
-  };
-
-  const handleLineAdd = () => {
-    // Phase 2: Line tool은 나중에 구현 (엣지는 Handle에서 드래그로 생성)
-    setActiveTool('line');
+      return (
+        <ToolbarButton
+          key={tool.id}
+          icon={tool.icon}
+          label={tool.label}
+          isActive={tool.isActive}
+          onClick={tool.onClick}
+        />
+      );
+    });
   };
 
   return (
-    <div className="fixed bottom-8 left-1/2 z-50 -translate-x-1/2">
-      <div className="bg-background flex items-center gap-2 rounded-lg border p-2 shadow-lg">
-        <ToolbarButton
-          icon={<Square className="h-5 w-5" />}
-          label={EDITOR_MESSAGES.TOOLBAR_NODE_TOOLTIP}
-          isActive={activeTool === 'node'}
-          onClick={handleNodeAdd}
-        />
-        <ToolbarButton
-          icon={<Minus className="h-5 w-5" />}
-          label={EDITOR_MESSAGES.TOOLBAR_LINE_TOOLTIP}
-          isActive={activeTool === 'line'}
-          onClick={handleLineAdd}
-        />
-        <ToolbarButton
-          icon={<RectangleHorizontal className="h-5 w-5" />}
-          label={EDITOR_MESSAGES.TOOLBAR_SECTION_TOOLTIP}
-          isActive={activeTool === 'section'}
-          onClick={handleSectionAdd}
-        />
-        <ToolbarButton
-          icon={<Type className="h-5 w-5" />}
-          label={EDITOR_MESSAGES.TOOLBAR_TEXT_TOOLTIP}
-          isActive={activeTool === 'text'}
-          onClick={handleTextAdd}
-        />
-
-        <div className="bg-border mx-1 h-6 w-px" />
-
-        <EditorAiMenu />
-      </div>
-    </div>
+    <aside
+      className={cn(
+        'bg-neutral-0 flex w-14 flex-col items-center gap-2 border-r border-neutral-200 py-4',
+        className,
+      )}
+      role="toolbar"
+      aria-label="Editor toolbar"
+    >
+      {renderTools()}
+    </aside>
   );
-});
+}

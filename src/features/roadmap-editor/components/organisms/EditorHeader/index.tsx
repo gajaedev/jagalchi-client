@@ -1,66 +1,66 @@
 'use client';
 
-import { memo } from 'react';
+import { cn } from '@/lib/utils';
 
-import { useRouter } from 'next/navigation';
+interface EditorHeaderProps {
+  className?: string;
+  onZoomIn?: () => void;
+  onZoomOut?: () => void;
+  onZoomReset?: () => void;
+  zoomLevel?: number;
+}
 
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { ArrowLeft, RotateCcw, RotateCw } from 'lucide-react';
-
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-
-import {
-  roadmapTitleAtom,
-  undoAtom,
-  redoAtom,
-  canUndoAtom,
-  canRedoAtom,
-} from '../../../stores/editor-atoms';
-
-export const EditorHeader = memo(function EditorHeader() {
-  const router = useRouter();
-  const [title, setTitle] = useAtom(roadmapTitleAtom);
-
-  const canUndo = useAtomValue(canUndoAtom);
-  const canRedo = useAtomValue(canRedoAtom);
-  const undo = useSetAtom(undoAtom);
-  const redo = useSetAtom(redoAtom);
-
+export function EditorHeader({
+  className,
+  onZoomIn,
+  onZoomOut,
+  onZoomReset,
+  zoomLevel = 100,
+}: EditorHeaderProps) {
   return (
-    <header className="bg-background flex h-14 items-center gap-4 border-b px-4">
-      <Button variant="ghost" size="icon" onClick={() => router.push('/')} aria-label="뒤로가기">
-        <ArrowLeft className="h-5 w-5" />
-      </Button>
+    <header
+      className={cn(
+        'bg-neutral-0 flex h-[60px] items-center justify-between border-b border-neutral-200 px-4',
+        className,
+      )}
+    >
+      {/* Logo Section */}
+      <div className="flex h-12 w-12 items-center justify-center">
+        <span className="text-primary-500 text-xl font-bold">J</span>
+      </div>
 
-      <Input
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        className="max-w-md border-none text-lg font-semibold focus-visible:ring-0"
-        placeholder="Jagalchi Roadmap"
-        aria-label="로드맵 제목"
-      />
+      {/* Zoom Controls Section */}
+      <div className="flex items-center gap-4">
+        {/* Zoom Buttons with 16px gap */}
+        <div className="flex items-center gap-4">
+          <button
+            type="button"
+            onClick={onZoomOut}
+            className="focus:ring-primary-500 rounded-md px-3 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-100 focus:ring-2 focus:outline-none"
+            aria-label="Zoom out"
+          >
+            −
+          </button>
+          <button
+            type="button"
+            onClick={onZoomReset}
+            className="focus:ring-primary-500 min-w-[60px] rounded-md px-3 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-100 focus:ring-2 focus:outline-none"
+            aria-label="Reset zoom"
+          >
+            {zoomLevel}%
+          </button>
+          <button
+            type="button"
+            onClick={onZoomIn}
+            className="focus:ring-primary-500 rounded-md px-3 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-100 focus:ring-2 focus:outline-none"
+            aria-label="Zoom in"
+          >
+            +
+          </button>
+        </div>
 
-      <div className="ml-auto flex gap-2">
-        <Button
-          variant="ghost"
-          size="icon"
-          disabled={!canUndo}
-          onClick={() => undo()}
-          aria-label="실행 취소 (Ctrl+Z)"
-        >
-          <RotateCcw className="h-5 w-5" />
-        </Button>
-        <Button
-          variant="ghost"
-          size="icon"
-          disabled={!canRedo}
-          onClick={() => redo()}
-          aria-label="다시 실행 (Ctrl+Shift+Z)"
-        >
-          <RotateCw className="h-5 w-5" />
-        </Button>
+        {/* Right spacing: 24px from edge is handled by parent padding */}
       </div>
     </header>
   );
-});
+}

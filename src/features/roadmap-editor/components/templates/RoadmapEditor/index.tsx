@@ -3,6 +3,7 @@
 import { ReactFlowProvider } from '@xyflow/react';
 import { Provider as JotaiProvider } from 'jotai';
 
+import { useInitialNode } from '@/features/roadmap-editor/hooks/use-initial-node';
 import { useLocalStorage } from '@/features/roadmap-editor/hooks/use-local-storage';
 
 import { ColorPicker } from '../../molecules/ColorPicker';
@@ -13,6 +14,24 @@ import { RoadmapCanvas } from '../../organisms/RoadmapCanvas';
 
 function EditorContent() {
   useLocalStorage();
+  useInitialNode();
+
+  // Placeholder tools until toolbar integration is complete
+  const placeholderTools = [
+    {
+      id: 'select',
+      icon: <div className="h-5 w-5" />,
+      label: 'Select',
+      isActive: true,
+      onClick: () => {},
+    },
+    {
+      id: 'node',
+      icon: <div className="h-5 w-5" />,
+      label: 'Add Node',
+      onClick: () => {},
+    },
+  ];
 
   return (
     <div className="flex h-screen w-screen flex-col">
@@ -22,10 +41,14 @@ function EditorContent() {
         <div className="flex-1">
           <RoadmapCanvas />
         </div>
-        <EditorSidebar />
+        <EditorSidebar>
+          <div className="text-sm text-neutral-700">
+            Properties panel will appear here when a node is selected.
+          </div>
+        </EditorSidebar>
       </div>
 
-      <EditorToolbar />
+      <EditorToolbar tools={placeholderTools} />
       <ColorPicker />
     </div>
   );
