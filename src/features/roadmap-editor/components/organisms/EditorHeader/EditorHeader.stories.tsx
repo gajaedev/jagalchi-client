@@ -6,13 +6,11 @@ import { EditorHeader } from '.';
 import { roadmapTitleAtom } from '../../../stores/editor-atoms';
 
 // Mock next/navigation for Storybook
-import { fn } from '@storybook/test';
-
-const mockedUseRouter = fn(() => ({
-  push: fn(),
-  replace: fn(),
-  prefetch: fn(),
-}));
+const mockedUseRouter = () => ({
+  push: () => {},
+  replace: () => {},
+  prefetch: () => {},
+});
 
 const meta = {
   title: 'Roadmap-Editor/Organisms/EditorHeader',
