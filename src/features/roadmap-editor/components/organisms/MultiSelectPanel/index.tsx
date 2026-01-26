@@ -54,7 +54,7 @@ export const MultiSelectPanel = memo(function MultiSelectPanel() {
   };
 
   return (
-    <div className="h-full w-60 space-y-4 p-4">
+    <div className="h-full w-full space-y-4 p-4">
       {/* Header */}
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-2">

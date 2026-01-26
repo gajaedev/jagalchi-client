@@ -59,7 +59,7 @@ export const NodePropertiesPanel = memo(function NodePropertiesPanel({
   }
 
   return (
-    <div className="flex h-full w-60 flex-col">
+    <div className="flex h-full w-full flex-col">
       {/* Header */}
       <div className="flex items-center justify-between gap-4 border-b border-slate-200 p-4">
         <h3 className="text-sm font-semibold text-slate-900">{node.id}</h3>
