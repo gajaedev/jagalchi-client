@@ -1,180 +1,203 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import type { Edge } from '@xyflow/react';
 import { Provider } from 'jotai';
 import { useHydrateAtoms } from 'jotai/utils';
+import type { ReactNode } from 'react';
 
 import { EditorSidebar } from '.';
-import { nodesAtom, edgesAtom } from '../../../stores/editor-atoms';
+import {
+  nodesAtom,
+  edgesAtom,
+  selectedNodeIdsAtom,
+  selectedEdgeIdsAtom,
+} from '../../../stores/editor-atoms';
 
-import type { JagalchiNodeType } from '../../../types/editor.types';
+import type { Meta, StoryObj } from '@storybook/react';
+import type {
+  JagalchiNodeType,
+  JagalchiSectionType,
+  JagalchiTextType,
+} from '../../../types/editor.types';
+import type { Edge } from '@xyflow/react';
 
-type RoadmapEdge = Edge;
+// Jotai v2에서 initialValues를 사용하기 위한 wrapper
+function HydrateAtoms({
+  initialValues,
+  children,
+}: {
+  initialValues: Iterable<readonly [any, unknown]>;
+  children: ReactNode;
+}) {
+  useHydrateAtoms(new Map(initialValues));
+  return children;
+}
 
 const meta = {
-  title: 'Roadmap-Editor/Organisms/EditorSidebar',
+  title: 'Features/RoadmapEditor/Organisms/EditorSidebar',
   component: EditorSidebar,
   parameters: {
-    layout: 'padded',
+    layout: 'fullscreen',
   },
   tags: ['autodocs'],
-  decorators: [
-    (Story) => (
-      <Provider>
-        <div style={{ width: '240px', height: '600px', border: '1px solid #e2e8f0' }}>
-          <Story />
-        </div>
-      </Provider>
-    ),
-  ],
 } satisfies Meta<typeof EditorSidebar>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-function HydrateAtoms({
-  initialNodes,
-  initialEdges,
-  children,
-}: {
-  initialNodes?: JagalchiNodeType[];
-  initialEdges?: RoadmapEdge[];
-  children: React.ReactNode;
-}) {
-  const initialValues: [typeof nodesAtom | typeof edgesAtom, any][] = [];
-  if (initialNodes) initialValues.push([nodesAtom, initialNodes]);
-  if (initialEdges) initialValues.push([edgesAtom, initialEdges]);
-  useHydrateAtoms(initialValues as any);
-  return <>{children}</>;
-}
+const mockNode: JagalchiNodeType = {
+  id: 'Node_1',
+  type: 'jagalchi-node',
+  position: { x: 0, y: 0 },
+  data: {
+    label: '프론트엔드 기초',
+    description: 'HTML, CSS, JavaScript의 기본 개념을 학습합니다.',
+    variant: 'blue',
+    isLocked: false,
+    resources: ['https://developer.mozilla.org/ko/docs/Learn', '', ''],
+  },
+};
 
-export const Empty: Story = {};
+const mockSection: JagalchiSectionType = {
+  id: 'Section_1',
+  type: 'jagalchi-section',
+  position: { x: 0, y: 0 },
+  data: {
+    title: '기초 단계',
+    variant: 'blue',
+    isLocked: false,
+  },
+};
 
-export const WithNodeSelected: Story = {
+const mockText: JagalchiTextType = {
+  id: 'Text_1',
+  type: 'jagalchi-text',
+  position: { x: 0, y: 0 },
+  data: {
+    content: '학습 목표',
+    variant: 'black',
+    fontSize: 16,
+    fontWeight: 'normal',
+    isLocked: false,
+  },
+};
+
+const mockEdge: Edge = {
+  id: 'Line_1',
+  source: 'node-1',
+  target: 'node-2',
+  style: {
+    stroke: '#000000',
+  },
+};
+
+export const NoSelection: Story = {
   decorators: [
-    (Story) => {
-      const sampleNodes: JagalchiNodeType[] = [
-        {
-          id: 'node-1',
-          type: 'jagalchi-node',
-          position: { x: 100, y: 100 },
-          data: {
-            label: 'Sample Node',
-            description: 'This is a sample node',
-            variant: 'blue',
-            resources: ['https://example.com'],
-            isLocked: false,
-          },
-          selected: true,
-        },
-      ];
-
-      return (
-        <Provider>
-          <div style={{ width: '240px', height: '600px', border: '1px solid #e2e8f0' }}>
-            <HydrateAtoms initialNodes={sampleNodes}>
-              <Story />
-            </HydrateAtoms>
-          </div>
-        </Provider>
-      );
-    },
+    (Story) => (
+      <Provider>
+        <div className="flex h-screen justify-end">
+          <Story />
+        </div>
+      </Provider>
+    ),
   ],
 };
 
-export const WithEdgeSelected: Story = {
+export const NodeSelected: Story = {
   decorators: [
-    (Story) => {
-      const sampleNodes: JagalchiNodeType[] = [
-        {
-          id: 'node-1',
-          type: 'jagalchi-node',
-          position: { x: 100, y: 100 },
-          data: {
-            label: 'Node 1',
-            description: '',
-            variant: 'blue',
-            resources: [],
-            isLocked: false,
-          },
-        },
-        {
-          id: 'node-2',
-          type: 'jagalchi-node',
-          position: { x: 300, y: 100 },
-          data: {
-            label: 'Node 2',
-            description: '',
-            variant: 'purple',
-            resources: [],
-            isLocked: false,
-          },
-        },
-      ];
-
-      const sampleEdges: RoadmapEdge[] = [
-        {
-          id: 'edge-1',
-          source: 'node-1',
-          target: 'node-2',
-          type: 'smoothstep',
-          selected: true,
-        },
-      ];
-
-      return (
-        <Provider>
-          <div style={{ width: '240px', height: '600px', border: '1px solid #e2e8f0' }}>
-            <HydrateAtoms initialNodes={sampleNodes} initialEdges={sampleEdges}>
-              <Story />
-            </HydrateAtoms>
+    (Story) => (
+      <Provider>
+        <HydrateAtoms
+          initialValues={[
+            [nodesAtom, [mockNode]],
+            [selectedNodeIdsAtom, ['Node_1']],
+          ]}
+        >
+          <div className="flex h-screen justify-end">
+            <Story />
           </div>
-        </Provider>
-      );
-    },
+        </HydrateAtoms>
+      </Provider>
+    ),
   ],
 };
 
-export const WithMultiSelect: Story = {
+export const EdgeSelected: Story = {
   decorators: [
-    (Story) => {
-      const sampleNodes: JagalchiNodeType[] = [
-        {
-          id: 'node-1',
-          type: 'jagalchi-node',
-          position: { x: 100, y: 100 },
-          data: {
-            label: 'Node 1',
-            description: '',
-            variant: 'blue',
-            resources: [],
-            isLocked: false,
-          },
-          selected: true,
-        },
-        {
-          id: 'node-2',
-          type: 'jagalchi-node',
-          position: { x: 300, y: 100 },
-          data: {
-            label: 'Node 2',
-            description: '',
-            variant: 'purple',
-            resources: [],
-            isLocked: false,
-          },
-          selected: true,
-        },
-      ];
-
-      return (
-        <Provider>
-          <div style={{ width: '240px', height: '600px', border: '1px solid #e2e8f0' }}>
-            <HydrateAtoms initialNodes={sampleNodes}>
-              <Story />
-            </HydrateAtoms>
+    (Story) => (
+      <Provider>
+        <HydrateAtoms
+          initialValues={[
+            [edgesAtom, [mockEdge]],
+            [selectedEdgeIdsAtom, ['Line_1']],
+          ]}
+        >
+          <div className="flex h-screen justify-end">
+            <Story />
           </div>
-        </Provider>
-      );
-    },
+        </HydrateAtoms>
+      </Provider>
+    ),
+  ],
+};
+
+export const SectionSelected: Story = {
+  decorators: [
+    (Story) => (
+      <Provider>
+        <HydrateAtoms
+          initialValues={[
+            [nodesAtom, [mockSection]],
+            [selectedNodeIdsAtom, ['Section_1']],
+          ]}
+        >
+          <div className="flex h-screen justify-end">
+            <Story />
+          </div>
+        </HydrateAtoms>
+      </Provider>
+    ),
+  ],
+};
+
+export const TextSelected: Story = {
+  decorators: [
+    (Story) => (
+      <Provider>
+        <HydrateAtoms
+          initialValues={[
+            [nodesAtom, [mockText]],
+            [selectedNodeIdsAtom, ['Text_1']],
+          ]}
+        >
+          <div className="flex h-screen justify-end">
+            <Story />
+          </div>
+        </HydrateAtoms>
+      </Provider>
+    ),
+  ],
+};
+
+export const MultiSelected: Story = {
+  decorators: [
+    (Story) => (
+      <Provider>
+        <HydrateAtoms
+          initialValues={[
+            [
+              nodesAtom,
+              [
+                { ...mockNode, id: 'node-1' },
+                { ...mockNode, id: 'node-2', data: { ...mockNode.data, variant: 'purple' } },
+                { ...mockNode, id: 'node-3', data: { ...mockNode.data, variant: 'red' } },
+              ],
+            ],
+            [selectedNodeIdsAtom, ['node-1', 'node-2', 'node-3']],
+          ]}
+        >
+          <div className="flex h-screen justify-end">
+            <Story />
+          </div>
+        </HydrateAtoms>
+      </Provider>
+    ),
   ],
 };

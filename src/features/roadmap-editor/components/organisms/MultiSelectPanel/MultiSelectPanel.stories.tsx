@@ -1,187 +1,86 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import { Provider } from 'jotai';
 import { useHydrateAtoms } from 'jotai/utils';
+import type { ReactNode } from 'react';
 
 import { MultiSelectPanel } from '.';
-import { nodesAtom } from '../../../stores/editor-atoms';
+import { selectedNodeIdsAtom } from '../../../stores/editor-atoms';
 
-import type { JagalchiNodeType, RoadmapNode } from '../../../types/editor.types';
+import type { Meta, StoryObj } from '@storybook/react';
+
+// Jotai v2에서 initialValues를 사용하기 위한 wrapper
+function HydrateAtoms({
+  initialValues,
+  children,
+}: {
+  initialValues: Iterable<readonly [any, unknown]>;
+  children: ReactNode;
+}) {
+  useHydrateAtoms(new Map(initialValues));
+  return children;
+}
 
 const meta = {
-  title: 'Roadmap-Editor/Organisms/MultiSelectPanel',
+  title: 'Features/RoadmapEditor/Organisms/MultiSelectPanel',
   component: MultiSelectPanel,
   parameters: {
-    layout: 'padded',
+    layout: 'fullscreen',
   },
   tags: ['autodocs'],
-  decorators: [
-    (Story) => (
-      <Provider>
-        <div style={{ width: '240px', minHeight: '400px', border: '1px solid #e2e8f0' }}>
-          <Story />
-        </div>
-      </Provider>
-    ),
-  ],
 } satisfies Meta<typeof MultiSelectPanel>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-function HydrateAtoms({
-  initialNodes,
-  children,
-}: {
-  initialNodes: RoadmapNode[];
-  children: React.ReactNode;
-}) {
-  useHydrateAtoms([[nodesAtom, initialNodes]]);
-  return <>{children}</>;
-}
-
 export const TwoNodesSelected: Story = {
   decorators: [
-    (Story) => {
-      const sampleNodes: JagalchiNodeType[] = [
-        {
-          id: 'node-1',
-          type: 'jagalchi-node',
-          position: { x: 100, y: 100 },
-          data: {
-            label: 'Node 1',
-            description: 'First node',
-            variant: 'blue',
-            resources: [],
-            isLocked: false,
-          },
-          selected: true,
-        },
-        {
-          id: 'node-2',
-          type: 'jagalchi-node',
-          position: { x: 300, y: 100 },
-          data: {
-            label: 'Node 2',
-            description: 'Second node',
-            variant: 'purple',
-            resources: [],
-            isLocked: false,
-          },
-          selected: true,
-        },
-      ];
-
-      return (
-        <Provider>
-          <div style={{ width: '240px', minHeight: '400px', border: '1px solid #e2e8f0' }}>
-            <HydrateAtoms initialNodes={sampleNodes}>
+    (Story) => (
+      <Provider>
+        <HydrateAtoms initialValues={[[selectedNodeIdsAtom, ['node-1', 'node-2']] as const]}>
+          <div className="flex h-screen justify-end">
+            <aside className="h-full w-[272px] border-l bg-white">
               <Story />
-            </HydrateAtoms>
+            </aside>
           </div>
-        </Provider>
-      );
-    },
+        </HydrateAtoms>
+      </Provider>
+    ),
   ],
 };
 
 export const ThreeNodesSelected: Story = {
   decorators: [
-    (Story) => {
-      const sampleNodes: JagalchiNodeType[] = [
-        {
-          id: 'node-1',
-          type: 'jagalchi-node',
-          position: { x: 100, y: 100 },
-          data: {
-            label: 'Node 1',
-            description: '',
-            variant: 'blue',
-            resources: [],
-            isLocked: false,
-          },
-          selected: true,
-        },
-        {
-          id: 'node-2',
-          type: 'jagalchi-node',
-          position: { x: 300, y: 100 },
-          data: {
-            label: 'Node 2',
-            description: '',
-            variant: 'purple',
-            resources: [],
-            isLocked: false,
-          },
-          selected: true,
-        },
-        {
-          id: 'node-3',
-          type: 'jagalchi-node',
-          position: { x: 500, y: 100 },
-          data: {
-            label: 'Node 3',
-            description: '',
-            variant: 'red',
-            resources: [],
-            isLocked: false,
-          },
-          selected: true,
-        },
-      ];
-
-      return (
-        <Provider>
-          <div style={{ width: '240px', minHeight: '400px', border: '1px solid #e2e8f0' }}>
-            <HydrateAtoms initialNodes={sampleNodes}>
+    (Story) => (
+      <Provider>
+        <HydrateAtoms
+          initialValues={[[selectedNodeIdsAtom, ['node-1', 'node-2', 'node-3']] as const]}
+        >
+          <div className="flex h-screen justify-end">
+            <aside className="h-full w-[272px] border-l bg-white">
               <Story />
-            </HydrateAtoms>
+            </aside>
           </div>
-        </Provider>
-      );
-    },
+        </HydrateAtoms>
+      </Provider>
+    ),
   ],
 };
 
-export const MixedTypes: Story = {
+export const FiveNodesSelected: Story = {
   decorators: [
-    (Story) => {
-      const sampleNodes: RoadmapNode[] = [
-        {
-          id: 'node-1',
-          type: 'jagalchi-node',
-          position: { x: 100, y: 100 },
-          data: {
-            label: 'Regular Node',
-            description: '',
-            variant: 'blue',
-            resources: [],
-            isLocked: false,
-          },
-          selected: true,
-        },
-        {
-          id: 'section-1',
-          type: 'jagalchi-section',
-          position: { x: 50, y: 50 },
-          data: {
-            title: 'Section',
-            variant: 'purple',
-            isLocked: false,
-          },
-          selected: true,
-          style: { width: 600, height: 400 },
-        },
-      ];
-
-      return (
-        <Provider>
-          <div style={{ width: '240px', minHeight: '400px', border: '1px solid #e2e8f0' }}>
-            <HydrateAtoms initialNodes={sampleNodes}>
+    (Story) => (
+      <Provider>
+        <HydrateAtoms
+          initialValues={
+            [[selectedNodeIdsAtom, ['node-1', 'node-2', 'node-3', 'node-4', 'node-5']]] as const
+          }
+        >
+          <div className="flex h-screen justify-end">
+            <aside className="h-full w-[272px] border-l bg-white">
               <Story />
-            </HydrateAtoms>
+            </aside>
           </div>
-        </Provider>
-      );
-    },
+        </HydrateAtoms>
+      </Provider>
+    ),
   ],
 };
