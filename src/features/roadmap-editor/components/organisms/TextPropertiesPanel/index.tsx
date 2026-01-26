@@ -71,9 +71,8 @@ export const TextPropertiesPanel = memo(function TextPropertiesPanel({
           <div className="flex items-center gap-2">
             <EditorInput
               value="14"
-              onChange={(value) => {
+              onChange={(_value) => {
                 // TODO: Implement font size update
-                console.log('Font size:', value);
               }}
               placeholder="14"
               isDisabled={node.data.isLocked}
