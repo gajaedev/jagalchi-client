@@ -1,3 +1,7 @@
+'use client';
+
+import { useRef, useState } from 'react';
+
 import { ListFilter, Plus, Search } from 'lucide-react';
 
 import {
@@ -16,8 +20,17 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
+import { cn } from '@/lib/utils';
+
+import { useClickOutside } from '../../../hooks/use-click-outside';
+import { MyRoadmapsFilter } from '../MyRoadmapsFilter';
 
 export function MyRoadmapsToolbar() {
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const filterRef = useRef<HTMLDivElement>(null);
+
+  useClickOutside(filterRef, () => setIsFilterOpen(false));
+
   return (
     <div className="flex w-full items-center justify-between py-6">
       <Breadcrumb className="flex h-9 items-center">
@@ -44,9 +57,21 @@ export function MyRoadmapsToolbar() {
             className="border-border h-9 w-[240px] bg-white pl-9 text-xs"
           />
         </div>
-        <Button variant="outline" size="icon" className="border-border h-9 w-9">
-          <ListFilter className="text-muted-foreground h-4 w-4" />
-        </Button>
+        <div className="relative" ref={filterRef}>
+          <Button
+            variant="outline"
+            size="icon"
+            className={cn(
+              'border-border h-9 w-9 transition-colors',
+              isFilterOpen && 'bg-slate-100',
+            )}
+            onClick={() => setIsFilterOpen(!isFilterOpen)}
+          >
+            <ListFilter className="text-muted-foreground h-4 w-4" />
+          </Button>
+
+          {isFilterOpen && <MyRoadmapsFilter />}
+        </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button className="h-9 rounded-md bg-[#2563EB] px-4 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#1D4ED8]">
