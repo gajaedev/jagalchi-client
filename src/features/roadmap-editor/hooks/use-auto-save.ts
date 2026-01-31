@@ -50,24 +50,26 @@ export function useAutoSave({
 
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
-      if (!stored) return;
-
-      const roadmaps: Roadmap[] = JSON.parse(stored);
+      const roadmaps: Roadmap[] = stored ? JSON.parse(stored) : [];
       const roadmap = roadmaps.find((r) => r.id === roadmapId);
+      const now = new Date().toISOString();
 
-      if (!roadmap) return;
-
-      // Update roadmap
+      // Upsert: Create if not exists, update if exists
       const updated: Roadmap = {
-        ...roadmap,
+        ...(roadmap ?? {
+          id: roadmapId,
+          createdAt: now,
+        }),
         title: debouncedTitle,
         nodes: debouncedNodes,
         edges: debouncedEdges,
-        updatedAt: new Date().toISOString(),
+        updatedAt: now,
       };
 
       // Save back to localStorage
-      const updatedRoadmaps = roadmaps.map((r) => (r.id === roadmapId ? updated : r));
+      const updatedRoadmaps = roadmap
+        ? roadmaps.map((r) => (r.id === roadmapId ? updated : r))
+        : [...roadmaps, updated];
       localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedRoadmaps));
 
       // Update refs

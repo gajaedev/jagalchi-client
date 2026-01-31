@@ -35,7 +35,7 @@ interface ComparisonReport {
   results: ComparisonResult[];
 }
 
-const DIFF_THRESHOLD = 0.1; // 0.1 = 10% difference allowed
+const DIFF_THRESHOLD = 10; // 10% difference allowed
 
 async function loadPNG(filePath: string): Promise<PNG> {
   const buffer = await fs.readFile(filePath);

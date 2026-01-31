@@ -36,7 +36,7 @@ cd /Users/justn/Projects/jagalchi-client
 
 # 환경 변수 설정
 export FIGMA_ACCESS_TOKEN=<your-figma-token>
-export FIGMA_FILE_KEY=L7Ai9cZPKaF09qZfg9xWhH
+export FIGMA_FILE_KEY=<your-figma-file-key>
 
 # Export 실행
 pnpm figma:export
@@ -116,7 +116,7 @@ open visual-tests/actual/Nodepropertiespanel-Default.png
 
 ```bash
 export FIGMA_ACCESS_TOKEN=<your-figma-token>
-export FIGMA_FILE_KEY=L7Ai9cZPKaF09qZfg9xWhH
+export FIGMA_FILE_KEY=<your-figma-file-key>
 
 pnpm figma:compare
 ```
@@ -199,7 +199,7 @@ cd /Users/justn/Projects/jagalchi-client
 
 # 환경 변수
 export FIGMA_ACCESS_TOKEN=<your-figma-token>
-export FIGMA_FILE_KEY=L7Ai9cZPKaF09qZfg9xWhH
+export FIGMA_FILE_KEY=<your-figma-file-key>
 
 # 전체 파이프라인 (Storybook은 별도 실행 필요)
 # 터미널 1
@@ -370,7 +370,7 @@ cat scripts/figma-components.json | jq '.components[] | select(.componentName ==
 
 ```bash
 export FIGMA_ACCESS_TOKEN=<your-figma-token>
-export FIGMA_FILE_KEY=L7Ai9cZPKaF09qZfg9xWhH
+export FIGMA_FILE_KEY=<your-figma-file-key>
 ```
 
 ### Error 2: "Storybook is not running"

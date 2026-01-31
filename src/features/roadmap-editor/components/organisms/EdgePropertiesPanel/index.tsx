@@ -57,6 +57,7 @@ export const EdgePropertiesPanel = memo(function EdgePropertiesPanel({
   };
 
   const handleColorChange = (variant: NodeColorVariant | string) => {
+    if (isLocked) return;
     const hex = NODE_PRESET_COLORS.find((p) => p.variant === variant)?.hex ?? '#000000';
     updateEdge({
       style: {

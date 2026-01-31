@@ -150,7 +150,12 @@ function generateStorybookName(componentKey: string, variantName: string): strin
 async function main() {
   console.log('🔍 Scanning Figma components for variants...\n');
 
-  const fileKey = 'L7Ai9cZPKaF09qZfg9xWhH';
+  const fileKey = process.env.FIGMA_FILE_KEY;
+  if (!fileKey) {
+    throw new Error(
+      'FIGMA_FILE_KEY environment variable is required. Set it in .env.local or export it.',
+    );
+  }
   const mappings: FigmaComponentMapping[] = [];
 
   // Note: This would be called by Claude Code with MCP access
@@ -191,5 +196,8 @@ async function main() {
 export { parseVariantName, variantToStoryName, generateStorybookName, FIGMA_COMPONENTS };
 
 if (require.main === module) {
-  main().catch(console.error);
+  main().catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
 }
