@@ -38,43 +38,20 @@ describe('EditorHeader', () => {
     expect(backButton).toBeInTheDocument();
   });
 
-  it('renders title input', () => {
+  it('renders title text', () => {
     renderHeader();
-    const titleInput = screen.getByLabelText('로드맵 제목');
-    expect(titleInput).toBeInTheDocument();
-    expect(titleInput).toHaveAttribute('placeholder', 'Jagalchi Roadmap');
+    const title = screen.getByText('Jagalchi Roadmap');
+    expect(title).toBeInTheDocument();
   });
 
-  it('renders undo button', () => {
-    renderHeader();
-    const undoButton = screen.getByLabelText(/실행 취소/);
-    expect(undoButton).toBeInTheDocument();
-  });
-
-  it('renders redo button', () => {
-    renderHeader();
-    const redoButton = screen.getByLabelText(/다시 실행/);
-    expect(redoButton).toBeInTheDocument();
-  });
-
-  it('undo button is disabled by default', () => {
-    renderHeader();
-    const undoButton = screen.getByLabelText(/실행 취소/);
-    expect(undoButton).toBeDisabled();
-  });
-
-  it('redo button is disabled by default', () => {
-    renderHeader();
-    const redoButton = screen.getByLabelText(/다시 실행/);
-    expect(redoButton).toBeDisabled();
-  });
-
-  it('has correct layout classes', () => {
+  it('has floating box layout classes', () => {
     renderHeader();
     const header = screen.getByRole('banner');
-    expect(header).toHaveClass('flex');
-    expect(header).toHaveClass('h-14');
-    expect(header).toHaveClass('border-b');
+    expect(header).toHaveClass('absolute');
+    expect(header).toHaveClass('top-4');
+    expect(header).toHaveClass('left-4');
+    expect(header).toHaveClass('rounded-lg');
+    expect(header).toHaveClass('shadow-sm');
   });
 
   it('is a memo component', () => {

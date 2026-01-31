@@ -44,12 +44,6 @@ describe('RoadmapCanvas', () => {
     expect(reactFlow).toBeInTheDocument();
   });
 
-  it('renders background with dots pattern', () => {
-    const { container } = renderCanvas();
-    const background = container.querySelector('.react-flow__background');
-    expect(background).toBeInTheDocument();
-  });
-
   it('renders controls', () => {
     const { container } = renderCanvas();
     const controls = container.querySelector('.react-flow__controls');
