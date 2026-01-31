@@ -11,6 +11,7 @@ describe('JagalchiText', () => {
     variant: 'black',
     fontSize: 14,
     fontWeight: 'normal',
+    isLocked: false,
   };
 
   const renderText = (data: JagalchiTextData = mockData) => {
@@ -31,8 +32,8 @@ describe('JagalchiText', () => {
   });
 
   it('renders with different color variants', () => {
-    const variants: Array<'white' | 'black' | 'blue' | 'purple' | 'red' | 'orange'> = [
-      'white',
+    const variants: Array<'gray' | 'black' | 'blue' | 'purple' | 'red' | 'orange'> = [
+      'gray',
       'black',
       'blue',
       'purple',
@@ -53,6 +54,7 @@ describe('JagalchiText', () => {
       variant: 'black',
       fontSize: 14,
       fontWeight: 'normal',
+      isLocked: false,
     };
     const { container } = renderText(dataWithoutContent);
     expect(container.textContent).toContain('텍스트');

@@ -11,6 +11,7 @@ describe('JagalchiSection', () => {
   const mockData: JagalchiSectionData = {
     title: 'Test Section',
     variant: 'white',
+    isLocked: false,
   };
 
   const renderSection = (data: JagalchiSectionData = mockData, selected = false) => {
@@ -58,6 +59,7 @@ describe('JagalchiSection', () => {
   it('renders with default title when no title provided', () => {
     const dataWithoutTitle: JagalchiSectionData = {
       variant: 'white',
+      isLocked: false,
     };
     const { container } = renderSection(dataWithoutTitle);
     expect(container.textContent).toContain('섹션');

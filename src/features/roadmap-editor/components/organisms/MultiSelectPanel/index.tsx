@@ -31,7 +31,6 @@ import type { AlignDirection } from '../../../utils/align-nodes';
 export const MultiSelectPanel = memo(function MultiSelectPanel() {
   const setNodes = useSetAtom(nodesAtom);
   const selectedIds = useAtomValue(selectedNodeIdsAtom);
-  const selectedCount = selectedIds.length;
 
   const handleAlign = (direction: AlignDirection) => {
     setNodes((prev) => alignNodes(prev, selectedIds, direction));
@@ -57,12 +56,11 @@ export const MultiSelectPanel = memo(function MultiSelectPanel() {
     <div className="h-full w-full space-y-4 p-4">
       {/* Header */}
       <div className="flex items-center justify-between gap-4">
-        <div className="flex items-center gap-2">
-          <h3 className="font-semibold">{EDITOR_MESSAGES.MULTI_SELECT_TITLE}</h3>
-          <span className="text-muted-foreground text-sm">
-            {selectedCount}
-            {EDITOR_MESSAGES.MULTI_SELECT_COUNT}
-          </span>
+        <div className="flex flex-col gap-1">
+          <h3 className="text-base font-semibold text-slate-900">
+            {EDITOR_MESSAGES.MULTI_SELECT_TITLE}
+          </h3>
+          <p className="text-xs text-slate-600">노드</p>
         </div>
         <Button variant="ghost" size="icon" disabled>
           <LockKeyhole className="h-4 w-4" />

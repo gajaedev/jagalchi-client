@@ -17,19 +17,16 @@ import { chromium } from 'playwright';
  */
 const STORIES_TO_CAPTURE = [
   // Property Panels
-  'roadmap-editor-organisms-nodepropertiespanel--default',
-  'roadmap-editor-organisms-edgepropertiespanel--default',
-  'roadmap-editor-organisms-sectionpropertiespanel--default',
-  'roadmap-editor-organisms-textpropertiespanel--default',
-  'roadmap-editor-organisms-resourcepropertiespanel--default',
+  'features-roadmapeditor-organisms-nodepropertiespanel--default',
+  'features-roadmapeditor-organisms-edgepropertiespanel--default',
+  'features-roadmapeditor-organisms-sectionpropertiespanel--default',
+  'features-roadmapeditor-organisms-textpropertiespanel--default',
 
   // Interactive Components
-  'roadmap-editor-contextmenu--default',
-  'roadmap-editor-atoms-toolbarbutton--default',
-  'roadmap-editor-atoms-editorbutton--default',
+  'editor-atoms-toolbarbutton--select',
 
   // AI Features
-  'roadmap-editor-organisms-roadmapaimodal--default',
+  'organisms-roadmapaimodal--generate-mode',
 ];
 
 function storyIdToFileName(storyId: string): string {

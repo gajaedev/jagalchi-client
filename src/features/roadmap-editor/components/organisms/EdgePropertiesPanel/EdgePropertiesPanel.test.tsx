@@ -24,9 +24,10 @@ const renderWithProvider = (edge: Edge) => {
 };
 
 describe('EdgePropertiesPanel', () => {
-  it('renders edge header with ID', () => {
+  it('renders edge header with title', () => {
     renderWithProvider(mockEdge);
-    expect(screen.getByText('edge-1')).toBeInTheDocument();
+    expect(screen.getByText('선')).toBeInTheDocument();
+    expect(screen.getByText('연결선')).toBeInTheDocument();
   });
 
   it('renders lock button', () => {

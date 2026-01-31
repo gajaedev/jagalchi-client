@@ -47,7 +47,10 @@ export const SectionPropertiesPanel = memo(function SectionPropertiesPanel({
     <div className="flex h-full w-full flex-col">
       {/* Header */}
       <div className="flex items-center justify-between gap-4 border-b border-slate-200 p-4">
-        <h3 className="text-sm font-semibold text-slate-900">{node.id}</h3>
+        <div className="flex flex-col gap-1">
+          <h3 className="text-base font-semibold text-slate-900">{node.id}</h3>
+          <p className="text-xs text-slate-600">섹션</p>
+        </div>
         <button
           type="button"
           onClick={toggleLock}

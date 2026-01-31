@@ -23,7 +23,7 @@ describe('EditorSidebar', () => {
 
     const aside = container.querySelector('aside');
     expect(aside).toBeInTheDocument();
-    expect(aside).toHaveClass('w-[272px]');
+    expect(aside).toHaveClass('w-[240px]');
     expect(aside).toHaveClass('border-l');
   });
 
@@ -45,7 +45,7 @@ describe('EditorSidebar', () => {
     );
 
     const aside = container.querySelector('aside');
-    expect(aside).toHaveClass('w-[272px]');
+    expect(aside).toHaveClass('w-[240px]');
   });
 
   it('has border on left side', () => {
