@@ -11,12 +11,16 @@ import { EditorSidebar } from '../../organisms/EditorSidebar';
 import { EditorToolbar } from '../../organisms/EditorToolbar';
 import { RoadmapCanvas } from '../../organisms/RoadmapCanvas';
 
-function EditorContent() {
+interface EditorContentProps {
+  onBack?: () => void;
+}
+
+function EditorContent({ onBack }: EditorContentProps) {
   useLocalStorage();
 
   return (
-    <div className="flex h-screen w-screen flex-col">
-      <EditorHeader />
+    <div className="relative flex h-screen w-screen">
+      <EditorHeader onBack={onBack} />
 
       <div className="relative flex flex-1 overflow-hidden">
         <div className="flex-1">
@@ -31,11 +35,15 @@ function EditorContent() {
   );
 }
 
-export function RoadmapEditor() {
+interface RoadmapEditorProps {
+  onBack?: () => void;
+}
+
+export function RoadmapEditor({ onBack }: RoadmapEditorProps) {
   return (
     <JotaiProvider>
       <ReactFlowProvider>
-        <EditorContent />
+        <EditorContent onBack={onBack} />
       </ReactFlowProvider>
     </JotaiProvider>
   );

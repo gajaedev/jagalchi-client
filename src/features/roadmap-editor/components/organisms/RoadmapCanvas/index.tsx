@@ -4,7 +4,6 @@ import { useCallback } from 'react';
 
 import {
   ReactFlow,
-  Background,
   Controls,
   addEdge,
   applyNodeChanges,
@@ -17,7 +16,6 @@ import {
   type OnSelectionChangeFunc,
   type OnConnectEnd,
   type NodeTypes,
-  BackgroundVariant,
   ConnectionMode,
 } from '@xyflow/react';
 import { useAtom, useSetAtom } from 'jotai';
@@ -156,7 +154,6 @@ export function RoadmapCanvas() {
         snapToGrid
         snapGrid={[16, 16]}
       >
-        <Background variant={BackgroundVariant.Dots} gap={16} size={1} />
         <Controls position="bottom-left" />
       </ReactFlow>
     </div>
