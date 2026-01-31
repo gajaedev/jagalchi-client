@@ -1,13 +1,15 @@
 'use client';
 
-import { RoadmapEditorPage } from '@/features/roadmap-editor/pages/RoadmapEditorPage';
+import { use } from 'react';
+
+import { RoadmapEditorPage } from '@/features/roadmap-editor/pages';
 
 interface EditorPageProps {
-  params: {
-    id: string;
-  };
+  params: Promise<{ id: string }>;
 }
 
 export default function EditorPage({ params }: EditorPageProps) {
-  return <RoadmapEditorPage roadmapId={params.id} />;
+  const { id } = use(params);
+
+  return <RoadmapEditorPage roadmapId={id} />;
 }
