@@ -1,6 +1,6 @@
 'use client';
 
-import { memo, useState } from 'react';
+import { memo, useState, useCallback, useMemo } from 'react';
 
 import { useSetAtom } from 'jotai';
 import { Lock, Unlock } from 'lucide-react';
@@ -20,6 +20,8 @@ interface EdgePropertiesPanelProps {
 
 type LineStyle = 'solid' | 'dashed' | 'dotted';
 
+const DEFAULT_EDGE_COLOR = '#000000';
+
 /**
  * Edge 선택 시 표시되는 속성 패널
  *
@@ -34,43 +36,60 @@ export const EdgePropertiesPanel = memo(function EdgePropertiesPanel({
   const setEdges = useSetAtom(edgesAtom);
   const [isLocked, setIsLocked] = useState(false);
 
-  // Get current edge data
-  const currentStyle = (edge.style?.strokeDasharray ? 'dashed' : 'solid') as LineStyle;
-  const currentColor = (edge.style?.stroke as string) || NODE_PRESET_COLORS[0].hex;
+  const currentStyle = useMemo(
+    () => (edge.style?.strokeDasharray ? 'dashed' : 'solid') as LineStyle,
+    [edge.style?.strokeDasharray],
+  );
 
-  const updateEdge = (updates: Partial<Edge>) => {
-    setEdges((prev) => prev.map((e) => (e.id === edge.id ? { ...e, ...updates } : e)));
-  };
+  const currentColor = useMemo(
+    () => (edge.style?.stroke as string) || NODE_PRESET_COLORS[0].hex,
+    [edge.style?.stroke],
+  );
 
-  const toggleLock = () => {
-    setIsLocked(!isLocked);
-  };
+  const updateEdge = useCallback(
+    (updates: Partial<Edge>) => {
+      setEdges((prev) => prev.map((e) => (e.id === edge.id ? { ...e, ...updates } : e)));
+    },
+    [edge.id, setEdges],
+  );
 
-  const handleStyleChange = (style: LineStyle) => {
-    const strokeDasharray = style === 'dashed' ? '5 5' : style === 'dotted' ? '2 2' : undefined;
-    updateEdge({
-      style: {
-        ...edge.style,
-        strokeDasharray,
-      },
-    });
-  };
+  const toggleLock = useCallback(() => {
+    setIsLocked((prev) => !prev);
+  }, []);
 
-  const handleColorChange = (variant: NodeColorVariant | string) => {
-    if (isLocked) return;
-    const hex = NODE_PRESET_COLORS.find((p) => p.variant === variant)?.hex ?? '#000000';
-    updateEdge({
-      style: {
-        ...edge.style,
-        stroke: hex,
-      },
-    });
-  };
+  const handleStyleChange = useCallback(
+    (style: LineStyle) => {
+      const strokeDasharray = style === 'dashed' ? '5 5' : style === 'dotted' ? '2 2' : undefined;
+      updateEdge({
+        style: {
+          ...edge.style,
+          strokeDasharray,
+        },
+      });
+    },
+    [edge.style, updateEdge],
+  );
 
-  // Find current variant based on color
-  const currentVariant =
-    (NODE_PRESET_COLORS.find((p) => p.hex === currentColor)?.variant as NodeColorVariant) ||
-    'black';
+  const handleColorChange = useCallback(
+    (variant: NodeColorVariant | string) => {
+      if (isLocked) return;
+      const hex = NODE_PRESET_COLORS.find((p) => p.variant === variant)?.hex ?? DEFAULT_EDGE_COLOR;
+      updateEdge({
+        style: {
+          ...edge.style,
+          stroke: hex,
+        },
+      });
+    },
+    [isLocked, edge.style, updateEdge],
+  );
+
+  const currentVariant = useMemo(
+    () =>
+      (NODE_PRESET_COLORS.find((p) => p.hex === currentColor)?.variant as NodeColorVariant) ||
+      'black',
+    [currentColor],
+  );
 
   return (
     <div className="flex h-full w-full flex-col">

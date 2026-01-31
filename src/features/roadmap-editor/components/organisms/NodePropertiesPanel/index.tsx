@@ -1,6 +1,6 @@
 'use client';
 
-import { memo } from 'react';
+import { memo, useCallback, useMemo } from 'react';
 
 import { useSetAtom } from 'jotai';
 import { Lock, Unlock } from 'lucide-react';
@@ -18,6 +18,8 @@ interface NodePropertiesPanelProps {
   node: JagalchiNodeType;
 }
 
+const RESOURCE_SLOT_COUNT = 3;
+
 /**
  * Node 선택 시 표시되는 속성 패널
  *
@@ -34,29 +36,37 @@ export const NodePropertiesPanel = memo(function NodePropertiesPanel({
 }: NodePropertiesPanelProps) {
   const setNodes = useSetAtom(nodesAtom);
 
-  const updateNode = (updates: Partial<JagalchiNodeType['data']>) => {
-    setNodes((prev) =>
-      prev.map((n) =>
-        n.id === node.id ? ({ ...n, data: { ...n.data, ...updates } } as JagalchiNodeType) : n,
-      ),
-    );
-  };
+  const updateNode = useCallback(
+    (updates: Partial<JagalchiNodeType['data']>) => {
+      setNodes((prev) =>
+        prev.map((n) =>
+          n.id === node.id ? ({ ...n, data: { ...n.data, ...updates } } as JagalchiNodeType) : n,
+        ),
+      );
+    },
+    [node.id, setNodes],
+  );
 
-  const toggleLock = () => {
+  const toggleLock = useCallback(() => {
     updateNode({ isLocked: !node.data.isLocked });
-  };
+  }, [node.data.isLocked, updateNode]);
 
-  const handleResourceChange = (index: number, value: string) => {
-    const newResources = [...node.data.resources];
-    newResources[index] = value;
-    updateNode({ resources: newResources });
-  };
+  const handleResourceChange = useCallback(
+    (index: number, value: string) => {
+      const newResources = [...node.data.resources];
+      newResources[index] = value;
+      updateNode({ resources: newResources });
+    },
+    [node.data.resources, updateNode],
+  );
 
-  // Ensure we have exactly 3 resource slots
-  const resources = [...node.data.resources];
-  while (resources.length < 3) {
-    resources.push('');
-  }
+  const resources = useMemo(() => {
+    const resourceList = [...node.data.resources];
+    while (resourceList.length < RESOURCE_SLOT_COUNT) {
+      resourceList.push('');
+    }
+    return resourceList;
+  }, [node.data.resources]);
 
   return (
     <div className="flex h-full w-full flex-col">
@@ -117,7 +127,7 @@ export const NodePropertiesPanel = memo(function NodePropertiesPanel({
             {EDITOR_MESSAGES.SIDEBAR_RESOURCES_LABEL}
           </label>
           <div className="space-y-2">
-            {resources.slice(0, 3).map((resource: string, index: number) => (
+            {resources.slice(0, RESOURCE_SLOT_COUNT).map((resource: string, index: number) => (
               <EditorInput
                 key={index}
                 value={resource}

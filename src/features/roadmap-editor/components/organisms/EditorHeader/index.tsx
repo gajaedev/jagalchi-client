@@ -1,6 +1,6 @@
 'use client';
 
-import { memo } from 'react';
+import { memo, useCallback } from 'react';
 
 import { useRouter } from 'next/navigation';
 
@@ -19,13 +19,13 @@ export const EditorHeader = memo(function EditorHeader({ onBack }: EditorHeaderP
   const router = useRouter();
   const title = useAtomValue(roadmapTitleAtom);
 
-  const handleBackClick = () => {
+  const handleBackClick = useCallback(() => {
     if (onBack) {
       onBack();
     } else {
       router.push('/myroadmap');
     }
-  };
+  }, [onBack, router]);
 
   return (
     <header className="absolute top-4 left-4 z-10 flex items-center gap-2 rounded-lg border bg-white px-3 py-2 shadow-sm">

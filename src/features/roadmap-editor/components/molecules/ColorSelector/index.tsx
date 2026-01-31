@@ -1,6 +1,6 @@
 'use client';
 
-import { memo } from 'react';
+import { memo, useCallback, useMemo } from 'react';
 
 import { useSetAtom } from 'jotai';
 import { Palette } from 'lucide-react';
@@ -39,13 +39,15 @@ export const ColorSelector = memo(function ColorSelector({
   const setIsColorPickerOpen = useSetAtom(isColorPickerOpenAtom);
   const setColorPickerTarget = useSetAtom(colorPickerTargetAtom);
 
-  const handleCustomColorClick = () => {
+  const handleCustomColorClick = useCallback(() => {
     setColorPickerTarget({ type, nodeId });
     setIsColorPickerOpen(true);
-  };
+  }, [type, nodeId, setColorPickerTarget, setIsColorPickerOpen]);
 
-  // 현재 선택된 색상의 hex 값
-  const currentColorHex = presets.find((p) => p.variant === currentVariant)?.hex ?? '#ffffff';
+  const currentColorHex = useMemo(
+    () => presets.find((p) => p.variant === currentVariant)?.hex ?? '#ffffff',
+    [presets, currentVariant],
+  );
 
   return (
     <div className="space-y-3">

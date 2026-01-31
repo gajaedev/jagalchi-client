@@ -16,6 +16,7 @@ import {
   type OnSelectionChangeFunc,
   type OnConnectEnd,
   type NodeTypes,
+  type DefaultEdgeOptions,
   ConnectionMode,
 } from '@xyflow/react';
 import { useAtom, useSetAtom } from 'jotai';
@@ -36,11 +37,21 @@ import { JagalchiNode } from '../../molecules/JagalchiNode';
 import { JagalchiSection } from '../../molecules/JagalchiSection';
 import { JagalchiText } from '../../molecules/JagalchiText';
 
-const nodeTypes: NodeTypes = {
+const NODE_TYPES: NodeTypes = {
   'jagalchi-node': JagalchiNode,
   'jagalchi-section': JagalchiSection,
   'jagalchi-text': JagalchiText,
 };
+
+const DEFAULT_EDGE_OPTIONS: DefaultEdgeOptions = {
+  type: 'smoothstep',
+  label: '',
+  labelStyle: { fontSize: 12, fontWeight: 400 },
+  labelBgStyle: { fill: 'white', fillOpacity: 0.9 },
+};
+
+const SNAP_GRID: [number, number] = [16, 16];
+const FIT_VIEW_OPTIONS = { padding: 0.2 };
 
 export function RoadmapCanvas() {
   const [nodes, setNodes] = useAtom(nodesAtom);
@@ -94,11 +105,12 @@ export function RoadmapCanvas() {
       const position = screenToFlowPosition({ x: clientX, y: clientY });
 
       // Create new node at drop position
-      const newNodeId = `node-${Date.now()}`;
+      const timestamp = Date.now();
+      const newNodeId = `node-${timestamp}`;
       const newNode: RoadmapNode = {
         id: newNodeId,
         type: 'jagalchi-node',
-        position: { x: position.x - 100, y: position.y - 24 }, // Center the node
+        position: { x: position.x - 100, y: position.y - 24 },
         data: {
           label: 'New Node',
           description: '',
@@ -114,7 +126,7 @@ export function RoadmapCanvas() {
       // Create edge connecting source to new node
       if (connectionState.fromNode) {
         const newEdge: Edge = {
-          id: `edge-${Date.now()}`,
+          id: `edge-${timestamp}`,
           source: connectionState.fromNode.id,
           target: newNodeId,
           sourceHandle: connectionState.fromHandle?.id ?? null,
@@ -135,7 +147,7 @@ export function RoadmapCanvas() {
         onConnect={onConnect}
         onConnectEnd={onConnectEnd}
         onSelectionChange={onSelectionChange}
-        nodeTypes={nodeTypes}
+        nodeTypes={NODE_TYPES}
         connectionLineComponent={ConnectionLine}
         multiSelectionKeyCode="Shift"
         selectionKeyCode="Shift"
@@ -143,16 +155,11 @@ export function RoadmapCanvas() {
         panOnDrag={[1, 2]}
         panOnScroll
         fitView
-        fitViewOptions={{ padding: 0.2 }}
-        defaultEdgeOptions={{
-          type: 'smoothstep',
-          label: '',
-          labelStyle: { fontSize: 12, fontWeight: 400 },
-          labelBgStyle: { fill: 'white', fillOpacity: 0.9 },
-        }}
+        fitViewOptions={FIT_VIEW_OPTIONS}
+        defaultEdgeOptions={DEFAULT_EDGE_OPTIONS}
         connectionMode={ConnectionMode.Loose}
         snapToGrid
-        snapGrid={[16, 16]}
+        snapGrid={SNAP_GRID}
       >
         <Controls position="bottom-left" />
       </ReactFlow>

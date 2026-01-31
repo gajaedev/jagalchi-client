@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 
 import { useRouter } from 'next/navigation';
 
@@ -11,11 +11,16 @@ import { UnsavedChangesDialog } from '../components/organisms/UnsavedChangesDial
 import { RoadmapEditor } from '../components/templates/RoadmapEditor';
 import { useAutoSave } from '../hooks/use-auto-save';
 import { nodesAtom, edgesAtom, roadmapTitleAtom } from '../stores/editor-atoms';
+import {
+  createEmptyRoadmap,
+  loadRoadmapFromLocalStorage,
+  saveRoadmapToLocalStorage,
+} from '../utils/roadmap-storage';
 
 import { ErrorFallback } from './ErrorFallback';
 import { LoadingSkeleton } from './LoadingSkeleton';
 
-import type { Roadmap, CreateRoadmapInput } from '../types/roadmap.types';
+import type { Roadmap } from '../types/roadmap.types';
 
 interface RoadmapEditorPageProps {
   roadmapId: string;
@@ -37,7 +42,6 @@ export function RoadmapEditorPage({ roadmapId }: RoadmapEditorPageProps) {
   const [initialEdges, setInitialEdges] = useState<string>('');
   const [initialTitle, setInitialTitle] = useState<string>('');
 
-  // Calculate hasChanges using useMemo instead of useEffect
   const hasChanges = useMemo(() => {
     if (isLoading || !initialNodes) return false;
 
@@ -119,11 +123,10 @@ export function RoadmapEditorPage({ roadmapId }: RoadmapEditorPageProps) {
     return () => window.removeEventListener('beforeunload', handleBeforeUnload);
   }, [hasChanges]);
 
-  const handleRetry = () => {
+  const handleRetry = useCallback(() => {
     setError(null);
     setIsLoading(true);
 
-    // Re-trigger load
     const roadmap = loadRoadmapFromLocalStorage(roadmapId);
     if (roadmap) {
       setNodes(roadmap.nodes);
@@ -137,17 +140,17 @@ export function RoadmapEditorPage({ roadmapId }: RoadmapEditorPageProps) {
       setError('로드맵을 찾을 수 없습니다.');
       setIsLoading(false);
     }
-  };
+  }, [roadmapId, setNodes, setEdges, setTitle]);
 
-  const handleBack = () => {
+  const handleBack = useCallback(() => {
     if (hasChanges) {
       setShowExitDialog(true);
     } else {
       router.push('/myroadmap');
     }
-  };
+  }, [hasChanges, router]);
 
-  const handleSave = () => {
+  const handleSave = useCallback(() => {
     const roadmap = loadRoadmapFromLocalStorage(roadmapId);
     if (!roadmap) return;
 
@@ -161,20 +164,23 @@ export function RoadmapEditorPage({ roadmapId }: RoadmapEditorPageProps) {
 
     saveRoadmapToLocalStorage(updated);
 
-    // Update initial state (this will cause hasChanges to become false via useMemo)
     setInitialNodes(JSON.stringify(nodes));
     setInitialEdges(JSON.stringify(edges));
     setInitialTitle(title);
-  };
+  }, [roadmapId, title, nodes, edges]);
 
-  const handleSaveAndExit = () => {
+  const handleSaveAndExit = useCallback(() => {
     handleSave();
     router.push('/myroadmap');
-  };
+  }, [handleSave, router]);
 
-  const handleDiscardAndExit = () => {
+  const handleDiscardAndExit = useCallback(() => {
     router.push('/myroadmap');
-  };
+  }, [router]);
+
+  const handleCloseDialog = useCallback(() => {
+    setShowExitDialog(false);
+  }, []);
 
   if (isLoading) {
     return <LoadingSkeleton />;
@@ -190,63 +196,10 @@ export function RoadmapEditorPage({ roadmapId }: RoadmapEditorPageProps) {
 
       <UnsavedChangesDialog
         isOpen={showExitDialog}
-        onClose={() => setShowExitDialog(false)}
+        onClose={handleCloseDialog}
         onSave={handleSaveAndExit}
         onDiscard={handleDiscardAndExit}
       />
     </>
   );
-}
-
-// ========== Local Storage Helpers ==========
-
-const STORAGE_KEY = 'jagalchi-roadmaps';
-
-function createEmptyRoadmap(id: string, input?: CreateRoadmapInput): Roadmap {
-  const now = new Date().toISOString();
-  return {
-    id,
-    title: input?.title || 'Untitled Roadmap',
-    description: input?.description,
-    nodes: [],
-    edges: [],
-    isPublic: input?.isPublic ?? false,
-    createdAt: now,
-    updatedAt: now,
-  };
-}
-
-function loadRoadmapFromLocalStorage(id: string): Roadmap | null {
-  if (typeof window === 'undefined') return null;
-
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (!stored) return null;
-
-    const roadmaps: Roadmap[] = JSON.parse(stored);
-    return roadmaps.find((r) => r.id === id) || null;
-  } catch {
-    return null;
-  }
-}
-
-function saveRoadmapToLocalStorage(roadmap: Roadmap): void {
-  if (typeof window === 'undefined') return;
-
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    let roadmaps: Roadmap[] = stored ? JSON.parse(stored) : [];
-
-    // Update or add roadmap
-    const index = roadmaps.findIndex((r) => r.id === roadmap.id);
-    if (index !== -1) {
-      roadmaps[index] = { ...roadmap, updatedAt: new Date().toISOString() };
-    } else {
-      roadmaps.push(roadmap);
-    }
-
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(roadmaps));
-  } catch {
-    // Fail silently for now - will be replaced with API error handling
-  }
 }

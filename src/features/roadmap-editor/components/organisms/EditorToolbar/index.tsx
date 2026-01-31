@@ -1,6 +1,6 @@
 'use client';
 
-import { memo } from 'react';
+import { memo, useCallback } from 'react';
 
 import { useAtom, useSetAtom } from 'jotai';
 import { Square, Minus, RectangleHorizontal, Type } from 'lucide-react';
@@ -22,31 +22,30 @@ export const EditorToolbar = memo(function EditorToolbar() {
   const setNodes = useSetAtom(nodesAtom);
   const getCanvasCenter = useCanvasCenter();
 
-  const handleNodeAdd = () => {
+  const handleNodeAdd = useCallback(() => {
     const position = getCanvasCenter();
     const newNode = createJagalchiNode({ position });
     setNodes((prev) => [...prev, newNode]);
     setActiveTool('select');
-  };
+  }, [getCanvasCenter, setNodes, setActiveTool]);
 
-  const handleSectionAdd = () => {
+  const handleSectionAdd = useCallback(() => {
     const position = getCanvasCenter();
     const newSection = createJagalchiSection({ position });
     setNodes((prev) => [...prev, newSection]);
     setActiveTool('select');
-  };
+  }, [getCanvasCenter, setNodes, setActiveTool]);
 
-  const handleTextAdd = () => {
+  const handleTextAdd = useCallback(() => {
     const position = getCanvasCenter();
     const newText = createJagalchiText({ position });
     setNodes((prev) => [...prev, newText]);
     setActiveTool('select');
-  };
+  }, [getCanvasCenter, setNodes, setActiveTool]);
 
-  const handleLineAdd = () => {
-    // Phase 2: Line tool은 나중에 구현 (엣지는 Handle에서 드래그로 생성)
+  const handleLineAdd = useCallback(() => {
     setActiveTool('line');
-  };
+  }, [setActiveTool]);
 
   return (
     <div className="fixed bottom-8 left-1/2 z-50 -translate-x-1/2">

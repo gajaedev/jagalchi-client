@@ -1,6 +1,6 @@
 'use client';
 
-import { memo, useState } from 'react';
+import { memo, useState, useCallback } from 'react';
 
 import { Settings, Sparkles, WandSparkles } from 'lucide-react';
 
@@ -19,15 +19,19 @@ export const EditorAiMenu = memo(function EditorAiMenu() {
   const [isAiModalOpen, setIsAiModalOpen] = useState(false);
   const [aiModalMode, setAiModalMode] = useState<'generate' | 'modify'>('generate');
 
-  const handleGenerateRoadmap = () => {
+  const handleGenerateRoadmap = useCallback(() => {
     setAiModalMode('generate');
     setIsAiModalOpen(true);
-  };
+  }, []);
 
-  const handleModifyRoadmap = () => {
+  const handleModifyRoadmap = useCallback(() => {
     setAiModalMode('modify');
     setIsAiModalOpen(true);
-  };
+  }, []);
+
+  const handleCloseModal = useCallback(() => {
+    setIsAiModalOpen(false);
+  }, []);
 
   return (
     <>
@@ -54,11 +58,7 @@ export const EditorAiMenu = memo(function EditorAiMenu() {
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <RoadmapAiModal
-        isOpen={isAiModalOpen}
-        onClose={() => setIsAiModalOpen(false)}
-        mode={aiModalMode}
-      />
+      <RoadmapAiModal isOpen={isAiModalOpen} onClose={handleCloseModal} mode={aiModalMode} />
     </>
   );
 });

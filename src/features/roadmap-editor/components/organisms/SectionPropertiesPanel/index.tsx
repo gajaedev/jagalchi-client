@@ -1,6 +1,6 @@
 'use client';
 
-import { memo } from 'react';
+import { memo, useCallback } from 'react';
 
 import { useSetAtom } from 'jotai';
 import { Lock, Unlock } from 'lucide-react';
@@ -31,17 +31,20 @@ export const SectionPropertiesPanel = memo(function SectionPropertiesPanel({
 }: SectionPropertiesPanelProps) {
   const setNodes = useSetAtom(nodesAtom);
 
-  const updateNode = (updates: Partial<JagalchiSectionType['data']>) => {
-    setNodes((prev) =>
-      prev.map((n) =>
-        n.id === node.id ? ({ ...n, data: { ...n.data, ...updates } } as JagalchiSectionType) : n,
-      ),
-    );
-  };
+  const updateNode = useCallback(
+    (updates: Partial<JagalchiSectionType['data']>) => {
+      setNodes((prev) =>
+        prev.map((n) =>
+          n.id === node.id ? ({ ...n, data: { ...n.data, ...updates } } as JagalchiSectionType) : n,
+        ),
+      );
+    },
+    [node.id, setNodes],
+  );
 
-  const toggleLock = () => {
+  const toggleLock = useCallback(() => {
     updateNode({ isLocked: !node.data.isLocked });
-  };
+  }, [node.data.isLocked, updateNode]);
 
   return (
     <div className="flex h-full w-full flex-col">

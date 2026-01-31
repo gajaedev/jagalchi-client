@@ -1,6 +1,6 @@
 'use client';
 
-import { memo } from 'react';
+import { memo, useCallback } from 'react';
 
 import { useSetAtom } from 'jotai';
 import { Lock, Unlock } from 'lucide-react';
@@ -29,17 +29,20 @@ export const TextPropertiesPanel = memo(function TextPropertiesPanel({
 }: TextPropertiesPanelProps) {
   const setNodes = useSetAtom(nodesAtom);
 
-  const updateNode = (updates: Partial<JagalchiTextType['data']>) => {
-    setNodes((prev) =>
-      prev.map((n) =>
-        n.id === node.id ? ({ ...n, data: { ...n.data, ...updates } } as JagalchiTextType) : n,
-      ),
-    );
-  };
+  const updateNode = useCallback(
+    (updates: Partial<JagalchiTextType['data']>) => {
+      setNodes((prev) =>
+        prev.map((n) =>
+          n.id === node.id ? ({ ...n, data: { ...n.data, ...updates } } as JagalchiTextType) : n,
+        ),
+      );
+    },
+    [node.id, setNodes],
+  );
 
-  const toggleLock = () => {
+  const toggleLock = useCallback(() => {
     updateNode({ isLocked: !node.data.isLocked });
-  };
+  }, [node.data.isLocked, updateNode]);
 
   return (
     <div className="flex h-full w-full flex-col">
