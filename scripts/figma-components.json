@@ -1,0 +1,173 @@
+{
+  "timestamp": "2026-01-23T07:20:00.000Z",
+  "fileKey": "L7Ai9cZPKaF09qZfg9xWhH",
+  "components": [
+    {
+      "componentName": "EditorNodeSidebar",
+      "frameNodeId": "4472:1569",
+      "variants": [
+        {
+          "name": "State=Default, Lock=False",
+          "nodeId": "4472:1567",
+          "storybookName": "NodePropertiesPanel-Default"
+        },
+        {
+          "name": "State=Default, Lock=True",
+          "nodeId": "4472:2132",
+          "storybookName": "NodePropertiesPanel-Locked"
+        },
+        {
+          "name": "State=Closed, Lock=False",
+          "nodeId": "4472:1568",
+          "storybookName": "NodePropertiesPanel-Closed"
+        },
+        {
+          "name": "State=Closed, Lock=True",
+          "nodeId": "4472:2166",
+          "storybookName": "NodePropertiesPanel-ClosedLocked"
+        }
+      ]
+    },
+    {
+      "componentName": "EditorLineSidebar",
+      "frameNodeId": "4480:2347",
+      "variants": [
+        {
+          "name": "State=Default",
+          "nodeId": "4480:2345",
+          "storybookName": "EdgePropertiesPanel-Default"
+        },
+        {
+          "name": "State=Closed",
+          "nodeId": "4480:2346",
+          "storybookName": "EdgePropertiesPanel-Closed"
+        }
+      ]
+    },
+    {
+      "componentName": "EditorSectionSidebar",
+      "frameNodeId": "4480:3024",
+      "variants": [
+        {
+          "name": "State=Default, Locked=False",
+          "nodeId": "4480:2890",
+          "storybookName": "SectionPropertiesPanel-Default"
+        },
+        {
+          "name": "State=Default, Locked=True",
+          "nodeId": "4480:2889",
+          "storybookName": "SectionPropertiesPanel-Locked"
+        },
+        {
+          "name": "State=Closed, Locked=False",
+          "nodeId": "4480:2888",
+          "storybookName": "SectionPropertiesPanel-Closed"
+        },
+        {
+          "name": "State=Closed, Locked=True",
+          "nodeId": "4480:2887",
+          "storybookName": "SectionPropertiesPanel-ClosedLocked"
+        }
+      ]
+    },
+    {
+      "componentName": "EditorTextSidebar",
+      "frameNodeId": "4530:3273",
+      "variants": [
+        {
+          "name": "State=Default, Locked=False",
+          "nodeId": "4530:3269",
+          "storybookName": "TextPropertiesPanel-Default"
+        },
+        {
+          "name": "State=Default, Locked=True",
+          "nodeId": "4530:3270",
+          "storybookName": "TextPropertiesPanel-Locked"
+        },
+        {
+          "name": "State=Closed, Locked=False",
+          "nodeId": "4530:3271",
+          "storybookName": "TextPropertiesPanel-Closed"
+        },
+        {
+          "name": "State=Closed, Locked=True",
+          "nodeId": "4530:3272",
+          "storybookName": "TextPropertiesPanel-ClosedLocked"
+        }
+      ]
+    },
+    {
+      "componentName": "EditorResource",
+      "frameNodeId": "4630:4112",
+      "variants": [
+        {
+          "name": "State=Default",
+          "nodeId": "4630:4111",
+          "storybookName": "ResourcePropertiesPanel-Default"
+        },
+        {
+          "name": "State=Hover",
+          "nodeId": "4630:4113",
+          "storybookName": "ResourcePropertiesPanel-Hover"
+        }
+      ]
+    },
+    {
+      "componentName": "EditorToolbarItem",
+      "frameNodeId": "4357:2996",
+      "variants": [
+        {
+          "name": "More Option=False, State=Default",
+          "nodeId": "4357:2997",
+          "storybookName": "ToolbarButton-Default"
+        },
+        {
+          "name": "More Option=False, State=Hover",
+          "nodeId": "4357:2999",
+          "storybookName": "ToolbarButton-Hover"
+        },
+        {
+          "name": "More Option=False, State=Active",
+          "nodeId": "4357:3001",
+          "storybookName": "ToolbarButton-Active"
+        },
+        {
+          "name": "More Option=False, State=Disabled",
+          "nodeId": "4357:3003",
+          "storybookName": "ToolbarButton-Disabled"
+        },
+        {
+          "name": "More Option=True, State=Default",
+          "nodeId": "4357:3005",
+          "storybookName": "ToolbarButton-WithDropdownDefault"
+        },
+        {
+          "name": "More Option=True, State=Hover",
+          "nodeId": "4357:3008",
+          "storybookName": "ToolbarButton-WithDropdownHover"
+        },
+        {
+          "name": "More Option=True, State=Active",
+          "nodeId": "4357:3011",
+          "storybookName": "ToolbarButton-WithDropdownActive"
+        },
+        {
+          "name": "More Option=True, State=Disabled",
+          "nodeId": "4357:3014",
+          "storybookName": "ToolbarButton-WithDropdownDisabled"
+        }
+      ]
+    },
+    {
+      "componentName": "EditorAIMenu",
+      "frameNodeId": "4573:3099",
+      "variants": [
+        {
+          "name": "Default",
+          "nodeId": "4573:3099",
+          "storybookName": "RoadmapAiModal-Default"
+        }
+      ]
+    }
+  ]
+}
