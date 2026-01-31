@@ -58,6 +58,7 @@ export function useAutoSave({
       const updated: Roadmap = {
         ...(roadmap ?? {
           id: roadmapId,
+          isPublic: false,
           createdAt: now,
         }),
         title: debouncedTitle,
