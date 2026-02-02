@@ -23,13 +23,27 @@ import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 
 import { useClickOutside } from '../../../hooks/use-click-outside';
+import { AddDirectoryModal } from '../AddDirectoryModal';
+import { AddRoadmapModal } from '../AddRoadmapModal';
 import { MyRoadmapsFilter } from '../MyRoadmapsFilter';
 
 export function MyRoadmapsToolbar() {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isRoadmapModalOpen, setIsRoadmapModalOpen] = useState(false);
+  const [isDirectoryModalOpen, setIsDirectoryModalOpen] = useState(false);
   const filterRef = useRef<HTMLDivElement>(null);
 
   useClickOutside(filterRef, () => setIsFilterOpen(false));
+
+  const handleAddRoadmap = (name: string) => {
+    console.log('Adding roadmap:', name);
+    // TODO: Implement actual roadmap creation logic
+  };
+
+  const handleAddDirectory = (name: string) => {
+    console.log('Adding directory:', name);
+    // TODO: Implement actual directory creation logic
+  };
 
   return (
     <div className="flex w-full items-center justify-between py-6">
@@ -83,15 +97,32 @@ export function MyRoadmapsToolbar() {
             align="end"
             className="w-[140px] rounded-xl border-[#E5E7EB] bg-white p-1.5 shadow-xl"
           >
-            <DropdownMenuItem className="flex cursor-pointer items-center rounded-lg px-3 py-2.5 transition-colors outline-none focus:bg-[#F3F4F6]">
+            <DropdownMenuItem
+              className="flex cursor-pointer items-center rounded-lg px-3 py-2.5 transition-colors outline-none focus:bg-[#F3F4F6]"
+              onClick={() => setIsRoadmapModalOpen(true)}
+            >
               <span className="text-[13px] font-semibold text-[#374151]">로드맵</span>
             </DropdownMenuItem>
-            <DropdownMenuItem className="flex cursor-pointer items-center rounded-lg px-3 py-2.5 transition-colors outline-none focus:bg-[#F3F4F6]">
-              <span className="text-[13px] font-semibold text-[#374151]">폴더</span>
+            <DropdownMenuItem
+              className="flex cursor-pointer items-center rounded-lg px-3 py-2.5 transition-colors outline-none focus:bg-[#F3F4F6]"
+              onClick={() => setIsDirectoryModalOpen(true)}
+            >
+              <span className="text-[13px] font-semibold text-[#374151]">디렉토리</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+
+      <AddRoadmapModal
+        isOpen={isRoadmapModalOpen}
+        onClose={() => setIsRoadmapModalOpen(false)}
+        onConfirm={handleAddRoadmap}
+      />
+      <AddDirectoryModal
+        isOpen={isDirectoryModalOpen}
+        onClose={() => setIsDirectoryModalOpen(false)}
+        onConfirm={handleAddDirectory}
+      />
     </div>
   );
 }
