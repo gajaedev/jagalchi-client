@@ -75,6 +75,7 @@ export function MyRoadmapsToolbar() {
           <Button
             variant="outline"
             size="icon"
+            aria-label="Filter"
             className={cn(
               'border-border h-9 w-9 transition-colors',
               isFilterOpen && 'bg-slate-100',
