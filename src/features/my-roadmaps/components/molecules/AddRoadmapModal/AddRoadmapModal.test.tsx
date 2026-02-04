@@ -41,4 +41,17 @@ describe('AddRoadmapModal', () => {
     expect(defaultProps.onConfirm).toHaveBeenCalledWith('Test Roadmap');
     expect(defaultProps.onClose).toHaveBeenCalled();
   });
+
+  it('opens SelectLocationModal when "자세히 설정하기" is clicked', () => {
+    render(<AddRoadmapModal {...defaultProps} />);
+
+    // Initially, SelectLocationModal content should not be visible
+    expect(screen.queryByText('위치선택')).not.toBeInTheDocument();
+
+    // Click "자세히 설정하기"
+    fireEvent.click(screen.getByText('자세히 설정하기'));
+
+    // Now, SelectLocationModal content should be visible
+    expect(screen.getByText('위치선택')).toBeInTheDocument();
+  });
 });

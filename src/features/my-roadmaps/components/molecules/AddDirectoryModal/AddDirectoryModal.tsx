@@ -31,7 +31,7 @@ export function AddDirectoryModal({ isOpen, onClose, onConfirm }: AddDirectoryMo
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="rounded-2xl p-6 sm:max-w-[400px]">
+      <DialogContent className="rounded-2xl p-6 sm:max-w-[400px]" showCloseButton={false}>
         <DialogHeader className="mb-4">
           <DialogTitle className="text-lg font-bold text-[#020617]">디렉토리 추가</DialogTitle>
         </DialogHeader>

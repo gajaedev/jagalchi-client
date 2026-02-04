@@ -12,6 +12,8 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 
+import { SelectLocationModal } from '../SelectLocationModal';
+
 interface AddRoadmapModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -20,6 +22,7 @@ interface AddRoadmapModalProps {
 
 export function AddRoadmapModal({ isOpen, onClose, onConfirm }: AddRoadmapModalProps) {
   const [roadmapName, setRoadmapName] = useState('');
+  const [isSelectLocationOpen, setIsSelectLocationOpen] = useState(false);
 
   const handleConfirm = () => {
     onConfirm(roadmapName);
@@ -27,9 +30,17 @@ export function AddRoadmapModal({ isOpen, onClose, onConfirm }: AddRoadmapModalP
     onClose();
   };
 
+  const handleOpenSelectLocation = () => {
+    setIsSelectLocationOpen(true);
+  };
+
+  const handleCloseSelectLocation = () => {
+    setIsSelectLocationOpen(false);
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="rounded-2xl p-6 sm:max-w-[440px]">
+      <DialogContent className="rounded-2xl p-6 sm:max-w-[440px]" showCloseButton={false}>
         <DialogHeader className="mb-4">
           <DialogTitle className="text-lg font-bold text-[#020617]">로드맵 추가</DialogTitle>
         </DialogHeader>
@@ -44,9 +55,7 @@ export function AddRoadmapModal({ isOpen, onClose, onConfirm }: AddRoadmapModalP
         <DialogFooter className="mt-6 flex items-center justify-between sm:justify-between">
           <button
             className="text-sm font-medium text-slate-500 transition-colors hover:text-slate-700"
-            onClick={() => {
-              /* Handle advanced settings */
-            }}
+            onClick={handleOpenSelectLocation}
           >
             자세히 설정하기
           </button>
@@ -67,6 +76,12 @@ export function AddRoadmapModal({ isOpen, onClose, onConfirm }: AddRoadmapModalP
           </div>
         </DialogFooter>
       </DialogContent>
+
+      <SelectLocationModal
+        isOpen={isSelectLocationOpen}
+        onClose={handleCloseSelectLocation}
+        onConfirm={handleCloseSelectLocation}
+      />
     </Dialog>
   );
 }

@@ -35,13 +35,11 @@ export function MyRoadmapsToolbar() {
 
   useClickOutside(filterRef, () => setIsFilterOpen(false));
 
-  const handleAddRoadmap = (name: string) => {
-    console.log('Adding roadmap:', name);
+  const handleAddRoadmap = (_name: string) => {
     // TODO: Implement actual roadmap creation logic
   };
 
-  const handleAddDirectory = (name: string) => {
-    console.log('Adding directory:', name);
+  const handleAddDirectory = (_name: string) => {
     // TODO: Implement actual directory creation logic
   };
 
