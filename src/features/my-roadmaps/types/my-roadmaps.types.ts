@@ -5,4 +5,8 @@ export interface RoadmapData {
   author?: string;
   fileCount?: number;
   imageUrl?: string;
+  updatedAt?: string;
+  isFavorite?: boolean;
+  isShared?: boolean;
+  category?: 'my-roadmap' | 'community';
 }

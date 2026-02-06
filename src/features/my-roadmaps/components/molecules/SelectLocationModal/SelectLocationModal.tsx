@@ -15,15 +15,92 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { cn } from '@/lib/utils';
+
+interface LocationItem {
+  id: string;
+  name: string;
+  type: 'Team' | 'Directory';
+  level: number;
+  children?: LocationItem[];
+}
 
 interface SelectLocationModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onConfirm: () => void;
+  onConfirm: (selectedId: string) => void;
 }
+
+const MOCK_LOCATIONS: LocationItem[] = [
+  {
+    id: 'team-1',
+    name: "User's Team",
+    type: 'Team',
+    level: 0,
+    children: [
+      {
+        id: 'dir-1',
+        name: 'Directory',
+        type: 'Directory',
+        level: 1,
+        children: [
+          {
+            id: 'dir-2',
+            name: 'Directory',
+            type: 'Directory',
+            level: 2,
+          },
+          {
+            id: 'dir-3',
+            name: 'Directory',
+            type: 'Directory',
+            level: 2,
+          },
+        ],
+      },
+    ],
+  },
+];
 
 export function SelectLocationModal({ isOpen, onClose, onConfirm }: SelectLocationModalProps) {
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+
+  const renderLocationItems = (items: LocationItem[]) => {
+    return items.map((item) => (
+      <div key={item.id} className="flex flex-col gap-1">
+        <button
+          onClick={() => setSelectedId(item.id)}
+          className={cn(
+            'flex items-center gap-3 rounded-lg px-2 py-2 text-left transition-colors',
+            selectedId === item.id ? 'bg-[#0f172a] text-white' : 'text-slate-900 hover:bg-slate-50',
+          )}
+          style={{ marginLeft: `${item.level * 16}px` }}
+        >
+          <div className="flex h-6 w-6 items-center justify-center">
+            {item.type === 'Team' ? (
+              <Home
+                className={cn('h-5 w-5', selectedId === item.id ? 'text-white' : 'text-slate-600')}
+              />
+            ) : (
+              <Folder
+                className={cn('h-5 w-5', selectedId === item.id ? 'text-white' : 'text-slate-600')}
+              />
+            )}
+          </div>
+          <span
+            className={cn(
+              'text-sm font-semibold',
+              selectedId === item.id ? 'text-white' : 'text-slate-900',
+            )}
+          >
+            {item.name}
+          </span>
+        </button>
+        {item.children && renderLocationItems(item.children)}
+      </div>
+    ));
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -51,31 +128,7 @@ export function SelectLocationModal({ isOpen, onClose, onConfirm }: SelectLocati
           <div className="rounded-xl border border-slate-100 p-4">
             <h3 className="mb-4 text-xl font-bold text-[#020617]">Root</h3>
             <ScrollArea className="h-[320px] pr-4">
-              <div className="flex flex-col gap-1">
-                {/* User's Team Item */}
-                <button className="flex items-center gap-3 rounded-lg px-2 py-2 text-left transition-colors hover:bg-slate-50">
-                  <div className="flex h-6 w-6 items-center justify-center">
-                    <Home className="h-5 w-5 text-slate-600" />
-                  </div>
-                  <span className="text-sm font-semibold text-slate-900">User&apos;s Team</span>
-                </button>
-
-                {/* Directory Items */}
-                <div className="flex flex-col gap-1 pl-4">
-                  <button className="flex items-center gap-3 rounded-lg px-2 py-2 text-left transition-colors hover:bg-slate-50">
-                    <div className="flex h-6 w-6 items-center justify-center">
-                      <Folder className="h-5 w-5 text-slate-600" />
-                    </div>
-                    <span className="text-sm font-medium text-slate-700">Directory</span>
-                  </button>
-                  <button className="flex items-center gap-3 rounded-lg px-2 py-2 text-left transition-colors hover:bg-slate-50">
-                    <div className="flex h-6 w-6 items-center justify-center">
-                      <Folder className="h-5 w-5 text-slate-600" />
-                    </div>
-                    <span className="text-sm font-medium text-slate-700">Directory</span>
-                  </button>
-                </div>
-              </div>
+              <div className="flex flex-col gap-1">{renderLocationItems(MOCK_LOCATIONS)}</div>
             </ScrollArea>
           </div>
         </div>
@@ -89,8 +142,12 @@ export function SelectLocationModal({ isOpen, onClose, onConfirm }: SelectLocati
             취소
           </Button>
           <Button
-            onClick={onConfirm}
-            className="h-11 min-w-[100px] rounded-lg bg-[#81868f] text-base font-bold text-white shadow-sm hover:bg-[#6b7280]"
+            onClick={() => selectedId && onConfirm(selectedId)}
+            className={cn(
+              'h-11 min-w-[100px] rounded-lg text-base font-bold text-white shadow-sm transition-colors',
+              selectedId ? 'bg-[#0f172a] hover:bg-[#1e293b]' : 'cursor-not-allowed bg-[#81868f]',
+            )}
+            disabled={!selectedId}
           >
             확인
           </Button>

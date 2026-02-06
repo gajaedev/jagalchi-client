@@ -1,8 +1,20 @@
-import { ChevronDown, Clock, LayoutGrid, Search, Star, Users, Share2 } from 'lucide-react';
+import { useAtom } from 'jotai';
+import {
+  ChevronDown,
+  Clock,
+  LayoutGrid,
+  Search,
+  Star,
+  Users,
+  Share2,
+  LucideIcon,
+} from 'lucide-react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
+
+import { SidebarCategory, sidebarCategoryAtom } from '../../../stores/my-roadmaps.atoms';
 
 interface MyRoadmapsSidebarProps {
   className?: string;
@@ -10,12 +22,12 @@ interface MyRoadmapsSidebarProps {
   userEmail?: string;
 }
 
-const SIDEBAR_ITEMS = [
-  { icon: Clock, label: '최근' },
-  { icon: LayoutGrid, label: '커뮤니티' },
-  { icon: Share2, label: '내 로드맵', active: true },
-  { icon: Users, label: '공유된 로드맵' },
-  { icon: Star, label: '즐겨찾기' },
+const SIDEBAR_ITEMS: { icon: LucideIcon; label: string; id: SidebarCategory }[] = [
+  { icon: Clock, label: '최근', id: 'recent' },
+  { icon: LayoutGrid, label: '커뮤니티', id: 'community' },
+  { icon: Share2, label: '내 로드맵', id: 'my-roadmap' },
+  { icon: Users, label: '공유된 로드맵', id: 'shared' },
+  { icon: Star, label: '즐겨찾기', id: 'favorites' },
 ];
 
 export function MyRoadmapsSidebar({
@@ -23,6 +35,8 @@ export function MyRoadmapsSidebar({
   userName = 'UserName',
   userEmail = 'user@example.com',
 }: MyRoadmapsSidebarProps) {
+  const [activeCategory, setActiveCategory] = useAtom(sidebarCategoryAtom);
+
   return (
     <div className={cn('bg-sidebar flex min-h-screen w-52 flex-col border-r', className)}>
       <div className="flex h-full flex-col">
@@ -58,13 +72,19 @@ export function MyRoadmapsSidebar({
             <button
               key={item.label}
               type="button"
+              onClick={() => setActiveCategory(item.id)}
               className={cn(
                 'flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-[13px] font-medium transition-colors',
-                item.active ? 'bg-[#E5E7EB] text-[#1F2937]' : 'text-[#4B5563] hover:bg-black/5',
+                activeCategory === item.id
+                  ? 'bg-[#E5E7EB] text-[#1F2937]'
+                  : 'text-[#4B5563] hover:bg-black/5',
               )}
             >
               <item.icon
-                className={cn('h-4 w-4', item.active ? 'text-[#1F2937]' : 'text-[#6B7280]')}
+                className={cn(
+                  'h-4 w-4',
+                  activeCategory === item.id ? 'text-[#1F2937]' : 'text-[#6B7280]',
+                )}
               />
               {item.label}
             </button>
