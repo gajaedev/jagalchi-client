@@ -28,7 +28,7 @@ export function RoadmapCard({
   return (
     <Card
       className={cn(
-        'group relative flex aspect-[300/200] w-full cursor-pointer flex-col gap-0 overflow-hidden rounded-lg bg-white p-0 shadow-none transition-all',
+        'group relative flex aspect-[300/180] w-full cursor-pointer flex-col gap-0 overflow-hidden rounded-lg bg-white p-0 shadow-none transition-all',
         className,
       )}
     >

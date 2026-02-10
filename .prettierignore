@@ -2,3 +2,4 @@ node_modules
 .next
 dist
 pnpm-lock.yaml
+next-env.d.ts
