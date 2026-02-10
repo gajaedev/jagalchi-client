@@ -17,7 +17,7 @@ describe('SelectLocationModal', () => {
     expect(screen.getByPlaceholderText('Search')).toBeDefined();
     expect(screen.getByText('Root')).toBeDefined();
     expect(screen.getByText("User's Team")).toBeDefined();
-    expect(screen.getAllByText('Directory')).toHaveLength(2);
+    expect(screen.getAllByText('Directory')).toHaveLength(3);
     expect(screen.getByRole('button', { name: '취소' })).toBeDefined();
     expect(screen.getByRole('button', { name: '확인' })).toBeDefined();
   });
@@ -32,8 +32,10 @@ describe('SelectLocationModal', () => {
   it('calls onConfirm when confirm button is clicked', () => {
     render(<SelectLocationModal {...defaultProps} />);
 
+    // Select an item first to enable the confirm button
+    fireEvent.click(screen.getByText("User's Team"));
     fireEvent.click(screen.getByRole('button', { name: '확인' }));
-    expect(defaultProps.onConfirm).toHaveBeenCalled();
+    expect(defaultProps.onConfirm).toHaveBeenCalledWith('team-1');
   });
 
   it('updates search query on input change', () => {
