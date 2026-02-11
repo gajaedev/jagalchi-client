@@ -16,6 +16,17 @@ interface UseAutoSaveProps {
 
 const STORAGE_KEY = 'jagalchi-roadmaps';
 
+/**
+ * Fast hash function for array comparison (faster than JSON.stringify)
+ * Uses array length + item count + sample IDs for quick change detection
+ */
+function fastArrayHash(arr: unknown[]): string {
+  if (!arr.length) return '0';
+  const first = arr[0] as { id?: string };
+  const last = arr[arr.length - 1] as { id?: string };
+  return `${arr.length}-${first.id ?? ''}-${last.id ?? ''}`;
+}
+
 export function useAutoSave({
   roadmapId,
   nodes,
@@ -35,13 +46,14 @@ export function useAutoSave({
   useEffect(() => {
     if (!isEnabled || typeof window === 'undefined') return;
 
-    const currentNodes = JSON.stringify(debouncedNodes);
-    const currentEdges = JSON.stringify(debouncedEdges);
+    // Use fast hash instead of expensive JSON.stringify for comparison
+    const currentNodesHash = fastArrayHash(debouncedNodes);
+    const currentEdgesHash = fastArrayHash(debouncedEdges);
     const currentTitle = debouncedTitle;
 
     // Detect changes
-    const nodesChanged = currentNodes !== prevNodesRef.current;
-    const edgesChanged = currentEdges !== prevEdgesRef.current;
+    const nodesChanged = currentNodesHash !== prevNodesRef.current;
+    const edgesChanged = currentEdgesHash !== prevEdgesRef.current;
     const titleChanged = currentTitle !== prevTitleRef.current;
 
     if (!nodesChanged && !edgesChanged && !titleChanged) {
@@ -73,9 +85,9 @@ export function useAutoSave({
         : [...roadmaps, updated];
       localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedRoadmaps));
 
-      // Update refs
-      prevNodesRef.current = currentNodes;
-      prevEdgesRef.current = currentEdges;
+      // Update refs with new hashes
+      prevNodesRef.current = currentNodesHash;
+      prevEdgesRef.current = currentEdgesHash;
       prevTitleRef.current = currentTitle;
     } catch {
       // Fail silently for now - will be replaced with API error handling
