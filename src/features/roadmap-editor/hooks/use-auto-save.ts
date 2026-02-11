@@ -17,6 +17,7 @@ interface UseAutoSaveProps {
 }
 
 const STORAGE_KEY = 'jagalchi-roadmaps';
+const QUOTA_WARNING_THRESHOLD = 0.9; // Warn at 90% usage
 
 /**
  * Fast hash function for array comparison (faster than JSON.stringify)
@@ -27,6 +28,28 @@ function fastArrayHash(arr: unknown[]): string {
   const first = arr[0] as { id?: string };
   const last = arr[arr.length - 1] as { id?: string };
   return `${arr.length}-${first.id ?? ''}-${last.id ?? ''}`;
+}
+
+/**
+ * Check localStorage quota and return usage percentage
+ * Returns null if quota check is not supported
+ */
+function checkStorageQuota(): number | null {
+  try {
+    // Estimate current usage
+    let totalSize = 0;
+    for (const key in localStorage) {
+      if (Object.prototype.hasOwnProperty.call(localStorage, key)) {
+        totalSize += (localStorage[key]?.length ?? 0) + key.length;
+      }
+    }
+
+    // Most browsers have 5-10MB limit, use conservative 5MB
+    const estimatedQuota = 5 * 1024 * 1024; // 5MB in bytes
+    return totalSize / estimatedQuota;
+  } catch {
+    return null;
+  }
 }
 
 export function useAutoSave({
@@ -63,6 +86,15 @@ export function useAutoSave({
     }
 
     try {
+      // Check storage quota before attempting to save
+      const quotaUsage = checkStorageQuota();
+      if (quotaUsage !== null && quotaUsage > QUOTA_WARNING_THRESHOLD) {
+        // eslint-disable-next-line no-console
+        console.warn(
+          `localStorage quota usage: ${(quotaUsage * 100).toFixed(1)}%. Consider clearing old data.`,
+        );
+      }
+
       const stored = localStorage.getItem(STORAGE_KEY);
       // Use Zod validation to prevent corruption/security issues
       const roadmaps = parseRoadmaps(stored) as Roadmap[];
@@ -92,8 +124,13 @@ export function useAutoSave({
       prevNodesRef.current = currentNodesHash;
       prevEdgesRef.current = currentEdgesHash;
       prevTitleRef.current = currentTitle;
-    } catch {
-      // Fail silently for now - will be replaced with API error handling
+    } catch (error) {
+      // Handle quota exceeded error
+      if (error instanceof Error && error.name === 'QuotaExceededError') {
+        // eslint-disable-next-line no-console
+        console.error('localStorage quota exceeded. Unable to save roadmap.');
+      }
+      // Other errors fail silently - will be replaced with API error handling
     }
   }, [debouncedNodes, debouncedEdges, debouncedTitle, roadmapId, isEnabled]);
 }
