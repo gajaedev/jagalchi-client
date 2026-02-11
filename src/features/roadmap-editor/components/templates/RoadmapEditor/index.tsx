@@ -1,7 +1,6 @@
 'use client';
 
 import { ReactFlowProvider } from '@xyflow/react';
-import { Provider as JotaiProvider } from 'jotai';
 
 import { ColorPicker } from '../../molecules/ColorPicker';
 import { EditorHeader } from '../../organisms/EditorHeader';
@@ -37,10 +36,8 @@ interface RoadmapEditorProps {
 
 export function RoadmapEditor({ onBack }: RoadmapEditorProps) {
   return (
-    <JotaiProvider>
-      <ReactFlowProvider>
-        <EditorContent onBack={onBack} />
-      </ReactFlowProvider>
-    </JotaiProvider>
+    <ReactFlowProvider>
+      <EditorContent onBack={onBack} />
+    </ReactFlowProvider>
   );
 }
