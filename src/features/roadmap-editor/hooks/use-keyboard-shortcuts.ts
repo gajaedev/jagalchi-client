@@ -48,7 +48,15 @@ export function useKeyboardShortcuts() {
         event.preventDefault();
         if (selectedNodeIds.length > 0 || selectedEdgeIds.length > 0) {
           setNodes((nds) => nds.filter((node) => !selectedNodeIds.includes(node.id)));
-          setEdges((eds) => eds.filter((edge) => !selectedEdgeIds.includes(edge.id)));
+          // Remove selected edges AND orphaned edges connected to deleted nodes
+          setEdges((eds) =>
+            eds.filter(
+              (edge) =>
+                !selectedEdgeIds.includes(edge.id) &&
+                !selectedNodeIds.includes(edge.source) &&
+                !selectedNodeIds.includes(edge.target),
+            ),
+          );
           setSelectedNodeIds([]);
           setSelectedEdgeIds([]);
         }
