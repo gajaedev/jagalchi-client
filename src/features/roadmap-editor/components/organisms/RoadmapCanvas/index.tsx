@@ -29,6 +29,7 @@ import {
   selectedEdgeIdsAtom,
 } from '@/features/roadmap-editor/stores/editor-atoms';
 import type { RoadmapNode } from '@/features/roadmap-editor/types/editor.types';
+import { createId } from '@/features/roadmap-editor/utils/node-factory';
 
 import { useKeyboardShortcuts } from '../../../hooks/use-keyboard-shortcuts';
 import { ConnectionLine } from '../../molecules/ConnectionLine';
@@ -94,7 +95,7 @@ export function RoadmapCanvas() {
       const position = screenToFlowPosition({ x: clientX, y: clientY });
 
       // Create new node at drop position
-      const newNodeId = `node-${Date.now()}`;
+      const newNodeId = createId();
       const newNode: RoadmapNode = {
         id: newNodeId,
         type: 'jagalchi-node',
@@ -114,7 +115,7 @@ export function RoadmapCanvas() {
       // Create edge connecting source to new node
       if (connectionState.fromNode) {
         const newEdge: Edge = {
-          id: `edge-${Date.now()}`,
+          id: createId(),
           source: connectionState.fromNode.id,
           target: newNodeId,
           sourceHandle: connectionState.fromHandle?.id ?? null,

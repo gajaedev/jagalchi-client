@@ -12,6 +12,7 @@ import {
   undoAtom,
   redoAtom,
 } from '../stores/editor-atoms';
+import { createId } from '../utils/node-factory';
 
 import type { RoadmapNode } from '../types/editor.types';
 
@@ -111,7 +112,7 @@ export function useKeyboardShortcuts() {
             const copiedNodes = JSON.parse(clipboard) as RoadmapNode[];
             const newNodes = copiedNodes.map((node: RoadmapNode) => ({
               ...node,
-              id: `${node.id}-copy-${Date.now()}`,
+              id: createId(),
               position: {
                 x: node.position.x + 50,
                 y: node.position.y + 50,
@@ -135,7 +136,7 @@ export function useKeyboardShortcuts() {
         if (selectedNodes.length > 0) {
           const duplicatedNodes = selectedNodes.map((node: RoadmapNode) => ({
             ...node,
-            id: `${node.id}-dup-${Date.now()}`,
+            id: createId(),
             position: {
               x: node.position.x + 50,
               y: node.position.y + 50,
