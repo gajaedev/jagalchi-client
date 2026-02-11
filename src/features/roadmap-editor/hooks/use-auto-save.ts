@@ -2,6 +2,8 @@ import { useEffect, useRef } from 'react';
 
 import { useDebounce } from '@/hooks/use-debounce';
 
+import { parseRoadmaps } from '../schemas/roadmap.schema';
+
 import type { RoadmapNode } from '../types/editor.types';
 import type { Roadmap } from '../types/roadmap.types';
 import type { Edge } from '@xyflow/react';
@@ -62,7 +64,8 @@ export function useAutoSave({
 
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
-      const roadmaps: Roadmap[] = stored ? JSON.parse(stored) : [];
+      // Use Zod validation to prevent corruption/security issues
+      const roadmaps = parseRoadmaps(stored) as Roadmap[];
       const roadmap = roadmaps.find((r) => r.id === roadmapId);
       const now = new Date().toISOString();
 
