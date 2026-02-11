@@ -9,6 +9,7 @@ import { EDITOR_MESSAGES } from '@/constants/messages';
 
 import { NODE_PRESET_COLORS } from '../../../constants/preset-colors';
 import { nodesAtom } from '../../../stores/editor-atoms';
+import { validateUrl } from '../../../utils/url-validation';
 import { EditorInput } from '../../atoms/EditorInput';
 import { ColorSelector } from '../../molecules/ColorSelector';
 
@@ -47,9 +48,15 @@ export const NodePropertiesPanel = memo(function NodePropertiesPanel({
   };
 
   const handleResourceChange = (index: number, value: string) => {
-    const newResources = [...node.data.resources];
-    newResources[index] = value;
-    updateNode({ resources: newResources });
+    // Validate URL to prevent XSS and invalid URLs
+    const validatedUrl = validateUrl(value);
+
+    // Only update if validation passes (null means invalid)
+    if (validatedUrl !== null) {
+      const newResources = [...node.data.resources];
+      newResources[index] = validatedUrl;
+      updateNode({ resources: newResources });
+    }
   };
 
   // Ensure we have exactly 3 resource slots
