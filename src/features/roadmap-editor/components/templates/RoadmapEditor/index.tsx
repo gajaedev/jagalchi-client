@@ -3,8 +3,6 @@
 import { ReactFlowProvider } from '@xyflow/react';
 import { Provider as JotaiProvider } from 'jotai';
 
-import { useLocalStorage } from '@/features/roadmap-editor/hooks/use-local-storage';
-
 import { ColorPicker } from '../../molecules/ColorPicker';
 import { EditorHeader } from '../../organisms/EditorHeader';
 import { EditorSidebar } from '../../organisms/EditorSidebar';
@@ -16,8 +14,6 @@ interface EditorContentProps {
 }
 
 function EditorContent({ onBack }: EditorContentProps) {
-  useLocalStorage();
-
   return (
     <div className="relative flex h-screen w-screen">
       <EditorHeader onBack={onBack} />
