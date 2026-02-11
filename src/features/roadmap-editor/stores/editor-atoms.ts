@@ -47,17 +47,19 @@ export const roadmapTitleAtom = atom<string>('Jagalchi Roadmap');
 export const selectedNodeIdsAtom = atom<string[]>([]);
 export const selectedEdgeIdsAtom = atom<string[]>([]);
 
-// Derived atoms
+// Derived atoms (optimized with Set for O(1) lookup)
 export const selectedNodesAtom = atom((get) => {
   const nodes = get(nodesAtom);
   const selectedIds = get(selectedNodeIdsAtom);
-  return nodes.filter((node) => selectedIds.includes(node.id));
+  const selectedIdsSet = new Set(selectedIds);
+  return nodes.filter((node) => selectedIdsSet.has(node.id));
 });
 
 export const selectedEdgesAtom = atom((get) => {
   const edges = get(edgesAtom);
   const selectedIds = get(selectedEdgeIdsAtom);
-  return edges.filter((edge) => selectedIds.includes(edge.id));
+  const selectedIdsSet = new Set(selectedIds);
+  return edges.filter((edge) => selectedIdsSet.has(edge.id));
 });
 
 export const singleSelectedNodeAtom = atom((get) => {
