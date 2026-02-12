@@ -76,7 +76,7 @@ export function AddRoadmapModal({ isOpen, onClose, onConfirm }: AddRoadmapModalP
           <div className="flex gap-2">
             <Button
               variant="outline"
-              onClick={onClose}
+              onClick={handleClose}
               className="h-9 rounded-lg border-slate-200 px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50"
             >
               취소

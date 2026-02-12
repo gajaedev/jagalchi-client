@@ -108,7 +108,7 @@ export default function MyRoadmapsPage() {
         comparison = new Date(b.updatedAt || 0).getTime() - new Date(a.updatedAt || 0).getTime();
         break;
       case 'name':
-        comparison = (a.title || '').localeCompare(b.title || '');
+        comparison = (b.title || '').localeCompare(a.title || '');
         break;
       case 'size':
         comparison = (b.fileCount || 0) - (a.fileCount || 0);
