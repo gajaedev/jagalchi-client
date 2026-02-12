@@ -35,7 +35,7 @@ export function MyRoadmapsToolbar() {
 
   useClickOutside(filterRef, () => setIsFilterOpen(false));
 
-  const handleAddRoadmap = (_name: string) => {
+  const handleAddRoadmap = (_name: string, _locationId?: string | null) => {
     // TODO: Implement actual roadmap creation logic
   };
 

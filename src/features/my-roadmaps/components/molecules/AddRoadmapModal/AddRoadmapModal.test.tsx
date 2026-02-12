@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { AddRoadmapModal } from './AddRoadmapModal';
 
 describe('AddRoadmapModal', () => {
@@ -8,6 +8,10 @@ describe('AddRoadmapModal', () => {
     onClose: vi.fn(),
     onConfirm: vi.fn(),
   };
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
 
   it('renders correctly when open', () => {
     render(<AddRoadmapModal {...defaultProps} />);
@@ -38,7 +42,7 @@ describe('AddRoadmapModal', () => {
     const input = screen.getByPlaceholderText('로드맵 이름을 입력하세요');
     fireEvent.change(input, { target: { value: 'Test Roadmap' } });
     fireEvent.click(screen.getByText('확인'));
-    expect(defaultProps.onConfirm).toHaveBeenCalledWith('Test Roadmap');
+    expect(defaultProps.onConfirm).toHaveBeenCalledWith('Test Roadmap', null);
     expect(defaultProps.onClose).toHaveBeenCalled();
   });
 

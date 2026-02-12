@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi, beforeEach } from 'vitest';
 
 import { SelectLocationModal } from './SelectLocationModal';
 
@@ -9,6 +9,10 @@ describe('SelectLocationModal', () => {
     onClose: vi.fn(),
     onConfirm: vi.fn(),
   };
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
 
   it('renders correctly when open', () => {
     render(<SelectLocationModal {...defaultProps} />);

@@ -66,6 +66,30 @@ export function SelectLocationModal({ isOpen, onClose, onConfirm }: SelectLocati
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
+  const handleClose = () => {
+    setSearchQuery('');
+    setSelectedId(null);
+    onClose();
+  };
+
+  const filterLocations = (items: LocationItem[], query: string): LocationItem[] => {
+    return items
+      .map((item) => {
+        const matches = item.name.toLowerCase().includes(query.toLowerCase());
+        const filteredChildren = item.children ? filterLocations(item.children, query) : undefined;
+
+        if (matches || (filteredChildren && filteredChildren.length > 0)) {
+          return { ...item, children: filteredChildren } as LocationItem;
+        }
+        return null;
+      })
+      .filter((item): item is LocationItem => item !== null);
+  };
+
+  const filteredLocations = searchQuery
+    ? filterLocations(MOCK_LOCATIONS, searchQuery)
+    : MOCK_LOCATIONS;
+
   const renderLocationItems = (items: LocationItem[]) => {
     return items.map((item) => (
       <div key={item.id} className="flex flex-col gap-1">
@@ -102,8 +126,15 @@ export function SelectLocationModal({ isOpen, onClose, onConfirm }: SelectLocati
     ));
   };
 
+  const handleConfirm = () => {
+    if (selectedId) {
+      onConfirm(selectedId);
+      handleClose();
+    }
+  };
+
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent
         className="max-w-[480px] gap-0 overflow-hidden rounded-2xl border-none p-0 shadow-xl"
         showCloseButton={false}
@@ -128,7 +159,7 @@ export function SelectLocationModal({ isOpen, onClose, onConfirm }: SelectLocati
           <div className="rounded-xl border border-slate-100 p-4">
             <h3 className="mb-4 text-xl font-bold text-[#020617]">Root</h3>
             <ScrollArea className="h-[320px] pr-4">
-              <div className="flex flex-col gap-1">{renderLocationItems(MOCK_LOCATIONS)}</div>
+              <div className="flex flex-col gap-1">{renderLocationItems(filteredLocations)}</div>
             </ScrollArea>
           </div>
         </div>
@@ -136,13 +167,13 @@ export function SelectLocationModal({ isOpen, onClose, onConfirm }: SelectLocati
         <DialogFooter className="flex gap-3 p-6 pt-4 sm:justify-end">
           <Button
             variant="outline"
-            onClick={onClose}
+            onClick={handleClose}
             className="h-11 min-w-[100px] rounded-lg border-slate-200 text-base font-bold text-[#020617] hover:bg-slate-50"
           >
             취소
           </Button>
           <Button
-            onClick={() => selectedId && onConfirm(selectedId)}
+            onClick={handleConfirm}
             className={cn(
               'h-11 min-w-[100px] rounded-lg text-base font-bold text-white shadow-sm transition-colors',
               selectedId ? 'bg-[#0f172a] hover:bg-[#1e293b]' : 'cursor-not-allowed bg-[#81868f]',

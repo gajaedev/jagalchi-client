@@ -24,13 +24,19 @@ export function AddDirectoryModal({ isOpen, onClose, onConfirm }: AddDirectoryMo
   const [directoryName, setDirectoryName] = useState('');
 
   const handleConfirm = () => {
-    onConfirm(directoryName);
+    if (!directoryName.trim()) return;
+    onConfirm(directoryName.trim());
+    setDirectoryName('');
+    onClose();
+  };
+
+  const handleClose = () => {
     setDirectoryName('');
     onClose();
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="rounded-2xl p-6 sm:max-w-[400px]" showCloseButton={false}>
         <DialogHeader className="mb-4">
           <DialogTitle className="text-lg font-bold text-[#020617]">디렉토리 추가</DialogTitle>
@@ -53,14 +59,15 @@ export function AddDirectoryModal({ isOpen, onClose, onConfirm }: AddDirectoryMo
         <DialogFooter className="mt-6 flex gap-2 sm:justify-end">
           <Button
             variant="outline"
-            onClick={onClose}
+            onClick={handleClose}
             className="h-9 rounded-lg border-slate-200 px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50"
           >
             취소
           </Button>
           <Button
             onClick={handleConfirm}
-            className="h-9 rounded-lg bg-[#64748B] px-4 text-sm font-semibold text-white hover:bg-[#475569]"
+            disabled={!directoryName.trim()}
+            className="h-9 rounded-lg bg-[#64748B] px-4 text-sm font-semibold text-white hover:bg-[#475569] disabled:opacity-50"
           >
             확인
           </Button>

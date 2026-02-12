@@ -6,7 +6,12 @@ import { MyRoadmapsToolbar } from '@/features/my-roadmaps/components/molecules/M
 import { MyRoadmapsGrid } from '@/features/my-roadmaps/components/organisms/MyRoadmapsGrid';
 import { MyRoadmapsHeader } from '@/features/my-roadmaps/components/organisms/MyRoadmapsHeader';
 import { MyRoadmapsLayout } from '@/features/my-roadmaps/components/templates/MyRoadmapsLayout';
-import { sidebarCategoryAtom } from '@/features/my-roadmaps/stores/my-roadmaps.atoms';
+import {
+  filterCategoryAtom,
+  sidebarCategoryAtom,
+  sortByAtom,
+  sortOrderAtom,
+} from '@/features/my-roadmaps/stores/my-roadmaps.atoms';
 import type { RoadmapData } from '@/features/my-roadmaps/types/my-roadmaps.types';
 
 // Mock data for development
@@ -58,27 +63,61 @@ const MY_ROADMAPS: RoadmapData[] = [
 
 export default function MyRoadmapsPage() {
   const activeCategory = useAtomValue(sidebarCategoryAtom);
+  const sortOrder = useAtomValue(sortOrderAtom);
+  const sortBy = useAtomValue(sortByAtom);
+  const filterCategory = useAtomValue(filterCategoryAtom);
 
   const filteredRoadmaps = MY_ROADMAPS.filter((roadmap) => {
+    // 1. Sidebar Category Filter
+    let categoryMatch = false;
     switch (activeCategory) {
       case 'recent':
-        return true; // Sort by updatedAt later
+        categoryMatch = true;
+        break;
       case 'community':
-        return roadmap.category === 'community';
+        categoryMatch = roadmap.category === 'community';
+        break;
       case 'my-roadmap':
-        return roadmap.category === 'my-roadmap';
+        categoryMatch = roadmap.category === 'my-roadmap';
+        break;
       case 'shared':
-        return roadmap.isShared;
+        categoryMatch = !!roadmap.isShared;
+        break;
       case 'favorites':
-        return roadmap.isFavorite;
+        categoryMatch = !!roadmap.isFavorite;
+        break;
       default:
-        return true;
+        categoryMatch = true;
     }
+
+    if (!categoryMatch) return false;
+
+    // 2. Toolbar Category Filter
+    if (filterCategory !== 'all') {
+      const typeMatch =
+        filterCategory === 'roadmap' ? roadmap.type === 'Roadmap' : roadmap.type === 'Directory';
+      if (!typeMatch) return false;
+    }
+
+    return true;
   }).sort((a, b) => {
-    if (activeCategory === 'recent') {
-      return new Date(b.updatedAt || 0).getTime() - new Date(a.updatedAt || 0).getTime();
+    // 3. Sorting
+    let comparison = 0;
+    switch (sortBy) {
+      case 'recent':
+        comparison = new Date(b.updatedAt || 0).getTime() - new Date(a.updatedAt || 0).getTime();
+        break;
+      case 'name':
+        comparison = (a.title || '').localeCompare(b.title || '');
+        break;
+      case 'size':
+        comparison = (b.fileCount || 0) - (a.fileCount || 0);
+        break;
+      default:
+        comparison = 0;
     }
-    return 0;
+
+    return sortOrder === 'asc' ? -comparison : comparison;
   });
 
   return (

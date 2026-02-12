@@ -17,16 +17,25 @@ import { SelectLocationModal } from '../SelectLocationModal';
 interface AddRoadmapModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onConfirm: (name: string) => void;
+  onConfirm: (name: string, locationId?: string | null) => void;
 }
 
 export function AddRoadmapModal({ isOpen, onClose, onConfirm }: AddRoadmapModalProps) {
   const [roadmapName, setRoadmapName] = useState('');
   const [isSelectLocationOpen, setIsSelectLocationOpen] = useState(false);
+  const [selectedLocationId, setSelectedLocationId] = useState<string | null>(null);
 
   const handleConfirm = () => {
-    onConfirm(roadmapName);
+    if (!roadmapName.trim()) return;
+    onConfirm(roadmapName.trim(), selectedLocationId);
     setRoadmapName('');
+    setSelectedLocationId(null);
+    onClose();
+  };
+
+  const handleClose = () => {
+    setRoadmapName('');
+    setSelectedLocationId(null);
     onClose();
   };
 
@@ -38,8 +47,13 @@ export function AddRoadmapModal({ isOpen, onClose, onConfirm }: AddRoadmapModalP
     setIsSelectLocationOpen(false);
   };
 
+  const handleConfirmSelectLocation = (selectedId: string) => {
+    setSelectedLocationId(selectedId);
+    setIsSelectLocationOpen(false);
+  };
+
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="rounded-2xl p-6 sm:max-w-[440px]" showCloseButton={false}>
         <DialogHeader className="mb-4">
           <DialogTitle className="text-lg font-bold text-[#020617]">로드맵 추가</DialogTitle>
@@ -69,7 +83,8 @@ export function AddRoadmapModal({ isOpen, onClose, onConfirm }: AddRoadmapModalP
             </Button>
             <Button
               onClick={handleConfirm}
-              className="h-9 rounded-lg bg-[#64748B] px-4 text-sm font-semibold text-white hover:bg-[#475569]"
+              disabled={!roadmapName.trim()}
+              className="h-9 rounded-lg bg-[#64748B] px-4 text-sm font-semibold text-white hover:bg-[#475569] disabled:opacity-50"
             >
               확인
             </Button>
@@ -80,7 +95,7 @@ export function AddRoadmapModal({ isOpen, onClose, onConfirm }: AddRoadmapModalP
       <SelectLocationModal
         isOpen={isSelectLocationOpen}
         onClose={handleCloseSelectLocation}
-        onConfirm={handleCloseSelectLocation}
+        onConfirm={handleConfirmSelectLocation}
       />
     </Dialog>
   );

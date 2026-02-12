@@ -1,30 +1,35 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Provider } from 'jotai';
 import { describe, expect, it } from 'vitest';
 
 import { MyRoadmapsToolbar } from './index';
 
+const renderWithProvider = (ui: React.ReactElement) => {
+  return render(<Provider>{ui}</Provider>);
+};
+
 describe('MyRoadmapsToolbar', () => {
   it('renders breadcrumbs correctly', () => {
-    render(<MyRoadmapsToolbar />);
+    renderWithProvider(<MyRoadmapsToolbar />);
     expect(screen.getByText('Home')).toBeDefined();
     expect(screen.getByText('Components')).toBeDefined();
     expect(screen.getByText('Breadcrumb')).toBeDefined();
   });
 
   it('renders search input', () => {
-    render(<MyRoadmapsToolbar />);
+    renderWithProvider(<MyRoadmapsToolbar />);
     expect(screen.getByPlaceholderText('로드맵 검색')).toBeDefined();
   });
 
   it('renders action buttons', () => {
-    render(<MyRoadmapsToolbar />);
+    renderWithProvider(<MyRoadmapsToolbar />);
     expect(screen.getByRole('button', { name: /new/i })).toBeDefined();
   });
 
   it('toggles filter box when filter button is clicked', async () => {
     const user = userEvent.setup();
-    render(<MyRoadmapsToolbar />);
+    renderWithProvider(<MyRoadmapsToolbar />);
     const filterButton = screen.getByRole('button', { name: /filter/i });
 
     await user.click(filterButton);
@@ -36,7 +41,7 @@ describe('MyRoadmapsToolbar', () => {
 
   it('opens AddRoadmapModal when 로드맵 is selected from New menu', async () => {
     const user = userEvent.setup();
-    render(<MyRoadmapsToolbar />);
+    renderWithProvider(<MyRoadmapsToolbar />);
     const newButton = screen.getByRole('button', { name: /new/i });
 
     await user.click(newButton);
@@ -49,7 +54,7 @@ describe('MyRoadmapsToolbar', () => {
 
   it('opens AddDirectoryModal when 디렉토리 is selected from New menu', async () => {
     const user = userEvent.setup();
-    render(<MyRoadmapsToolbar />);
+    renderWithProvider(<MyRoadmapsToolbar />);
     const newButton = screen.getByRole('button', { name: /new/i });
 
     await user.click(newButton);
