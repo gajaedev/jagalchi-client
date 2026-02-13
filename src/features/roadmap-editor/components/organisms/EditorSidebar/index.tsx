@@ -31,7 +31,7 @@ export const EditorSidebar = memo(function EditorSidebar() {
   // Multi-select (2개 이상 노드 선택)
   if (selectedNodeIds.length >= 2) {
     return (
-      <aside className="bg-muted/30 w-60 border-l">
+      <aside className="h-full w-[240px] border-l bg-white">
         <MultiSelectPanel />
       </aside>
     );
@@ -40,7 +40,7 @@ export const EditorSidebar = memo(function EditorSidebar() {
   // Edge가 선택된 경우
   if (selectedEdge) {
     return (
-      <aside className="bg-muted/30 w-60 border-l">
+      <aside className="h-full w-[240px] border-l bg-white">
         <EdgePropertiesPanel edge={selectedEdge} />
       </aside>
     );
@@ -50,7 +50,7 @@ export const EditorSidebar = memo(function EditorSidebar() {
   if (selectedNode) {
     if (selectedNode.type === 'jagalchi-node') {
       return (
-        <aside className="bg-muted/30 w-60 border-l">
+        <aside className="h-full w-[240px] border-l bg-white">
           <NodePropertiesPanel node={selectedNode as JagalchiNodeType} />
         </aside>
       );
@@ -58,7 +58,7 @@ export const EditorSidebar = memo(function EditorSidebar() {
 
     if (selectedNode.type === 'jagalchi-section') {
       return (
-        <aside className="bg-muted/30 w-60 border-l">
+        <aside className="h-full w-[240px] border-l bg-white">
           <SectionPropertiesPanel node={selectedNode as JagalchiSectionType} />
         </aside>
       );
@@ -66,7 +66,7 @@ export const EditorSidebar = memo(function EditorSidebar() {
 
     if (selectedNode.type === 'jagalchi-text') {
       return (
-        <aside className="bg-muted/30 w-60 border-l">
+        <aside className="h-full w-[240px] border-l bg-white">
           <TextPropertiesPanel node={selectedNode as JagalchiTextType} />
         </aside>
       );
@@ -75,7 +75,7 @@ export const EditorSidebar = memo(function EditorSidebar() {
 
   // 아무것도 선택되지 않은 경우
   return (
-    <aside className="bg-muted/30 flex w-60 items-center justify-center border-l">
+    <aside className="flex h-full w-[240px] items-center justify-center border-l bg-white">
       <p className="text-muted-foreground text-sm">{EDITOR_MESSAGES.SIDEBAR_EMPTY_STATE}</p>
     </aside>
   );

@@ -45,6 +45,9 @@ storybook-static
 
 .idea/
 .vscode/
+.omc/
+.sisyphus/
+visual-tests/
 # Local Netlify folder
 .netlify
 .playwright-mcp/

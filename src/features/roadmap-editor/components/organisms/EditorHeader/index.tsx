@@ -4,63 +4,42 @@ import { memo } from 'react';
 
 import { useRouter } from 'next/navigation';
 
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { ArrowLeft, RotateCcw, RotateCw } from 'lucide-react';
+import { useAtomValue } from 'jotai';
+import { ArrowLeft } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 
-import {
-  roadmapTitleAtom,
-  undoAtom,
-  redoAtom,
-  canUndoAtom,
-  canRedoAtom,
-} from '../../../stores/editor-atoms';
+import { roadmapTitleAtom } from '../../../stores/editor-atoms';
 
-export const EditorHeader = memo(function EditorHeader() {
+interface EditorHeaderProps {
+  onBack?: () => void;
+}
+
+export const EditorHeader = memo(function EditorHeader({ onBack }: EditorHeaderProps) {
   const router = useRouter();
-  const [title, setTitle] = useAtom(roadmapTitleAtom);
+  const title = useAtomValue(roadmapTitleAtom);
 
-  const canUndo = useAtomValue(canUndoAtom);
-  const canRedo = useAtomValue(canRedoAtom);
-  const undo = useSetAtom(undoAtom);
-  const redo = useSetAtom(redoAtom);
+  const handleBackClick = () => {
+    if (onBack) {
+      onBack();
+    } else {
+      router.push('/myroadmap');
+    }
+  };
 
   return (
-    <header className="bg-background flex h-14 items-center gap-4 border-b px-4">
-      <Button variant="ghost" size="icon" onClick={() => router.push('/')} aria-label="뒤로가기">
-        <ArrowLeft className="h-5 w-5" />
+    <header className="absolute top-4 left-4 z-10 flex items-center gap-2 rounded-lg border bg-white px-3 py-2 shadow-sm">
+      <Button
+        variant="ghost"
+        size="icon"
+        className="h-6 w-6"
+        onClick={handleBackClick}
+        aria-label="뒤로가기"
+      >
+        <ArrowLeft className="h-4 w-4" />
       </Button>
 
-      <Input
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        className="max-w-md border-none text-lg font-semibold focus-visible:ring-0"
-        placeholder="Jagalchi Roadmap"
-        aria-label="로드맵 제목"
-      />
-
-      <div className="ml-auto flex gap-2">
-        <Button
-          variant="ghost"
-          size="icon"
-          disabled={!canUndo}
-          onClick={() => undo()}
-          aria-label="실행 취소 (Ctrl+Z)"
-        >
-          <RotateCcw className="h-5 w-5" />
-        </Button>
-        <Button
-          variant="ghost"
-          size="icon"
-          disabled={!canRedo}
-          onClick={() => redo()}
-          aria-label="다시 실행 (Ctrl+Shift+Z)"
-        >
-          <RotateCw className="h-5 w-5" />
-        </Button>
-      </div>
+      <span className="text-sm font-medium">{title || 'Jagalchi Roadmap'}</span>
     </header>
   );
 });

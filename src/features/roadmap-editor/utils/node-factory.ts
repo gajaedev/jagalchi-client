@@ -29,7 +29,7 @@ interface CreateTextOptions {
 /**
  * Generate unique ID with fallback for environments without crypto.randomUUID
  */
-const createId = (): string =>
+export const createId = (): string =>
   typeof globalThis.crypto?.randomUUID === 'function'
     ? globalThis.crypto.randomUUID()
     : `tmp-${Date.now()}-${Math.random().toString(16).slice(2)}`;

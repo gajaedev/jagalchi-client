@@ -25,7 +25,6 @@ export { RoadmapEditor } from './components/templates/RoadmapEditor';
 
 // Hooks
 export { useCanvasCenter } from './hooks/use-canvas-center';
-export { useLocalStorage } from './hooks/use-local-storage';
 
 // Stores
 export {

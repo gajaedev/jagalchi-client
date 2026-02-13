@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { useAtom, useSetAtom } from 'jotai';
 
@@ -12,8 +12,10 @@ import {
   undoAtom,
   redoAtom,
 } from '../stores/editor-atoms';
+import { createId } from '../utils/node-factory';
 
 import type { RoadmapNode } from '../types/editor.types';
+import type { Edge } from '@xyflow/react';
 
 /**
  * 키보드 단축키 핸들러
@@ -25,6 +27,8 @@ import type { RoadmapNode } from '../types/editor.types';
  * - Ctrl+A: 전체 선택
  * - Ctrl+D: 복제
  * - ESC: 선택 해제
+ *
+ * Performance: Uses refs to avoid recreating event handlers on every state change
  */
 export function useKeyboardShortcuts() {
   const [nodes, setNodes] = useAtom(nodesAtom);
@@ -33,6 +37,29 @@ export function useKeyboardShortcuts() {
   const [selectedEdgeIds, setSelectedEdgeIds] = useAtom(selectedEdgeIdsAtom);
   const undo = useSetAtom(undoAtom);
   const redo = useSetAtom(redoAtom);
+
+  // Use refs to access latest values without triggering effect re-runs
+  const nodesRef = useRef<RoadmapNode[]>(nodes);
+  const edgesRef = useRef<Edge[]>(edges);
+  const selectedNodeIdsRef = useRef<string[]>(selectedNodeIds);
+  const selectedEdgeIdsRef = useRef<string[]>(selectedEdgeIds);
+
+  // Update refs when values change
+  useEffect(() => {
+    nodesRef.current = nodes;
+  }, [nodes]);
+
+  useEffect(() => {
+    edgesRef.current = edges;
+  }, [edges]);
+
+  useEffect(() => {
+    selectedNodeIdsRef.current = selectedNodeIds;
+  }, [selectedNodeIds]);
+
+  useEffect(() => {
+    selectedEdgeIdsRef.current = selectedEdgeIds;
+  }, [selectedEdgeIds]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -45,9 +72,20 @@ export function useKeyboardShortcuts() {
       // Delete - 선택된 노드/엣지 삭제
       if (event.key === 'Delete' || event.key === 'Backspace') {
         event.preventDefault();
-        if (selectedNodeIds.length > 0 || selectedEdgeIds.length > 0) {
-          setNodes((nds) => nds.filter((node) => !selectedNodeIds.includes(node.id)));
-          setEdges((eds) => eds.filter((edge) => !selectedEdgeIds.includes(edge.id)));
+        const currentSelectedNodeIds = selectedNodeIdsRef.current;
+        const currentSelectedEdgeIds = selectedEdgeIdsRef.current;
+
+        if (currentSelectedNodeIds.length > 0 || currentSelectedEdgeIds.length > 0) {
+          setNodes((nds) => nds.filter((node) => !currentSelectedNodeIds.includes(node.id)));
+          // Remove selected edges AND orphaned edges connected to deleted nodes
+          setEdges((eds) =>
+            eds.filter(
+              (edge) =>
+                !currentSelectedEdgeIds.includes(edge.id) &&
+                !currentSelectedNodeIds.includes(edge.source) &&
+                !currentSelectedNodeIds.includes(edge.target),
+            ),
+          );
           setSelectedNodeIds([]);
           setSelectedEdgeIds([]);
         }
@@ -84,16 +122,16 @@ export function useKeyboardShortcuts() {
       // Ctrl+A - 전체 선택
       if (event.key === 'a') {
         event.preventDefault();
-        setSelectedNodeIds(nodes.map((node: RoadmapNode) => node.id));
-        setSelectedEdgeIds(edges.map((edge: { id: string }) => edge.id));
+        setSelectedNodeIds(nodesRef.current.map((node: RoadmapNode) => node.id));
+        setSelectedEdgeIds(edgesRef.current.map((edge: { id: string }) => edge.id));
         return;
       }
 
       // Ctrl+C - 복사
       if (event.key === 'c') {
         event.preventDefault();
-        const selectedNodes = nodes.filter((node: RoadmapNode) =>
-          selectedNodeIds.includes(node.id),
+        const selectedNodes = nodesRef.current.filter((node: RoadmapNode) =>
+          selectedNodeIdsRef.current.includes(node.id),
         );
         if (selectedNodes.length > 0) {
           // localStorage에 복사된 노드 저장
@@ -111,7 +149,7 @@ export function useKeyboardShortcuts() {
             const copiedNodes = JSON.parse(clipboard) as RoadmapNode[];
             const newNodes = copiedNodes.map((node: RoadmapNode) => ({
               ...node,
-              id: `${node.id}-copy-${Date.now()}`,
+              id: createId(),
               position: {
                 x: node.position.x + 50,
                 y: node.position.y + 50,
@@ -129,13 +167,13 @@ export function useKeyboardShortcuts() {
       // Ctrl+D - 복제
       if (event.key === 'd') {
         event.preventDefault();
-        const selectedNodes = nodes.filter((node: RoadmapNode) =>
-          selectedNodeIds.includes(node.id),
+        const selectedNodes = nodesRef.current.filter((node: RoadmapNode) =>
+          selectedNodeIdsRef.current.includes(node.id),
         );
         if (selectedNodes.length > 0) {
           const duplicatedNodes = selectedNodes.map((node: RoadmapNode) => ({
             ...node,
-            id: `${node.id}-dup-${Date.now()}`,
+            id: createId(),
             position: {
               x: node.position.x + 50,
               y: node.position.y + 50,
@@ -152,16 +190,6 @@ export function useKeyboardShortcuts() {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [
-    nodes,
-    edges,
-    selectedNodeIds,
-    selectedEdgeIds,
-    setNodes,
-    setEdges,
-    setSelectedNodeIds,
-    setSelectedEdgeIds,
-    undo,
-    redo,
-  ]);
+    // Only depend on stable setters - refs handle value updates
+  }, [setNodes, setEdges, setSelectedNodeIds, setSelectedEdgeIds, undo, redo]);
 }

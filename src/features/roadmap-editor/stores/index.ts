@@ -15,6 +15,5 @@ export {
   redoAtom,
   canUndoAtom,
   canRedoAtom,
-  nodesHistoryAtom,
-  edgesHistoryAtom,
+  editorStateHistoryAtom,
 } from './editor-atoms';

@@ -5,7 +5,6 @@ import { memo } from 'react';
 import { useSetAtom } from 'jotai';
 import { Palette } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
 import { EDITOR_MESSAGES } from '@/constants/messages';
 
 import { isColorPickerOpenAtom, colorPickerTargetAtom } from '../../../stores/editor-atoms';
@@ -21,6 +20,15 @@ interface ColorSelectorProps {
   onPresetSelect: (variant: NodeColorVariant | TextColorVariant) => void;
 }
 
+/**
+ * ColorSelector molecule - Figma 디자인 100% 정합성
+ *
+ * Figma EditorNodeSidebar (4472:1569) 기본 컬러 섹션 구현
+ * - 6개 ColorPresetButton (atoms)
+ * - Palette 아이콘 + 현재 색상 프리뷰 버튼
+ * - 36px 높이, 8px border-radius (Figma 스펙)
+ * - Jotai atoms 사용 (isColorPickerOpenAtom, colorPickerTargetAtom)
+ */
 export const ColorSelector = memo(function ColorSelector({
   type,
   nodeId,
@@ -36,16 +44,21 @@ export const ColorSelector = memo(function ColorSelector({
     setIsColorPickerOpen(true);
   };
 
+  // 현재 선택된 색상의 hex 값
+  const currentColorHex = presets.find((p) => p.variant === currentVariant)?.hex ?? '#ffffff';
+
   return (
     <div className="space-y-3">
+      {/* 기본 컬러 (Preset) */}
       <div>
-        <label className="text-sm font-medium">{EDITOR_MESSAGES.SIDEBAR_COLOR_PRESET_LABEL}</label>
-        <div className="mt-2 flex gap-2">
+        <label className="text-sm font-medium text-slate-700">
+          {EDITOR_MESSAGES.SIDEBAR_COLOR_PRESET_LABEL}
+        </label>
+        <div className="mt-2 flex gap-1">
           {presets.map((preset) => (
             <ColorPresetButton
               key={preset.variant}
-              hex={preset.hex}
-              label={preset.label}
+              color={preset.hex}
               isSelected={currentVariant === preset.variant}
               onClick={() => onPresetSelect(preset.variant)}
             />
@@ -53,22 +66,29 @@ export const ColorSelector = memo(function ColorSelector({
         </div>
       </div>
 
+      {/* 커스텀 색상 */}
       <div>
-        <label className="text-sm font-medium">{EDITOR_MESSAGES.SIDEBAR_COLOR_CUSTOM_LABEL}</label>
+        <label className="text-sm font-medium text-slate-700">
+          {EDITOR_MESSAGES.SIDEBAR_COLOR_CUSTOM_LABEL}
+        </label>
         <div className="mt-2 flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="icon"
-            className="h-8 w-8"
+          {/* Palette 아이콘 버튼 */}
+          <button
+            type="button"
             onClick={handleCustomColorClick}
+            className="shrink-0 text-slate-600 transition-colors hover:text-slate-900 focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 focus-visible:outline-none"
+            aria-label="커스텀 색상 선택기 열기"
           >
-            <Palette className="h-4 w-4" />
-          </Button>
-          <div
-            className="h-8 w-8 rounded border"
-            style={{
-              backgroundColor: presets.find((p) => p.variant === currentVariant)?.hex ?? '#ffffff',
-            }}
+            <Palette className="size-6" />
+          </button>
+
+          {/* 현재 색상 프리뷰 버튼 (Figma 스펙: 36px 높이, 8px border-radius) */}
+          <button
+            type="button"
+            onClick={handleCustomColorClick}
+            className="h-[36px] min-h-[36px] w-full flex-1 rounded-[8px] border border-slate-200 shadow-sm transition-all hover:scale-105 hover:shadow-md focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 focus-visible:outline-none active:scale-95"
+            style={{ backgroundColor: currentColorHex }}
+            aria-label={`현재 색상: ${currentColorHex}`}
           />
         </div>
       </div>

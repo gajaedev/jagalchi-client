@@ -17,12 +17,12 @@ export interface JagalchiNodeData extends BaseNodeData {
 }
 
 export interface JagalchiSectionData extends BaseNodeData {
-  title: string;
+  title?: string;
 }
 
 export interface JagalchiTextData {
   variant: TextColorVariant;
-  content: string;
+  content?: string;
   fontSize: number;
   fontWeight: 'normal' | 'bold';
   isLocked: boolean;
