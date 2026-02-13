@@ -1,0 +1,1 @@
+import{r as e}from"./iframe-BmpoGx1R.js";function a(t){const u=e.useRef(t);return e.useEffect(()=>{u.current=t}),e.useMemo(()=>(...r)=>u.current?.(...r),[])}var f=globalThis?.document?e.useLayoutEffect:()=>{};export{f as a,a as u};
