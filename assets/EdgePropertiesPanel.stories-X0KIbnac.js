@@ -1,0 +1,58 @@
+import{j as r}from"./jsx-runtime-D39_KJa-.js";import{E as i}from"./index-DksQNy0u.js";import{P as m}from"./react-Kd3FdksL.js";import"./iframe-BI6vm0ZH.js";import"./preload-helper-PPVm8Dsz.js";import"./messages-tw_n8aWb.js";import"./PanelHeader-BSSWCPK1.js";import"./editor-atoms-gHCQ2R3K.js";import"./createLucideIcon-BUQ5OFIb.js";import"./index-9Xm6w0Yr.js";import"./index-CywDGke1.js";import"./utils-CDN07tui.js";const x={title:"Features/RoadmapEditor/Organisms/EdgePropertiesPanel",component:i,parameters:{layout:"fullscreen"},tags:["autodocs"],decorators:[c=>r.jsx(m,{children:r.jsx("div",{className:"flex h-screen justify-end",children:r.jsx("aside",{className:"h-full w-[272px] border-l bg-white",children:r.jsx(c,{})})})})]},e={id:"Line_1",source:"node-1",target:"node-2",style:{stroke:"#000000"}},s={args:{edge:e}},a={args:{edge:{...e,id:"Line_2",style:{stroke:"#000000",strokeDasharray:"5 5"}}}},o={args:{edge:{...e,id:"Line_3",style:{stroke:"#000000",strokeDasharray:"2 2"}}}},t={args:{edge:{...e,id:"Line_4",style:{stroke:"#155dfc"}}}},n={args:{edge:{...e,id:"Line_5",style:{stroke:"#9810fa"}}}},d={args:{edge:{...e,id:"Line_6",style:{stroke:"#ec003f",strokeDasharray:"5 5"}}}};s.parameters={...s.parameters,docs:{...s.parameters?.docs,source:{originalSource:`{
+  args: {
+    edge: baseEdge
+  }
+}`,...s.parameters?.docs?.source}}};a.parameters={...a.parameters,docs:{...a.parameters?.docs,source:{originalSource:`{
+  args: {
+    edge: {
+      ...baseEdge,
+      id: 'Line_2',
+      style: {
+        stroke: '#000000',
+        strokeDasharray: '5 5'
+      }
+    }
+  }
+}`,...a.parameters?.docs?.source}}};o.parameters={...o.parameters,docs:{...o.parameters?.docs,source:{originalSource:`{
+  args: {
+    edge: {
+      ...baseEdge,
+      id: 'Line_3',
+      style: {
+        stroke: '#000000',
+        strokeDasharray: '2 2'
+      }
+    }
+  }
+}`,...o.parameters?.docs?.source}}};t.parameters={...t.parameters,docs:{...t.parameters?.docs,source:{originalSource:`{
+  args: {
+    edge: {
+      ...baseEdge,
+      id: 'Line_4',
+      style: {
+        stroke: '#155dfc'
+      }
+    }
+  }
+}`,...t.parameters?.docs?.source}}};n.parameters={...n.parameters,docs:{...n.parameters?.docs,source:{originalSource:`{
+  args: {
+    edge: {
+      ...baseEdge,
+      id: 'Line_5',
+      style: {
+        stroke: '#9810fa'
+      }
+    }
+  }
+}`,...n.parameters?.docs?.source}}};d.parameters={...d.parameters,docs:{...d.parameters?.docs,source:{originalSource:`{
+  args: {
+    edge: {
+      ...baseEdge,
+      id: 'Line_6',
+      style: {
+        stroke: '#ec003f',
+        strokeDasharray: '5 5'
+      }
+    }
+  }
+}`,...d.parameters?.docs?.source}}};const b=["Default","Dashed","Dotted","BlueEdge","PurpleEdge","RedDashed"];export{t as BlueEdge,a as Dashed,s as Default,o as Dotted,n as PurpleEdge,d as RedDashed,b as __namedExportsOrder,x as default};
