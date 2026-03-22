@@ -44,14 +44,14 @@ export function ContributionGraph({ data }: { data: Contribution[] }) {
                       key={day.date}
                       title={`${day.date}: ${day.count} contributions`}
                       style={{
-                        width: 18,
-                        height: 18,
+                        width: 16,
+                        height: 16,
                         borderRadius: 2,
                         backgroundColor: COLORS[getLevel(day.count)],
                       }}
                     />
                   ) : (
-                    <div key={j} style={{ width: 18, height: 18 }} />
+                    <div key={j} style={{ width: 16, height: 16 }} />
                   ),
                 )}
               </div>
