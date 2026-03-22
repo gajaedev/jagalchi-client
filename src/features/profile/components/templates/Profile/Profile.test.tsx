@@ -1,7 +1,15 @@
 import { render, screen } from '@testing-library/react';
 import { Provider, WritableAtom } from 'jotai';
 import { useHydrateAtoms } from 'jotai/utils';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
+
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({
+    back: vi.fn(),
+    push: vi.fn(),
+    replace: vi.fn(),
+  }),
+}));
 
 import { PROFILE_MESSAGES } from '@/constants/messages';
 

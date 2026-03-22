@@ -1,5 +1,9 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+
+import { ArrowLeft, Pencil } from 'lucide-react';
+
 import { ProfileBio } from '../../molecules/ProfileBio';
 import { ProfileCustomBoxArea } from '../../molecules/ProfileCustomBoxArea';
 import { ProfileHeader } from '../../molecules/ProfileHeader';
@@ -17,23 +21,39 @@ const MOCK_USER_DATA = {
 };
 
 export function Profile() {
+  const router = useRouter();
+
   return (
-    <div className="flex w-full max-w-[960px] flex-col gap-6 sm:gap-10">
-      <ProfileHeader
-        userName={MOCK_USER_DATA.userName}
-        email={MOCK_USER_DATA.email}
-        followerCount={MOCK_USER_DATA.followerCount}
-        followingCount={MOCK_USER_DATA.followingCount}
-      />
-      <ProfileBio bio={MOCK_USER_DATA.bio} />
-      <div className="flex w-full flex-col gap-4 md:flex-row md:gap-6">
-        <ProfileCustomBoxArea />
-        <div className="flex-1">
-          <ProfileStreak />
+    <div className="flex min-h-screen w-full flex-col items-center bg-white">
+      <header className="flex h-11 w-full items-center justify-between border-b border-[#e2e8f0] bg-white px-5">
+        <button className="flex items-center gap-1 text-sm" onClick={() => router.back()}>
+          <ArrowLeft size={14} />
+          <span>프로필</span>
+        </button>
+        <div className="flex items-center gap-1 text-sm">
+          <span>User</span>
+          <Pencil size={16} />
         </div>
+      </header>
+      <div className="flex w-full max-w-[960px] flex-col gap-10 px-6 py-10">
+        <ProfileHeader
+          userName={MOCK_USER_DATA.userName}
+          email={MOCK_USER_DATA.email}
+          followerCount={MOCK_USER_DATA.followerCount}
+          followingCount={MOCK_USER_DATA.followingCount}
+        />
+        <div className="flex w-full gap-[76px]">
+          <div className="w-[500px] shrink-0">
+            <ProfileBio bio={MOCK_USER_DATA.bio} />
+          </div>
+          <div className="flex-1">
+            <ProfileCustomBoxArea />
+          </div>
+        </div>
+        <ProfileStreak />
+        <ProfileThirdBox />
+        <MadeRoadmapList />
       </div>
-      <ProfileThirdBox />
-      <MadeRoadmapList />
     </div>
   );
 }
