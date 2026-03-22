@@ -35,23 +35,23 @@ export function ContributionGraph({ data }: { data: Contribution[] }) {
       </CardHeader>
       <CardContent className="flex flex-col">
         <div className="w-full overflow-x-auto py-2">
-          <div className="flex min-w-max gap-[1px]">
+          <div className="flex min-w-max gap-[2px]">
             {weeks.map((week, i) => (
-              <div key={i} className="flex flex-col gap-[1px]">
+              <div key={i} className="flex flex-col gap-[2px]">
                 {week.map((day, j) =>
                   day ? (
                     <div
                       key={day.date}
                       title={`${day.date}: ${day.count} contributions`}
                       style={{
-                        width: 8,
-                        height: 8,
+                        width: 12,
+                        height: 12,
                         borderRadius: 2,
                         backgroundColor: COLORS[getLevel(day.count)],
                       }}
                     />
                   ) : (
-                    <div key={j} style={{ width: 8, height: 8 }} />
+                    <div key={j} style={{ width: 12, height: 12 }} />
                   ),
                 )}
               </div>
