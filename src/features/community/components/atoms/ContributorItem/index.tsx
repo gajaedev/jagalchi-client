@@ -11,19 +11,19 @@ interface ContributorItemProps {
 export function ContributorItem({
   name,
   avatarUrl,
-  followerText = 'Contributor',
+  followerText = '5.8k Followers',
 }: ContributorItemProps) {
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex w-[134px] items-center gap-2">
       <Avatar className="h-[32px] w-[32px]">
         <AvatarImage src={avatarUrl} alt={name} />
         <AvatarFallback className="bg-slate-100 text-[12px] font-bold text-slate-400">
           {name[0]}
         </AvatarFallback>
       </Avatar>
-      <div className="flex flex-col">
-        <span className="text-foreground text-[12px] leading-tight font-bold">{name}</span>
-        <span className="text-[10px] leading-none text-slate-400">{followerText}</span>
+      <div className="flex min-w-0 flex-1 flex-col">
+        <span className="truncate text-sm leading-[21px] font-normal text-[#020617]">{name}</span>
+        <span className="truncate text-xs leading-4 text-[#64748b]">{followerText}</span>
       </div>
     </div>
   );

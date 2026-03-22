@@ -15,7 +15,7 @@ describe('ContributorItem', () => {
   it('renders the name correctly', () => {
     render(<ContributorItem name="John Doe" />);
     expect(screen.getByText('John Doe')).toBeInTheDocument();
-    expect(screen.getByText('Contributor')).toBeInTheDocument();
+    expect(screen.getByText('5.8k Followers')).toBeInTheDocument();
   });
 
   it('renders the fallback text when no avatarUrl is provided', () => {

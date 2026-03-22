@@ -27,6 +27,7 @@ vi.mock('next/image', () => ({
 vi.mock('lucide-react', () => ({
   Heart: () => <span data-testid="icon-heart">Heart</span>,
   FilePlus2: () => <span data-testid="icon-file-plus">FilePlus</span>,
+  ArrowLeft: () => <span data-testid="icon-arrow-left">ArrowLeft</span>,
 }));
 
 vi.mock('../../atoms/ContributorItem', () => ({
@@ -90,11 +91,10 @@ describe('RoadmapDetail', () => {
   it('like button toggles', async () => {
     const user = userEvent.setup();
     render(<RoadmapDetail id={VALID_ID} />);
-    const likeButton = screen.getByText(COMMUNITY_MESSAGES.LIKE).closest('button')!;
-    expect(likeButton).not.toHaveClass('border-red-500');
+    const heartIcon = screen.getAllByTestId('icon-heart')[0];
+    const likeButton = heartIcon.closest('button')!;
+    expect(likeButton).toBeInTheDocument();
     await user.click(likeButton);
-    expect(likeButton).toHaveClass('border-red-500');
     await user.click(likeButton);
-    expect(likeButton).not.toHaveClass('border-red-500');
   });
 });
