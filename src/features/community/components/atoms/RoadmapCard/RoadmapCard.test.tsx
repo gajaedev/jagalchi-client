@@ -15,10 +15,13 @@ describe('RoadmapCard', () => {
     expect(screen.getByText('By John Doe')).toBeInTheDocument();
   });
 
-  it('renders the thumbnail placeholder when no imageUrl is provided', () => {
-    render(<RoadmapCard id="test-2" title="Test Roadmap" author="John Doe" />);
+  it('renders the placeholder icon when no imageUrl is provided', () => {
+    const { container } = render(
+      <RoadmapCard id="test-2" title="Test Roadmap" author="John Doe" />,
+    );
 
-    expect(screen.getByText('Thumbnail')).toBeInTheDocument();
+    const svg = container.querySelector('.lucide-square-dashed');
+    expect(svg).toBeInTheDocument();
   });
 
   it('renders the image when imageUrl is provided', () => {

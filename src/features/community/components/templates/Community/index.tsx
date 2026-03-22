@@ -14,6 +14,7 @@ import {
 } from '../../../stores/community.atoms';
 import { filterAndSortCommunityItems } from '../../../utils/community-utils';
 import { CommunityFilter } from '../../molecules/CommunityFilter';
+import { CommunityHeader } from '../../molecules/CommunityHeader';
 import { CommunityHero } from '../../molecules/CommunityHero';
 import { CommunityGrid } from '../../organisms/CommunityGrid';
 
@@ -38,6 +39,7 @@ export function Community() {
 
   return (
     <div className="flex min-h-screen w-full flex-col items-center bg-white">
+      <CommunityHeader />
       <CommunityHero />
       <div className="flex w-full flex-col items-center bg-white pt-[40px] pb-[100px]">
         <CommunityFilter />

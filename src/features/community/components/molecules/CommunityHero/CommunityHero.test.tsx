@@ -49,7 +49,7 @@ describe('CommunityHero', () => {
         <CommunityHero />
       </Wrapper>,
     );
-    const input = screen.getByPlaceholderText('Type a command or search...') as HTMLInputElement;
+    const input = screen.getByPlaceholderText('Type a roadmap name to find...') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'React' } });
     expect(input.value).toBe('React');
   });
@@ -60,7 +60,7 @@ describe('CommunityHero', () => {
         <CommunityHero />
       </Wrapper>,
     );
-    const input = screen.getByPlaceholderText('Type a command or search...');
+    const input = screen.getByPlaceholderText('Type a roadmap name to find...');
     fireEvent.change(input, { target: { value: 'React' } });
     fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' });
   });
@@ -71,7 +71,7 @@ describe('CommunityHero', () => {
         <CommunityHero />
       </Wrapper>,
     );
-    const input = screen.getByPlaceholderText('Type a command or search...');
+    const input = screen.getByPlaceholderText('Type a roadmap name to find...');
     const button = screen.getByRole('button');
 
     fireEvent.change(input, { target: { value: 'Vue' } });

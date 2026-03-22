@@ -1,39 +1,42 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { Card, CardContent } from '@/components/ui/card';
+import { SquareDashed } from 'lucide-react';
+
+import { cn } from '@/lib/utils';
 
 interface RoadmapCardProps {
   id: string;
   title: string;
   author: string;
   imageUrl?: string;
+  className?: string;
 }
 
-export function RoadmapCard({ id, title, author, imageUrl }: RoadmapCardProps) {
+export function RoadmapCard({ id, title, author, imageUrl, className }: RoadmapCardProps) {
   return (
-    <Link href={`/community/${id}`} className="block w-full">
-      <Card className="hover:bg-muted/40 w-full cursor-pointer overflow-hidden rounded-lg border p-0 shadow-none transition-colors">
-        {imageUrl ? (
-          <div className="bg-muted/50 relative aspect-[2/1] w-full">
-            <Image
-              src={imageUrl}
-              alt={title}
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            />
-          </div>
-        ) : (
-          <div className="bg-muted/50 flex aspect-[2/1] w-full items-center justify-center">
-            <p className="text-muted-foreground text-sm font-medium">Thumbnail</p>
-          </div>
+    <Link href={`/community/${id}`} className="block">
+      <div
+        className={cn(
+          'h-[200px] w-[304px] cursor-pointer overflow-hidden rounded-lg border border-[#e2e8f0] bg-[#f1f5f9]',
+          className,
         )}
-        <CardContent className="m-2 flex h-5 flex-col items-start justify-end px-2">
-          <p className="text-foreground text-sm font-semibold">{title}</p>
-          <p className="text-muted-foreground py-1 text-xs">By {author}</p>
-        </CardContent>
-      </Card>
+      >
+        {/* Thumbnail Area - 146px */}
+        <div className="relative flex h-[146px] w-full items-center justify-center overflow-hidden">
+          {imageUrl ? (
+            <Image src={imageUrl} alt={title} fill className="object-cover" sizes="304px" />
+          ) : (
+            <SquareDashed className="text-muted-foreground/30 h-8 w-8" />
+          )}
+        </div>
+
+        {/* Info Area */}
+        <div className="flex flex-col border-t border-[#e2e8f0] bg-white px-3 py-2">
+          <p className="truncate text-sm leading-[21px] text-[#020617]">{title}</p>
+          <p className="truncate text-xs leading-4 text-[#64748b]">By {author}</p>
+        </div>
+      </div>
     </Link>
   );
 }

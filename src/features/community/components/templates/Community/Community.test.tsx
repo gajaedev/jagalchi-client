@@ -4,6 +4,10 @@ import { describe, it, expect, vi } from 'vitest';
 
 import { Community } from './index';
 
+vi.mock('../../molecules/CommunityHeader', () => ({
+  CommunityHeader: () => <div data-testid="community-header">Header</div>,
+}));
+
 vi.mock('../../molecules/CommunityHero', () => ({
   CommunityHero: () => <div data-testid="community-hero">Hero</div>,
 }));
@@ -24,6 +28,7 @@ describe('Community Template', () => {
       </Provider>,
     );
 
+    expect(screen.getByTestId('community-header')).toBeInTheDocument();
     expect(screen.getByTestId('community-hero')).toBeInTheDocument();
     expect(screen.getByTestId('community-filter')).toBeInTheDocument();
     expect(screen.getByTestId('community-grid')).toBeInTheDocument();
