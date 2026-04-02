@@ -1,1 +1,0 @@
-import"./iframe-CucAqyq3.js";import{d as n}from"./react-WkSLNRcZ.js";const r=new WeakMap;function p(e,t){const a=n(),s=i(a);for(const[o,...d]of e)s.has(o)||(s.add(o),a.set(o,...d))}const i=e=>{let t=r.get(e);return t||(t=new WeakSet,r.set(e,t)),t};export{p as u};
