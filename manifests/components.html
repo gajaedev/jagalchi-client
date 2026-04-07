@@ -576,7 +576,7 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">4/41 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">29/41 infos</a><a class="filter-pill err" data-k="story-errors" href="#filter-story-errors">1/269 story errors</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">4/41 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">30/41 infos</a><a class="filter-pill err" data-k="story-errors" href="#filter-story-errors">1/269 story errors</a></div>
   </div>
 </header>
 <main>
@@ -3153,7 +3153,7 @@ export const CustomWidth: Story = {
 <article
   class="card 
   no-error 
-  no-info 
+  has-info 
   no-story-error
   no-doc-error"
   role="listitem"
@@ -3163,20 +3163,20 @@ export const CustomWidth: Story = {
       <h2><span class="status-dot dot-ok"></span> EdgePropertiesPanel</h2>
       <div class="badges">
         <label for="c-11-features-roadmapeditor-organisms-edgepropertiespanel-props" class="badge ok as-toggle">1 prop type</label>
-        
+        <label for="c-11-features-roadmapeditor-organisms-edgepropertiespanel-info" class="badge info as-toggle">1 info</label>
         <label for="c-11-features-roadmapeditor-organisms-edgepropertiespanel-stories" class="badge ok as-toggle">6 stories</label>
         
       </div>
     </div>
     <div class="meta" title="./src/features/roadmap-editor/properties/components/EdgePropertiesPanel/EdgePropertiesPanel.stories.tsx">features-roadmapeditor-organisms-edgepropertiespanel · ./src/features/roadmap-editor/properties/components/EdgePropertiesPanel/EdgePropertiesPanel.stories.tsx</div>
     
-    <div class="hint">Edge 선택 시 표시되는 속성 패널 Figma 디자인 기반 구조: - Header: &quot;Line_1&quot; + Lock 버튼 - 라인 스타일: Select - 기본 컬러: ColorSelector</div>
+    
     
   </div>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  
+  <input id="c-11-features-roadmapeditor-organisms-edgepropertiespanel-info" class="tg tg-info" type="checkbox" hidden />
   <input id="c-11-features-roadmapeditor-organisms-edgepropertiespanel-stories" class="tg tg-stories" type="checkbox" hidden />
   
   <input id="c-11-features-roadmapeditor-organisms-edgepropertiespanel-props" class="tg tg-props" type="checkbox" hidden />
@@ -3184,6 +3184,13 @@ export const CustomWidth: Story = {
   <div class="panels">
     
     
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
     
         <div class="panel panel-props">
           <div class="note ok">
@@ -3599,7 +3606,7 @@ import { Provider } from "jotai";</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> EditorInput</h2>
       <div class="badges">
-        <label for="c-15-editor-atoms-editorinput-props" class="badge ok as-toggle">9 prop types</label>
+        <label for="c-15-editor-atoms-editorinput-props" class="badge ok as-toggle">10 prop types</label>
         
         <label for="c-15-editor-atoms-editorinput-stories" class="badge ok as-toggle">7 stories</label>
         
@@ -3626,7 +3633,7 @@ import { Provider } from "jotai";</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">9 prop types</span>
+              <span class="badge ok">10 prop types</span>
             </div>
             <pre><code>Component: src/features/roadmap-editor/properties/components/EditorInput/index.tsx::EditorInput</code></pre>
             <pre><code>Props:</code></pre>
@@ -3641,6 +3648,8 @@ isDisabled?: boolean = false
 isMultiline?: boolean = false
 
 label?: string
+
+onBlur?: () =&gt; void
 
 onChange?: (value: string) =&gt; void
 
