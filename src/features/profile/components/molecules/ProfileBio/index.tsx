@@ -22,27 +22,18 @@ interface ProfileBioProps {
 export function ProfileBio({ bio, onChange }: ProfileBioProps) {
   const mode = useAtomValue(profileModeAtom);
 
-  const { register, reset, watch } = useForm({
-    defaultValues: {
-      bio,
-    },
+  const { register, reset } = useForm({
+    defaultValues: { bio },
   });
-
-  const userBio = watch('bio');
 
   const [isExpanded, setIsExpanded] = useState(false);
   const [isOverflowing, setIsOverflowing] = useState(false);
   const bioRef = useRef<HTMLParagraphElement>(null);
 
-  // Update form when prop changes
+  // Sync form when prop value changes (e.g., on cancel/restore)
   useEffect(() => {
     reset({ bio });
   }, [bio, reset]);
-
-  // Notify parent of changes
-  useEffect(() => {
-    onChange?.(userBio);
-  }, [userBio, onChange]);
 
   useEffect(() => {
     const checkOverflow = () => {
@@ -54,13 +45,18 @@ export function ProfileBio({ bio, onChange }: ProfileBioProps) {
     checkOverflow();
     window.addEventListener('resize', checkOverflow);
     return () => window.removeEventListener('resize', checkOverflow);
-  }, [userBio]);
+  }, [bio]);
 
   if (mode === 'edit') {
     return (
       <div className="flex flex-col gap-4">
         <p className="text-muted-foreground text-sm font-semibold">{PROFILE_MESSAGES.BIO_TITLE}</p>
-        <Textarea className="h-[280px] w-full resize-none" {...register('bio')} />
+        <Textarea
+          className="h-[280px] w-full resize-none"
+          {...register('bio', {
+            onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => onChange?.(e.target.value),
+          })}
+        />
       </div>
     );
   }
@@ -78,11 +74,11 @@ export function ProfileBio({ bio, onChange }: ProfileBioProps) {
           ref={bioRef}
           className={cn(
             'text-justify text-sm leading-relaxed whitespace-pre-wrap',
-            userBio ? 'text-muted-foreground' : 'text-muted-foreground/50',
+            bio ? 'text-muted-foreground' : 'text-muted-foreground/50',
             !isExpanded && 'line-clamp-3',
           )}
         >
-          {userBio || `${PROFILE_MESSAGES.BIO_TITLE}가 없습니다.`}
+          {bio || `${PROFILE_MESSAGES.BIO_TITLE}가 없습니다.`}
         </p>
 
         {(isOverflowing || isExpanded) && (

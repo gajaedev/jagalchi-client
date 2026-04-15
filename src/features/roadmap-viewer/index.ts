@@ -8,3 +8,4 @@ export { ViewerSidebar } from './components/ViewerSidebar';
 export { ViewerCanvas } from './components/ViewerCanvas';
 export { ViewerZoomControls } from './components/ViewerZoomControls';
 export { CardListMode } from './components/CardListMode';
+export { ForkTreeDialog } from './components/ForkTreeDialog';

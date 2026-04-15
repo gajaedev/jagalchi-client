@@ -37,7 +37,7 @@ export function AddDirectoryModal({ isOpen, onClose, onConfirm }: AddDirectoryMo
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="rounded-2xl p-6 sm:max-w-[400px]" showCloseButton={false}>
         <DialogHeader className="mb-4">
-          <DialogTitle className="text-lg font-bold text-[#020617]">디렉토리 추가</DialogTitle>
+          <DialogTitle className="text-lg font-bold text-slate-950">디렉토리 추가</DialogTitle>
         </DialogHeader>
         <div className="flex flex-col gap-4 py-4">
           <Input
@@ -58,7 +58,7 @@ export function AddDirectoryModal({ isOpen, onClose, onConfirm }: AddDirectoryMo
           <Button
             onClick={handleConfirm}
             disabled={!directoryName.trim()}
-            className="h-9 rounded-lg bg-[#0f172a] px-4 text-sm font-semibold text-white hover:bg-[#1e293b] disabled:opacity-50"
+            className="h-9 rounded-lg bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800 disabled:opacity-50"
           >
             확인
           </Button>

@@ -4,6 +4,25 @@ import { describe, expect, it, vi } from 'vitest';
 
 import { RegisterStep1Form } from './RegisterStep1Form';
 
+vi.mock('../../../hooks/use-send-verification-code', () => ({
+  useSendVerificationCode: () => ({
+    mutate: (_data: unknown, options?: { onSuccess?: () => void }) => {
+      options?.onSuccess?.();
+    },
+    isPending: false,
+  }),
+}));
+
+vi.mock('../../../hooks/use-verify-code', () => ({
+  useVerifyCode: () => ({
+    mutate: (_data: unknown, options?: { onSuccess?: () => void }) => {
+      options?.onSuccess?.();
+    },
+    mutateAsync: vi.fn().mockResolvedValue({}),
+    isPending: false,
+  }),
+}));
+
 describe('RegisterStep1Form', () => {
   it('이메일, 비밀번호, 인증번호 필드를 렌더링한다', () => {
     render(<RegisterStep1Form onSubmit={vi.fn()} onGoogleRegister={vi.fn()} />);

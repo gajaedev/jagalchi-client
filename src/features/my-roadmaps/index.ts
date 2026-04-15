@@ -16,7 +16,6 @@ export {
   sortByAtom,
   filterCategoryAtom,
   sidebarCategoryAtom,
-  myRoadmapItemsAtom,
 } from './stores/my-roadmaps.atoms';
 export type { SidebarCategory } from './stores/my-roadmaps.atoms';
 

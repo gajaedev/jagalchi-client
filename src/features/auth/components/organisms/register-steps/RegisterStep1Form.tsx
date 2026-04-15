@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
+import { AUTH_MESSAGES } from '@/constants/messages';
 
 import { useVerificationCode } from '../../../hooks/use-verification-code';
 import { registerStep1Schema, type RegisterStep1Schema } from '../../../schemas/auth.schema';
@@ -33,7 +34,8 @@ export function RegisterStep1Form({
   onGoogleRegister,
   onGitHubRegister,
 }: RegisterStep1FormProps) {
-  const { isCodeSent, handleSendCode } = useVerificationCode();
+  const { isCodeSent, handleSendCode, isSendingCode, isCooldownActive, cooldownSeconds } =
+    useVerificationCode();
 
   const form = useForm<RegisterStep1Schema>({
     resolver: zodResolver(registerStep1Schema),
@@ -44,6 +46,14 @@ export function RegisterStep1Form({
     },
   });
 
+  const handleResend = () => {
+    handleSendCode(form.getValues('email'), () => {
+      form.setValue('verificationCode', '');
+    });
+  };
+
+  const isResendDisabled = isCooldownActive || isSendingCode;
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} noValidate className="flex flex-col gap-7">
@@ -52,9 +62,14 @@ export function RegisterStep1Form({
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>이메일</FormLabel>
+              <FormLabel>{AUTH_MESSAGES.EMAIL_LABEL}</FormLabel>
               <FormControl>
-                <Input type="email" placeholder="이메일 입력" {...field} />
+                <Input
+                  type="email"
+                  placeholder={AUTH_MESSAGES.EMAIL_PLACEHOLDER}
+                  disabled={isCodeSent}
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -66,9 +81,9 @@ export function RegisterStep1Form({
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>비밀번호</FormLabel>
+              <FormLabel>{AUTH_MESSAGES.PASSWORD_LABEL}</FormLabel>
               <FormControl>
-                <PasswordInput placeholder="비밀번호 지정" {...field} />
+                <PasswordInput placeholder={AUTH_MESSAGES.PASSWORD_SET_PLACEHOLDER} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -82,16 +97,19 @@ export function RegisterStep1Form({
             <FormItem>
               <div className="flex items-center justify-between">
                 <FormLabel className={!isCodeSent ? 'text-muted-foreground' : ''}>
-                  인증번호
+                  {AUTH_MESSAGES.VERIFICATION_CODE_LABEL}
                 </FormLabel>
                 {isCodeSent && (
                   <button
                     type="button"
-                    aria-label="인증번호 재전송"
-                    className="cursor-pointer text-sm tracking-[0.07px] text-neutral-900 underline transition-colors hover:text-neutral-700"
-                    onClick={handleSendCode}
+                    aria-label={AUTH_MESSAGES.VERIFICATION_CODE_RESEND_ARIA}
+                    disabled={isResendDisabled}
+                    className="cursor-pointer text-sm tracking-[0.07px] text-neutral-900 underline transition-colors hover:text-neutral-700 disabled:cursor-not-allowed disabled:text-neutral-400 disabled:no-underline"
+                    onClick={handleResend}
                   >
-                    재전송
+                    {isCooldownActive
+                      ? `${cooldownSeconds}${AUTH_MESSAGES.VERIFICATION_CODE_RESEND_COOLDOWN}`
+                      : AUTH_MESSAGES.VERIFICATION_CODE_RESEND}
                   </button>
                 )}
               </div>
@@ -106,11 +124,18 @@ export function RegisterStep1Form({
         <div className="flex flex-col gap-3">
           {isCodeSent ? (
             <Button type="submit" className="w-full">
-              다음
+              {AUTH_MESSAGES.NEXT}
             </Button>
           ) : (
-            <Button type="button" className="w-full" onClick={handleSendCode}>
-              인증번호 전송
+            <Button
+              type="button"
+              className="w-full"
+              disabled={isSendingCode}
+              onClick={() => handleSendCode(form.getValues('email'))}
+            >
+              {isSendingCode
+                ? AUTH_MESSAGES.VERIFICATION_CODE_SENDING
+                : AUTH_MESSAGES.VERIFICATION_CODE_SEND}
             </Button>
           )}
           <Separator className="my-2" />

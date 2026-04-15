@@ -4,12 +4,17 @@ import { useState } from 'react';
 
 import Link from 'next/link';
 
+import { AUTH_MESSAGES } from '@/constants/messages';
 import { AuthCard, RegisterForm } from '@/features/auth';
 
 export default function RegisterPage() {
-  const [cardInfo, setCardInfo] = useState({
-    title: '회원가입',
-    description: '회원가입할 이메일 정보를 입력해주세요',
+  const [cardInfo, setCardInfo] = useState<{
+    title: string;
+    description: string;
+    showFooter: boolean;
+  }>({
+    title: AUTH_MESSAGES.REGISTER_TITLE,
+    description: AUTH_MESSAGES.REGISTER_DESCRIPTION,
     showFooter: true,
   });
 
@@ -28,12 +33,12 @@ export default function RegisterPage() {
       footer={
         cardInfo.showFooter ? (
           <p className="w-full text-center text-sm">
-            이미 계정이 있나요?{' '}
+            {AUTH_MESSAGES.REGISTER_HAS_ACCOUNT}{' '}
             <Link
               href="/login"
               className="cursor-pointer underline transition-colors hover:text-neutral-700"
             >
-              로그인
+              {AUTH_MESSAGES.REGISTER_LOGIN_LINK}
             </Link>
           </p>
         ) : undefined

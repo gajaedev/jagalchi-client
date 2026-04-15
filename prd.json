@@ -1,0 +1,136 @@
+{
+  "project": "jagalchi-client",
+  "branchName": "feat/#177-e2e-testing",
+  "description": "E2E 테스트 인프라 구축 — Playwright + MSW mock server로 핵심 사용자 플로우 검증",
+  "userStories": [
+    {
+      "id": "US-001",
+      "title": "Playwright 설정 및 프로젝트 구조",
+      "description": "E2E 테스트를 실행할 수 있는 Playwright 환경을 세팅한다.",
+      "acceptanceCriteria": [
+        "playwright.config.ts가 프로젝트 루트에 존재한다",
+        "e2e/ 디렉토리가 생성되고, e2e/fixtures/, e2e/helpers/ 구조를 갖는다",
+        "package.json에 'test:e2e': 'playwright test', 'test:e2e:ui': 'playwright test --ui' 스크립트가 추가된다",
+        "npx playwright test --list 실행 시 에러 없이 테스트 목록이 출력된다",
+        "baseURL은 http://localhost:3000으로 설정한다",
+        "webServer 옵션으로 pnpm dev를 자동 실행하도록 설정한다"
+      ],
+      "priority": 1,
+      "passes": true,
+      "notes": "Playwright는 이미 devDependencies에 설치됨. playwright.config.ts만 생성하면 됨."
+    },
+    {
+      "id": "US-002",
+      "title": "MSW 설치 및 핸들러 구조 세팅",
+      "description": "API 모킹 레이어를 구축하여 백엔드 없이 E2E 테스트를 실행할 수 있게 한다.",
+      "acceptanceCriteria": [
+        "msw가 dependencies에 설치된다",
+        "src/mocks/handlers/ 디렉토리에 auth.ts, roadmap.ts, profile.ts 핸들러 파일이 존재한다",
+        "src/mocks/server.ts가 존재하고 setupServer()로 모든 핸들러를 통합한다",
+        "src/mocks/browser.ts가 존재하고 setupWorker()로 브라우저용 서비스 워커를 설정한다",
+        "src/mocks/fixtures/ 디렉토리에 users.ts, roadmaps.ts 픽스처 파일이 존재한다",
+        "pnpm build가 MSW 추가 후에도 정상 통과한다"
+      ],
+      "priority": 2,
+      "passes": true,
+      "notes": "MSW는 아직 설치되지 않음. pnpm add -D msw 필요. 현재 API 엔드포인트는 TODO 상태이므로, 예상 API 스펙을 기반으로 핸들러를 작성한다."
+    },
+    {
+      "id": "US-003",
+      "title": "MSW Auth 핸들러 구현",
+      "description": "인증 관련 API 핸들러를 작성한다.",
+      "acceptanceCriteria": [
+        "POST /api/auth/login 핸들러가 이메일/비밀번호를 받아 JWT 토큰을 반환한다",
+        "POST /api/auth/register 핸들러가 회원가입 데이터를 받아 유저를 생성한다",
+        "POST /api/auth/send-verification-code 핸들러가 이메일로 인증 코드를 발송한다 (mock)",
+        "POST /api/auth/verify-code 핸들러가 코드 검증 결과를 반환한다",
+        "POST /api/auth/reset-password 핸들러가 비밀번호 재설정을 처리한다",
+        "잘못된 credentials로 요청 시 401 응답을 반환한다",
+        "핸들러가 TypeScript 타입 안전성을 갖는다"
+      ],
+      "priority": 3,
+      "passes": true,
+      "notes": "현재 LoginForm, RegisterForm, FindPasswordForm에 TODO: API 연동 주석이 있음. 해당 폼의 Zod 스키마(auth.schema.ts)를 참고하여 요청/응답 타입을 정의한다."
+    },
+    {
+      "id": "US-004",
+      "title": "MSW Roadmap 핸들러 구현",
+      "description": "로드맵 CRUD API 핸들러를 작성한다.",
+      "acceptanceCriteria": [
+        "GET /api/roadmaps 핸들러가 로드맵 목록을 반환한다",
+        "GET /api/roadmaps/:id 핸들러가 단일 로드맵을 반환한다",
+        "POST /api/roadmaps 핸들러가 새 로드맵을 생성한다",
+        "PUT /api/roadmaps/:id 핸들러가 로드맵을 업데이트한다",
+        "DELETE /api/roadmaps/:id 핸들러가 로드맵을 삭제한다",
+        "픽스처 데이터가 실제 Roadmap 타입(roadmap.types.ts)과 일치한다",
+        "존재하지 않는 ID로 요청 시 404 응답을 반환한다"
+      ],
+      "priority": 4,
+      "passes": true,
+      "notes": "현재 localStorage 기반으로 동작 중. roadmap-storage.ts의 Roadmap 인터페이스와 roadmap.schema.ts의 Zod 스키마를 참고한다."
+    },
+    {
+      "id": "US-005",
+      "title": "E2E: 인증 플로우 테스트",
+      "description": "로그인, 회원가입, 비밀번호 찾기의 핵심 사용자 플로우를 E2E로 검증한다.",
+      "acceptanceCriteria": [
+        "e2e/auth.spec.ts 파일이 존재한다",
+        "로그인 페이지 접속 → 이메일/비밀번호 입력 → 제출 → 홈으로 이동 테스트가 통과한다",
+        "잘못된 credentials로 로그인 시 에러 메시지가 표시되는 테스트가 통과한다",
+        "회원가입 Step 1 → Step 2 → Step 3 진행 테스트가 통과한다",
+        "비밀번호 찾기 플로우 테스트가 통과한다",
+        "pnpm test:e2e 실행 시 auth 테스트가 전부 통과한다"
+      ],
+      "priority": 5,
+      "passes": true,
+      "notes": "MSW 핸들러를 Playwright의 route.fulfill 또는 서버 사이드에서 연동해야 함. 현재 폼은 TODO 상태이므로, MSW 응답을 받아 처리하는 로직을 폼에 추가해야 할 수 있음."
+    },
+    {
+      "id": "US-006",
+      "title": "E2E: 에디터 플로우 테스트",
+      "description": "로드맵 에디터의 핵심 조작을 E2E로 검증한다.",
+      "acceptanceCriteria": [
+        "e2e/editor.spec.ts 파일이 존재한다",
+        "에디터 페이지 접속 → 캔버스가 렌더링되는 테스트가 통과한다",
+        "노드 추가 → 캔버스에 노드가 나타나는 테스트가 통과한다",
+        "노드 선택 → 속성 패널에 정보가 표시되는 테스트가 통과한다",
+        "Ctrl+Z → undo 동작 테스트가 통과한다",
+        "pnpm test:e2e 실행 시 editor 테스트가 전부 통과한다"
+      ],
+      "priority": 6,
+      "passes": true,
+      "notes": "에디터는 localStorage 기반이므로 MSW 없이도 일부 테스트 가능. @xyflow/react 캔버스 내부 요소 선택에 data-testid가 필요할 수 있음."
+    },
+    {
+      "id": "US-007",
+      "title": "E2E: 커뮤니티 & 뷰어 플로우 테스트",
+      "description": "커뮤니티 목록 조회, 로드맵 뷰어의 핵심 플로우를 E2E로 검증한다.",
+      "acceptanceCriteria": [
+        "e2e/community.spec.ts 파일이 존재한다",
+        "커뮤니티 페이지 접속 → 로드맵 목록이 렌더링되는 테스트가 통과한다",
+        "로드맵 카드 클릭 → 상세 페이지로 이동하는 테스트가 통과한다",
+        "e2e/viewer.spec.ts 파일이 존재한다",
+        "뷰어 페이지 접속 → 로드맵이 렌더링되는 테스트가 통과한다",
+        "pnpm test:e2e 실행 시 community, viewer 테스트가 전부 통과한다"
+      ],
+      "priority": 7,
+      "passes": true,
+      "notes": "커뮤니티는 현재 MOCK 데이터 기반. MSW 핸들러로 교체하거나, 기존 mock 데이터를 그대로 활용할 수 있음."
+    },
+    {
+      "id": "US-008",
+      "title": "CI 워크플로우에 E2E 스텝 추가",
+      "description": "GitHub Actions CI에 Playwright E2E 테스트를 통합한다.",
+      "acceptanceCriteria": [
+        ".github/workflows/ci.yml에 E2E 테스트 job이 추가된다",
+        "Playwright 브라우저 설치 스텝이 포함된다",
+        "E2E 테스트 실패 시 CI가 fail된다",
+        "Playwright HTML 리포트가 아티팩트로 업로드된다",
+        "기존 CI 스텝(lint, build, unit test)과 병렬로 실행된다"
+      ],
+      "priority": 8,
+      "passes": true,
+      "notes": "현재 ci.yml에 lint + typecheck + build + vitest가 있음. E2E는 별도 job으로 추가하여 빌드 후 실행."
+    }
+  ]
+}

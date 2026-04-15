@@ -1,171 +1,175 @@
 # Develop 브랜치 현황
 
-**확인 일시**: 2026-01-23
-**브랜치**: develop
+**확인 일시**: 2026-04-07
+**브랜치**: develop (7558391)
+**Phase**: 0-4 완료
 
 ---
 
-## 📊 에디터 컴포넌트 현황
+## Phase 완료 현황
 
-### 총 20개 컴포넌트
-
-| 카테고리      | 개수 | 컴포넌트 목록                                                                                                                                                      |
-| ------------- | ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Atoms**     | 3개  | ColorPresetButton, PlusButtonHandle, ToolbarButton                                                                                                                 |
-| **Molecules** | 7개  | ColorPicker, ColorSelector, ConnectionLine, EditorAiMenu, JagalchiNode, JagalchiSection, JagalchiText                                                              |
-| **Organisms** | 9개  | EdgePropertiesPanel, EditorHeader, EditorSidebar, EditorToolbar, MultiSelectPanel, NodePropertiesPanel, RoadmapCanvas, SectionPropertiesPanel, TextPropertiesPanel |
-| **Templates** | 1개  | RoadmapEditor                                                                                                                                                      |
+| Phase | 제목                   | 주요 내용                                                  | 상태 |
+| ----- | ---------------------- | ---------------------------------------------------------- | ---- |
+| 0     | 인프라/공통 기반       | API 클라이언트, 인증 레이어, 미들웨어, 데이터 모델 통합    | Done |
+| 1     | 토큰/미들웨어/검증     | atomWithStorage, 쿠키 동기화, Zod 강화                     | Done |
+| 2A    | 마이로드맵 연결        | 카드 클릭 라우팅, CRUD 콜백, 검색, empty state             | Done |
+| 2B    | 커뮤니티 반응형        | 반응형 그리드, 좋아요 카운트, About 동적화                 | Done |
+| 2C    | 프로필 편집 개선       | 편집 취소 복원, 폼 검증, 반응형, 이미지 제한               | Done |
+| 3     | 에디터/뷰어 엣지케이스 | API 로더 준비, DetailNode, 사이드바 재오픈, self-loop 방지 | Done |
+| 4-1   | Tailwind 토큰          | 31파일 hex → Tailwind semantic 클래스                      | Done |
+| 4-2   | 문자열 상수화          | 30파일, 6개 상수 그룹 (~120개 키) → messages.ts            | Done |
+| 4-3   | 접근성                 | ARIA 속성, 키보드 네비게이션 (5개 컴포넌트)                | Done |
+| 4-4   | 에러 페이지            | error.tsx, not-found.tsx (글로벌 + myroadmap 라우트그룹)   | Done |
 
 ---
 
-## 📁 디렉토리 구조
+## 전체 컴포넌트 현황: 총 77개
+
+| Feature        | 컴포넌트 수 | 비고                                           |
+| -------------- | ----------- | ---------------------------------------------- |
+| roadmap-editor | 30          | 도메인별 서브디렉토리 구조로 재편              |
+| profile        | 17          | atoms 4, molecules 8, organisms 4, templates 1 |
+| roadmap-viewer | 10          | 플랫 구조                                      |
+| community      | 8           | atoms 2, molecules 3, organisms 1, templates 2 |
+| auth           | 6           | atoms 2, molecules 2, organisms 1, templates 1 |
+| my-roadmaps    | 6           | atoms 1, molecules 1, organisms 3, templates 1 |
+
+---
+
+## Roadmap Editor 상세 (30개 컴포넌트)
+
+에디터는 기존 atoms/molecules/organisms 구조에서 **도메인별 서브디렉토리** 구조로 확장됨.
+
+### 도메인별 구조
 
 ```
 src/features/roadmap-editor/
-├── components/
-│   ├── atoms/ (3개)
-│   │   ├── ColorPresetButton/
-│   │   ├── PlusButtonHandle/
-│   │   └── ToolbarButton/
-│   ├── molecules/ (7개)
-│   │   ├── ColorPicker/
-│   │   ├── ColorSelector/
-│   │   ├── ConnectionLine/
-│   │   ├── EditorAiMenu/
-│   │   ├── JagalchiNode/
-│   │   ├── JagalchiSection/
-│   │   └── JagalchiText/
-│   ├── organisms/ (9개)
-│   │   ├── EdgePropertiesPanel/
-│   │   ├── EditorHeader/
-│   │   ├── EditorSidebar/
-│   │   ├── EditorToolbar/
-│   │   ├── MultiSelectPanel/
-│   │   ├── NodePropertiesPanel/
-│   │   ├── RoadmapCanvas/
-│   │   ├── SectionPropertiesPanel/
-│   │   └── TextPropertiesPanel/
-│   └── templates/ (1개)
-│       └── RoadmapEditor/
+├── canvas/components/       (7개)
+│   ├── ConnectionLine/
+│   ├── DetailNode/
+│   ├── JagalchiNode/
+│   ├── JagalchiSection/
+│   ├── JagalchiText/
+│   ├── PlusButtonHandle/
+│   └── RoadmapCanvas/
+├── properties/components/   (10개)
+│   ├── ColorPicker/
+│   ├── ColorPickerInline/
+│   ├── ColorPresetButton/
+│   ├── ColorSelector/
+│   ├── EdgePropertiesPanel/
+│   ├── EditorDivider/
+│   ├── EditorInput/
+│   ├── NodePropertiesPanel/
+│   ├── SectionPropertiesPanel/
+│   └── TextPropertiesPanel/
+├── sidebar/components/      (2개)
+│   ├── EditorSidebar/
+│   └── MultiSelectPanel/
+├── toolbar/components/      (2개)
+│   ├── EditorToolbar/
+│   └── ToolbarButton/
+├── core/components/         (2개)
+│   ├── EditorHeader/
+│   └── RoadmapEditor/
+├── components/              (7개, 기존 구조)
+│   ├── atoms/
+│   │   └── LoadingButton/
+│   ├── molecules/
+│   │   └── EditorAiMenu/
+│   └── organisms/
+│       ├── ResourceRecommendationModal/
+│       ├── RoadmapAiModal/
+│       ├── RoadmapGenerationForm/
+│       ├── RoadmapModificationForm/
+│       └── UnsavedChangesDialog/
 ├── constants/
-│   ├── index.ts
-│   ├── node-colors.ts
-│   └── preset-colors.ts
+├── hooks/
 ├── stores/
-│   ├── editor-atoms.ts
-│   └── index.ts
 ├── types/
-│   └── editor.types.ts
 └── utils/
-    ├── align-nodes.ts
-    └── node-factory.ts
+```
+
+### Roadmap Viewer (10개)
+
+```
+src/features/roadmap-viewer/
+├── components/
+│   ├── CardListMode/
+│   ├── HeaderExportMenu/      (stub - return null)
+│   ├── HeaderMenu/
+│   ├── HeaderSaveAsImageMenu/ (stub - return null)
+│   ├── RoadmapHeader/
+│   ├── RoadmapViewer/
+│   ├── ViewerCanvas/
+│   ├── ViewerSidebar/
+│   ├── ViewerZoomControls/
+│   └── ZoomButtonGroup/
+├── hooks/
+├── stores/
+└── types/
 ```
 
 ---
 
-## 🔍 주요 컴포넌트
+## 기타 Feature 상세
 
-### Atoms
+### Auth (6개)
 
-1. **ColorPresetButton** - 프리셋 컬러 버튼
-2. **PlusButtonHandle** - + 버튼 핸들
-3. **ToolbarButton** - 툴바 버튼
+| 카테고리  | 컴포넌트                             |
+| --------- | ------------------------------------ |
+| Atoms     | GoogleAuthButton, GitHubAuthButton   |
+| Molecules | PasswordInput, VerificationCodeInput |
+| Organisms | LoginForm                            |
+| Templates | AuthCard                             |
 
-### Molecules
+### Profile (17개)
 
-1. **ColorPicker** - 컬러 선택기
-2. **ColorSelector** - 컬러 셀렉터
-3. **ConnectionLine** - 연결선
-4. **EditorAiMenu** - AI 메뉴
-5. **JagalchiNode** - 노드 컴포넌트
-6. **JagalchiSection** - 섹션 컴포넌트
-7. **JagalchiText** - 텍스트 컴포넌트
+| 카테고리  | 컴포넌트                                                                                                                                   |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| Atoms     | RoadmapCard, ProfileEditButton, ProfileLinkAddButton, ProfilePicture                                                                       |
+| Molecules | ProfileCustomOrganization, ProfileStreak, RoadmapList, ProfileHeader, ProfileBio, ProfileCustomBoxArea, ProfileInfoForm, ContributionGraph |
+| Organisms | ProfileThirdBox, AddRoadmapModal, MadeRoadmapList, ProfileCustomLinks                                                                      |
+| Templates | Profile                                                                                                                                    |
 
-### Organisms
+### My Roadmaps (6개)
 
-1. **EdgePropertiesPanel** - 엣지 속성 패널
-2. **EditorHeader** - 에디터 헤더
-3. **EditorSidebar** - 사이드바
-4. **EditorToolbar** - 툴바
-5. **MultiSelectPanel** - 다중 선택 패널
-6. **NodePropertiesPanel** - 노드 속성 패널
-7. **RoadmapCanvas** - 캔버스
-8. **SectionPropertiesPanel** - 섹션 속성 패널
-9. **TextPropertiesPanel** - 텍스트 속성 패널
+| 카테고리  | 컴포넌트                                            |
+| --------- | --------------------------------------------------- |
+| Atoms     | RoadmapCard                                         |
+| Molecules | MyRoadmapsToolbar                                   |
+| Organisms | MyRoadmapsGrid, MyRoadmapsHeader, MyRoadmapsSidebar |
+| Templates | MyRoadmapsLayout                                    |
 
----
+### Community (8개)
 
-## 📝 기타 파일
-
-### Constants
-
-- `node-colors.ts` - 노드 색상 정의
-- `preset-colors.ts` - 프리셋 색상
-- `index.ts` - export
-
-### Stores (Jotai)
-
-- `editor-atoms.ts` - 에디터 상태
-- `index.ts` - export
-
-### Types
-
-- `editor.types.ts` - 에디터 타입 정의
-
-### Utils
-
-- `align-nodes.ts` - 노드 정렬 유틸
-- `node-factory.ts` - 노드 생성 팩토리
+| 카테고리  | 컴포넌트                                        |
+| --------- | ----------------------------------------------- |
+| Atoms     | ContributorItem, RoadmapCard                    |
+| Molecules | CommunityHeader, CommunityFilter, CommunityHero |
+| Organisms | CommunityGrid                                   |
+| Templates | Community, RoadmapDetail                        |
 
 ---
 
-## 🆚 feat 브랜치와 비교
+## 코드 품질 현황
 
-| 항목              | develop | feat/#100 | 차이  |
-| ----------------- | ------- | --------- | ----- |
-| **컴포넌트 개수** | 20개    | 33개      | +13개 |
-| **Atoms**         | 3개     | 9개       | +6개  |
-| **Molecules**     | 7개     | 12개      | +5개  |
-| **Organisms**     | 9개     | 12개      | +3개  |
+P0-P4 통합 코드리뷰 결과 (상세: `docs/p0-p4-code-review.md`):
 
-### feat 브랜치에만 있는 컴포넌트 (13개)
+| 심각도  | 개수 |
+| ------- | ---- |
+| BLOCKER | 1    |
+| HIGH    | 8    |
+| MEDIUM  | 17   |
+| LOW     | 8    |
 
-**Atoms (6개)**:
-
-- ColorPicker
-- EditorCheckbox
-- EditorDivider
-- EditorInput
-- EditorTooltip
-- LoadingButton
-
-**Molecules (5개)**:
-
-- CollapseSection
-- ContextMenu
-- ResourceCard
-- RoadmapGenerationForm
-- RoadmapModificationForm
-
-**Organisms (3개)**:
-
-- ResourcePropertiesPanel
-- ResourceRecommendationModal
-- RoadmapAiModal
+**판정:** APPROVE_WITH_NOTES — BLOCKER 1건(URL 입력 차단) 즉시 수정 필요
 
 ---
 
-## 💡 결론
+## 참조 문서
 
-**develop 브랜치**:
-
-- ✅ 기본 에디터 인프라 있음 (20개 컴포넌트)
-- ✅ 주요 패널들 존재 (Node, Edge, Section, Text, MultiSelect)
-- ✅ 캔버스 요소 있음 (Node, Section, Text, Line)
-- ✅ 기본 레이아웃 완성 (Header, Toolbar, Sidebar, Canvas)
-
-**feat 브랜치에서 추가된 것**:
-
-- +13개 컴포넌트 (주로 UI 기본 요소, AI 기능)
-- EditorInput, EditorCheckbox, EditorDivider 등 기본 UI
-- RoadmapAiModal, ResourcePropertiesPanel 등 AI/자료 기능
+- 코드리뷰: `docs/p0-p4-code-review.md`
+- 남은 작업: `docs/remaining-tasks.md`
+- API 명세: `docs/api.md`
+- 에디터 컴포넌트: `docs/editor-components-inventory.md`

@@ -41,7 +41,7 @@ const makeEdge = (id: string, source: string, target: string): Edge =>
   }) as Edge;
 
 const makeRoadmap = (overrides: Partial<Roadmap> = {}): Roadmap => ({
-  id: 'roadmap-1',
+  id: 1,
   title: 'Test Roadmap',
   nodes: [],
   edges: [],
@@ -76,7 +76,7 @@ describe('useAutoSave', () => {
     const { rerender } = renderHook(
       ({ nodes }) =>
         useAutoSave({
-          roadmapId: 'roadmap-1',
+          roadmapId: '1',
           nodes,
           edges: [],
           title: 'Test',
@@ -101,7 +101,7 @@ describe('useAutoSave', () => {
   it('does not save when isEnabled is false', () => {
     renderHook(() =>
       useAutoSave({
-        roadmapId: 'roadmap-1',
+        roadmapId: '1',
         nodes: [makeNode('n1', 'Node 1')],
         edges: [],
         title: 'Test',
@@ -114,7 +114,7 @@ describe('useAutoSave', () => {
 
   it('updates existing roadmap (upsert) when roadmap exists in storage', () => {
     const existingRoadmap = makeRoadmap({
-      id: 'roadmap-1',
+      id: 1,
       title: 'Old Title',
       nodes: [],
       edges: [],
@@ -123,7 +123,7 @@ describe('useAutoSave', () => {
 
     renderHook(() =>
       useAutoSave({
-        roadmapId: 'roadmap-1',
+        roadmapId: '1',
         nodes: [makeNode('n1', 'New Node')],
         edges: [],
         title: 'Updated Title',
@@ -143,12 +143,12 @@ describe('useAutoSave', () => {
   });
 
   it('creates new roadmap when roadmap does not exist in storage', () => {
-    const otherRoadmap = makeRoadmap({ id: 'other-roadmap' });
+    const otherRoadmap = makeRoadmap({ id: 2 });
     mockParseRoadmaps.mockReturnValue([otherRoadmap]);
 
     renderHook(() =>
       useAutoSave({
-        roadmapId: 'roadmap-new',
+        roadmapId: '99',
         nodes: [makeNode('n1', 'Node 1')],
         edges: [],
         title: 'New Roadmap',
@@ -161,8 +161,8 @@ describe('useAutoSave', () => {
       setItemSpy.mock.calls[setItemSpy.mock.calls.length - 1][1] as string,
     ) as Roadmap[];
     expect(savedData).toHaveLength(2);
-    expect(savedData[0].id).toBe('other-roadmap');
-    expect(savedData[1].id).toBe('roadmap-new');
+    expect(savedData[0].id).toBe(2);
+    expect(savedData[1].id).toBe(99);
     expect(savedData[1].title).toBe('New Roadmap');
   });
 
@@ -174,7 +174,7 @@ describe('useAutoSave', () => {
     const { rerender } = renderHook(
       ({ nodes: n, edges: e, title: t }) =>
         useAutoSave({
-          roadmapId: 'roadmap-1',
+          roadmapId: '1',
           nodes: n,
           edges: e,
           title: t,

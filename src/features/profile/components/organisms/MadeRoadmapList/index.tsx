@@ -43,7 +43,7 @@ export function MadeRoadmapList() {
         {mode === 'edit' && (
           <AddRoadmapModal>
             <Button className="w-full rounded-xl py-6 text-[14px] font-bold">
-              공개 로드맵 추가
+              {PROFILE_MESSAGES.ADD_PUBLIC_ROADMAP}
             </Button>
           </AddRoadmapModal>
         )}

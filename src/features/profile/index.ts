@@ -21,9 +21,13 @@ export {
   profileModeAtom,
   profileBioAtom,
   profileOrgAtom,
-  profileLinkAtom,
+  profileLinksAtom,
   profileImageAtom,
+  profileBioSnapshotAtom,
+  profileOrgSnapshotAtom,
+  profileLinksSnapshotAtom,
 } from './stores/profile-atoms';
+export type { ProfileLinkItem } from './stores/profile-atoms';
 export type { Contribution } from './utils/contribution-utils';
 export {
   COLORS,

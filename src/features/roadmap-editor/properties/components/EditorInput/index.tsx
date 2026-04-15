@@ -8,6 +8,7 @@ export interface EditorInputProps {
   value?: string;
   placeholder?: string;
   onChange?: (value: string) => void;
+  onBlur?: () => void;
   isMultiline?: boolean;
   hasError?: boolean;
   errorMessage?: string;
@@ -38,6 +39,7 @@ export const EditorInput = forwardRef<HTMLInputElement | HTMLTextAreaElement, Ed
       value,
       placeholder,
       onChange,
+      onBlur,
       isMultiline = false,
       hasError = false,
       errorMessage,
@@ -60,7 +62,7 @@ export const EditorInput = forwardRef<HTMLInputElement | HTMLTextAreaElement, Ed
       'shadow-sm',
       // 폰트
       'text-sm leading-[21px] tracking-[0.07px]',
-      'text-[#020617] placeholder:text-slate-500',
+      'text-slate-950 placeholder:text-slate-500',
       // 인터랙션
       'outline-none transition-colors',
       'focus-visible:border-slate-300 focus-visible:ring-2 focus-visible:ring-slate-100',
@@ -76,7 +78,7 @@ export const EditorInput = forwardRef<HTMLInputElement | HTMLTextAreaElement, Ed
     return (
       <div className="flex flex-col gap-1.5">
         {label && (
-          <Label htmlFor={id} className="text-sm font-medium text-[#020617]">
+          <Label htmlFor={id} className="text-sm font-medium text-slate-950">
             {label}
           </Label>
         )}
@@ -86,6 +88,7 @@ export const EditorInput = forwardRef<HTMLInputElement | HTMLTextAreaElement, Ed
           value={value}
           placeholder={placeholder}
           onChange={handleChange}
+          onBlur={onBlur}
           disabled={isDisabled}
           aria-invalid={hasError}
           aria-describedby={hasError && errorMessage ? errorId : undefined}

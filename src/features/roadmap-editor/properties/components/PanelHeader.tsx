@@ -17,10 +17,13 @@ interface PanelHeaderProps {
  */
 export function PanelHeader({ title, subtitle, isLocked, onToggleLock }: PanelHeaderProps) {
   return (
-    <div className="flex items-center justify-between gap-4 border-b border-[#e2e8f0] p-4">
+    <div
+      className="flex items-center justify-between gap-4 border-b border-slate-200 p-4"
+      data-testid="properties-panel-header"
+    >
       <div className="flex flex-col gap-1">
-        <h3 className="text-base font-semibold text-[#020617]">{title}</h3>
-        <p className="text-xs text-[#020617]">{subtitle}</p>
+        <h3 className="text-base font-semibold text-slate-950">{title}</h3>
+        <p className="text-xs text-slate-950">{subtitle}</p>
       </div>
       <button
         type="button"
@@ -29,9 +32,9 @@ export function PanelHeader({ title, subtitle, isLocked, onToggleLock }: PanelHe
         aria-label={isLocked ? '잠금 해제' : '잠금'}
       >
         {isLocked ? (
-          <Lock className="h-[13px] w-[13px] text-[#020617]" />
+          <Lock className="h-[13px] w-[13px] text-slate-950" />
         ) : (
-          <Unlock className="h-[13px] w-[13px] text-[#020617]" />
+          <Unlock className="h-[13px] w-[13px] text-slate-950" />
         )}
       </button>
     </div>

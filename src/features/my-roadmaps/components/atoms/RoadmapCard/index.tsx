@@ -1,3 +1,5 @@
+import React from 'react';
+
 import Image from 'next/image';
 
 import { Ellipsis, SquareDashed } from 'lucide-react';
@@ -10,10 +12,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { MY_ROADMAPS_MESSAGES } from '@/constants/messages';
 import { cn } from '@/lib/utils';
 
 interface RoadmapCardProps {
-  id?: string;
+  id?: number;
   title: string;
   type?: 'Roadmap' | 'Directory';
   author?: string;
@@ -21,6 +24,7 @@ interface RoadmapCardProps {
   imageUrl?: string;
   isFavorite?: boolean;
   className?: string;
+  onClick?: () => void;
   onFavorite?: () => void;
   onRename?: () => void;
   onMove?: () => void;
@@ -35,6 +39,7 @@ export function RoadmapCard({
   imageUrl,
   isFavorite: _isFavorite,
   className,
+  onClick,
   onFavorite,
   onRename,
   onMove,
@@ -44,13 +49,24 @@ export function RoadmapCard({
 
   return (
     <Card
+      role="article"
+      aria-label={title}
+      tabIndex={0}
+      onKeyDown={(e: React.KeyboardEvent) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onClick?.();
+        }
+      }}
       className={cn(
-        'group relative flex h-[200px] w-[304px] cursor-pointer flex-col gap-0 overflow-hidden rounded-lg border border-[#e2e8f0] bg-[#f1f5f9] p-0 shadow-none transition-all',
+        'group relative flex h-[200px] w-[304px] cursor-pointer flex-col gap-0 overflow-hidden rounded-lg border border-slate-200 bg-slate-100 p-0 shadow-none transition-all',
+        'focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 focus-visible:outline-none',
         className,
       )}
+      onClick={onClick}
     >
       {/* Thumbnail Area */}
-      <div className="relative flex-1 bg-[#f1f5f9]">
+      <div className="relative flex-1 bg-slate-100">
         {isDirectory ? (
           <div className="relative h-full w-full">
             <div className="absolute top-0 left-0 h-4 w-24 rounded-t-lg bg-white" />
@@ -72,16 +88,18 @@ export function RoadmapCard({
       {/* Info Area */}
       <div className="flex items-center bg-white px-3 py-2">
         <div className="flex min-w-0 flex-1 flex-col">
-          <p className="truncate text-sm leading-[21px] text-[#020617]">{title}</p>
-          <p className="truncate text-xs leading-4 text-[#64748b]">
-            {isDirectory ? `${fileCount ?? 0}개의 파일` : `By ${author ?? '홍길동'}`}
+          <p className="truncate text-sm leading-[21px] text-slate-950">{title}</p>
+          <p className="truncate text-xs leading-4 text-slate-500">
+            {isDirectory
+              ? `${fileCount ?? 0}${MY_ROADMAPS_MESSAGES.CARD_FILE_COUNT_SUFFIX}`
+              : `By ${author ?? '홍길동'}`}
           </p>
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button
               type="button"
-              aria-label="더 보기"
+              aria-label={MY_ROADMAPS_MESSAGES.CARD_MORE_ARIA}
               className="text-muted-foreground/60 hover:text-foreground shrink-0 p-1 transition-colors"
             >
               <Ellipsis className="h-[13px] w-[13px]" />
@@ -97,7 +115,7 @@ export function RoadmapCard({
                     onFavorite?.();
                   }}
                 >
-                  즐겨찾기
+                  {MY_ROADMAPS_MESSAGES.CARD_FAVORITE}
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
               </>
@@ -109,7 +127,7 @@ export function RoadmapCard({
                 onRename?.();
               }}
             >
-              이름수정
+              {MY_ROADMAPS_MESSAGES.CARD_RENAME}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
@@ -119,7 +137,7 @@ export function RoadmapCard({
                 onMove?.();
               }}
             >
-              파일이동
+              {MY_ROADMAPS_MESSAGES.CARD_MOVE}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
@@ -129,7 +147,7 @@ export function RoadmapCard({
                 onDelete?.();
               }}
             >
-              삭제
+              {MY_ROADMAPS_MESSAGES.CARD_DELETE}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

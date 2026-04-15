@@ -1,22 +1,20 @@
 'use client';
 
+import { useAtom } from 'jotai';
+
+import { profileLinksAtom, profileOrgAtom } from '../../../stores/profile-atoms';
 import { ProfileCustomLinks } from '../../organisms/ProfileCustomLinks';
 import { ProfileCustomOrganization } from '../ProfileCustomOrganization';
 
 export function ProfileCustomBoxArea() {
+  const [org, setOrg] = useAtom(profileOrgAtom);
+  const [links, setLinks] = useAtom(profileLinksAtom);
+
   return (
     <div className="flex w-full flex-col gap-2">
-      <ProfileCustomOrganization initialValue="부산소프트웨어마이스터고등학교" />
+      <ProfileCustomOrganization initialValue={org} onChange={setOrg} />
 
-      <ProfileCustomLinks
-        initialLinks={[
-          {
-            id: '1',
-            name: '포트폴리오',
-            url: 'https://github.com/jagalchi',
-          },
-        ]}
-      />
+      <ProfileCustomLinks initialLinks={links} onChange={setLinks} />
     </div>
   );
 }

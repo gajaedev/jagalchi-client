@@ -11,6 +11,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { MY_ROADMAPS_MESSAGES } from '@/constants/messages';
 
 import { SelectLocationModal } from '../SelectLocationModal';
 
@@ -57,13 +58,15 @@ export function AddRoadmapModal({ isOpen, onClose, onConfirm }: AddRoadmapModalP
       <Dialog open={isOpen} onOpenChange={handleClose}>
         <DialogContent className="rounded-2xl p-6 sm:max-w-[440px]" showCloseButton={false}>
           <DialogHeader className="mb-4">
-            <DialogTitle className="text-lg font-bold text-[#020617]">로드맵 추가</DialogTitle>
+            <DialogTitle className="text-lg font-bold text-slate-950">
+              {MY_ROADMAPS_MESSAGES.ADD_ROADMAP_TITLE}
+            </DialogTitle>
           </DialogHeader>
           <div className="py-4">
             <Input
               value={roadmapName}
               onChange={(e) => setRoadmapName(e.target.value)}
-              placeholder="로드맵 이름을 입력하세요"
+              placeholder={MY_ROADMAPS_MESSAGES.ADD_ROADMAP_PLACEHOLDER}
               className="focus-visible:ring-primary h-12 border-slate-200 bg-white px-4 text-sm shadow-none"
             />
           </div>
@@ -72,7 +75,7 @@ export function AddRoadmapModal({ isOpen, onClose, onConfirm }: AddRoadmapModalP
               className="text-sm font-medium text-slate-500 transition-colors hover:text-slate-700"
               onClick={handleOpenSelectLocation}
             >
-              자세히 설정하기
+              {MY_ROADMAPS_MESSAGES.ADD_ROADMAP_DETAIL}
             </button>
             <div className="flex gap-2">
               <Button
@@ -80,14 +83,14 @@ export function AddRoadmapModal({ isOpen, onClose, onConfirm }: AddRoadmapModalP
                 onClick={handleClose}
                 className="h-9 rounded-lg border-slate-200 px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50"
               >
-                취소
+                {MY_ROADMAPS_MESSAGES.CANCEL}
               </Button>
               <Button
                 onClick={handleConfirm}
                 disabled={!roadmapName.trim()}
-                className="h-9 rounded-lg bg-[#0f172a] px-4 text-sm font-semibold text-white hover:bg-[#1e293b] disabled:opacity-50"
+                className="h-9 rounded-lg bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800 disabled:opacity-50"
               >
-                확인
+                {MY_ROADMAPS_MESSAGES.CONFIRM}
               </Button>
             </div>
           </DialogFooter>

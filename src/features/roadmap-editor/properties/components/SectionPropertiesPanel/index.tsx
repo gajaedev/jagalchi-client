@@ -1,6 +1,6 @@
 'use client';
 
-import { memo } from 'react';
+import { memo, useCallback } from 'react';
 
 import { EDITOR_MESSAGES } from '@/constants/messages';
 
@@ -27,11 +27,50 @@ interface SectionPropertiesPanelProps {
 export const SectionPropertiesPanel = memo(function SectionPropertiesPanel({
   node,
 }: SectionPropertiesPanelProps) {
-  const { updateNode } = useUpdateNode(node.id);
+  const { updateNode, updateNodeStyle } = useUpdateNode(node.id);
 
-  const toggleLock = () => {
+  const toggleLock = useCallback(() => {
     updateNode({ isLocked: !node.data.isLocked });
-  };
+  }, [updateNode, node.data.isLocked]);
+
+  const handleTitleChange = useCallback(
+    (value: string) => {
+      updateNode({ title: value });
+    },
+    [updateNode],
+  );
+
+  const handleColorChange = useCallback(
+    (variant: NodeColorVariant | string) => {
+      updateNode({ variant: variant as NodeColorVariant });
+    },
+    [updateNode],
+  );
+
+  const currentWidth = String(node.style?.width ?? node.measured?.width ?? 200);
+  const currentHeight = String(node.style?.height ?? node.measured?.height ?? 200);
+
+  const handleWidthChange = useCallback(
+    (value: string) => {
+      if (node.data.isLocked) return;
+      const numValue = Number(value);
+      if (!isNaN(numValue) && numValue > 0) {
+        updateNodeStyle({ width: numValue });
+      }
+    },
+    [node.data.isLocked, updateNodeStyle],
+  );
+
+  const handleHeightChange = useCallback(
+    (value: string) => {
+      if (node.data.isLocked) return;
+      const numValue = Number(value);
+      if (!isNaN(numValue) && numValue > 0) {
+        updateNodeStyle({ height: numValue });
+      }
+    },
+    [node.data.isLocked, updateNodeStyle],
+  );
 
   return (
     <div className="flex h-full w-full flex-col">
@@ -48,24 +87,36 @@ export const SectionPropertiesPanel = memo(function SectionPropertiesPanel({
         <EditorInput
           label={EDITOR_MESSAGES.SIDEBAR_SECTION_NAME_LABEL}
           value={node.data.title}
-          onChange={(value) => updateNode({ title: value })}
+          onChange={handleTitleChange}
           placeholder="섹션 이름을 입력하세요"
           isDisabled={node.data.isLocked}
         />
       </div>
 
       {/* 크기 */}
-      <div className="border-b border-[#e2e8f0] p-4">
+      <div className="border-b border-slate-200 p-4">
         <div className="space-y-1.5">
-          <label className="text-sm font-medium text-[#020617]">크기</label>
+          <label className="text-sm font-medium text-slate-950">
+            {EDITOR_MESSAGES.SIDEBAR_SECTION_SIZE_LABEL}
+          </label>
           <div className="flex items-center gap-4">
             <div className="flex flex-1 items-center gap-2">
               <p className="text-sm text-black">W</p>
-              <EditorInput value="" onChange={() => {}} placeholder="Value" isDisabled />
+              <EditorInput
+                value={currentWidth}
+                onChange={handleWidthChange}
+                placeholder="200"
+                isDisabled={node.data.isLocked}
+              />
             </div>
             <div className="flex flex-1 items-center gap-2">
               <p className="text-sm text-black">H</p>
-              <EditorInput value="" onChange={() => {}} placeholder="Value" isDisabled />
+              <EditorInput
+                value={currentHeight}
+                onChange={handleHeightChange}
+                placeholder="200"
+                isDisabled={node.data.isLocked}
+              />
             </div>
           </div>
         </div>
@@ -79,7 +130,7 @@ export const SectionPropertiesPanel = memo(function SectionPropertiesPanel({
           nodeId={node.id}
           currentVariant={node.data.variant}
           presets={NODE_PRESET_COLORS}
-          onPresetSelect={(variant) => updateNode({ variant: variant as NodeColorVariant })}
+          onPresetSelect={handleColorChange}
         />
       </div>
     </div>

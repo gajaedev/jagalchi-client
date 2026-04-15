@@ -13,6 +13,35 @@ vi.mock('next/navigation', () => ({
   useRouter: () => ({ push: mockPush }),
 }));
 
+const mockDetailData = {
+  id: 1,
+  title: 'Roadmap 1',
+  description: '이 로드맵은 Roadmap 1 학습 경로를 제공합니다.',
+  thumbnailUrl: null,
+  isPublic: true,
+  viewCount: 42,
+  owner: { id: 1, nickname: '홍길동', profileImageUrl: null },
+  stats: { totalNodes: 5, totalEdges: 3, forkCount: 5 },
+  tags: [],
+  createdAt: '2024-01-01T12:00:00.000Z',
+  updatedAt: '2024-01-01T12:00:00.000Z',
+};
+
+const mockFork = vi.fn();
+
+vi.mock('@/hooks/use-roadmap-detail', () => ({
+  useRoadmapDetail: (id: number) => {
+    if (id === 1) {
+      return { data: mockDetailData, isLoading: false, isError: false };
+    }
+    return { data: undefined, isLoading: false, isError: true };
+  },
+}));
+
+vi.mock('@/hooks/use-fork-roadmap', () => ({
+  useForkRoadmap: () => ({ mutate: mockFork, isPending: false }),
+}));
+
 vi.mock('next/image', () => ({
   default: (
     props: React.ImgHTMLAttributes<HTMLImageElement> & { fill?: boolean; priority?: boolean },
@@ -52,14 +81,14 @@ vi.mock('@/components/ui/separator', () => ({
   ),
 }));
 
-// MOCK_COMMUNITY_DATA ids: '1' through '15'
-const VALID_ID = '1';
-const INVALID_ID = 'does-not-exist';
+// MOCK_COMMUNITY_DATA ids: 1 through 15
+const VALID_ID = 1;
+const INVALID_ID = -1;
 
 describe('RoadmapDetail', () => {
   beforeEach(() => {
     mockPush.mockClear();
-    vi.spyOn(window, 'alert').mockImplementation(() => {});
+    mockFork.mockClear();
   });
 
   it('renders roadmap detail when valid id', () => {
@@ -81,11 +110,11 @@ describe('RoadmapDetail', () => {
     expect(mockPush).toHaveBeenCalledWith(`/viewer/${VALID_ID}`);
   });
 
-  it('"내 로드맵에 추가" button calls window.alert with login message', async () => {
+  it('"내 로드맵에 추가" button calls fork mutation', async () => {
     const user = userEvent.setup();
     render(<RoadmapDetail id={VALID_ID} />);
     await user.click(screen.getByText(COMMUNITY_MESSAGES.ADD_TO_MY_ROADMAPS));
-    expect(window.alert).toHaveBeenCalledWith(COMMUNITY_MESSAGES.LOGIN_REQUIRED);
+    expect(mockFork).toHaveBeenCalledWith(VALID_ID, expect.any(Object));
   });
 
   it('like button toggles', async () => {

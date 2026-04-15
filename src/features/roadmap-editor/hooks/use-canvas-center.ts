@@ -1,3 +1,5 @@
+import { useCallback } from 'react';
+
 import { useReactFlow } from '@xyflow/react';
 
 /**
@@ -7,7 +9,7 @@ import { useReactFlow } from '@xyflow/react';
 export function useCanvasCenter() {
   const { screenToFlowPosition } = useReactFlow();
 
-  return () => {
+  return useCallback(() => {
     const centerX = window.innerWidth / 2 - 120; // 240px sidebar 너비의 절반
     const centerY = window.innerHeight / 2;
 
@@ -15,5 +17,5 @@ export function useCanvasCenter() {
       x: centerX,
       y: centerY,
     });
-  };
+  }, [screenToFlowPosition]);
 }

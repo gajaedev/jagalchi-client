@@ -22,8 +22,8 @@ export function ContributorItem({
         </AvatarFallback>
       </Avatar>
       <div className="flex min-w-0 flex-1 flex-col">
-        <span className="truncate text-sm leading-[21px] font-normal text-[#020617]">{name}</span>
-        <span className="truncate text-xs leading-4 text-[#64748b]">{followerText}</span>
+        <span className="truncate text-sm leading-[21px] font-normal text-slate-950">{name}</span>
+        <span className="truncate text-xs leading-4 text-slate-500">{followerText}</span>
       </div>
     </div>
   );

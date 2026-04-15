@@ -3,6 +3,7 @@ import { useEffect, useRef } from 'react';
 import { useDebounce } from '@/hooks/use-debounce';
 
 import { parseRoadmaps } from '../schemas/roadmap.schema';
+import { dispatchAction } from '../services/action-dispatcher';
 import { STORAGE_KEY } from '../services/roadmap-storage';
 
 import type { RoadmapNode } from '../types/editor.types';
@@ -17,6 +18,7 @@ interface UseAutoSaveProps {
   isEnabled?: boolean;
 }
 
+const isRealtimeEnabled = process.env.NEXT_PUBLIC_REALTIME_ENABLED === 'true';
 const QUOTA_WARNING_THRESHOLD = 0.9; // Warn at 90% usage
 
 /**
@@ -74,6 +76,19 @@ export function useAutoSave({
       return;
     }
 
+    // Realtime mode: send STOMP action instead of localStorage
+    if (isRealtimeEnabled) {
+      dispatchAction(roadmapId, 'EDIT', {
+        type: 'INFO',
+        target: { type: 'NODE', object: roadmapId },
+        data: { title: debouncedTitle },
+      });
+      prevNodesRef.current = currentNodesHash;
+      prevEdgesRef.current = currentEdgesHash;
+      prevTitleRef.current = currentTitle;
+      return;
+    }
+
     try {
       // Check storage quota before attempting to save
       const quotaUsage = checkStorageQuota();
@@ -87,13 +102,14 @@ export function useAutoSave({
       const stored = localStorage.getItem(STORAGE_KEY);
       // Use Zod validation to prevent corruption/security issues
       const roadmaps = parseRoadmaps(stored) as Roadmap[];
-      const roadmap = roadmaps.find((r) => r.id === roadmapId);
+      const numericId = Number(roadmapId);
+      const roadmap = roadmaps.find((r) => r.id === numericId);
       const now = new Date().toISOString();
 
       // Upsert: Create if not exists, update if exists
       const updated: Roadmap = {
         ...(roadmap ?? {
-          id: roadmapId,
+          id: numericId,
           isPublic: false,
           createdAt: now,
         }),
@@ -105,7 +121,7 @@ export function useAutoSave({
 
       // Save back to localStorage
       const updatedRoadmaps = roadmap
-        ? roadmaps.map((r) => (r.id === roadmapId ? updated : r))
+        ? roadmaps.map((r) => (r.id === numericId ? updated : r))
         : [...roadmaps, updated];
       localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedRoadmaps));
 

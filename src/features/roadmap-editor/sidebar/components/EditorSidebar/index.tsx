@@ -34,9 +34,11 @@ export const EditorSidebar = memo(function EditorSidebar() {
 
   const collapseButton = (
     <button
-      className="absolute top-2 -left-8 z-10 flex h-8 w-8 items-center justify-center rounded-l-lg border border-r-0 border-[#e2e8f0] bg-white shadow-sm"
+      className="absolute top-2 -left-8 z-10 flex h-8 w-8 items-center justify-center rounded-l-lg border border-r-0 border-slate-200 bg-white shadow-sm"
       onClick={() => setIsCollapsed((prev) => !prev)}
-      aria-label={isCollapsed ? '사이드바 열기' : '사이드바 닫기'}
+      aria-label={
+        isCollapsed ? EDITOR_MESSAGES.SIDEBAR_OPEN_ARIA : EDITOR_MESSAGES.SIDEBAR_CLOSE_ARIA
+      }
     >
       {isCollapsed ? <ChevronsLeft className="h-4 w-4" /> : <ChevronsRight className="h-4 w-4" />}
     </button>
@@ -100,7 +102,9 @@ export const EditorSidebar = memo(function EditorSidebar() {
   return (
     <aside className="relative flex h-full w-[240px] items-center justify-center border-l bg-white">
       <div className="absolute top-0 left-0">{collapseButton}</div>
-      <p className="text-muted-foreground text-sm">{EDITOR_MESSAGES.SIDEBAR_EMPTY_STATE}</p>
+      <p className="text-muted-foreground text-sm" data-testid="sidebar-empty-state">
+        {EDITOR_MESSAGES.SIDEBAR_EMPTY_STATE}
+      </p>
     </aside>
   );
 });

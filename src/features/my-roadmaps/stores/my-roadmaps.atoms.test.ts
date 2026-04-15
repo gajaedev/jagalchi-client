@@ -1,45 +1,49 @@
 import { createStore } from 'jotai';
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect } from 'vitest';
 
-import { MOCK_MY_ROADMAPS } from '../constants/my-roadmaps.mock';
-import type { RoadmapData } from '../types/my-roadmaps.types';
-import { myRoadmapItemsAtom } from './my-roadmaps.atoms';
+import {
+  breadcrumbPathAtom,
+  searchQueryAtom,
+  sortOrderAtom,
+  sortByAtom,
+  filterCategoryAtom,
+  sidebarCategoryAtom,
+} from './my-roadmaps.atoms';
 
-describe('myRoadmapItemsAtom', () => {
-  beforeEach(() => {
-    localStorage.clear();
+describe('my-roadmaps atoms', () => {
+  it('breadcrumbPathAtom starts empty', () => {
+    const store = createStore();
+    expect(store.get(breadcrumbPathAtom)).toEqual([]);
   });
 
-  it('initial value is MOCK_MY_ROADMAPS', () => {
+  it('breadcrumbPathAtom can be updated', () => {
     const store = createStore();
-    expect(store.get(myRoadmapItemsAtom)).toEqual(MOCK_MY_ROADMAPS);
+    store.set(breadcrumbPathAtom, [{ id: 1, name: 'Frontend' }]);
+    expect(store.get(breadcrumbPathAtom)).toEqual([{ id: 1, name: 'Frontend' }]);
   });
 
-  it('can add items', () => {
+  it('searchQueryAtom defaults to empty string', () => {
     const store = createStore();
-    const newItem: RoadmapData = {
-      id: '99',
-      title: 'New Roadmap',
-      author: '테스트',
-      type: 'Roadmap',
-      updatedAt: '2024-03-01T00:00:00Z',
-      category: 'my-roadmap',
-    };
-
-    store.set(myRoadmapItemsAtom, [...store.get(myRoadmapItemsAtom), newItem]);
-
-    const items = store.get(myRoadmapItemsAtom);
-    expect(items).toHaveLength(MOCK_MY_ROADMAPS.length + 1);
-    expect(items.find((i) => i.id === '99')).toEqual(newItem);
+    expect(store.get(searchQueryAtom)).toBe('');
   });
 
-  it('persists to localStorage', () => {
+  it('sortOrderAtom defaults to desc', () => {
     const store = createStore();
-    const updated = store.get(myRoadmapItemsAtom).slice(0, 2);
-    store.set(myRoadmapItemsAtom, updated);
+    expect(store.get(sortOrderAtom)).toBe('desc');
+  });
 
-    const stored = localStorage.getItem('jagalchi-my-roadmaps');
-    expect(stored).not.toBeNull();
-    expect(JSON.parse(stored!)).toEqual(updated);
+  it('sortByAtom defaults to recent', () => {
+    const store = createStore();
+    expect(store.get(sortByAtom)).toBe('recent');
+  });
+
+  it('filterCategoryAtom defaults to all', () => {
+    const store = createStore();
+    expect(store.get(filterCategoryAtom)).toBe('all');
+  });
+
+  it('sidebarCategoryAtom defaults to my-roadmap', () => {
+    const store = createStore();
+    expect(store.get(sidebarCategoryAtom)).toBe('my-roadmap');
   });
 });

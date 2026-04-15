@@ -55,7 +55,7 @@ export function RoadmapEditorPage({ roadmapId }: RoadmapEditorPageProps) {
 
   return (
     <>
-      <RoadmapEditor onBack={handleBack} />
+      <RoadmapEditor onBack={handleBack} roadmapId={roadmapId} />
 
       <UnsavedChangesDialog
         isOpen={showExitDialog}

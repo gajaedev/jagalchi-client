@@ -1,7 +1,24 @@
 import { act, renderHook } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import { useVerificationCode } from './use-verification-code';
+
+// Mock the mutation hooks
+vi.mock('./use-send-verification-code', () => ({
+  useSendVerificationCode: () => ({
+    mutate: vi.fn((_data, options) => options?.onSuccess?.()),
+    isPending: false,
+    error: null,
+  }),
+}));
+
+vi.mock('./use-verify-code', () => ({
+  useVerifyCode: () => ({
+    mutateAsync: vi.fn(),
+    isPending: false,
+    error: null,
+  }),
+}));
 
 describe('useVerificationCode', () => {
   it('초기 상태에서 isCodeSent가 false이다', () => {
@@ -13,7 +30,7 @@ describe('useVerificationCode', () => {
     const { result } = renderHook(() => useVerificationCode());
 
     act(() => {
-      result.current.handleSendCode();
+      result.current.handleSendCode('test@example.com');
     });
 
     expect(result.current.isCodeSent).toBe(true);
@@ -23,10 +40,10 @@ describe('useVerificationCode', () => {
     const { result } = renderHook(() => useVerificationCode());
 
     act(() => {
-      result.current.handleSendCode();
+      result.current.handleSendCode('test@example.com');
     });
     act(() => {
-      result.current.handleSendCode();
+      result.current.handleSendCode('test@example.com');
     });
 
     expect(result.current.isCodeSent).toBe(true);

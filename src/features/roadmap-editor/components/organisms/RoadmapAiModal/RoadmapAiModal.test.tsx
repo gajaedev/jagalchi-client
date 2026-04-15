@@ -1,15 +1,22 @@
 import { render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
+import { Provider as JotaiProvider } from 'jotai';
 import { describe, expect, it, vi } from 'vitest';
 
 import { RoadmapAiModal } from '.';
+
+vi.mock('@/api/ai', () => ({
+  getRoadmapGenerated: vi.fn(() => new Promise(() => {})),
+}));
 
 describe('RoadmapAiModal', () => {
   const mockOnClose = vi.fn();
 
   const renderModal = (props = {}) => {
     return render(
-      <RoadmapAiModal isOpen={true} onClose={mockOnClose} mode="generate" {...props} />,
+      <JotaiProvider>
+        <RoadmapAiModal isOpen={true} onClose={mockOnClose} mode="generate" {...props} />
+      </JotaiProvider>,
     );
   };
 

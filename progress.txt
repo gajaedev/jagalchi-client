@@ -1,0 +1,47 @@
+# Progress Log
+
+## Status: US-001~004 + US-006 Complete
+## Remaining: US-005, US-007, US-008
+
+---
+
+### US-001: Playwright 설정 및 프로젝트 구조 (2026-04-01)
+
+**Files changed:**
+- `playwright.config.ts` — Chromium only, baseURL localhost:3000, webServer pnpm dev
+- `e2e/helpers/.gitkeep`, `e2e/fixtures/.gitkeep` — Directory structure
+- `package.json` — Added test:e2e, test:e2e:ui scripts; @playwright/test devDep
+- `tsconfig.json` — Excluded playwright.config.ts and e2e/
+- `.gitignore` — Added /test-results/, /playwright-report/, /blob-report/
+
+---
+
+### US-002: MSW 설치 및 핸들러 구조 세팅 (2026-04-01)
+
+- msw 2.12.14 설치 (devDependency)
+- src/mocks/ 디렉토리 구조 생성 (handlers, fixtures, server.ts, browser.ts)
+
+---
+
+### US-003: Auth 핸들러 구현 (2026-04-01)
+
+- POST /api/auth/login — JWT + user, 401 on bad creds
+- POST /api/auth/register — 409 on duplicate
+- POST /api/auth/send-verification-code — mock send
+- POST /api/auth/verify-code — code 123456, 401 on mismatch
+- POST /api/auth/reset-password — 404 on unknown email
+
+---
+
+### US-004: Roadmap 핸들러 구현 (2026-04-01)
+
+- GET/POST/PUT/DELETE /api/roadmaps — full CRUD
+- Fixtures: 3 roadmaps with all 3 node types
+- 404 on missing resources
+
+---
+
+### US-006: Editor E2E 테스트 (2026-04-01)
+
+- `e2e/editor.spec.ts` — 4 test cases
+- Added data-testid to ToolbarButton, EditorToolbar, EditorSidebar, PanelHeader

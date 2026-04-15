@@ -13,7 +13,7 @@ function omit<T extends Record<string, unknown>>(obj: T, key: keyof T) {
   return copy;
 }
 
-const validAuthor = { id: 'author-1', name: 'Alice' };
+const validAuthor = { id: 1, name: 'Alice' };
 
 const validNodeData = { label: 'Introduction' };
 
@@ -31,7 +31,7 @@ const validEdge = {
 };
 
 const validRoadmap = {
-  id: 'roadmap-1',
+  id: 1,
   title: 'Frontend Basics',
   nodes: [validNode],
   edges: [validEdge],
@@ -64,15 +64,23 @@ describe('roadmapAuthorSchema', () => {
   it('rejects author missing name', () => {
     const result = roadmapSchema.safeParse({
       ...validRoadmap,
-      author: { id: 'author-1' },
+      author: { id: 1 },
     });
     expect(result.success).toBe(false);
   });
 
-  it('rejects author with non-string id', () => {
+  it('accepts author with numeric id', () => {
     const result = roadmapSchema.safeParse({
       ...validRoadmap,
       author: { id: 123, name: 'Alice' },
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it('rejects author with non-number id', () => {
+    const result = roadmapSchema.safeParse({
+      ...validRoadmap,
+      author: { id: 'string-id', name: 'Alice' },
     });
     expect(result.success).toBe(false);
   });
@@ -373,7 +381,7 @@ describe('parseRoadmaps', () => {
     const result = parseRoadmaps(input);
     expect(result).toHaveLength(1);
     expect(result[0]).toMatchObject({
-      id: 'roadmap-1',
+      id: 1,
       title: 'Frontend Basics',
     });
   });

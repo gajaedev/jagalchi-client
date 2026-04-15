@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import { PROFILE_MESSAGES } from '@/constants/messages';
 import { cn } from '@/lib/utils';
 
 interface ProfileLinkAddButtonProps {
@@ -25,7 +26,7 @@ export function ProfileLinkAddButton({
       className={cn('w-full font-semibold', className)}
       onClick={onClick}
     >
-      링크추가({currentCount}/{maxCount})
+      {PROFILE_MESSAGES.LINK_ADD_BUTTON}({currentCount}/{maxCount})
     </Button>
   );
 }

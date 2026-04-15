@@ -11,6 +11,7 @@ export interface ToolbarButtonProps {
   isActive: boolean;
   onClick: () => void;
   className?: string;
+  testId?: string;
 }
 
 /**
@@ -23,7 +24,7 @@ export interface ToolbarButtonProps {
  */
 export const ToolbarButton = memo(
   forwardRef<HTMLButtonElement, ToolbarButtonProps>(
-    ({ icon, label, isActive, onClick, className }, ref) => {
+    ({ icon, label, isActive, onClick, className, testId }, ref) => {
       return (
         <TooltipProvider>
           <Tooltip>
@@ -34,6 +35,7 @@ export const ToolbarButton = memo(
                 onClick={onClick}
                 aria-label={label}
                 aria-pressed={isActive}
+                data-testid={testId}
                 className={cn(
                   // 크기 및 레이아웃 (Figma: 32px x 32px, 8px radius)
                   'inline-flex h-8 w-8 items-center justify-center p-[7px]',

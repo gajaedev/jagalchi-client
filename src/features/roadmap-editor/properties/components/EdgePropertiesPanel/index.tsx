@@ -1,6 +1,8 @@
 'use client';
 
-import { memo, useState } from 'react';
+import { memo, useCallback, useState } from 'react';
+
+import { MarkerType } from '@xyflow/react';
 
 import { EDITOR_MESSAGES } from '@/constants/messages';
 
@@ -17,51 +19,104 @@ interface EdgePropertiesPanelProps {
 }
 
 type LineStyle = 'solid' | 'dashed' | 'dotted';
+type ArrowMode = 'none' | 'forward' | 'bidirectional';
 
-/**
- * Edge 선택 시 표시되는 속성 패널
- *
- * Figma 디자인 기반 구조:
- * - Header: "Line_1" + Lock 버튼
- * - 라인 스타일: Select
- * - 기본 컬러: ColorSelector
- */
 export const EdgePropertiesPanel = memo(function EdgePropertiesPanel({
   edge,
 }: EdgePropertiesPanelProps) {
   const { updateEdge } = useUpdateEdge(edge.id);
   const [isLocked, setIsLocked] = useState(false);
 
-  // Get current edge data
   const currentStyle = (edge.style?.strokeDasharray ? 'dashed' : 'solid') as LineStyle;
   const currentColor = (edge.style?.stroke as string) || NODE_PRESET_COLORS[0].hex;
+  const currentLabel = typeof edge.label === 'string' ? edge.label : '';
+  const currentThickness = String(edge.style?.strokeWidth ?? 1);
 
-  const toggleLock = () => {
-    setIsLocked(!isLocked);
-  };
+  const hasMarkerEnd = !!edge.markerEnd;
+  const hasMarkerStart = !!edge.markerStart;
+  const currentArrowMode: ArrowMode =
+    hasMarkerStart && hasMarkerEnd ? 'bidirectional' : hasMarkerEnd ? 'forward' : 'none';
 
-  const handleStyleChange = (style: LineStyle) => {
-    const strokeDasharray = style === 'dashed' ? '5 5' : style === 'dotted' ? '2 2' : undefined;
-    updateEdge({
-      style: {
-        ...edge.style,
-        strokeDasharray,
-      },
-    });
-  };
+  const toggleLock = useCallback(() => {
+    setIsLocked((prev) => !prev);
+  }, []);
 
-  const handleColorChange = (variant: NodeColorVariant | string) => {
-    if (isLocked) return;
-    const hex = NODE_PRESET_COLORS.find((p) => p.variant === variant)?.hex ?? '#000000';
-    updateEdge({
-      style: {
-        ...edge.style,
-        stroke: hex,
-      },
-    });
-  };
+  const handleStyleChange = useCallback(
+    (style: LineStyle) => {
+      if (isLocked) return;
+      const strokeDasharray = style === 'dashed' ? '5 5' : style === 'dotted' ? '2 2' : undefined;
+      updateEdge({
+        style: {
+          ...edge.style,
+          strokeDasharray,
+        },
+      });
+    },
+    [isLocked, updateEdge, edge.style],
+  );
 
-  // Find current variant based on color
+  const handleColorChange = useCallback(
+    (variant: NodeColorVariant | string) => {
+      if (isLocked) return;
+      const hex = NODE_PRESET_COLORS.find((p) => p.variant === variant)?.hex ?? '#000000';
+      updateEdge({
+        style: {
+          ...edge.style,
+          stroke: hex,
+        },
+      });
+    },
+    [isLocked, updateEdge, edge.style],
+  );
+
+  const handleLabelChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (isLocked) return;
+      updateEdge({ label: e.target.value });
+    },
+    [isLocked, updateEdge],
+  );
+
+  const handleThicknessChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (isLocked) return;
+      const numValue = Number(e.target.value);
+      if (!isNaN(numValue) && numValue > 0) {
+        updateEdge({
+          style: {
+            ...edge.style,
+            strokeWidth: numValue,
+          },
+        });
+      }
+    },
+    [isLocked, updateEdge, edge.style],
+  );
+
+  const handleArrowMode = useCallback(
+    (mode: ArrowMode) => {
+      if (isLocked) return;
+      if (mode === currentArrowMode) {
+        updateEdge({ markerStart: undefined, markerEnd: undefined });
+        return;
+      }
+      if (mode === 'forward') {
+        updateEdge({
+          markerStart: undefined,
+          markerEnd: { type: MarkerType.ArrowClosed },
+        });
+      } else if (mode === 'bidirectional') {
+        updateEdge({
+          markerStart: { type: MarkerType.ArrowClosed },
+          markerEnd: { type: MarkerType.ArrowClosed },
+        });
+      } else {
+        updateEdge({ markerStart: undefined, markerEnd: undefined });
+      }
+    },
+    [isLocked, updateEdge, currentArrowMode],
+  );
+
   const currentVariant =
     (NODE_PRESET_COLORS.find((p) => p.hex === currentColor)?.variant as NodeColorVariant) ||
     'black';
@@ -70,32 +125,31 @@ export const EdgePropertiesPanel = memo(function EdgePropertiesPanel({
     <div className="flex h-full w-full flex-col">
       <PanelHeader title="선" subtitle="연결선" isLocked={isLocked} onToggleLock={toggleLock} />
 
-      {/* Content */}
       <div className="flex-1 space-y-0 overflow-y-auto p-4">
         {/* 라벨 */}
-        <div className="border-b border-[#e2e8f0] pb-4">
+        <div className="border-b border-slate-200 pb-4">
           <div className="space-y-1.5">
-            <label className="text-sm font-medium text-[#020617]">
+            <label className="text-sm font-medium text-slate-950">
               {EDITOR_MESSAGES.SIDEBAR_EDGE_LABEL_LABEL}
             </label>
             <input
               type="text"
-              placeholder="라벨 없음"
-              disabled
+              value={currentLabel}
+              onChange={handleLabelChange}
+              placeholder={EDITOR_MESSAGES.SIDEBAR_EDGE_LABEL_PLACEHOLDER}
+              disabled={isLocked}
               className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm shadow-sm disabled:cursor-not-allowed disabled:opacity-50"
             />
           </div>
         </div>
 
         {/* 라인 스타일 */}
-        <div className="border-b border-[#e2e8f0] py-4">
+        <div className="border-b border-slate-200 py-4">
           <div className="space-y-4">
-            <label className="text-sm font-medium text-[#020617]">
+            <label className="text-sm font-medium text-slate-950">
               {EDITOR_MESSAGES.SIDEBAR_EDGE_STYLE_LABEL}
             </label>
             <div className="space-y-4">
-              {/* 라인 스타일 */}
-              {/* 실선 */}
               <div className="flex items-center gap-2">
                 <p className="w-10 text-sm text-black">
                   {EDITOR_MESSAGES.SIDEBAR_EDGE_STYLE_SOLID}
@@ -115,7 +169,6 @@ export const EdgePropertiesPanel = memo(function EdgePropertiesPanel({
                 </button>
               </div>
 
-              {/* 점선 */}
               <div className="flex items-center gap-2">
                 <p className="w-10 text-sm text-black">
                   {EDITOR_MESSAGES.SIDEBAR_EDGE_STYLE_DASHED}
@@ -141,7 +194,6 @@ export const EdgePropertiesPanel = memo(function EdgePropertiesPanel({
                 </button>
               </div>
 
-              {/* 꼬인선 */}
               <div className="flex items-center gap-2">
                 <p className="w-10 text-sm text-black">{EDITOR_MESSAGES.SIDEBAR_EDGE_STYLE_WAVY}</p>
                 <button
@@ -168,8 +220,14 @@ export const EdgePropertiesPanel = memo(function EdgePropertiesPanel({
               <p className="w-10 text-sm text-black">{EDITOR_MESSAGES.SIDEBAR_EDGE_ARROW_LABEL}</p>
               <div className="flex flex-1 gap-2">
                 <button
-                  disabled
-                  className="h-9 flex-1 rounded-lg border border-slate-200 bg-white disabled:cursor-not-allowed disabled:opacity-50"
+                  onClick={() => handleArrowMode('forward')}
+                  disabled={isLocked}
+                  aria-label={EDITOR_MESSAGES.SIDEBAR_EDGE_ARROW_FORWARD}
+                  className={`h-9 flex-1 rounded-lg border ${
+                    currentArrowMode === 'forward'
+                      ? 'border-blue-500 bg-white'
+                      : 'border-slate-200 bg-white'
+                  } disabled:cursor-not-allowed disabled:opacity-50`}
                 >
                   <div className="flex h-full w-full items-center justify-center">
                     <svg width="20" height="16" viewBox="0 0 20 16" fill="none">
@@ -182,8 +240,14 @@ export const EdgePropertiesPanel = memo(function EdgePropertiesPanel({
                   </div>
                 </button>
                 <button
-                  disabled
-                  className="h-9 flex-1 rounded-lg border border-slate-200 bg-white disabled:cursor-not-allowed disabled:opacity-50"
+                  onClick={() => handleArrowMode('bidirectional')}
+                  disabled={isLocked}
+                  aria-label={EDITOR_MESSAGES.SIDEBAR_EDGE_ARROW_BIDIRECTIONAL}
+                  className={`h-9 flex-1 rounded-lg border ${
+                    currentArrowMode === 'bidirectional'
+                      ? 'border-blue-500 bg-white'
+                      : 'border-slate-200 bg-white'
+                  } disabled:cursor-not-allowed disabled:opacity-50`}
                 >
                   <div className="flex h-full w-full items-center justify-center">
                     <svg width="20" height="16" viewBox="0 0 20 16" fill="none">
@@ -201,16 +265,18 @@ export const EdgePropertiesPanel = memo(function EdgePropertiesPanel({
         </div>
 
         {/* 두께 */}
-        <div className="border-b border-[#e2e8f0] py-4">
+        <div className="border-b border-slate-200 py-4">
           <div className="space-y-1.5">
-            <label className="text-sm font-medium text-[#020617]">
+            <label className="text-sm font-medium text-slate-950">
               {EDITOR_MESSAGES.SIDEBAR_EDGE_THICKNESS_LABEL}
             </label>
             <div className="flex items-center gap-2">
               <input
-                type="text"
-                placeholder="1"
-                disabled
+                type="number"
+                min={1}
+                value={currentThickness}
+                onChange={handleThicknessChange}
+                disabled={isLocked}
                 className="flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm shadow-sm disabled:cursor-not-allowed disabled:opacity-50"
               />
               <p className="text-sm text-black">px</p>
@@ -219,7 +285,7 @@ export const EdgePropertiesPanel = memo(function EdgePropertiesPanel({
         </div>
 
         {/* 기본 컬러 */}
-        <div className="border-b border-[#e2e8f0] py-4">
+        <div className="border-b border-slate-200 py-4">
           <ColorSelector
             type="node"
             nodeId={edge.id}

@@ -6,7 +6,7 @@ import { z } from 'zod';
  */
 
 const roadmapAuthorSchema = z.object({
-  id: z.string(),
+  id: z.number(),
   name: z.string(),
 });
 
@@ -20,6 +20,7 @@ const roadmapNodeDataSchema = z.object({
   content: z.string().optional(),
   fontSize: z.number().optional(),
   fontWeight: z.string().optional(),
+  badge: z.string().optional(),
 });
 
 const roadmapNodeSchema = z.object({
@@ -46,7 +47,7 @@ const edgeSchema = z.object({
 });
 
 export const roadmapSchema = z.object({
-  id: z.string(),
+  id: z.number(),
   title: z.string(),
   description: z.string().optional(),
   nodes: z.array(roadmapNodeSchema),

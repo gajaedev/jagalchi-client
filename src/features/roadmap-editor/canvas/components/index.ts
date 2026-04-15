@@ -8,3 +8,4 @@ export { JagalchiSection } from './JagalchiSection';
 export { JagalchiText } from './JagalchiText';
 export { ConnectionLine } from './ConnectionLine';
 export { PlusButtonHandle } from './PlusButtonHandle';
+export { RemoteCursors } from './RemoteCursors';

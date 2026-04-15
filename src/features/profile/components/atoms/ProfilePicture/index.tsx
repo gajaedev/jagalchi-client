@@ -8,6 +8,7 @@ import { Pencil } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { PROFILE_MESSAGES } from '@/constants/messages';
 
 import { profileModeAtom } from '../../../stores/profile-atoms';
 
@@ -27,9 +28,23 @@ export function ProfilePicture({ src, userName, onUpload }: ProfilePictureProps)
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file && onUpload) {
-      onUpload(file);
+    if (!file) return;
+
+    const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      alert(PROFILE_MESSAGES.UPLOAD_FORMAT_ERROR);
+      event.target.value = '';
+      return;
     }
+
+    const MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024; // 5 MB
+    if (file.size > MAX_FILE_SIZE_BYTES) {
+      alert(PROFILE_MESSAGES.UPLOAD_SIZE_ERROR);
+      event.target.value = '';
+      return;
+    }
+
+    onUpload?.(file);
   };
 
   const getInitials = (name?: string) => {
@@ -41,13 +56,27 @@ export function ProfilePicture({ src, userName, onUpload }: ProfilePictureProps)
     <div>
       {mode === 'show' ? (
         <Avatar className="border-border h-[128px] w-[128px] border">
-          <AvatarImage src={src} alt={userName ? `${userName}의 프로필 사진` : '프로필 사진'} />
+          <AvatarImage
+            src={src}
+            alt={
+              userName
+                ? `${userName}${PROFILE_MESSAGES.PROFILE_PICTURE_ALT_WITH_NAME}`
+                : PROFILE_MESSAGES.PROFILE_PICTURE_ALT
+            }
+          />
           <AvatarFallback className="text-2xl">{getInitials(userName)}</AvatarFallback>
         </Avatar>
       ) : (
         <div className="relative h-[128px] w-[128px]">
           <Avatar className="border-border h-[128px] w-[128px] border">
-            <AvatarImage src={src} alt={userName ? `${userName}의 프로필 사진` : '프로필 사진'} />
+            <AvatarImage
+              src={src}
+              alt={
+                userName
+                  ? `${userName}${PROFILE_MESSAGES.PROFILE_PICTURE_ALT_WITH_NAME}`
+                  : PROFILE_MESSAGES.PROFILE_PICTURE_ALT
+              }
+            />
             <AvatarFallback className="text-2xl">{getInitials(userName)}</AvatarFallback>
           </Avatar>
           <Button

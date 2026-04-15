@@ -5,9 +5,19 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 const mockBack = vi.fn();
+const mockPush = vi.fn();
+const mockForkMutate = vi.fn();
 
 vi.mock('next/navigation', () => ({
-  useRouter: () => ({ back: mockBack }),
+  useRouter: () => ({ back: mockBack, push: mockPush }),
+}));
+
+vi.mock('@/hooks/use-fork-status', () => ({
+  useForkStatus: () => ({ data: undefined }),
+}));
+
+vi.mock('@/hooks/use-fork-roadmap', () => ({
+  useForkRoadmap: () => ({ mutate: mockForkMutate, isPending: false }),
 }));
 
 import { RoadmapHeader } from './index';

@@ -6,6 +6,11 @@ import userEvent from '@testing-library/user-event';
 import { Provider } from 'jotai';
 import { useHydrateAtoms } from 'jotai/utils';
 
+vi.mock('@/hooks/use-roadmap-progress', () => ({
+  useRoadmapProgress: () => ({ data: null }),
+  useCompleteNode: () => ({ mutate: vi.fn() }),
+}));
+
 vi.mock('@xyflow/react', () => ({
   ReactFlowProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   useReactFlow: () => ({ fitView: vi.fn(), zoomIn: vi.fn(), zoomOut: vi.fn(), getZoom: () => 1 }),

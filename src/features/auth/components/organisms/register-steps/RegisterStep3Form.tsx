@@ -13,6 +13,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { AUTH_MESSAGES } from '@/constants/messages';
 
 import { registerStep3Schema, type RegisterStep3Schema } from '../../../schemas/auth.schema';
 
@@ -22,9 +23,21 @@ interface RegisterStep3FormProps {
 }
 
 const LINK_FIELDS = [
-  { nameField: 'link1Name' as const, urlField: 'link1Url' as const, label: '1번 링크' },
-  { nameField: 'link2Name' as const, urlField: 'link2Url' as const, label: '2번 링크' },
-  { nameField: 'link3Name' as const, urlField: 'link3Url' as const, label: '3번 링크' },
+  {
+    nameField: 'link1Name' as const,
+    urlField: 'link1Url' as const,
+    label: AUTH_MESSAGES.LINK_LABEL_1,
+  },
+  {
+    nameField: 'link2Name' as const,
+    urlField: 'link2Url' as const,
+    label: AUTH_MESSAGES.LINK_LABEL_2,
+  },
+  {
+    nameField: 'link3Name' as const,
+    urlField: 'link3Url' as const,
+    label: AUTH_MESSAGES.LINK_LABEL_3,
+  },
 ];
 
 export function RegisterStep3Form({ onSubmit, onSkip }: RegisterStep3FormProps) {
@@ -61,7 +74,7 @@ export function RegisterStep3Form({ onSubmit, onSkip }: RegisterStep3FormProps) 
                       <FormControl>
                         <Input
                           type="text"
-                          placeholder="링크 이름"
+                          placeholder={AUTH_MESSAGES.LINK_NAME_PLACEHOLDER}
                           className="w-[120px]"
                           {...field}
                         />
@@ -72,7 +85,11 @@ export function RegisterStep3Form({ onSubmit, onSkip }: RegisterStep3FormProps) 
                         render={({ field: urlField }) => (
                           <FormItem className="flex-1">
                             <FormControl>
-                              <Input type="url" placeholder="링크 URL" {...urlField} />
+                              <Input
+                                type="url"
+                                placeholder={AUTH_MESSAGES.LINK_URL_PLACEHOLDER}
+                                {...urlField}
+                              />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -89,10 +106,10 @@ export function RegisterStep3Form({ onSubmit, onSkip }: RegisterStep3FormProps) 
 
         <div className="flex flex-col gap-3">
           <Button type="submit" className="w-full">
-            확인
+            {AUTH_MESSAGES.CONFIRM}
           </Button>
           <Button type="button" variant="secondary" className="w-full" onClick={onSkip}>
-            건너뛰기
+            {AUTH_MESSAGES.SKIP}
           </Button>
         </div>
       </form>

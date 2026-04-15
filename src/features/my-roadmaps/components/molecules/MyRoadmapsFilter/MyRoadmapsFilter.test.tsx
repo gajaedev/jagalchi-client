@@ -54,7 +54,7 @@ describe('MyRoadmapsFilter', () => {
       </Wrapper>,
     );
     const descButton = screen.getByText('내림차순').closest('button');
-    expect(descButton).toHaveClass('bg-[#e2e8f0]');
+    expect(descButton).toHaveClass('bg-slate-200');
   });
 
   it('highlights the active sort criterion', () => {
@@ -64,7 +64,7 @@ describe('MyRoadmapsFilter', () => {
       </Wrapper>,
     );
     const recentButton = screen.getByText('최신순').closest('button');
-    expect(recentButton).toHaveClass('bg-[#e2e8f0]');
+    expect(recentButton).toHaveClass('bg-slate-200');
   });
 
   it('highlights the active filter category', () => {
@@ -74,7 +74,7 @@ describe('MyRoadmapsFilter', () => {
       </Wrapper>,
     );
     const allButton = screen.getByText('전체').closest('button');
-    expect(allButton).toHaveClass('bg-[#e2e8f0]');
+    expect(allButton).toHaveClass('bg-slate-200');
   });
 
   it('updates selection state when an item is clicked', () => {
@@ -85,10 +85,10 @@ describe('MyRoadmapsFilter', () => {
     );
     const ascButton = screen.getByText('오름차순').closest('button')!;
     fireEvent.click(ascButton);
-    expect(ascButton).toHaveClass('bg-[#e2e8f0]');
+    expect(ascButton).toHaveClass('bg-slate-200');
 
     // Previous descending button should not have active class anymore
     const descButton = screen.getByText('내림차순').closest('button');
-    expect(descButton).not.toHaveClass('bg-[#e2e8f0]');
+    expect(descButton).not.toHaveClass('bg-slate-200');
   });
 });

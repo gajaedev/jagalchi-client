@@ -1,0 +1,9 @@
+.git
+.next
+node_modules
+.env.local
+.env.development
+.env*.local
+*.log
+.DS_Store
+.claude

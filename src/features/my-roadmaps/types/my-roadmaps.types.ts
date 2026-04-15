@@ -1,12 +1,4 @@
-export interface RoadmapData {
-  id: string;
-  title: string;
-  type?: 'Roadmap' | 'Directory';
-  author?: string;
-  fileCount?: number;
-  imageUrl?: string;
-  updatedAt?: string;
-  isFavorite?: boolean;
-  isShared?: boolean;
-  category?: 'my-roadmap' | 'community';
-}
+import type { RoadmapSummary } from '@/types/roadmap.types';
+
+/** @deprecated RoadmapSummary를 직접 사용하세요 */
+export type RoadmapData = RoadmapSummary;

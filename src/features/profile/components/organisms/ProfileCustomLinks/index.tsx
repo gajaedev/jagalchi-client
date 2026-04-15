@@ -8,6 +8,7 @@ import { useForm, useFieldArray } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { PROFILE_MESSAGES } from '@/constants/messages';
 import { sanitizeUrl } from '@/lib/url-validation';
 
 import { profileModeAtom } from '../../../stores/profile-atoms';
@@ -62,7 +63,7 @@ export function ProfileCustomLinks({ initialLinks = [], onChange }: ProfileCusto
             <div className="flex flex-1 gap-4">
               <Input
                 className="w-[120px]"
-                placeholder="링크 이름"
+                placeholder={PROFILE_MESSAGES.LINK_NAME_PLACEHOLDER}
                 {...register(`links.${index}.name` as const)}
               />
 
@@ -84,7 +85,7 @@ export function ProfileCustomLinks({ initialLinks = [], onChange }: ProfileCusto
               size="icon"
               onClick={() => remove(index)}
               className="text-muted-foreground hover:text-destructive h-8 w-8"
-              title="링크 삭제"
+              title={PROFILE_MESSAGES.LINK_DELETE_TITLE}
             >
               <Trash2 size={16} />
             </Button>

@@ -5,8 +5,10 @@ export type {
   JagalchiNodeData,
   JagalchiSectionData,
   JagalchiTextData,
+  DetailNodeData,
   JagalchiNodeType,
   JagalchiSectionType,
   JagalchiTextType,
+  DetailNodeType,
   RoadmapNode,
 } from '@/types/roadmap.types';

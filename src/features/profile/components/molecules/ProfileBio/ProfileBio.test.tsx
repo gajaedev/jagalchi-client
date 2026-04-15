@@ -3,7 +3,7 @@ import { Provider, WritableAtom } from 'jotai';
 import { useHydrateAtoms } from 'jotai/utils';
 import { describe, it, expect } from 'vitest';
 
-import { profileModeAtom } from '../../../stores/profile-atoms';
+import { profileBioAtom, profileModeAtom } from '../../../stores/profile-atoms';
 
 import { ProfileBio } from './index';
 
@@ -28,7 +28,12 @@ describe('ProfileBio', () => {
 
   it('renders text in view mode', () => {
     render(
-      <Wrapper initialValues={[[profileModeAtom, 'show']]}>
+      <Wrapper
+        initialValues={[
+          [profileModeAtom, 'show'],
+          [profileBioAtom, defaultBio],
+        ]}
+      >
         <ProfileBio bio={defaultBio} />
       </Wrapper>,
     );
@@ -39,7 +44,12 @@ describe('ProfileBio', () => {
 
   it('renders textarea in edit mode', () => {
     render(
-      <Wrapper initialValues={[[profileModeAtom, 'edit']]}>
+      <Wrapper
+        initialValues={[
+          [profileModeAtom, 'edit'],
+          [profileBioAtom, defaultBio],
+        ]}
+      >
         <ProfileBio bio={defaultBio} />
       </Wrapper>,
     );
@@ -50,7 +60,12 @@ describe('ProfileBio', () => {
 
   it('updates input value in edit mode', () => {
     render(
-      <Wrapper initialValues={[[profileModeAtom, 'edit']]}>
+      <Wrapper
+        initialValues={[
+          [profileModeAtom, 'edit'],
+          [profileBioAtom, defaultBio],
+        ]}
+      >
         <ProfileBio bio={defaultBio} />
       </Wrapper>,
     );

@@ -10,14 +10,19 @@
     "prepare": "husky",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "test": "vitest",
-    "test:run": "vitest run --passWithNoTests",
+    "test": "vitest --config vitest.unit.config.ts",
+    "test:run": "vitest run --config vitest.unit.config.ts --passWithNoTests",
+    "test:storybook": "vitest run --project storybook",
+    "test:all": "vitest run --passWithNoTests",
     "figma:sync": "tsx scripts/sync-figma-components.ts",
     "figma:export": "tsx scripts/figma-export.ts",
     "figma:screenshots": "tsx scripts/storybook-screenshots.ts",
     "figma:compare": "tsx scripts/compare-images.ts",
     "figma:report": "tsx scripts/generate-report.ts",
-    "figma:test": "pnpm figma:export && pnpm figma:screenshots && pnpm figma:compare && pnpm figma:report"
+    "figma:snapshot": "tsx scripts/figma-snapshot.ts",
+    "figma:test": "pnpm figma:export && pnpm figma:screenshots && pnpm figma:compare && pnpm figma:report",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
@@ -41,13 +46,17 @@
     "@radix-ui/react-slot": "^1.2.4",
     "@radix-ui/react-tooltip": "^1.2.8",
     "@sentry/nextjs": "^10.46.0",
+    "@stomp/stompjs": "^7.3.0",
     "@tanstack/react-query": "^5.95.2",
     "@xyflow/react": "^12.10.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "html-to-image": "^1.11.13",
+    "isomorphic-dompurify": "^3.7.1",
     "jagalchi-client": "link:",
     "jotai": "^2.19.0",
     "jotai-history": "^0.5.0",
+    "jspdf": "^4.2.1",
     "lucide-react": "^1.7.0",
     "nanoid": "^5.1.7",
     "next": "16.2.1",
@@ -76,6 +85,7 @@
     "@commitlint/config-conventional": "^20.3.0",
     "@eslint/js": "^9.39.2",
     "@next/eslint-plugin-next": "^16.1.1",
+    "@playwright/test": "^1.59.0",
     "@storybook/addon-a11y": "^10.2.13",
     "@storybook/addon-docs": "^10.2.13",
     "@storybook/addon-onboarding": "^10.3.1",
@@ -112,8 +122,9 @@
     "husky": "^9.1.7",
     "jsdom": "^27.4.0",
     "lint-staged": "^16.2.7",
+    "msw": "^2.12.14",
     "pixelmatch": "^7.1.0",
-    "playwright": "^1.57.0",
+    "playwright": "^1.59.0",
     "pngjs": "^7.0.0",
     "prettier": "^3.7.4",
     "prettier-plugin-tailwindcss": "^0.7.2",
@@ -125,5 +136,10 @@
     "typescript": "^5",
     "vite": "^7.3.0",
     "vitest": "^4.0.16"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }

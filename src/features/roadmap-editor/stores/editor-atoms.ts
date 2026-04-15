@@ -4,6 +4,14 @@ import { withHistory, UNDO, REDO } from 'jotai-history';
 import type { RoadmapNode } from '../types/editor.types';
 import type { Edge } from '@xyflow/react';
 
+/** 원격 커서 상태 타입 */
+export interface RemoteCursor {
+  userName: string;
+  x: number;
+  y: number;
+  state: 'NORMAL' | 'EDITING' | 'DRAGGING' | 'SELECTING' | 'IDLE';
+}
+
 /**
  * Combined state for synchronized undo/redo
  * Prevents desynchronization between nodes and edges history
@@ -72,12 +80,14 @@ export const singleSelectedEdgeAtom = atom((get) => {
   return selected.length === 1 ? selected[0] : null;
 });
 
+/** 다른 유저의 커서 위치 맵 (userId → RemoteCursor) */
+export const remoteCursorsAtom = atom<Map<string, RemoteCursor>>(new Map());
+
 // ColorPicker state
 export const isColorPickerOpenAtom = atom<boolean>(false);
-export const colorPickerTargetAtom = atom<{
-  type: 'node' | 'text';
-  nodeId: string;
-} | null>(null);
+export const colorPickerTargetAtom = atom<
+  { type: 'node' | 'text'; nodeId: string } | { type: 'edge'; edgeId: string } | null
+>(null);
 
 // Toolbar state
 export const activeToolAtom = atom<'select' | 'node' | 'line' | 'section' | 'text'>('select');

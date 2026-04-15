@@ -6,6 +6,7 @@ import { useAtom } from 'jotai';
 import { Search, ArrowUp } from 'lucide-react';
 
 import { Input } from '@/components/ui/input';
+import { COMMUNITY_MESSAGES } from '@/constants/messages';
 import { cn } from '@/lib/utils';
 
 import { searchQueryAtom } from '../../../stores/community.atoms';
@@ -64,27 +65,28 @@ export function CommunityHero() {
 
       <div className="z-10 mt-[80px] flex flex-col items-center">
         <h1 className="text-foreground mb-[40px] text-[24px] leading-[28.8px] font-bold tracking-[-1px]">
-          어떤 로드맵을 찾고있나요?
+          {COMMUNITY_MESSAGES.HERO_TITLE}
         </h1>
 
-        <div className="relative w-[640px]">
-          <div className="flex items-start gap-2 overflow-hidden rounded-xl border border-[#cbd5e1] bg-white p-2 shadow-md">
-            <div className="flex min-h-[32px] w-[580px] items-center gap-1.5 overflow-hidden rounded-lg bg-white px-2">
-              <Search className="h-5 w-5 shrink-0 text-[#64748b]" />
+        <div className="relative w-full max-w-[640px] px-4">
+          <div className="flex items-start gap-2 overflow-hidden rounded-xl border border-slate-300 bg-white p-2 shadow-md">
+            <div className="flex min-h-[32px] flex-1 items-center gap-1.5 overflow-hidden rounded-lg bg-white px-2">
+              <Search className="h-5 w-5 shrink-0 text-slate-500" />
               <Input
                 type="text"
                 placeholder="Type a roadmap name to find..."
                 value={localQuery}
                 onChange={(e) => setLocalQuery(e.target.value)}
                 onKeyDown={handleKeyDown}
+                aria-label="로드맵 검색"
                 className="border-0 bg-transparent p-0 text-sm shadow-none focus-visible:ring-0"
               />
             </div>
             <button
               type="button"
-              aria-label="검색"
+              aria-label={COMMUNITY_MESSAGES.SEARCH_ARIA}
               onClick={handleSearch}
-              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#0f172a] text-white hover:bg-[#1e293b]"
+              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-900 text-white hover:bg-slate-800"
             >
               <ArrowUp className="h-4 w-4" />
             </button>

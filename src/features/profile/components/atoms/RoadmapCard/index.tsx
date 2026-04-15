@@ -16,7 +16,7 @@ export function RoadmapCard({ title, author, imageUrl, className }: RoadmapCardP
     <div
       data-testid="roadmap-card"
       className={cn(
-        'h-[200px] w-full cursor-pointer overflow-hidden rounded-lg border border-[#e2e8f0] bg-[#f1f5f9]',
+        'h-[200px] w-full cursor-pointer overflow-hidden rounded-lg border border-slate-200 bg-slate-100',
         className,
       )}
     >
@@ -27,9 +27,9 @@ export function RoadmapCard({ title, author, imageUrl, className }: RoadmapCardP
           <SquareDashed className="text-muted-foreground/30 h-8 w-8" />
         )}
       </div>
-      <div className="flex flex-col border-t border-[#e2e8f0] bg-white px-3 py-2">
-        <p className="truncate text-sm leading-[21px] text-[#020617]">{title}</p>
-        <p className="truncate text-xs leading-4 text-[#64748b]">By {author}</p>
+      <div className="flex flex-col border-t border-slate-200 bg-white px-3 py-2">
+        <p className="truncate text-sm leading-[21px] text-slate-950">{title}</p>
+        <p className="truncate text-xs leading-4 text-slate-500">By {author}</p>
       </div>
     </div>
   );

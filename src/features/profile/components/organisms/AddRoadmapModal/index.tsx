@@ -15,6 +15,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
+import { PROFILE_MESSAGES } from '@/constants/messages';
 import { cn } from '@/lib/utils';
 
 type FileNode = {
@@ -212,11 +213,13 @@ export function AddRoadmapModal({
         className="flex h-[600px] w-[600px] flex-col gap-0 p-0 sm:max-w-[600px]"
       >
         <DialogHeader className="flex flex-row items-center justify-between space-y-0 px-6 py-4">
-          <DialogTitle className="text-lg font-bold">로드맵 선택</DialogTitle>
+          <DialogTitle className="text-lg font-bold">
+            {PROFILE_MESSAGES.SELECT_ROADMAP_TITLE}
+          </DialogTitle>
           <div className="relative w-[240px]">
             <Search className="text-muted-foreground absolute top-1/2 left-2.5 h-4 w-4 -translate-y-1/2" />
             <Input
-              placeholder="로드맵 검색"
+              placeholder={PROFILE_MESSAGES.SEARCH_ROADMAP_PLACEHOLDER}
               className="h-9 pl-9 text-sm"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -241,7 +244,7 @@ export function AddRoadmapModal({
                 ))
               ) : (
                 <div className="text-muted-foreground py-10 text-center text-sm">
-                  검색 결과가 없습니다.
+                  {PROFILE_MESSAGES.SEARCH_EMPTY}
                 </div>
               )}
             </div>
@@ -253,11 +256,11 @@ export function AddRoadmapModal({
         <DialogFooter className="gap-2 p-4 sm:justify-end">
           <DialogClose asChild>
             <Button variant="outline" type="button">
-              취소
+              {PROFILE_MESSAGES.CANCEL}
             </Button>
           </DialogClose>
           <Button type="button" disabled={!selectedFileId} onClick={handleConfirm}>
-            확인
+            {PROFILE_MESSAGES.CONFIRM}
           </Button>
         </DialogFooter>
       </DialogContent>

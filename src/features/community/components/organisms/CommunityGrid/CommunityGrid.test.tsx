@@ -17,8 +17,8 @@ import { render, screen } from '@testing-library/react';
 import { CommunityGrid } from './index';
 
 const mockItems = [
-  { id: '1', title: 'Roadmap 1', author: 'Author 1', imageUrl: 'url1' },
-  { id: '2', title: 'Roadmap 2', author: 'Author 2' },
+  { id: 1, title: 'Roadmap 1', author: 'Author 1', imageUrl: 'url1' },
+  { id: 2, title: 'Roadmap 2', author: 'Author 2' },
 ];
 
 describe('CommunityGrid', () => {

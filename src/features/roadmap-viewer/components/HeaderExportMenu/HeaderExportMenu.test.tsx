@@ -1,13 +1,8 @@
 import { describe, it, expect } from 'vitest';
 
-import { HeaderExportMenu, handleExportMarkdown, handleExportPdf, handleExportJson } from './index';
+import { handleExportJson, handleExportMarkdown, handleExportPdf } from './index';
 
 describe('HeaderExportMenu', () => {
-  it('renders null (merged into HeaderMenu)', () => {
-    const result = HeaderExportMenu();
-    expect(result).toBeNull();
-  });
-
   it('exports handleExportMarkdown as a function', () => {
     expect(typeof handleExportMarkdown).toBe('function');
   });

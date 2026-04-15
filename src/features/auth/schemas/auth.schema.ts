@@ -11,6 +11,7 @@ export const registerStep1Schema = z.object({
     .string()
     .min(1, '비밀번호를 입력해주세요')
     .min(8, '8자 이상 영문, 숫자, 기호를 포함해야 합니다')
+    .max(128, '비밀번호는 128자 이하로 입력해주세요')
     .regex(/[a-zA-Z]/, '8자 이상 영문, 숫자, 기호를 포함해야 합니다')
     .regex(/[0-9]/, '8자 이상 영문, 숫자, 기호를 포함해야 합니다')
     .regex(/[^a-zA-Z0-9]/, '8자 이상 영문, 숫자, 기호를 포함해야 합니다'),
@@ -18,7 +19,11 @@ export const registerStep1Schema = z.object({
 });
 
 export const registerStep2Schema = z.object({
-  username: z.string().min(1, '이름을 입력해주세요'),
+  username: z
+    .string()
+    .min(1, '이름을 입력해주세요')
+    .transform((val) => val.trim())
+    .pipe(z.string().min(1, '이름을 입력해주세요')),
 });
 
 export const registerStep3Schema = z.object({
@@ -41,6 +46,7 @@ export const findPasswordStep2Schema = z
       .string()
       .min(1, '비밀번호를 입력해주세요')
       .min(8, '8자 이상 영문, 숫자, 기호를 포함해야 합니다')
+      .max(128, '비밀번호는 128자 이하로 입력해주세요')
       .regex(/[a-zA-Z]/, '8자 이상 영문, 숫자, 기호를 포함해야 합니다')
       .regex(/[0-9]/, '8자 이상 영문, 숫자, 기호를 포함해야 합니다')
       .regex(/[^a-zA-Z0-9]/, '8자 이상 영문, 숫자, 기호를 포함해야 합니다'),

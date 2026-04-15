@@ -4,6 +4,7 @@ import type {
   JagalchiNodeType,
   JagalchiSectionType,
   JagalchiTextType,
+  DetailNodeType,
   NodeColorVariant,
   TextColorVariant,
 } from '../types/editor.types';
@@ -24,6 +25,13 @@ interface CreateTextOptions {
   position: { x: number; y: number };
   variant?: TextColorVariant;
   content?: string;
+}
+
+interface CreateDetailNodeOptions {
+  position: { x: number; y: number };
+  variant?: NodeColorVariant;
+  label?: string;
+  badge?: string;
 }
 
 /**
@@ -67,6 +75,29 @@ export function createJagalchiSection(options: CreateSectionOptions): JagalchiSe
       variant,
       title,
       isLocked: false,
+    },
+  };
+}
+
+export function createDetailNode(options: CreateDetailNodeOptions): DetailNodeType {
+  const {
+    position,
+    variant = 'white',
+    label = EDITOR_MESSAGES.FLOW_DETAIL_NODE_DEFAULT_LABEL,
+    badge,
+  } = options;
+
+  return {
+    id: createId(),
+    type: 'detail-node',
+    position,
+    data: {
+      variant,
+      label,
+      description: '',
+      resources: [],
+      isLocked: false,
+      ...(badge !== undefined && { badge }),
     },
   };
 }

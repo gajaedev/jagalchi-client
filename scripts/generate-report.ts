@@ -308,7 +308,7 @@ async function main() {
   } catch {
     console.error('❌ Comparison report not found');
     console.log('\nRun comparison first:');
-    console.log('  pnpm run visual:compare');
+    console.log('  pnpm figma:compare');
     process.exit(1);
   }
 

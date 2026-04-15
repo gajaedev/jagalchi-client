@@ -1,8 +1,10 @@
 'use client';
 
+import { useState } from 'react';
+
 import { ReactFlowProvider } from '@xyflow/react';
 import { useAtom, useAtomValue } from 'jotai';
-import { LayoutGrid, Map } from 'lucide-react';
+import { LayoutGrid, Map, PanelRight } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { VIEWER_MESSAGES } from '@/constants/messages';
@@ -15,9 +17,11 @@ import {
   viewerSidebarOpenAtom,
 } from '../../stores/viewer-atoms';
 import { CardListMode } from '../CardListMode';
+import { ForkTreeDialog } from '../ForkTreeDialog';
 import { HeaderExportMenu } from '../HeaderExportMenu';
 import { HeaderMenu } from '../HeaderMenu';
 import { HeaderSaveAsImageMenu } from '../HeaderSaveAsImageMenu';
+import { LearningCoachModal } from '../LearningCoachModal';
 import { RoadmapHeader } from '../RoadmapHeader';
 import { ViewerCanvas } from '../ViewerCanvas';
 import { ViewerSidebar } from '../ViewerSidebar';
@@ -34,6 +38,7 @@ function ViewerContent({ roadmapId }: RoadmapViewerProps) {
   const error = useAtomValue(viewerErrorAtom);
   const [layout, setLayout] = useAtom(viewerLayoutAtom);
   const [isSidebarOpen, setIsSidebarOpen] = useAtom(viewerSidebarOpenAtom);
+  const [isCoachOpen, setIsCoachOpen] = useState(false);
 
   if (isLoading) {
     return (
@@ -53,7 +58,11 @@ function ViewerContent({ roadmapId }: RoadmapViewerProps) {
 
   return (
     <div className="bg-background min-h-screen">
-      <RoadmapHeader roadmapTitle={`Roadmap · ${roadmapId}`} />
+      <RoadmapHeader
+        roadmapId={Number(roadmapId)}
+        roadmapTitle={`Roadmap · ${roadmapId}`}
+        onAiFeedback={() => setIsCoachOpen(true)}
+      />
 
       <div className="mx-auto flex w-full max-w-[2011px] gap-4 px-4 py-4">
         <div className="relative flex-1">
@@ -62,6 +71,7 @@ function ViewerContent({ roadmapId }: RoadmapViewerProps) {
             <HeaderMenu />
             <HeaderExportMenu />
             <HeaderSaveAsImageMenu />
+            <ForkTreeDialog roadmapId={Number(roadmapId)} />
             <div className="ml-auto flex items-center gap-1">
               <Button
                 variant={layout === 'page' ? 'default' : 'outline'}
@@ -79,6 +89,16 @@ function ViewerContent({ roadmapId }: RoadmapViewerProps) {
                 <LayoutGrid className="mr-1.5 h-4 w-4" />
                 {VIEWER_MESSAGES.VIEW_CARDS}
               </Button>
+              {!isSidebarOpen && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setIsSidebarOpen(true)}
+                  aria-label={VIEWER_MESSAGES.SIDEBAR_OPEN_BUTTON_LABEL}
+                >
+                  <PanelRight className="h-4 w-4" />
+                </Button>
+              )}
             </div>
           </div>
 
@@ -86,10 +106,20 @@ function ViewerContent({ roadmapId }: RoadmapViewerProps) {
           {layout === 'cards' ? <CardListMode /> : <ViewerCanvas />}
         </div>
 
-        <ViewerSidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+        <ViewerSidebar
+          isOpen={isSidebarOpen}
+          onClose={() => setIsSidebarOpen(false)}
+          roadmapId={roadmapId}
+        />
       </div>
 
       {layout === 'page' && <ViewerZoomControls />}
+
+      <LearningCoachModal
+        isOpen={isCoachOpen}
+        onClose={() => setIsCoachOpen(false)}
+        roadmapId={roadmapId}
+      />
     </div>
   );
 }

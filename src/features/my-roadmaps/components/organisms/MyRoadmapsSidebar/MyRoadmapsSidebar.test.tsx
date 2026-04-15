@@ -1,3 +1,4 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'jotai';
@@ -5,8 +6,16 @@ import { describe, expect, it } from 'vitest';
 
 import { MyRoadmapsSidebar } from './index';
 
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { retry: false } },
+});
+
 const renderWithProvider = (ui: React.ReactElement) => {
-  return render(<Provider>{ui}</Provider>);
+  return render(
+    <QueryClientProvider client={queryClient}>
+      <Provider>{ui}</Provider>
+    </QueryClientProvider>,
+  );
 };
 
 describe('MyRoadmapsSidebar', () => {
@@ -25,9 +34,9 @@ describe('MyRoadmapsSidebar', () => {
 
     const recentButton = screen.getByText('최근').closest('button')!;
     await user.click(recentButton);
-    expect(recentButton).toHaveClass('bg-[#e2e8f0]');
+    expect(recentButton).toHaveClass('bg-slate-200');
 
     const myRoadmapButton = screen.getByText('내 로드맵').closest('button')!;
-    expect(myRoadmapButton).not.toHaveClass('bg-[#e2e8f0]');
+    expect(myRoadmapButton).not.toHaveClass('bg-slate-200');
   });
 });

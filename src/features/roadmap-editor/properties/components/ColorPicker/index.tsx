@@ -2,8 +2,9 @@
 
 import { memo, useState } from 'react';
 
-import { useAtom } from 'jotai';
-import { HexColorPicker } from 'react-colorful';
+import dynamic from 'next/dynamic';
+
+import { useAtom, useSetAtom } from 'jotai';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -15,17 +16,66 @@ import {
 } from '@/components/ui/dialog';
 import { EDITOR_MESSAGES } from '@/constants/messages';
 
-import { isColorPickerOpenAtom, colorPickerTargetAtom } from '../../../stores/editor-atoms';
+import {
+  isColorPickerOpenAtom,
+  colorPickerTargetAtom,
+  nodesAtom,
+  edgesAtom,
+} from '../../../stores/editor-atoms';
+
+const HexColorPicker = dynamic(
+  () => import('react-colorful').then((m) => ({ default: m.HexColorPicker })),
+  { ssr: false },
+);
 
 export const ColorPicker = memo(function ColorPicker() {
   const [isOpen, setIsOpen] = useAtom(isColorPickerOpenAtom);
-  const [, setTarget] = useAtom(colorPickerTargetAtom);
+  const [target, setTarget] = useAtom(colorPickerTargetAtom);
+  const setNodes = useSetAtom(nodesAtom);
+  const setEdges = useSetAtom(edgesAtom);
 
   const [tempColor, setTempColor] = useState<string>('#3b82f6');
 
   const handleApply = () => {
-    // TODO: Phase 2.1에서 customColor 필드 추가 후 구현
-    // 현재는 프리셋 색상만 지원
+    if (!target) {
+      handleClose();
+      return;
+    }
+
+    // Validate hex color format
+    if (!/^#[0-9a-fA-F]{6}$/.test(tempColor)) {
+      handleClose();
+      return;
+    }
+
+    if (target.type === 'node' || target.type === 'text') {
+      setNodes((nds) =>
+        nds.map((node) => {
+          if (node.id !== target.nodeId) return node;
+          return {
+            ...node,
+            style: {
+              ...node.style,
+              backgroundColor: tempColor,
+            },
+          };
+        }),
+      );
+    } else if (target.type === 'edge') {
+      setEdges((eds) =>
+        eds.map((edge) => {
+          if (edge.id !== target.edgeId) return edge;
+          return {
+            ...edge,
+            style: {
+              ...edge.style,
+              stroke: tempColor,
+            },
+          };
+        }),
+      );
+    }
+
     handleClose();
   };
 
@@ -53,8 +103,28 @@ export const ColorPicker = memo(function ColorPicker() {
           <HexColorPicker color={tempColor} onChange={setTempColor} />
 
           <div className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded border" style={{ backgroundColor: tempColor }} />
-            <span className="font-mono text-sm">{tempColor}</span>
+            <div
+              className="h-8 w-8 shrink-0 rounded border"
+              style={{ backgroundColor: tempColor }}
+            />
+            <input
+              type="text"
+              value={tempColor}
+              onChange={(e) => {
+                const val = e.target.value;
+                if (val === '' || val === '#') {
+                  setTempColor(val);
+                  return;
+                }
+                const hex = val.startsWith('#') ? val : `#${val}`;
+                if (hex.length <= 7) {
+                  setTempColor(hex);
+                }
+              }}
+              placeholder={EDITOR_MESSAGES.COLOR_PICKER_HEX_PLACEHOLDER}
+              className="bg-background h-8 w-full rounded border px-2 font-mono text-sm outline-none focus:ring-2 focus:ring-blue-500"
+              maxLength={7}
+            />
           </div>
         </div>
 

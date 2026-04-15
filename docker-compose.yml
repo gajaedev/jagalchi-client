@@ -1,0 +1,14 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-https://api.jagalchi.dev}
+        NEXT_PUBLIC_API_MOCKING: ${NEXT_PUBLIC_API_MOCKING:-false}
+        NEXT_PUBLIC_REALTIME_ENABLED: ${NEXT_PUBLIC_REALTIME_ENABLED:-false}
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+    restart: unless-stopped

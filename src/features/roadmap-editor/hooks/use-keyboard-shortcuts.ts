@@ -12,6 +12,7 @@ import {
   selectedEdgeIdsAtom,
   undoAtom,
   redoAtom,
+  editorStateHistoryAtom,
 } from '../stores/editor-atoms';
 import { createId } from '../utils/node-factory';
 
@@ -79,6 +80,7 @@ export function useKeyboardShortcuts() {
   const [selectedEdgeIds, setSelectedEdgeIds] = useAtom(selectedEdgeIdsAtom);
   const undo = useSetAtom(undoAtom);
   const redo = useSetAtom(redoAtom);
+  const setEditorState = useSetAtom(editorStateHistoryAtom);
 
   // Use refs to access latest values without triggering effect re-runs
   const nodesRef = useRef<RoadmapNode[]>(nodes);
@@ -263,15 +265,39 @@ export function useKeyboardShortcuts() {
           selectedNodeIdsSet.has(node.id),
         );
         if (selectedNodes.length > 0) {
-          const duplicatedNodes = selectedNodes.map((node: RoadmapNode) => ({
-            ...node,
-            id: createId(),
-            position: {
-              x: node.position.x + 50,
-              y: node.position.y + 50,
-            },
-          }));
-          setNodes((nds) => [...nds, ...duplicatedNodes]);
+          // Build old→new ID mapping for edge remapping
+          const idMap = new Map<string, string>();
+          const duplicatedNodes = selectedNodes.map((node: RoadmapNode) => {
+            const newId = createId();
+            idMap.set(node.id, newId);
+            return {
+              ...node,
+              id: newId,
+              position: {
+                x: node.position.x + 50,
+                y: node.position.y + 50,
+              },
+            };
+          });
+
+          // Duplicate edges whose both endpoints are among the selected nodes
+          const duplicatedEdges = edgesRef.current
+            .filter(
+              (edge: Edge) =>
+                selectedNodeIdsSet.has(edge.source) && selectedNodeIdsSet.has(edge.target),
+            )
+            .map((edge: Edge) => ({
+              ...edge,
+              id: createId(),
+              source: idMap.get(edge.source) ?? edge.source,
+              target: idMap.get(edge.target) ?? edge.target,
+            }));
+
+          // Update nodes and edges atomically in a single history entry
+          setEditorState({
+            nodes: [...nodesRef.current, ...duplicatedNodes],
+            edges: [...edgesRef.current, ...duplicatedEdges],
+          });
           setSelectedNodeIds(duplicatedNodes.map((node: RoadmapNode) => node.id));
         }
         return;
@@ -283,5 +309,5 @@ export function useKeyboardShortcuts() {
       window.removeEventListener('keydown', handleKeyDown);
     };
     // Only depend on stable setters - refs handle value updates
-  }, [setNodes, setEdges, setSelectedNodeIds, setSelectedEdgeIds, undo, redo]);
+  }, [setNodes, setEdges, setSelectedNodeIds, setSelectedEdgeIds, undo, redo, setEditorState]);
 }

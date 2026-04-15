@@ -27,7 +27,11 @@ export function ContributionGraph({ data }: { data: Contribution[] }) {
   }, [data]);
 
   return (
-    <Card className="w-full gap-0 rounded-xl shadow-none">
+    <Card
+      className="w-full gap-0 rounded-xl shadow-none"
+      role="img"
+      aria-label={`기여 그래프: ${streak}일 연속 스트릭`}
+    >
       <CardHeader className="px-6 pb-4">
         <CardTitle className="text-muted-foreground text-sm font-semibold">
           {streak}일 연속 스트릭
@@ -42,7 +46,8 @@ export function ContributionGraph({ data }: { data: Contribution[] }) {
                   day ? (
                     <div
                       key={day.date}
-                      title={`${day.date}: ${day.count} contributions`}
+                      title={`${day.date}: ${day.count}건의 기여`}
+                      aria-label={`${day.date}: ${day.count}건의 기여`}
                       style={{
                         width: 16,
                         height: 16,

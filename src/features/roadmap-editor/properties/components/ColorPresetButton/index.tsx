@@ -36,7 +36,7 @@ export const ColorPresetButton = forwardRef<HTMLButtonElement, ColorPresetButton
           'h-8 min-h-[32px] min-w-[32px] flex-1',
           'rounded-[8px]',
           // Border: 모든 색상 동일한 1px 테두리
-          'border border-[#e2e8f0]',
+          'border border-slate-200',
           'shadow-sm',
           // 인터랙션
           'transition-all duration-200',

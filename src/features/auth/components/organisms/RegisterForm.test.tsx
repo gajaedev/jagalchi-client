@@ -4,6 +4,38 @@ import { describe, expect, it, vi } from 'vitest';
 
 import { RegisterForm } from './RegisterForm';
 
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({ push: vi.fn(), replace: vi.fn(), back: vi.fn() }),
+}));
+
+vi.mock('../../hooks/use-register', () => ({
+  useRegister: () => ({
+    mutate: vi.fn(),
+    isPending: false,
+    isError: false,
+    error: null,
+  }),
+}));
+
+vi.mock('../../hooks/use-verify-code', () => ({
+  useVerifyCode: () => ({
+    mutate: (_data: unknown, options?: { onSuccess?: () => void }) => {
+      options?.onSuccess?.();
+    },
+    mutateAsync: vi.fn().mockResolvedValue({}),
+    isPending: false,
+  }),
+}));
+
+vi.mock('../../hooks/use-send-verification-code', () => ({
+  useSendVerificationCode: () => ({
+    mutate: (_data: unknown, options?: { onSuccess?: () => void }) => {
+      options?.onSuccess?.();
+    },
+    isPending: false,
+  }),
+}));
+
 describe('RegisterForm', () => {
   it('초기에 step 1 (이메일/비밀번호/인증번호) 폼을 렌더링한다', () => {
     render(<RegisterForm />);

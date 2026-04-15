@@ -101,7 +101,7 @@ export function useUnsavedChanges({
   }, [hasChanges, router]);
 
   const handleSave = useCallback(() => {
-    const roadmap = loadRoadmapFromLocalStorage(roadmapId);
+    const roadmap = loadRoadmapFromLocalStorage(Number(roadmapId));
     if (!roadmap) return;
 
     const updated: Roadmap = {

@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/justn/Projects/jagalchi-client/.claude/metadata-updater.sh",
+            "timeout": 5000
+          }
+        ]
+      }
+    ]
+  }
+}

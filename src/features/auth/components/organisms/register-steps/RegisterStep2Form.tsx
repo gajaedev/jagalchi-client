@@ -13,6 +13,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { AUTH_MESSAGES } from '@/constants/messages';
 
 import { registerStep2Schema, type RegisterStep2Schema } from '../../../schemas/auth.schema';
 
@@ -41,9 +42,14 @@ export function RegisterStep2Form({ onSubmit }: RegisterStep2FormProps) {
           name="username"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>이름</FormLabel>
+              <FormLabel>{AUTH_MESSAGES.NAME_LABEL}</FormLabel>
               <FormControl>
-                <Input type="text" placeholder="사용자 이름 입력" autoComplete="off" {...field} />
+                <Input
+                  type="text"
+                  placeholder={AUTH_MESSAGES.USERNAME_PLACEHOLDER}
+                  autoComplete="off"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -51,7 +57,7 @@ export function RegisterStep2Form({ onSubmit }: RegisterStep2FormProps) {
         />
 
         <Button type="submit" className="w-full">
-          확인
+          {AUTH_MESSAGES.CONFIRM}
         </Button>
       </form>
     </Form>

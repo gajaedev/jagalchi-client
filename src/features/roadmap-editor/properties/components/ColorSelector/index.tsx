@@ -51,7 +51,7 @@ export const ColorSelector = memo(function ColorSelector({
     <div className="space-y-4">
       {/* 기본 컬러 (Preset) */}
       <div>
-        <label className="text-sm font-medium text-[#020617]">
+        <label className="text-sm font-medium text-slate-950">
           {EDITOR_MESSAGES.SIDEBAR_COLOR_PRESET_LABEL}
         </label>
         <div className="mt-1.5 flex gap-1">
@@ -68,7 +68,7 @@ export const ColorSelector = memo(function ColorSelector({
 
       {/* 커스텀 색상 */}
       <div>
-        <label className="text-sm font-medium text-[#020617]">
+        <label className="text-sm font-medium text-slate-950">
           {EDITOR_MESSAGES.SIDEBAR_COLOR_CUSTOM_LABEL}
         </label>
         <div className="mt-1.5 flex items-center gap-2">

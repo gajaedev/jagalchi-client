@@ -4,7 +4,7 @@ import { CommunityItem } from '../../types/community.types';
 
 const mockItems: CommunityItem[] = [
   {
-    id: '1',
+    id: 1,
     title: 'React Roadmap',
     author: 'Alice',
     likes: 10,
@@ -13,7 +13,7 @@ const mockItems: CommunityItem[] = [
     size: 5,
   },
   {
-    id: '2',
+    id: 2,
     title: 'Vue Roadmap',
     author: 'Bob',
     likes: 20,
@@ -22,7 +22,7 @@ const mockItems: CommunityItem[] = [
     size: 10,
   },
   {
-    id: '3',
+    id: 3,
     title: 'Frontend Directory',
     author: 'Charlie',
     likes: 5,
@@ -57,7 +57,7 @@ describe('filterAndSortCommunityItems', () => {
     expect(result[0].type).toBe('directory');
   });
 
-  it('sorts by likes (using name for now in mock logic, let me check)', () => {
+  it('sorts by size in descending order', () => {
     const result = filterAndSortCommunityItems(mockItems, {
       searchQuery: '',
       filterCategory: 'all',
@@ -78,8 +78,8 @@ describe('filterAndSortCommunityItems', () => {
       sortBy: 'recent',
       sortOrder: 'desc',
     });
-    expect(result[0].id).toBe('2');
-    expect(result[1].id).toBe('1');
-    expect(result[2].id).toBe('3');
+    expect(result[0].id).toBe(2);
+    expect(result[1].id).toBe(1);
+    expect(result[2].id).toBe(3);
   });
 });

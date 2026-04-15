@@ -4,7 +4,7 @@ import { parseRoadmaps } from './roadmap-schema';
 
 export const STORAGE_KEY = 'jagalchi-roadmaps';
 
-export function createEmptyRoadmap(id: string, input?: CreateRoadmapInput): Roadmap {
+export function createEmptyRoadmap(id: number, input?: CreateRoadmapInput): Roadmap {
   const now = new Date().toISOString();
   return {
     id,
@@ -18,7 +18,7 @@ export function createEmptyRoadmap(id: string, input?: CreateRoadmapInput): Road
   };
 }
 
-export function loadRoadmapFromLocalStorage(id: string): Roadmap | null {
+export function loadRoadmapFromLocalStorage(id: number): Roadmap | null {
   if (typeof window === 'undefined') return null;
 
   try {

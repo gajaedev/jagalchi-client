@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 
+import { useRouter } from 'next/navigation';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
@@ -15,8 +17,10 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { AUTH_MESSAGES } from '@/constants/messages';
 
-import { useVerificationCode } from '../../hooks/use-verification-code';
+import { usePasswordResetCode } from '../../hooks/use-password-reset-code';
+import { useResetPassword } from '../../hooks/use-reset-password';
 import {
   findPasswordStep1Schema,
   findPasswordStep2Schema,
@@ -33,8 +37,18 @@ interface FindPasswordFormProps {
 }
 
 export function FindPasswordForm({ onStepChange }: FindPasswordFormProps) {
+  const router = useRouter();
   const [step, setStep] = useState<FindPasswordStep>(1);
-  const { isCodeSent, handleSendCode } = useVerificationCode();
+  const [verifiedEmail, setVerifiedEmail] = useState('');
+  const {
+    isCodeSent,
+    handleSendCode,
+    handleVerifyCode,
+    isSendingCode,
+    isCooldownActive,
+    cooldownSeconds,
+  } = usePasswordResetCode();
+  const resetPasswordMutation = useResetPassword();
 
   const step1Form = useForm<FindPasswordStep1Schema>({
     resolver: zodResolver(findPasswordStep1Schema),
@@ -52,15 +66,44 @@ export function FindPasswordForm({ onStepChange }: FindPasswordFormProps) {
     },
   });
 
-  const onStep1Submit = (_data: FindPasswordStep1Schema) => {
-    // TODO: API 연동 - 이메일 인증 확인
-    setStep(2);
-    onStepChange?.(2, '새 비밀번호 입력', '재설정할 비밀번호를 입력해주세요');
+  const onStep1Submit = async (data: FindPasswordStep1Schema) => {
+    try {
+      await handleVerifyCode(data.email, data.verificationCode);
+      setVerifiedEmail(data.email);
+      setStep(2);
+      onStepChange?.(
+        2,
+        AUTH_MESSAGES.FIND_PASSWORD_STEP2_TITLE,
+        AUTH_MESSAGES.FIND_PASSWORD_STEP2_DESCRIPTION,
+      );
+    } catch (error) {
+      step1Form.setError('verificationCode', {
+        message: error instanceof Error ? error.message : AUTH_MESSAGES.VERIFICATION_FAILED,
+      });
+    }
   };
 
-  const onStep2Submit = (_data: FindPasswordStep2Schema) => {
-    // TODO: API 연동 - 비밀번호 재설정
+  const onStep2Submit = (data: FindPasswordStep2Schema) => {
+    resetPasswordMutation.mutate(
+      { email: verifiedEmail, newPassword: data.newPassword },
+      {
+        onSuccess: () => {
+          router.push('/login');
+        },
+        onError: (error) => {
+          step2Form.setError('root', { message: error.message });
+        },
+      },
+    );
   };
+
+  const handleResend = () => {
+    handleSendCode(step1Form.getValues('email'), () => {
+      step1Form.setValue('verificationCode', '');
+    });
+  };
+
+  const isResendDisabled = isCooldownActive || isSendingCode;
 
   if (step === 2) {
     return (
@@ -76,10 +119,10 @@ export function FindPasswordForm({ onStepChange }: FindPasswordFormProps) {
             name="newPassword"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>새 비밀번호</FormLabel>
+                <FormLabel>{AUTH_MESSAGES.NEW_PASSWORD_LABEL}</FormLabel>
                 <FormControl>
                   <PasswordInput
-                    placeholder="비밀번호 입력"
+                    placeholder={AUTH_MESSAGES.PASSWORD_PLACEHOLDER}
                     autoComplete="new-password"
                     {...field}
                   />
@@ -94,10 +137,10 @@ export function FindPasswordForm({ onStepChange }: FindPasswordFormProps) {
             name="passwordConfirm"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>비밀번호 확인</FormLabel>
+                <FormLabel>{AUTH_MESSAGES.PASSWORD_CONFIRM_LABEL}</FormLabel>
                 <FormControl>
                   <PasswordInput
-                    placeholder="비밀번호 다시 입력"
+                    placeholder={AUTH_MESSAGES.PASSWORD_CONFIRM_PLACEHOLDER}
                     autoComplete="new-password"
                     {...field}
                   />
@@ -107,8 +150,12 @@ export function FindPasswordForm({ onStepChange }: FindPasswordFormProps) {
             )}
           />
 
-          <Button type="submit" className="w-full">
-            완료
+          {step2Form.formState.errors.root && (
+            <p className="text-destructive text-sm">{step2Form.formState.errors.root.message}</p>
+          )}
+
+          <Button type="submit" className="w-full" disabled={resetPasswordMutation.isPending}>
+            {resetPasswordMutation.isPending ? AUTH_MESSAGES.PROCESSING : AUTH_MESSAGES.COMPLETE}
           </Button>
         </form>
       </Form>
@@ -127,9 +174,14 @@ export function FindPasswordForm({ onStepChange }: FindPasswordFormProps) {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>이메일</FormLabel>
+              <FormLabel>{AUTH_MESSAGES.EMAIL_LABEL}</FormLabel>
               <FormControl>
-                <Input type="email" placeholder="이메일 입력" {...field} />
+                <Input
+                  type="email"
+                  placeholder={AUTH_MESSAGES.EMAIL_PLACEHOLDER}
+                  disabled={isCodeSent}
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -143,16 +195,19 @@ export function FindPasswordForm({ onStepChange }: FindPasswordFormProps) {
             <FormItem>
               <div className="flex items-center justify-between">
                 <FormLabel className={!isCodeSent ? 'text-muted-foreground' : ''}>
-                  인증번호
+                  {AUTH_MESSAGES.VERIFICATION_CODE_LABEL}
                 </FormLabel>
                 {isCodeSent && (
                   <button
                     type="button"
-                    aria-label="인증번호 재전송"
-                    className="cursor-pointer text-sm tracking-[0.07px] text-neutral-900 underline transition-colors hover:text-neutral-700"
-                    onClick={handleSendCode}
+                    aria-label={AUTH_MESSAGES.VERIFICATION_CODE_RESEND_ARIA}
+                    disabled={isResendDisabled}
+                    className="cursor-pointer text-sm tracking-[0.07px] text-neutral-900 underline transition-colors hover:text-neutral-700 disabled:cursor-not-allowed disabled:text-neutral-400 disabled:no-underline"
+                    onClick={handleResend}
                   >
-                    재전송
+                    {isCooldownActive
+                      ? `${cooldownSeconds}${AUTH_MESSAGES.VERIFICATION_CODE_RESEND_COOLDOWN}`
+                      : AUTH_MESSAGES.VERIFICATION_CODE_RESEND}
                   </button>
                 )}
               </div>
@@ -166,11 +221,18 @@ export function FindPasswordForm({ onStepChange }: FindPasswordFormProps) {
 
         {isCodeSent ? (
           <Button type="submit" className="w-full">
-            다음
+            {AUTH_MESSAGES.NEXT}
           </Button>
         ) : (
-          <Button type="button" className="w-full" onClick={handleSendCode}>
-            인증번호 전송
+          <Button
+            type="button"
+            className="w-full"
+            disabled={isSendingCode}
+            onClick={() => handleSendCode(step1Form.getValues('email'))}
+          >
+            {isSendingCode
+              ? AUTH_MESSAGES.VERIFICATION_CODE_SENDING
+              : AUTH_MESSAGES.VERIFICATION_CODE_SEND}
           </Button>
         )}
       </form>

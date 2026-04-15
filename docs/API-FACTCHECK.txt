@@ -1,0 +1,627 @@
+================================================================================
+  JAGALCHI API SPECIFICATION FACT-CHECK REPORT
+  Generated: 2026-04-07
+  Source: docs/API-SPECIFICATION.md vs actual source code
+================================================================================
+
+LEGEND:
+  [x] = Correct (spec matches source)
+  [ ] = WRONG (spec does NOT match source — needs fix)
+  [?] = Unverifiable or ambiguous
+
+================================================================================
+  1. USER SERVICE — AUTH (7 endpoints)
+================================================================================
+
+[EP-USER-01] POST /users — 회원가입
+  [x] HTTP method: POST
+  [x] Path: /users
+  [x] Auth: 불필요
+  [x] Status: 201 Created
+  [x] Request 'email': string, required — SignUpRequest.email
+  [x] Request 'name': string, required — SignUpRequest.name
+  [x] Request 'password': string, required — SignUpRequest.password
+  [x] Response 'id': Long — SignUpResponse.id
+  [x] Response 'email': string — SignUpResponse.email
+  [x] Response 'name': string — SignUpResponse.name
+
+[EP-USER-02] POST /users/auth/login — 로그인
+  [x] HTTP method: POST
+  [x] Path: /users/auth/login
+  [x] Auth: 불필요
+  [x] Status: 200 OK
+  [x] Request 'email': string — LoginRequest.email
+  [x] Request 'password': string — LoginRequest.password
+  [x] Response 'accessToken': string — LoginResponse.accessToken
+  [x] Set-Cookie: refreshToken (HttpOnly) — cookieUtil.addRefreshToken()
+
+[EP-USER-03] PATCH /users/auth/password-reset — 비밀번호 변경
+  [x] HTTP method: PATCH
+  [x] Path: /users/auth/password-reset
+  [x] Auth: 불필요
+  [x] Status: 204 No Content
+  [x] Request 'email': string — ChangePasswordRequest.email
+  [x] Request 'newPassword': string — ChangePasswordRequest.newPassword
+
+[EP-USER-04] PATCH /users/auth/refresh — 토큰 갱신
+  [x] HTTP method: PATCH
+  [x] Path: /users/auth/refresh
+  [x] Auth: 불필요
+  [x] Status: 200 OK
+  [x] Request 'refreshToken': string — RefreshTokenRequest.refreshToken
+  [x] Response 'accessToken': string — LoginResponse.accessToken
+  [x] New Set-Cookie: refreshToken — cookieUtil.addRefreshToken()
+
+[EP-USER-05] GET /users/auth/login/google — Google OAuth2
+  [x] HTTP method: GET
+  [x] Path: /users/auth/login/google
+  [x] Auth: 불필요
+  [x] Status: 302 Found (redirect to /oauth2/authorization/google)
+
+[EP-USER-06] GET /users/auth/login/github — GitHub OAuth2
+  [x] HTTP method: GET
+  [x] Path: /users/auth/login/github
+  [x] Auth: 불필요
+  [x] Status: 302 Found (redirect to /oauth2/authorization/github)
+
+[EP-USER-07] DELETE /users — 회원탈퇴
+  [x] HTTP method: DELETE
+  [x] Path: /users
+  [x] Auth: 필수 (@AuthenticationPrincipal)
+  [x] Status: 204 No Content
+
+  RESULT: 7/7 PASS
+
+================================================================================
+  2. USER SERVICE — EMAIL VERIFICATION (4 endpoints)
+================================================================================
+
+[EP-VERIFY-01] POST /users/verification — 회원가입 인증코드 발송
+  [x] HTTP method: POST
+  [x] Path: /users/verification
+  [x] Auth: 불필요
+  [ ] Status: Spec=204, Test expects 200 OK (void method, no @ResponseStatus)
+  [x] Request 'email': string, @NotBlank, @Email — SendVerificationCodeRequest
+
+[EP-VERIFY-02] PATCH /users/verification — 회원가입 인증코드 검증
+  [x] HTTP method: PATCH
+  [x] Path: /users/verification
+  [x] Auth: 불필요
+  [ ] Status: Spec=204, Test expects 200 OK
+  [x] Request 'email': string — VerifyRequest.email
+  [x] Request 'code': string — VerifyRequest.code
+
+[EP-VERIFY-03] POST /users/auth/password-reset — 비밀번호 리셋 코드 발송
+  [x] HTTP method: POST
+  [x] Path: /users/auth/password-reset
+  [x] Auth: 불필요
+  [ ] Status: Spec=204, Test expects 200 OK
+  [x] Request 'email': string — SendVerificationCodeRequest
+
+[EP-VERIFY-04] PATCH /users/auth/password-reset/verify — 비밀번호 리셋 코드 검증
+  [x] HTTP method: PATCH
+  [x] Path: /users/auth/password-reset/verify
+  [x] Auth: 불필요
+  [ ] Status: Spec=204, Test expects 200 OK
+  [x] Request 'email': string — VerifyRequest.email
+  [x] Request 'code': string — VerifyRequest.code
+
+  RESULT: 4/4 ENDPOINTS FOUND
+  ISSUE: All 4 endpoints — Spec says 204 but actual returns 200 OK
+         (void method without @ResponseStatus defaults to 200 in Spring)
+  FIX: Add @ResponseStatus(HttpStatus.NO_CONTENT) or update spec to 200
+
+================================================================================
+  3. USER SERVICE — PROFILE & FOLLOW (5 endpoints)
+================================================================================
+
+[EP-PROFILE-01] GET /users?name={name} — 프로필 조회
+  [x] HTTP method: GET
+  [x] Path: /users
+  [x] Query param 'name': string, required
+  [x] Auth: 선택
+  [x] Status: 200 OK
+  [x] Response 'user.name': String — QueryUserDto.name
+  [x] Response 'user.email': String — QueryUserDto.email
+  [x] Response 'user.profileImageUrl': String — QueryUserDto.profileImageUrl
+  [x] Response 'user.bio': String — QueryUserDto.bio
+  [x] Response 'user.isFollowed': Boolean — QueryUserDto.isFollowed
+  [x] Response 'user.stats.followersCount': long — FollowDto.followersCount
+  [x] Response 'user.stats.followingCount': long — FollowDto.followingCount
+  [x] Response 'user.externalLinks': Map<String,String> — QueryUserDto.externalLinks
+  [x] Response 'streak.currentStreak': int — StreakResponseDto.currentStreak
+  [x] Response 'streak.activities': List<DailyActivityDto> — StreakResponseDto.activities
+  [x] Response 'streak.activities[].date': LocalDate — DailyActivityDto.date
+  [x] Response 'streak.activities[].count': int — DailyActivityDto.count
+
+[EP-PROFILE-02] PATCH /users/profile — 프로필 수정
+  [x] HTTP method: PATCH
+  [x] Path: /users/profile
+  [x] Auth: 필수
+  [x] Status: 200 OK
+  [x] Request 'user.profileImage': String — UpdateProfileDto.profileImage
+  [x] Request 'user.bio': String — UpdateProfileDto.bio
+  [x] Request 'user.externalLinks': HashMap<String,String> — UpdateProfileDto.externalLinks
+  [x] Response 'message': "프로필이 성공적으로 수정되었습니다." — MessageResponse
+
+[EP-PROFILE-03] PATCH /users/{name}/follow — 팔로우 토글
+  [x] HTTP method: PATCH
+  [x] Path: /users/{name}/follow
+  [x] Auth: 필수
+  [ ] Status: Spec=204, actual=200 OK (void method, no @ResponseStatus)
+  [x] Request 'toggle': Boolean, @NotNull — FollowToggleRequest.toggle
+
+[EP-PROFILE-04] GET /users/{name}/followers — 팔로워 목록
+  [x] HTTP method: GET
+  [x] Path: /users/{name}/followers
+  [x] Auth: 불필요
+  [x] Status: 200 OK
+  [x] Response 'userId': Long
+  [ ] Response 'type': Spec="followers", actual="FOLLOWER" (uppercase, singular)
+  [x] Response 'totalCount': long
+  [x] Response 'users[].id': Long — FollowUserResponse.id
+  [x] Response 'users[].name': String — FollowUserResponse.name
+  [x] Response 'users[].profileImage': String — FollowUserResponse.profileImage
+  [x] Response 'users[].isFollowing': Boolean — FollowUserResponse.isFollowing
+
+[EP-PROFILE-05] GET /users/{name}/followings — 팔로잉 목록
+  [x] HTTP method: GET
+  [x] Path: /users/{name}/followings
+  [x] Auth: 불필요
+  [x] Status: 200 OK
+  [x] Response 'userId': Long
+  [ ] Response 'type': Spec="followings", actual="FOLLOWING" (uppercase, singular)
+  [x] Response 'totalCount': long
+  [x] Response 'users[].id': Long
+  [x] Response 'users[].name': String
+  [x] Response 'users[].profileImage': String
+  [x] Response 'users[].isFollowing': Boolean
+
+  RESULT: 5/5 ENDPOINTS FOUND
+  ISSUES:
+    1. Follow toggle: Spec=204, actual=200 (no @ResponseStatus)
+    2. Followers 'type': Spec="followers", actual="FOLLOWER"
+    3. Followings 'type': Spec="followings", actual="FOLLOWING"
+
+================================================================================
+  4. ROADMAP SERVICE — CRUD & FORK (9 endpoints)
+================================================================================
+
+[EP-ROADMAP-01] POST /roadmaps — 생성
+  [x] HTTP method, path, auth(필수), status(201)
+  [x] Request: title(@NotBlank), description, directoryId, isPublic, thumbnailUrl, tags
+  [x] Response: id, title, description, directoryId, ownerId, isPublic, viewCount, createdAt, updatedAt
+
+[EP-ROADMAP-02] GET /roadmaps — 목록
+  [x] HTTP method, path, auth(필수), status(200)
+  [x] Params: page(0), size(10), sort("latest"), period, query, userId, directoryId, isPublic, tags
+  [x] Response: content[], pageable{pageNumber,pageSize}, totalElements, totalPages, hasNext
+  [x] List item: id, title, description, thumbnailUrl, isPublic, viewCount, forkCount, tags, owner, createdAt, updatedAt
+
+[EP-ROADMAP-03] GET /roadmaps/popular — 인기
+  [x] HTTP method, path, auth(불필요), status(200)
+  [x] Params: page(0), size(10), sortBy("forks")
+
+[EP-ROADMAP-04] GET /roadmaps/{roadmapId} — 상세
+  [x] HTTP method, path, auth(필수), status(200)
+  [x] Response: id, title, description, thumbnailUrl, isPublic, viewCount
+  [x] Response owner: id, nickname, profileImageUrl
+  [x] Response stats: totalNodes, totalEdges, forkCount
+
+[EP-ROADMAP-05] PATCH /roadmaps/{roadmapId} — 수정
+  [x] HTTP method, path, auth(필수), status(200)
+  [x] Request: title(optional, @Size(min=1)), description, isPublic, thumbnailUrl, tags
+  [x] Response: id, updatedAt
+
+[EP-ROADMAP-06] DELETE /roadmaps/{roadmapId} — 삭제
+  [x] HTTP method, path, auth(필수), status(200)
+  [x] Response: message
+
+[EP-ROADMAP-07] POST /roadmaps/{roadmapId}/fork — 포크
+  [x] HTTP method, path, auth(필수), status(201)
+  [x] Response: RoadmapResponse
+
+[EP-ROADMAP-08] GET /roadmaps/{roadmapId}/fork-tree — 포크 트리
+  [x] HTTP method, path, auth(불필요), status(200)
+  [x] Response: id, title, ownerId, ownerName, forkCount, children(recursive)
+
+[EP-ROADMAP-09] GET /roadmaps/{roadmapId}/fork-status — 포크 상태
+  [x] HTTP method, path, auth(필수), status(200)
+  [x] Response: roadmapId, forkCount, isForkedByCurrentUser, originalRoadmapId, originalRoadmapTitle
+
+  RESULT: 9/9 PASS — ALL CORRECT
+
+================================================================================
+  5. ROADMAP SERVICE — PROGRESS & DIRECTORY (7 endpoints)
+================================================================================
+
+[EP-PROGRESS-01] GET /roadmaps/{roadmapId}/my-progress
+  [x] All correct: method, path, auth, status, response fields
+
+[EP-PROGRESS-02] GET /roadmaps/{roadmapId}/users/{userId}/progress
+  [x] All correct: method, path, auth, status, response fields
+
+[EP-PROGRESS-03] POST /roadmaps/{roadmapId}/nodes/{nodeId}/complete
+  [x] HTTP method, path, auth(필수), status(200)
+  [x] Request: isCompleted(Boolean), link(optional)
+  [x] Response: nodeId, isCompleted, roadmapProgress(BigDecimal), completedAt
+  [?] isCompleted marked required in spec but no @NotNull in code
+  [?] Missing @Valid on @RequestBody in ProgressController
+
+[EP-DIRECTORY-01] GET /directories/tree
+  [x] All correct: method, path, auth, status
+  [x] Response: id, name, path, children(recursive), roadmaps[]
+  [x] Nested roadmaps: id, title, thumbnailUrl, isPublic, updatedAt
+
+[EP-DIRECTORY-02] POST /directories
+  [x] All correct: method, path, auth, status(201)
+  [x] Request: name(@NotBlank), parentId(optional)
+  [x] Response: id, name, parentId, path, createdAt
+
+[EP-DIRECTORY-03] PATCH /directories/{directoryId}
+  [x] All correct: method, path, auth, status
+  [x] Request: name(@NotBlank)
+
+[EP-DIRECTORY-04] DELETE /directories/{directoryId}
+  [x] All correct: method, path, auth, status
+  [x] Query params: mode(optional), targetDirectoryId(optional)
+
+  RESULT: 7/7 PASS
+  NOTE: CompleteNodeRequest lacks @NotNull on isCompleted + @Valid on controller
+
+================================================================================
+  6. NODE SERVICE (1 REST + STOMP)
+================================================================================
+
+[EP-NODE-01] GET /api/roadmap/{roadmapId}/events
+  [x] HTTP method: GET
+  [x] Path: /api/roadmap/{roadmapId}/events
+  [x] Query param 'since': Long, default=0
+  [x] Response: List<Event> (type, eventId, sequence, payload)
+
+[STOMP-SEND-01] /app/roadmap/{roadmapId}/action
+  [x] MessageMapping path correct
+  [x] Headers: X-User-ID(required), X-User-Role(required)
+  [x] Payload: Action(actionId, roadmap, action, payload)
+  [x] ACK: /user/queue/ack → ActionAck(type, actionId, status)
+  [x] NACK: /user/queue/nack → ActionNack(actionId, actionType, errorCode, errorMessage)
+  [x] Broadcast: /topic/roadmap/{id}/state → Event
+
+[STOMP-SEND-02] /app/roadmap/{roadmapId}/cursor
+  [x] Path, headers(X-User-ID), payload(CursorPosition)
+  [x] Broadcast: /topic/roadmap/{id}/cursors
+
+[STOMP-SEND-03] /app/roadmap/{roadmapId}/cursor/hide
+  [x] Path, headers(X-User-ID)
+  [x] Broadcast: /topic/roadmap/{id}/cursors/hide
+
+[STOMP-AUTO] Snapshot on subscribe
+  [x] Subscribe /topic/roadmap/{id}/state → auto-send to /user/queue/snapshot
+
+[ENUM] ActionType:    [x] CREATE, EDIT, DELETE, UNDO, REDO (5)
+[ENUM] TargetType:    [x] NODE, GROUP, SECTION, EDGE, TEXT, RESOURCE (6)
+[ENUM] CursorState:   [x] NORMAL, DRAGGING, SELECTING, EDITING (4)
+[ENUM] EventType:     [x] SNAPSHOT, ACK, EVENT, PRESENCE (4)
+
+[DTO] Action:         [x] actionId, roadmap, action, payload
+[DTO] ActionPayload:  [x] type, target, prev, next, data
+[DTO] ActionTarget:   [x] type, object, tempId, nodeId
+[DTO] ActionState:    [x] x(Float), y(Float), label, locked, metadata
+[DTO] ActionData:     [x] All 31+ fields verified (label, x, y, width, height, learningState,
+                          fromNodeId, toNodeId, edgeStyle, strokeColor, strokeWidth, labelText,
+                          arrowType, isDirectional, animationType, resourceTitle, resourceType,
+                          resourceUrl, resourceDescription, resourceMetadata, displayOrder,
+                          textContent, fontSize, textColor, fontWeight, textAlign, styleData,
+                          sectionName, sectionWidth, sectionHeight, sectionColor, sectionDescription)
+[DTO] CursorPosition: [x] userId(Long), userName, x(Double), y(Double), timestamp(Long),
+                          state(CursorState), targetId
+[DTO] ActionAck:      [x] type(EventType), actionId, status
+[DTO] ActionNack:     [x] actionId, actionType, errorCode, errorMessage (Java record)
+[DTO] Event:          [x] type(EventType), eventId, sequence(Long), payload(Map)
+[DTO] Snapshot:       [x] type, version(Long), roadmapId, nodes, edges, sections, orphanNodeIds
+
+[ERROR-CODES] (11)
+  [x] AUTH_001: 인증이 필요합니다
+  [x] AUTH_002: 권한이 없습니다
+  [x] AUTH_003: 유효하지 않은 사용자 ID
+  [x] ACTION_001: 이미 처리된 요청입니다
+  [x] ACTION_002: 지원하지 않는 액션 타입입니다
+  [x] NODE_001: 위치 정보는 필수입니다
+  [x] NODE_002: 노드를 찾을 수 없습니다
+  [x] EDGE_001: 엣지를 찾을 수 없습니다
+  [x] ROADMAP_001: 로드맵을 찾을 수 없습니다
+  [x] COMMON_001: 잘못된 입력입니다
+  [x] COMMON_002: 서버 내부 오류가 발생했습니다
+
+[WS-CONFIG]
+  [x] /ws (pure WebSocket)
+  [x] /ws-sockjs (SockJS fallback)
+  [x] /ws/roadmap (STOMP+SockJS)
+  [x] Broker: /topic, /queue, /user
+  [x] App prefix: /app
+  [x] User prefix: /user
+
+  RESULT: ALL PASS
+
+================================================================================
+  7. AI SERVICE — LEARNING & ROADMAP (8 endpoints)
+================================================================================
+
+[EP-AI-01] GET /ai/record-coach
+  [x] Method, path, params (roadmap_id, node_id, compose_level)
+  [ ] Response 'scores.*': Spec shows float (0.8), impl uses IntegerField
+      FIX NEEDED: Spec response examples should use int or serializer should use FloatField
+
+[EP-AI-02] GET /ai/learning-coach
+  [x] All correct: method, path, params, response fields
+
+[EP-AI-03] GET /ai/learning-pattern
+  [x] All correct: method, path, params(user_id, days=30), response fields
+
+[EP-AI-04] GET /ai/related-roadmaps
+  [x] Method, path, param(roadmap_id)
+  [ ] Response 'candidates[].reasons[].detail': Spec="detail", impl="value"
+      FIX NEEDED: Spec should use "value" to match RelatedRoadmapReasonSerializer
+
+[EP-AI-05] GET /ai/roadmap-generated — CRITICAL ISSUES
+  [x] Method, path, params(goal, preferred_tags, max_nodes, compose_level)
+  [ ] Response 'nodes[].id': Spec="id", impl="node_id"
+  [ ] Response 'nodes[].label': Spec="label", impl="title"
+  [ ] Response 'edges[].from': Spec="from", impl="source"
+  [ ] Response 'edges[].to': Spec="to", impl="target"
+      FIX NEEDED: Spec node/edge field names completely wrong
+
+[EP-AI-06] GET /ai/roadmap-recommendation
+  [x] All correct: method, path, params, response fields
+
+[EP-AI-07] GET /ai/document-roadmap
+  [x] Method, path
+  [ ] Params 'document','goal': Spec implies required, impl=optional(default="")
+
+[EP-AI-08] POST /ai/document-roadmap
+  [x] Method, path
+  [ ] Body 'document','goal': Spec implies required, impl=optional(default="")
+
+  RESULT: 3/8 FULLY CORRECT, 5 WITH ISSUES
+  CRITICAL: roadmap-generated node/edge field names completely wrong in spec
+
+================================================================================
+  8. AI SERVICE — TECH, COMMENTS, SEARCH (7 endpoints)
+================================================================================
+
+[EP-AI-TECH-01] GET /ai/tech-cards
+  [x] Method, path, param(tech_slug)
+  [ ] Response 'why_it_matters': Spec=string, impl=ListField(CharField)
+  [ ] Response 'when_to_use': Spec=string, impl=ListField(CharField)
+      FIX NEEDED: Spec examples show strings but serializer uses list types
+
+[EP-AI-TECH-02] GET /ai/tech-fingerprint
+  [x] All correct: method, path, params, response fields
+
+[EP-AI-CMT-01] GET /ai/comment-digest
+  [x] Method, path, params(roadmap_id, period_days=14)
+  [ ] Response structure: Spec shows flat (generated_at, model_version),
+      impl uses nested 'generated_by' (GeneratedBySerializer)
+
+[EP-AI-CMT-02] GET /ai/comment-duplicates
+  [x] All correct: method, path, params, response fields
+
+[EP-AI-REC-01] GET /ai/resource-recommendation
+  [x] All correct: method, path, params(query, top_k=3, recency_days=30), response fields
+
+[EP-AI-SEARCH-01] GET /ai/web-search
+  [x] Method, path
+  [ ] Param 'query': Spec=선택(optional), impl decorator=required=True
+      NOTE: Code has fallback default "Python 학습 자료" so effectively optional
+  [ ] Param 'engine': Spec no default listed, impl defaults to "all"
+
+[EP-AI-GRAPH-01] GET /ai/graph-rag
+  [x] All correct: method, path, params(query, top_k=3), response fields
+
+  RESULT: 3/7 FULLY CORRECT, 4 WITH ISSUES
+
+================================================================================
+  9. AI SERVICE — INIT DATA, NODE, DEMO (10 endpoints)
+================================================================================
+
+[EP-AI-INIT-01] GET /ai/init-data
+  [x] All correct: method, path, response(InitDataSerializer)
+
+[EP-AI-INIT-02] POST /ai/init-data
+  [x] All correct: method, path, status(201)
+  [x] Request: roadmap_id(opt), content(req), data_type(default="text"), filename(opt)
+
+[EP-AI-INIT-03] GET /ai/init-data/{id}
+  [x] All correct: method, path, response
+
+[EP-AI-INIT-04] PUT /ai/init-data/{id}
+  [x] All correct: method, path, request(content), response
+
+[EP-AI-INIT-05] DELETE /ai/init-data/{id}
+  [x] All correct: method, path, status(204)
+
+[EP-AI-NODE-01] GET /ai/node-generation
+  [x] Method, path, param(init_data_id=required)
+  [?] Response uses raw Response(result) without serializer wrapping — may not match spec format
+
+[EP-AI-NODE-02] GET /ai/node-description
+  [x] Method, path, params(node_title=required, context=optional)
+  [x] Response: node_title, description, generated_at
+  [?] Response uses manual dict, not _serialize() — inconsistent with other endpoints
+
+[EP-AI-NODE-03] GET /ai/node-resource-recommendation
+  [x] All correct: method, path, params(node_id, roadmap_id), response
+
+[EP-AI-NODE-04] POST /ai/node-resource-save
+  [x] All correct: method, path, status(201)
+  [x] Request: node_id, title, url, source(default="web"), description(opt)
+  [x] Response: resource_id, node_id, title, url, source, description, created_at
+
+[EP-AI-DEMO-01] GET /ai/demo
+  [x] Method, path
+  [x] All 8 params with correct defaults
+  [x] Response includes all 13 sub-module results
+
+  RESULT: 10/10 ENDPOINTS FOUND, 2 MINOR CONSISTENCY CONCERNS
+
+================================================================================
+  10. GATEWAY
+================================================================================
+
+--- JWT ---
+[GW-AUTH-01] [x] Algorithm: HS512
+[GW-AUTH-02] [x] Token header: Authorization: Bearer <token>
+[GW-AUTH-03] [x] Fallback: ?access_token=<token> (SockJS)
+[GW-AUTH-04] [x] Token type validation: ACCESS_TOKEN
+
+--- ROLE MAPPING ---
+[GW-ROLE-01] [x] STUDENT → USER
+[GW-ROLE-02] [x] TEACHER → ADMIN
+[GW-ROLE-03] [x] ADMIN → ADMIN
+[GW-PERM-01] [x] USER → READ,WRITE
+[GW-PERM-02] [x] ADMIN → ALL
+[GW-PERM-03] [x] Default → READ
+
+--- PUBLIC ENDPOINTS ---
+[GW-PUBLIC-01] [x] POST /users
+[GW-PUBLIC-02] [x] /users/auth/login/**
+[GW-PUBLIC-03] [x] /users/auth/refresh/**
+[GW-PUBLIC-04] [x] /users/auth/password-reset/** (NEW — added)
+[GW-PUBLIC-05] [x] /users/verification/** (NEW — added)
+[GW-PUBLIC-06] [x] /users/oauth2/**
+[GW-PUBLIC-07] [x] /actuator/health
+[GW-PUBLIC-08] [x] OPTIONS ** (CORS preflight)
+[GW-PUBLIC-09] [?] /actuator/prometheus — NOT in isPublicPath() (requires auth)
+[GW-PUBLIC-10] [?] /actuator/metrics — NOT in isPublicPath() (requires auth)
+
+--- INJECTED HEADERS ---
+[GW-HEADER-01] [x] X-User-ID (Long)
+[GW-HEADER-02] [x] X-User-Role (String)
+[GW-HEADER-03] [x] X-Permissions (String)
+[GW-HEADER-04] [x] X-Roadmap-ID (conditional)
+
+--- CORS ---
+[GW-CORS-01] [x] CorsConfig.java: localhost:3000, localhost:5173 (FIXED)
+[GW-CORS-02] [x] application.yml: localhost:3000, localhost:5173
+[GW-CORS-03] [x] Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+[GW-CORS-04] [x] Headers: *
+[GW-CORS-05] [x] Credentials: true
+[GW-CORS-06] [x] Max-Age: 3600
+[GW-CORS-07] [?] Dual CORS config (Java + YAML) — may conflict
+
+--- WEBSOCKET ---
+[GW-WS-01] [x] Upgrade: websocket detection
+[GW-WS-02] [x] Guest mode (no token = allowed)
+[GW-WS-03] [x] Token extraction: header + query param
+[GW-WS-04] [x] Header injection same as REST
+
+--- ERROR RESPONSE FORMAT ---
+[GW-ERROR-01] [x] Format: {error:{code, message, details, timestamp}} (FIXED)
+[GW-ERROR-02] [x] Error codes: UNAUTHORIZED, INVALID_TOKEN, TOKEN_EXPIRED
+[GW-ERROR-03] [x] Timestamp: ISO 8601 (Instant.now().toString())
+[GW-ERROR-04] [x] Content-Type: application/json
+
+--- HEALTH/MONITORING ---
+[GW-HEALTH-01] [x] /actuator/health (exposed, public)
+[GW-HEALTH-02] [x] /actuator/prometheus (exposed, but requires auth)
+[GW-HEALTH-03] [x] /actuator/metrics (exposed, but requires auth)
+
+  RESULT: MOSTLY CORRECT
+  NOTE: /actuator/prometheus and /actuator/metrics require auth (spec doesn't clarify this)
+
+================================================================================
+  OVERALL SUMMARY
+================================================================================
+
+TOTAL ENDPOINTS CHECKED: 71
+  FULLY CORRECT:        57
+  ISSUES FOUND:         14
+  UNVERIFIABLE:          4
+
+--- CRITICAL ISSUES (spec must be fixed) ---
+
+  1. [EP-AI-05] /ai/roadmap-generated node/edge field names
+     Spec: nodes[].id, nodes[].label, edges[].from, edges[].to
+     Actual: nodes[].node_id, nodes[].title, edges[].source, edges[].target
+
+  2. [EP-AI-01] /ai/record-coach score types
+     Spec example: float (0.8, 0.7)
+     Actual serializer: IntegerField
+
+  3. [EP-AI-TECH-01] /ai/tech-cards why_it_matters, when_to_use
+     Spec: string
+     Actual: ListField(CharField)
+
+--- MEDIUM ISSUES (spec or code should be aligned) ---
+
+  4. [EP-VERIFY-*] All verification endpoints: Spec=204, actual=200
+     FIX: Add @ResponseStatus(NO_CONTENT) to VerificationController methods
+
+  5. [EP-PROFILE-03] Follow toggle: Spec=204, actual=200
+     FIX: Add @ResponseStatus(NO_CONTENT) to FollowController.toggleFollow()
+
+  6. [EP-PROFILE-04/05] Follow list 'type' field
+     Spec: "followers"/"followings" (lowercase)
+     Actual: "FOLLOWER"/"FOLLOWING" (uppercase, singular)
+
+  7. [EP-AI-04] /ai/related-roadmaps reasons field
+     Spec: "detail"
+     Actual: "value"
+
+  8. [EP-AI-CMT-01] /ai/comment-digest response structure
+     Spec: flat (generated_at, model_version)
+     Actual: nested 'generated_by' object
+
+  9. [EP-AI-SEARCH-01] /ai/web-search query parameter
+     Spec: optional, Impl: required=True (but has default fallback)
+
+  10. [EP-AI-SEARCH-01] /ai/web-search engine default
+      Spec: not specified, Impl: defaults to "all"
+
+--- LOW ISSUES (minor inconsistencies) ---
+
+  11. [EP-AI-07/08] /ai/document-roadmap params
+      Spec implies required, impl treats as optional
+
+  12. [EP-PROGRESS-03] CompleteNodeRequest missing @NotNull, @Valid
+
+  13. [GW-CORS-07] Dual CORS config (CorsConfig.java + application.yml)
+
+  14. [GW-PUBLIC-09/10] /actuator/prometheus, /metrics not public
+
+================================================================================
+  SOURCE CODE FIXES ALREADY APPLIED (this session)
+================================================================================
+
+  [FIXED] Gateway: isPublicPath() — added /users/verification, /users/auth/password-reset
+  [FIXED] Gateway: CorsConfig.java — added http://localhost:5173
+  [FIXED] Gateway: Error response format — aligned to {error:{code,message,details,timestamp}}
+  [FIXED] Spec: user.stats.followerCount → followersCount
+  [FIXED] Spec: streak.longestStreak → streak.activities
+  [FIXED] Spec: profileImageUrl → profileImage (followers/followings)
+  [FIXED] Spec: 프로필 수정 응답 메시지 텍스트
+  [FIXED] Spec: /ai/web-search query default value documented
+  [FIXED] Spec: WebSocket endpoints (/ws, /ws-sockjs, /ws/roadmap) all documented
+  [FIXED] Spec: Public endpoints list updated
+
+================================================================================
+  REMAINING FIXES NEEDED
+================================================================================
+
+  SPEC FIXES:
+    1. /ai/roadmap-generated: nodes[].id→node_id, label→title, edges from/to→source/target
+    2. /ai/record-coach: score examples should use integers (not floats)
+    3. /ai/tech-cards: why_it_matters, when_to_use → list type (not string)
+    4. /ai/related-roadmaps: reasons[].detail → reasons[].value
+    5. /ai/comment-digest: add generated_by nested object structure
+    6. /ai/web-search: engine default="all" documented
+    7. /ai/document-roadmap: params marked optional (not required)
+    8. Verification endpoints: status 200 OK (not 204)
+    9. Follow toggle: status 200 OK (not 204)
+    10. Followers/followings type: "FOLLOWER"/"FOLLOWING"
+
+  CODE FIXES:
+    1. VerificationController: add @ResponseStatus(NO_CONTENT) if 204 intended
+    2. FollowController: add @ResponseStatus(NO_CONTENT) if 204 intended
+    3. ProgressController: add @Valid on CompleteNodeRequest, @NotNull on isCompleted
+    4. AI record-coach serializer: IntegerField → FloatField if float intended

@@ -28,7 +28,7 @@ export const EditorHeader = memo(function EditorHeader({ onBack }: EditorHeaderP
   };
 
   return (
-    <header className="absolute top-4 left-4 z-10 flex w-fit flex-col gap-4 rounded-lg border border-[#e2e8f0] bg-white p-2 shadow-md">
+    <header className="absolute top-4 left-4 z-10 flex w-fit flex-col gap-4 rounded-lg border border-slate-200 bg-white p-2 shadow-md">
       <div className="flex items-center gap-2">
         <Button
           variant="ghost"
@@ -39,11 +39,11 @@ export const EditorHeader = memo(function EditorHeader({ onBack }: EditorHeaderP
           <ChevronLeft className="h-[15px] w-[15px]" />
         </Button>
 
-        <span className="text-base leading-6 font-semibold whitespace-nowrap text-[#020617]">
+        <span className="text-base leading-6 font-semibold whitespace-nowrap text-slate-950">
           {title || 'Jagalchi Roadmap'}
         </span>
 
-        <span className="text-xs leading-4 font-medium tracking-[0.18px] text-[#64748b]">
+        <span className="text-xs leading-4 font-medium tracking-[0.18px] text-slate-500">
           (수정중)
         </span>
 
@@ -52,11 +52,11 @@ export const EditorHeader = memo(function EditorHeader({ onBack }: EditorHeaderP
           className="flex min-h-8 min-w-8 items-center justify-center rounded-lg p-[7px] hover:bg-slate-100"
           aria-label="더보기"
         >
-          <Ellipsis className="h-[15px] w-[15px] text-[#020617]" />
+          <Ellipsis className="h-[15px] w-[15px] text-slate-950" />
         </button>
       </div>
 
-      <Button className="h-8 w-full rounded-lg bg-[#0f172a] px-3 py-[5.5px] text-sm font-semibold text-white hover:bg-[#1e293b]">
+      <Button className="h-8 w-full rounded-lg bg-slate-900 px-3 py-[5.5px] text-sm font-semibold text-white hover:bg-slate-800">
         Readme 수정
       </Button>
     </header>

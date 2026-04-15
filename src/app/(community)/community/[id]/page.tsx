@@ -6,5 +6,5 @@ interface PageProps {
 
 export default async function RoadmapDetailPage({ params }: PageProps) {
   const { id } = await params;
-  return <RoadmapDetail id={id} />;
+  return <RoadmapDetail id={Number(id)} />;
 }

@@ -2,7 +2,7 @@ import type { RoadmapData } from '../types/my-roadmaps.types';
 
 export const MOCK_MY_ROADMAPS: RoadmapData[] = [
   {
-    id: '1',
+    id: 1,
     title: 'Frontend Developer Roadmap',
     author: '홍길동',
     type: 'Roadmap',
@@ -11,7 +11,7 @@ export const MOCK_MY_ROADMAPS: RoadmapData[] = [
     category: 'my-roadmap',
   },
   {
-    id: '2',
+    id: 2,
     title: 'Directory Name',
     type: 'Directory',
     fileCount: 67,
@@ -19,7 +19,7 @@ export const MOCK_MY_ROADMAPS: RoadmapData[] = [
     category: 'my-roadmap',
   },
   {
-    id: '3',
+    id: 3,
     title: 'React Mastery',
     author: '홍길동',
     type: 'Roadmap',
@@ -28,7 +28,7 @@ export const MOCK_MY_ROADMAPS: RoadmapData[] = [
     category: 'my-roadmap',
   },
   {
-    id: '4',
+    id: 4,
     title: 'Backend Essentials',
     author: '홍길동',
     type: 'Roadmap',
@@ -36,7 +36,7 @@ export const MOCK_MY_ROADMAPS: RoadmapData[] = [
     category: 'community',
   },
   {
-    id: '5',
+    id: 5,
     title: 'DevOps Guide',
     author: '홍길동',
     type: 'Roadmap',

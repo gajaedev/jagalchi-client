@@ -10,6 +10,20 @@ vi.mock('next/link', () => ({
   ),
 }));
 
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({ push: vi.fn(), replace: vi.fn(), back: vi.fn() }),
+}));
+
+const mockMutate = vi.fn();
+vi.mock('../../../hooks/use-login', () => ({
+  useLogin: () => ({
+    mutate: mockMutate,
+    isPending: false,
+    isError: false,
+    error: null,
+  }),
+}));
+
 describe('LoginForm', () => {
   it('이메일, 비밀번호 필드와 로그인 버튼을 렌더링한다', () => {
     render(<LoginForm />);

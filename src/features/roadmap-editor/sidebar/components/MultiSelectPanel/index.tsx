@@ -62,12 +62,12 @@ export const MultiSelectPanel = memo(function MultiSelectPanel() {
   return (
     <div className="h-full w-full space-y-4 p-4">
       {/* Header */}
-      <div className="flex items-center justify-between gap-4 border-b border-[#e2e8f0] pb-4">
+      <div className="flex items-center justify-between gap-4 border-b border-slate-200 pb-4">
         <div className="flex flex-col gap-1">
-          <h3 className="text-base font-bold text-[#020617]">
+          <h3 className="text-base font-bold text-slate-950">
             {EDITOR_MESSAGES.MULTI_SELECT_TITLE}
           </h3>
-          <p className="text-xs text-[#020617]">노드</p>
+          <p className="text-xs text-slate-950">{EDITOR_MESSAGES.MULTI_SELECT_NODE_LABEL}</p>
         </div>
         <Button variant="ghost" size="icon" className="rounded-[4px]" disabled>
           <LockKeyholeOpen className="h-[13px] w-[13px]" />
@@ -75,7 +75,7 @@ export const MultiSelectPanel = memo(function MultiSelectPanel() {
       </div>
 
       {/* Alignment Section */}
-      <div className="border-b border-[#e2e8f0] pb-4">
+      <div className="border-b border-slate-200 pb-4">
         <Label className="mb-2 block">{EDITOR_MESSAGES.MULTI_SELECT_ALIGN_LABEL}</Label>
         <div className="flex items-start justify-between">
           {/* Horizontal alignment */}
@@ -143,7 +143,7 @@ export const MultiSelectPanel = memo(function MultiSelectPanel() {
       </div>
 
       {/* Spacing Section */}
-      <div className="border-b border-[#e2e8f0] pb-4">
+      <div className="border-b border-slate-200 pb-4">
         <Label className="mb-2 block">{EDITOR_MESSAGES.MULTI_SELECT_SPACING_LABEL}</Label>
         <div className="flex items-center gap-2">
           <AlignHorizontalJustifyCenter className="h-6 w-6 shrink-0" />
