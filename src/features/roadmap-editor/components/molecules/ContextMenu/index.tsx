@@ -34,7 +34,7 @@ export function ContextMenu({
       <ContextMenuTrigger asChild disabled={disabled}>
         {children}
       </ContextMenuTrigger>
-      <ContextMenuContent className="w-48 bg-white" alignOffset={5}>
+      <ContextMenuContent className="w-48" alignOffset={5}>
         <ContextMenuItem onClick={onCopy} disabled={!onCopy} className="cursor-pointer">
           복사 (Copy)
         </ContextMenuItem>
@@ -47,7 +47,8 @@ export function ContextMenu({
         <ContextMenuItem
           onClick={onDelete}
           disabled={!onDelete}
-          className="cursor-pointer text-red-500 hover:text-red-600"
+          className="cursor-pointer"
+          variant="destructive"
         >
           삭제 (Delete)
         </ContextMenuItem>

@@ -16,14 +16,13 @@ type Story = StoryObj<typeof meta>;
 
 // Figma 매핑을 위해 Default 로 네이밍
 export const Default: Story = {
-  render: (args) => (
-    <ContextMenu {...args}>
+  render: (args) => <ContextMenu {...args} />,
+  args: {
+    children: (
       <div className="flex h-40 w-64 items-center justify-center rounded-md border-2 border-dashed border-gray-300 bg-gray-50 text-sm text-gray-500">
         우클릭하여 컨텍스트 메뉴를 여세요.
       </div>
-    </ContextMenu>
-  ),
-  args: {
+    ),
     onCopy: () => alert('Copied!'),
     onPaste: () => alert('Pasted!'),
     onDuplicate: () => alert('Duplicated!'),
