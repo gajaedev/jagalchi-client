@@ -48,8 +48,9 @@ async function loadFromApi(roadmapId: string): Promise<ApiRoadmap | null> {
     const events = await getRoadmapEvents(roadmapId);
     if (!events || !Array.isArray(events)) return null;
 
-    // TODO: 이벤트 시퀀스를 재생하여 현재 상태 복원
-    // 현재는 단순히 null 반환하여 localStorage 폴백 사용
+    // 이벤트 시퀀스를 재생하여 현재 상태 복원하는 로직은 #226 실시간 협업 MVP
+    // 에서 snapshot + replay 전략 확정 후 연결. 현재는 명시적으로 null 반환하여
+    // localStorage 폴백을 사용한다.
     return null;
   } catch {
     return null;

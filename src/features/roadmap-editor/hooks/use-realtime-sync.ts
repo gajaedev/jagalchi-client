@@ -59,9 +59,23 @@ export function useRealtimeSync({
         errorCode: string;
         errorMessage: string;
       };
-      const { isFound } = handleNack(data.actionId);
-      if (isFound) {
-        // TODO: NACK 시 로컬 상태 롤백 또는 사용자에게 에러 알림
+      const { isFound, action } = handleNack(data.actionId);
+      if (!isFound) return;
+
+      // 전역 이벤트로 공지 → 앱 레이어의 토스트/Sentry/롤백 reducer 가 수신.
+      // 실제 롤백 로직은 리덕스 스타일 액션 스택 도입과 함께 #226 에서 처리.
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(
+          new CustomEvent('jagalchi:realtime-nack', {
+            detail: {
+              actionId: data.actionId,
+              actionType: data.actionType,
+              errorCode: data.errorCode,
+              errorMessage: data.errorMessage,
+              action,
+            },
+          }),
+        );
       }
     } catch {
       /* invalid JSON — skip */
@@ -84,7 +98,8 @@ export function useRealtimeSync({
         if (snapshot.type !== 'SNAPSHOT') return;
         setNodes(snapshot.nodes);
         setEdges(snapshot.edges);
-        // TODO: sections, orphanNodeIds 처리 (섹션 atom 추가 시)
+        // sections, orphanNodeIds 는 전용 atom 미도입 상태.
+        // 섹션 실시간 동기화는 #226 실시간 협업 MVP 에서 atom 과 함께 연결.
       } catch {
         /* invalid JSON — skip */
       }
