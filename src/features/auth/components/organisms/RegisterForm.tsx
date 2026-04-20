@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { AUTH_MESSAGES } from '@/constants/messages';
 
 import { useRegister } from '../../hooks/use-register';
+import { useUpdateProfileLinks } from '../../hooks/use-update-profile-links';
 import { useVerifyCode } from '../../hooks/use-verify-code';
 
 import { RegisterStep1Form } from './register-steps/RegisterStep1Form';
@@ -32,6 +33,7 @@ export function RegisterForm({ onStepChange }: RegisterFormProps) {
 
   const verifyCodeMutation = useVerifyCode();
   const registerMutation = useRegister();
+  const updateLinksMutation = useUpdateProfileLinks();
 
   const handleStep1Submit = (data: RegisterStep1Schema) => {
     verifyCodeMutation.mutate(
@@ -52,10 +54,9 @@ export function RegisterForm({ onStepChange }: RegisterFormProps) {
     onStepChange?.(3, AUTH_MESSAGES.STEP3_TITLE, AUTH_MESSAGES.STEP3_DESCRIPTION);
   };
 
-  const completeRegistration = (_links?: { name: string; url: string }[]) => {
+  const completeRegistration = (links?: { name: string; url: string }[]) => {
     if (!step1DataRef.current || !step2DataRef.current) return;
 
-    // TODO: _links는 회원가입 후 프로필 업데이트 API로 별도 처리
     registerMutation.mutate(
       {
         email: step1DataRef.current.email,
@@ -63,11 +64,17 @@ export function RegisterForm({ onStepChange }: RegisterFormProps) {
         password: step1DataRef.current.password,
       },
       {
-        onSuccess: () => {
+        onSuccess: async () => {
+          if (links && links.length > 0) {
+            // 링크 반영 실패해도 회원가입 자체는 성공이라 흡수.
+            // 사용자는 프로필 설정에서 추후 재입력 가능.
+            try {
+              await updateLinksMutation.mutateAsync(links);
+            } catch {
+              /* ignore — surface via profile settings later */
+            }
+          }
           router.push('/login');
-        },
-        onError: () => {
-          // registerMutation.error로 에러 상태 접근 가능
         },
       },
     );
