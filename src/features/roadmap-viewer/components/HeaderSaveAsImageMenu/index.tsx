@@ -2,7 +2,6 @@
 
 import { useCallback, useState } from 'react';
 
-import { toJpeg, toPng, toSvg } from 'html-to-image';
 import { Image } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -13,19 +12,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { VIEWER_MESSAGES } from '@/constants/messages';
-
-type ImageFormat = 'png' | 'jpg' | 'svg';
-
-/**
- * ReactFlow 캔버스를 이미지 파일로 다운로드하는 유틸리티
- * html-to-image는 filter 함수로 불필요한 컨트롤 요소를 제외한다
- */
-function downloadDataUrl(dataUrl: string, filename: string) {
-  const link = document.createElement('a');
-  link.href = dataUrl;
-  link.download = filename;
-  link.click();
-}
+import { exportCanvasAsImage, type CanvasImageFormat } from '@/lib/export-canvas';
 
 function getReactFlowElement(): HTMLElement | null {
   return document.querySelector('.react-flow') as HTMLElement | null;
@@ -35,7 +22,7 @@ export function HeaderSaveAsImageMenu() {
   const [isExporting, setIsExporting] = useState(false);
 
   const handleExport = useCallback(
-    async (format: ImageFormat) => {
+    async (format: CanvasImageFormat) => {
       if (isExporting) return;
 
       const element = getReactFlowElement();
@@ -44,18 +31,7 @@ export function HeaderSaveAsImageMenu() {
       setIsExporting(true);
       try {
         const timestamp = Date.now();
-        const filename = `roadmap-${timestamp}.${format}`;
-
-        if (format === 'png') {
-          const dataUrl = await toPng(element, { cacheBust: true });
-          downloadDataUrl(dataUrl, filename);
-        } else if (format === 'jpg') {
-          const dataUrl = await toJpeg(element, { cacheBust: true, quality: 0.95 });
-          downloadDataUrl(dataUrl, filename);
-        } else {
-          const dataUrl = await toSvg(element, { cacheBust: true });
-          downloadDataUrl(dataUrl, filename);
-        }
+        await exportCanvasAsImage(element, format, `roadmap-${timestamp}.${format}`);
       } finally {
         setIsExporting(false);
       }
@@ -88,27 +64,20 @@ export function HeaderSaveAsImageMenu() {
   );
 }
 
-// Kept for backward compatibility (used by HeaderMenu submenu items)
 export function handleSaveAsPng() {
   const element = getReactFlowElement();
   if (!element) return;
-  toPng(element, { cacheBust: true }).then((dataUrl) => {
-    downloadDataUrl(dataUrl, `roadmap-${Date.now()}.png`);
-  });
+  void exportCanvasAsImage(element, 'png', `roadmap-${Date.now()}.png`);
 }
 
 export function handleSaveAsJpg() {
   const element = getReactFlowElement();
   if (!element) return;
-  toJpeg(element, { cacheBust: true, quality: 0.95 }).then((dataUrl) => {
-    downloadDataUrl(dataUrl, `roadmap-${Date.now()}.jpg`);
-  });
+  void exportCanvasAsImage(element, 'jpg', `roadmap-${Date.now()}.jpg`);
 }
 
 export function handleSaveAsSvg() {
   const element = getReactFlowElement();
   if (!element) return;
-  toSvg(element, { cacheBust: true }).then((dataUrl) => {
-    downloadDataUrl(dataUrl, `roadmap-${Date.now()}.svg`);
-  });
+  void exportCanvasAsImage(element, 'svg', `roadmap-${Date.now()}.svg`);
 }

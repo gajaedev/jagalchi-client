@@ -3,9 +3,7 @@
 import { useCallback, useRef, useState } from 'react';
 
 import { useReactFlow } from '@xyflow/react';
-import { toJpeg, toPng, toSvg } from 'html-to-image';
 import { useAtomValue } from 'jotai';
-import { jsPDF } from 'jspdf';
 import { Settings } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -19,16 +17,10 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { VIEWER_MESSAGES } from '@/constants/messages';
+import { exportCanvasAsImage, exportCanvasAsPdf } from '@/lib/export-canvas';
 import type { RoadmapNode } from '@/types/roadmap.types';
 
 import { viewerRoadmapAtom } from '../../stores/viewer-atoms';
-
-function downloadDataUrl(dataUrl: string, filename: string) {
-  const link = document.createElement('a');
-  link.href = dataUrl;
-  link.download = filename;
-  link.click();
-}
 
 function downloadBlob(content: string, filename: string, mimeType: string) {
   const blob = new Blob([content], { type: mimeType });
@@ -83,16 +75,7 @@ export function HeaderMenu() {
       setIsExporting(true);
       try {
         const timestamp = Date.now();
-        if (format === 'png') {
-          const dataUrl = await toPng(element, { cacheBust: true });
-          downloadDataUrl(dataUrl, `roadmap-${timestamp}.png`);
-        } else if (format === 'jpg') {
-          const dataUrl = await toJpeg(element, { cacheBust: true, quality: 0.95 });
-          downloadDataUrl(dataUrl, `roadmap-${timestamp}.jpg`);
-        } else {
-          const dataUrl = await toSvg(element, { cacheBust: true });
-          downloadDataUrl(dataUrl, `roadmap-${timestamp}.svg`);
-        }
+        await exportCanvasAsImage(element, format, `roadmap-${timestamp}.${format}`);
       } finally {
         setIsExporting(false);
       }
@@ -126,21 +109,7 @@ export function HeaderMenu() {
 
     setIsExporting(true);
     try {
-      const dataUrl = await toPng(element, { cacheBust: true, pixelRatio: 2 });
-      const img = new Image();
-      img.src = dataUrl;
-      await new Promise<void>((resolve) => {
-        img.onload = () => resolve();
-      });
-
-      const isLandscape = img.width > img.height;
-      const pdf = new jsPDF({
-        orientation: isLandscape ? 'landscape' : 'portrait',
-        unit: 'px',
-        format: [img.width, img.height],
-      });
-      pdf.addImage(dataUrl, 'PNG', 0, 0, img.width, img.height);
-      pdf.save(`roadmap-${Date.now()}.pdf`);
+      await exportCanvasAsPdf(element, `roadmap-${Date.now()}.pdf`);
     } finally {
       setIsExporting(false);
     }
