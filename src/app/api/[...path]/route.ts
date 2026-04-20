@@ -1,36 +1,79 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 const API_ORIGIN = process.env.API_ORIGIN ?? 'https://api.jagalchi.dev';
+const DEFAULT_TIMEOUT_MS = 15_000;
+
+const SAFE_METHODS = new Set(['GET', 'HEAD', 'OPTIONS']);
+
+/**
+ * 응답 헤더에서 CORS 관련 헤더를 제거한다 (same-origin 프록시이므로 불필요).
+ */
+function stripCorsHeaders(headers: Headers) {
+  headers.delete('access-control-allow-origin');
+  headers.delete('access-control-allow-credentials');
+  headers.delete('access-control-allow-methods');
+  headers.delete('access-control-allow-headers');
+}
+
+/**
+ * 요청 헤더에서 프록시 홉 바이 홉 헤더와 host 를 제거한다.
+ */
+function sanitizeRequestHeaders(source: Headers): Headers {
+  const headers = new Headers(source);
+  headers.delete('host');
+  headers.delete('connection');
+  headers.delete('content-length');
+  return headers;
+}
 
 async function proxyRequest(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
-  // /api/users/auth/login → https://api.jagalchi.dev/users/auth/login
   const targetPath = pathname.replace(/^\/api/, '');
   const targetUrl = `${API_ORIGIN}${targetPath}${search}`;
 
-  const headers = new Headers(request.headers);
-  headers.delete('host');
+  const headers = sanitizeRequestHeaders(request.headers);
 
-  const response = await fetch(targetUrl, {
-    method: request.method,
-    headers,
-    body: request.body,
-    // @ts-expect-error duplex needed for streaming body
-    duplex: 'half',
-  });
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), DEFAULT_TIMEOUT_MS);
 
-  const responseHeaders = new Headers(response.headers);
-  // CORS 헤더 제거 (same-origin 프록시이므로 불필요)
-  responseHeaders.delete('access-control-allow-origin');
-  responseHeaders.delete('access-control-allow-credentials');
-  responseHeaders.delete('access-control-allow-methods');
-  responseHeaders.delete('access-control-allow-headers');
+  try {
+    // eslint-disable-next-line no-undef
+    const init: RequestInit & { duplex?: 'half' } = {
+      method: request.method,
+      headers,
+      signal: controller.signal,
+    };
 
-  return new NextResponse(response.body, {
-    status: response.status,
-    statusText: response.statusText,
-    headers: responseHeaders,
-  });
+    // GET/HEAD/OPTIONS 는 바디를 포함할 수 없다.
+    if (!SAFE_METHODS.has(request.method)) {
+      init.body = request.body;
+      init.duplex = 'half';
+    }
+
+    const response = await fetch(targetUrl, init);
+
+    const responseHeaders = new Headers(response.headers);
+    stripCorsHeaders(responseHeaders);
+
+    return new NextResponse(response.body, {
+      status: response.status,
+      statusText: response.statusText,
+      headers: responseHeaders,
+    });
+  } catch (error) {
+    if (error instanceof Error && error.name === 'AbortError') {
+      return NextResponse.json(
+        { code: 'GATEWAY_TIMEOUT', message: 'Upstream request timed out' },
+        { status: 504 },
+      );
+    }
+    return NextResponse.json(
+      { code: 'BAD_GATEWAY', message: 'Failed to reach upstream' },
+      { status: 502 },
+    );
+  } finally {
+    clearTimeout(timeout);
+  }
 }
 
 export const GET = proxyRequest;
