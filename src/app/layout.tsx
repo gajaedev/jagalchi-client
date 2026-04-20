@@ -28,6 +28,7 @@ export const metadata: Metadata = {
   icons: {
     icon: '/jagalchi.svg',
   },
+  manifest: '/manifest.webmanifest',
   openGraph: {
     title: '자갈치 — 개발자 학습 로드맵 플랫폼',
     description: '개발자의 학습 경로를 노드 기반 에디터로 생성하고, 포크·공유하는 플랫폼.',
