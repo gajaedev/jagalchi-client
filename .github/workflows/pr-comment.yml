@@ -3,13 +3,13 @@ name: PR Comment
 on:
   pull_request:
     branches: [main, develop]
+    types: [opened]
 
 permissions:
   pull-requests: write
 
 jobs:
   comment:
-    if: github.event.action == 'opened'
     runs-on: ubuntu-latest
 
     steps:
@@ -17,37 +17,41 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
+            const body = [
+              '## 📋 Code Review Guide / 코드 리뷰 가이드',
+              '',
+              '### 1. 리뷰 기준 / Review Criteria',
+              '',
+              '| 항목 | 확인 사항 |',
+              '|------|----------|',
+              '| **기능 / Function** | 요구사항대로 동작하는가? |',
+              '| **코드 품질 / Quality** | 가독성, 네이밍, 구조가 적절한가? |',
+              '| **컨벤션 / Convention** | 프로젝트 컨벤션을 준수하는가? |',
+              '| **테스트 / Test** | 테스트가 충분한가? |',
+              '| **성능 / Performance** | 불필요한 렌더링, 비효율적인 코드가 없는가? |',
+              '| **보안 / Security** | 보안 취약점은 없는가? |',
+              '',
+              '### 2. 코멘트 타입 / Comment Types',
+              '',
+              '| 타입 | 설명 |',
+              '|------|------|',
+              '| **Suggestion** | 개선 제안 (선택적) |',
+              '| **Question** | 의도 확인 질문 |',
+              '| **Issue** | 반드시 수정 필요 |',
+              '| **Praise** | 좋은 코드 칭찬 |',
+              '| **Note** | 참고 사항 공유 |',
+              '',
+              '### 3. 승인 조건 / Approval Requirements',
+              '',
+              '- ✅ 최소 1명의 Approve 필수',
+              '- ✅ 모든 Issue 코멘트 해결',
+              '- ✅ CI 테스트 통과',
+              '- ✅ 충돌 해결 완료',
+            ].join('\n');
+
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `## 📋 Code Review Guide / 코드 리뷰 가이드
-
-### 1. 리뷰 기준 / Review Criteria
-
-| 항목 | 확인 사항 |
-|------|----------|
-| **기능 / Function** | 요구사항대로 동작하는가? |
-| **코드 품질 / Quality** | 가독성, 네이밍, 구조가 적절한가? |
-| **컨벤션 / Convention** | 프로젝트 컨벤션을 준수하는가? |
-| **테스트 / Test** | 테스트가 충분한가? |
-| **성능 / Performance** | 불필요한 렌더링, 비효율적인 코드가 없는가? |
-| **보안 / Security** | 보안 취약점은 없는가? |
-
-### 2. 코멘트 타입 / Comment Types
-
-| 타입 | 설명 |
-|------|------|
-| **Suggestion** | 개선 제안 (선택적) |
-| **Question** | 의도 확인 질문 |
-| **Issue** | 반드시 수정 필요 |
-| **Praise** | 좋은 코드 칭찬 |
-| **Note** | 참고 사항 공유 |
-
-### 3. 승인 조건 / Approval Requirements
-
-- ✅ 최소 1명의 Approve 필수
-- ✅ 모든 Issue 코멘트 해결
-- ✅ CI 테스트 통과
-- ✅ 충돌 해결 완료`
-            })
+              body,
+            });
