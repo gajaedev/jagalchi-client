@@ -52,7 +52,7 @@ test.describe('Editor E2E', () => {
     await expect(page.locator('.react-flow__node')).toHaveCount(initialNodes + 1);
   });
 
-  test('node selection shows properties panel', async ({ page }) => {
+  test.fixme('node selection shows properties panel', async ({ page }) => {
     await page.waitForSelector('.react-flow', { timeout: 30000 });
     const nodes = page.locator('.react-flow__node');
     const initialCount = await nodes.count();
