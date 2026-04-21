@@ -3,6 +3,8 @@
 import { ReactFlowProvider } from '@xyflow/react';
 
 import { RoadmapCanvas } from '../../../canvas/components';
+import { useNackRollback } from '../../../hooks/use-nack-rollback';
+import { useRealtimeSync } from '../../../hooks/use-realtime-sync';
 import { ColorPicker } from '../../../properties/components';
 import { EditorSidebar } from '../../../sidebar/components';
 import { EditorToolbar } from '../../../toolbar/components';
@@ -14,9 +16,16 @@ interface EditorContentProps {
 }
 
 function EditorContent({ onBack, roadmapId }: EditorContentProps) {
+  const { isConnected } = useRealtimeSync({
+    roadmapId: roadmapId ?? '',
+    isEnabled: !!roadmapId,
+  });
+
+  useNackRollback();
+
   return (
     <div className="relative flex h-screen w-screen">
-      <EditorHeader onBack={onBack} />
+      <EditorHeader onBack={onBack} isConnected={isConnected} />
 
       <div className="relative flex flex-1 overflow-hidden">
         <div className="flex-1">

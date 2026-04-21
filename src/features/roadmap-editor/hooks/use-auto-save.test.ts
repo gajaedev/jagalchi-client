@@ -18,12 +18,12 @@ vi.mock('../schemas/roadmap.schema', () => ({
 
 // Mock STORAGE_KEY
 vi.mock('../services/roadmap-storage', () => ({
-  STORAGE_KEY: 'jagalchi-roadmaps',
+  STORAGE_KEY: 'jagalchi-roadmaps-v1',
 }));
 
 import { useAutoSave } from './use-auto-save';
 
-const STORAGE_KEY = 'jagalchi-roadmaps';
+const STORAGE_KEY = 'jagalchi-roadmaps-v1';
 
 const makeNode = (id: string, label: string): RoadmapNode =>
   ({

@@ -11,6 +11,8 @@ interface ProfileHeaderProps {
   email: string;
   followerCount?: number;
   followingCount?: number;
+  isSelf?: boolean;
+  isFollowing?: boolean;
 }
 
 export function ProfileHeader({
@@ -18,6 +20,8 @@ export function ProfileHeader({
   email,
   followerCount = 0,
   followingCount = 0,
+  isSelf = true,
+  isFollowing = false,
 }: ProfileHeaderProps) {
   const [imageSrc, setImageSrc] = useAtom(profileImageAtom);
 
@@ -42,6 +46,8 @@ export function ProfileHeader({
           email={email}
           followerCount={followerCount}
           followingCount={followingCount}
+          isSelf={isSelf}
+          isFollowing={isFollowing}
         />
       </div>
     </div>

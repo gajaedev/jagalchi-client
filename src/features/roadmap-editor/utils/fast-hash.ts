@@ -27,18 +27,19 @@ export function fastArrayHash<T extends Record<string, unknown>>(
 ): string {
   if (!arr.length) return '0';
 
-  let combined = arr.length; // Include array length in hash
+  let combined = arr.length;
 
-  for (const item of arr) {
+  for (let i = 0; i < arr.length; i++) {
+    const item = arr[i];
     for (const key of keys) {
       const value = item[key];
-      // Hash the value - use JSON.stringify for complex objects
       const str = typeof value === 'object' ? JSON.stringify(value) : String(value);
-      combined ^= hashString(str);
+      // Mix in index to make hash order-sensitive (prevents swap false-negatives)
+      combined = Math.imul(combined, 31) ^ hashString(`${i}:${String(key)}:${str}`);
     }
   }
 
-  return combined.toString(36); // Base36 for shorter strings
+  return (combined >>> 0).toString(36);
 }
 
 /**

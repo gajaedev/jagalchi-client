@@ -65,10 +65,17 @@ export function dispatchAction(
     payload,
   };
 
-  // 대기 큐 오버플로우 방지 — 가장 오래된 액션 제거
+  // 대기 큐 오버플로우 방지 — 가장 오래된 액션 제거 (NACK 롤백 불가 경고)
   if (pendingActions.size >= MAX_PENDING_ACTIONS) {
     const oldestKey = pendingActions.keys().next().value;
-    if (oldestKey) pendingActions.delete(oldestKey);
+    if (oldestKey) {
+      // eslint-disable-next-line no-console
+      console.warn(
+        `[action-dispatcher] pendingActions overflow: dropping actionId=${oldestKey}. ` +
+          'NACK rollback for this action will be silently skipped.',
+      );
+      pendingActions.delete(oldestKey);
+    }
   }
 
   pendingActions.set(actionId, stompAction);

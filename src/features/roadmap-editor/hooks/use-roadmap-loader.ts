@@ -4,6 +4,8 @@ import { useRouter } from 'next/navigation';
 
 import { useSetAtom } from 'jotai';
 
+import { isEnabled } from '@/lib/feature-flags';
+
 import {
   createEmptyRoadmap,
   loadRoadmapFromLocalStorage,
@@ -34,7 +36,7 @@ interface ApiRoadmap {
   title: string;
 }
 
-const isRealtimeEnabled = process.env.NEXT_PUBLIC_REALTIME_ENABLED === 'true';
+const isRealtimeEnabled = isEnabled('REALTIME_ENABLED');
 
 /**
  * Attempt to fetch roadmap data from the API.

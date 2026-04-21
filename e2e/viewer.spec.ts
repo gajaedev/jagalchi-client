@@ -25,7 +25,7 @@ test.describe('Viewer E2E', () => {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
-      localStorage.setItem('jagalchi-roadmaps', JSON.stringify([roadmap]));
+      localStorage.setItem('jagalchi-roadmaps-v1', JSON.stringify([roadmap]));
     });
 
     await page.goto('/viewer/1');

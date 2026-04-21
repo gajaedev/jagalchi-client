@@ -2,6 +2,8 @@ import { Inter, JetBrains_Mono } from 'next/font/google';
 
 import { MSWProvider } from '@/components/MswProvider';
 import { QueryProvider } from '@/components/providers/QueryProvider';
+import { Toaster } from '@/components/ui/sonner';
+import { WebVitals } from '@/components/WebVitals';
 import { AuthProvider } from '@/features/auth';
 
 import type { Metadata } from 'next';
@@ -60,6 +62,8 @@ export default function RootLayout({
             <AuthProvider>{children}</AuthProvider>
           </QueryProvider>
         </MSWProvider>
+        <Toaster richColors position="bottom-right" />
+        <WebVitals />
       </body>
     </html>
   );

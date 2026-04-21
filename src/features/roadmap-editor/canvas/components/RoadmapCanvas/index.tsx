@@ -152,7 +152,9 @@ export function RoadmapCanvas({ roadmapId, userName = 'Unknown' }: RoadmapCanvas
       const targetIsPane = (event.target as HTMLElement).classList.contains('react-flow__pane');
       if (!targetIsPane) return;
 
-      const { clientX, clientY } = 'changedTouches' in event ? event.changedTouches[0] : event;
+      const touch = 'changedTouches' in event ? event.changedTouches[0] : null;
+      if (!touch && !('clientX' in event)) return;
+      const { clientX, clientY } = touch ?? (event as MouseEvent);
       const position = screenToFlowPosition({ x: clientX, y: clientY });
 
       // Create new node at drop position

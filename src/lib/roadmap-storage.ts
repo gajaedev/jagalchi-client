@@ -2,7 +2,7 @@ import type { Roadmap, CreateRoadmapInput } from '@/types/roadmap.types';
 
 import { parseRoadmaps } from './roadmap-schema';
 
-export const STORAGE_KEY = 'jagalchi-roadmaps';
+export const STORAGE_KEY = 'jagalchi-roadmaps-v1';
 
 export function createEmptyRoadmap(id: number, input?: CreateRoadmapInput): Roadmap {
   const now = new Date().toISOString();

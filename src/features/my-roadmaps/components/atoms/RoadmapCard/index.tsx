@@ -106,13 +106,13 @@ export function RoadmapCard({
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="min-w-[72px] p-[10px]">
-            {!isDirectory && (
+            {!isDirectory && onFavorite && (
               <>
                 <DropdownMenuItem
                   className="cursor-pointer justify-center text-sm"
                   onClick={(e) => {
                     e.stopPropagation();
-                    onFavorite?.();
+                    onFavorite();
                   }}
                 >
                   {MY_ROADMAPS_MESSAGES.CARD_FAVORITE}

@@ -80,9 +80,6 @@ export function MyRoadmapsGrid({ roadmaps }: MyRoadmapsGridProps) {
             isFavorite={roadmap.isFavorite}
             onRename={() => handleRenameOpen(roadmap.id, roadmap.title)}
             onDelete={() => setDeleteTarget(roadmap.id)}
-            onFavorite={() => {
-              // TODO: 즐겨찾기 API 연동 (백엔드 미구현)
-            }}
           />
         ))}
       </div>

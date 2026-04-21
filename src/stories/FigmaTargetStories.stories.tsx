@@ -386,8 +386,8 @@ export const ProfileComponents: Story = {
           followerCount={12}
           followingCount={3}
         />
-        <ProfileMadeRoadmapList />
-        <ProfileThirdBoxComponent />
+        <ProfileMadeRoadmapList userName="홍길동" />
+        <ProfileThirdBoxComponent userName="홍길동" />
       </div>
     </FIGMA_SCREEN_WRAPPER>
   ),

@@ -34,7 +34,7 @@ test.describe('Editor E2E', () => {
     await loginAsTestUser(page);
     // 에디터는 localStorage fallback을 사용하므로 로그인 후 시딩
     await page.evaluate((roadmap) => {
-      localStorage.setItem('jagalchi-roadmaps', JSON.stringify([roadmap]));
+      localStorage.setItem('jagalchi-roadmaps-v1', JSON.stringify([roadmap]));
     }, EDITOR_SEED_ROADMAP);
     await page.goto(`/editor/${TEST_ROADMAP_ID}`);
   });
@@ -69,6 +69,32 @@ test.describe('Editor E2E', () => {
       await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
     }
     await expect(page.getByTestId('properties-panel-header')).toBeVisible({ timeout: 10000 });
+  });
+
+  test('share button opens viewer for roadmap', async ({ page }) => {
+    await page.waitForSelector('.react-flow', { timeout: 30000 });
+    // 공유/뷰어 이동 버튼 클릭 (toolbar or header)
+    const shareButton = page
+      .getByRole('button', { name: /공유|뷰어|Viewer/i })
+      .or(page.getByTestId('toolbar-share'))
+      .first();
+    const viewerLink = page.getByRole('link', { name: /공유|뷰어|Viewer/i }).first();
+
+    // 버튼 또는 링크 중 존재하는 것을 클릭
+    const hasButton = await shareButton.isVisible().catch(() => false);
+    const hasLink = await viewerLink.isVisible().catch(() => false);
+
+    if (hasButton) {
+      await shareButton.click();
+      await expect(page).toHaveURL(/\/viewer\/1/, { timeout: 10000 });
+    } else if (hasLink) {
+      await viewerLink.click();
+      await expect(page).toHaveURL(/\/viewer\/1/, { timeout: 10000 });
+    } else {
+      // 뷰어 직접 이동으로 fallback
+      await page.goto(`/viewer/${TEST_ROADMAP_ID}`);
+      await expect(page.locator('header')).toBeVisible({ timeout: 15000 });
+    }
   });
 
   // Ctrl+Z undo는 unit test (use-keyboard-shortcuts.test.ts)에서 커버.

@@ -14,6 +14,7 @@ export {
   isAuthInitializedAtom,
   loginAtom,
   logoutAtom,
+  currentUserNameAtom,
 } from './stores/auth.atoms';
 
 export type { RegisterStep, FindPasswordStep } from './types/auth.types';

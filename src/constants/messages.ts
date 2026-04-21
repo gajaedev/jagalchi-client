@@ -209,6 +209,15 @@ export const PROFILE_MESSAGES = {
   SEARCH_EMPTY: '검색 결과가 없습니다.',
   CANCEL: '취소',
   CONFIRM: '확인',
+  // Follow
+  FOLLOW: '팔로우',
+  UNFOLLOW: '언팔로우',
+  FOLLOW_LOADING: '처리 중...',
+  FOLLOWERS_TITLE: '팔로워',
+  FOLLOWINGS_TITLE: '팔로잉',
+  FOLLOW_LIST_EMPTY: '목록이 없습니다.',
+  FOLLOW_LIST_LOADING: '불러오는 중...',
+  FOLLOW_LIST_ERROR: '목록을 불러올 수 없습니다.',
   // Profile template
   LOADING: '프로필을 불러오는 중...',
   ERROR: '프로필을 불러올 수 없습니다.',
@@ -402,4 +411,26 @@ export const EDITOR_MESSAGES = {
   DEFAULT_RESOURCE_QUERY: 'programming',
   // RoadmapCanvas
   NEW_NODE_LABEL: 'New Node',
+} as const;
+
+export const REALTIME_MESSAGES = {
+  NACK_TITLE: '변경 사항을 저장하지 못했습니다',
+  NACK_DESCRIPTION: '잠시 후 다시 시도해주세요.',
+  CONNECTION_CONNECTED: '실시간 협업 중',
+  CONNECTION_DISCONNECTED: '연결 끊김',
+} as const;
+
+export const NOTIFICATION_MESSAGES = {
+  // Bell
+  BELL_ARIA: '알림',
+  UNREAD_COUNT_ARIA: '읽지 않은 알림',
+  // Dropdown header
+  TITLE: '알림',
+  MARK_ALL_READ: '모두 읽음',
+  // List
+  EMPTY: '새로운 알림이 없습니다',
+  LOADING: '알림을 불러오는 중...',
+  ERROR: '알림을 불러오지 못했습니다',
+  // Item
+  MARK_READ_ARIA: '읽음 처리',
 } as const;

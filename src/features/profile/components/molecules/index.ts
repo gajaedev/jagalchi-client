@@ -1,4 +1,5 @@
 export { ContributionGraph } from './ContributionGraph';
+export { FollowListDialog } from './FollowListDialog';
 export { ProfileBio } from './ProfileBio';
 export { ProfileCustomBoxArea } from './ProfileCustomBoxArea';
 export { ProfileCustomOrganization } from './ProfileCustomOrganization';

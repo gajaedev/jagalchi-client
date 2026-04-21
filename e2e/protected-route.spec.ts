@@ -26,4 +26,22 @@ test.describe('Protected routes', () => {
     await page.goto('/login');
     await expect(page).toHaveURL(/\/myroadmap/, { timeout: 10000 });
   });
+
+  test('로그인 → 보호 라우트 진입 → 로그아웃 전체 플로우', async ({ page }) => {
+    // 1. 로그인
+    await loginAsTestUser(page);
+    await expect(page).toHaveURL(/\/myroadmap/, { timeout: 10000 });
+
+    // 2. 보호 라우트 진입 확인
+    await page.goto('/myroadmap');
+    await expect(page.getByRole('heading', { name: '내 로드맵' })).toBeVisible({ timeout: 30000 });
+
+    // 3. 로그아웃
+    await page.getByRole('button', { name: '로그아웃' }).click();
+    await expect(page).toHaveURL(/\/login/, { timeout: 10000 });
+
+    // 4. 로그아웃 후 보호 라우트 접근 시 다시 /login 으로 리다이렉트
+    await page.goto('/myroadmap');
+    await expect(page).toHaveURL(/\/login/, { timeout: 10000 });
+  });
 });

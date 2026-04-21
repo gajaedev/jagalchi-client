@@ -1,3 +1,4 @@
+export { FollowButton } from './FollowButton';
 export { ProfileEditButton } from './ProfileEditButton';
 export { ProfileLinkAddButton } from './ProfileLinkAddButton';
 export { ProfilePicture } from './ProfilePicture';

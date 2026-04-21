@@ -58,8 +58,27 @@ export const findUserByEmail = (email: string): MockUser | undefined =>
 export const findUserById = (id: string): MockUser | undefined =>
   MOCK_USERS.find((user) => user.id === id);
 
-/** Mock JWT 토큰 생성 */
-export const createMockToken = (userId: string): string => `mock-jwt-token-${userId}-${Date.now()}`;
+/**
+ * Mock JWT 토큰 생성
+ * 실제 서명은 없지만 base64url header.payload.signature 구조를 갖춰
+ * decodeJwtPayload()가 name 클레임을 정상적으로 추출할 수 있도록 한다.
+ */
+const toBase64Url = (obj: object): string =>
+  btoa(String.fromCharCode(...new TextEncoder().encode(JSON.stringify(obj))))
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=+$/, '');
+
+export const createMockToken = (userId: string): string => {
+  const user = MOCK_USERS.find((u) => u.id === userId);
+  const header = toBase64Url({ alg: 'HS512', typ: 'JWT' });
+  const payload = toBase64Url({
+    sub: userId,
+    name: user?.username ?? userId,
+    exp: Math.floor(Date.now() / 1000) + 3600,
+  });
+  return `${header}.${payload}.mock-signature`;
+};
 
 /** Mock 인증 코드 (항상 동일한 값 반환) */
 export const MOCK_VERIFICATION_CODE = '123456';

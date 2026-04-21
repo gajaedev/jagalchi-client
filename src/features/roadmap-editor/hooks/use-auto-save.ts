@@ -1,10 +1,12 @@
 import { useEffect, useRef } from 'react';
 
 import { useDebounce } from '@/hooks/use-debounce';
+import { isEnabled } from '@/lib/feature-flags';
 
 import { parseRoadmaps } from '../schemas/roadmap.schema';
 import { dispatchAction } from '../services/action-dispatcher';
 import { STORAGE_KEY } from '../services/roadmap-storage';
+import { hashNodes, hashEdges } from '../utils/fast-hash';
 
 import type { RoadmapNode } from '../types/editor.types';
 import type { Roadmap } from '../types/roadmap.types';
@@ -18,7 +20,7 @@ interface UseAutoSaveProps {
   isEnabled?: boolean;
 }
 
-const isRealtimeEnabled = process.env.NEXT_PUBLIC_REALTIME_ENABLED === 'true';
+const isRealtimeEnabled = isEnabled('REALTIME_ENABLED');
 const QUOTA_WARNING_THRESHOLD = 0.9; // Warn at 90% usage
 
 /**
@@ -62,9 +64,8 @@ export function useAutoSave({
   useEffect(() => {
     if (!isEnabled || typeof window === 'undefined') return;
 
-    // Use JSON.stringify for accurate change detection (debounced, so performance is fine)
-    const currentNodesHash = JSON.stringify(debouncedNodes);
-    const currentEdgesHash = JSON.stringify(debouncedEdges);
+    const currentNodesHash = hashNodes(debouncedNodes);
+    const currentEdgesHash = hashEdges(debouncedEdges);
     const currentTitle = debouncedTitle;
 
     // Detect changes
@@ -76,17 +77,13 @@ export function useAutoSave({
       return;
     }
 
-    // Realtime mode: send STOMP action instead of localStorage
-    if (isRealtimeEnabled) {
+    // Realtime mode: dispatch title change via STOMP, always persist to localStorage as local cache
+    if (isRealtimeEnabled && titleChanged) {
       dispatchAction(roadmapId, 'EDIT', {
         type: 'INFO',
         target: { type: 'NODE', object: roadmapId },
         data: { title: debouncedTitle },
       });
-      prevNodesRef.current = currentNodesHash;
-      prevEdgesRef.current = currentEdgesHash;
-      prevTitleRef.current = currentTitle;
-      return;
     }
 
     try {

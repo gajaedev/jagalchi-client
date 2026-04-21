@@ -4,6 +4,7 @@ import { useRef, useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
+import { getGithubOAuthUrl, getGoogleOAuthUrl } from '@/api/auth';
 import { AUTH_MESSAGES } from '@/constants/messages';
 
 import { useRegister } from '../../hooks/use-register';
@@ -95,11 +96,11 @@ export function RegisterForm({ onStepChange }: RegisterFormProps) {
   };
 
   const handleGoogleRegister = () => {
-    // TODO: Google OAuth
+    window.location.href = getGoogleOAuthUrl();
   };
 
   const handleGitHubRegister = () => {
-    // TODO: GitHub OAuth
+    window.location.href = getGithubOAuthUrl();
   };
 
   if (step === 3) {

@@ -60,6 +60,22 @@ test.describe('Community E2E', () => {
       await expect(page.getByText('About')).toBeVisible();
       await expect(page.getByText('Made by')).toBeVisible();
     });
+
+    test('fork button shows success message after click', async ({ page }) => {
+      const forkButton = page.getByRole('button', { name: '내 로드맵에 추가' });
+      await expect(forkButton).toBeVisible();
+      await forkButton.click();
+
+      // MSW에서 fork API 성공 → 인라인 성공 메시지 표시
+      await expect(page.getByText('로드맵을 내 로드맵에 추가했습니다.')).toBeVisible({
+        timeout: 10000,
+      });
+    });
+
+    test('view roadmap button navigates to viewer', async ({ page }) => {
+      await page.getByText('로드맵 보기').click();
+      await expect(page).toHaveURL(/\/viewer\/1/, { timeout: 10000 });
+    });
   });
 
   test.describe('Edge Cases', () => {

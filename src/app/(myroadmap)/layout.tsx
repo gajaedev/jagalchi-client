@@ -1,3 +1,5 @@
+import { AppHeader } from '@/features/notifications';
+
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -5,5 +7,10 @@ export const metadata: Metadata = {
 };
 
 export default function MyRoadmapLayout({ children }: { children: React.ReactNode }) {
-  return children;
+  return (
+    <>
+      <AppHeader />
+      {children}
+    </>
+  );
 }

@@ -7,6 +7,7 @@ import { CheckCircle2, Circle, Search, X } from 'lucide-react';
 
 import { VIEWER_MESSAGES } from '@/constants/messages';
 import { useCompleteNode, useRoadmapProgress } from '@/hooks/use-roadmap-progress';
+import { sanitizeUrl } from '@/lib/url-validation';
 import type { JagalchiNodeData } from '@/types/roadmap.types';
 
 import {
@@ -183,7 +184,7 @@ export function ViewerSidebar({ isOpen = true, onClose, roadmapId }: ViewerSideb
                   {(selectedNode.data as JagalchiNodeData).resources.map((url) => (
                     <li key={url}>
                       <a
-                        href={url}
+                        href={sanitizeUrl(url)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-primary block truncate text-sm hover:underline"

@@ -17,6 +17,7 @@ export const config = defineConfig({
   use: {
     baseURL: 'http://localhost:3100',
     trace: 'on-first-retry',
+    screenshot: 'only-on-failure',
     serviceWorkers: 'allow',
   },
   projects: [
@@ -30,7 +31,7 @@ export const config = defineConfig({
     },
   ],
   webServer: {
-    command: process.env.CI ? 'PORT=3100 pnpm start' : 'pnpm dev --port 3100',
+    command: process.env.CI ? 'PORT=3100 node_modules/.bin/next start' : 'pnpm dev --port 3100',
     url: 'http://localhost:3100',
     reuseExistingServer: !process.env.CI,
     timeout: 120000,

@@ -38,6 +38,13 @@ vi.mock('../../../hooks/use-profile', () => ({
   })),
 }));
 
+vi.mock('../../../hooks/use-profile-roadmaps', () => ({
+  useProfileRoadmaps: vi.fn(() => ({
+    data: [],
+    isLoading: false,
+  })),
+}));
+
 import { PROFILE_MESSAGES } from '@/constants/messages';
 
 import { useProfile } from '../../../hooks/use-profile';
@@ -46,7 +53,7 @@ import { profileModeAtom, profileImageAtom } from '../../../stores/profile-atoms
 import { Profile } from './index';
 
 interface WrapperProps {
-  initialValues: (readonly [WritableAtom<unknown, any[], any>, unknown])[];
+  initialValues: (readonly [WritableAtom<unknown, unknown[], unknown>, unknown])[];
   children: React.ReactNode;
 }
 
@@ -63,9 +70,9 @@ const TestProvider = ({ initialValues, children }: WrapperProps) => (
   </QueryClientProvider>
 );
 
-const defaultAtoms: (readonly [WritableAtom<unknown, any[], any>, unknown])[] = [
-  [profileModeAtom, 'show'],
-  [profileImageAtom, '/profile.svg'],
+const defaultAtoms: (readonly [WritableAtom<unknown, unknown[], unknown>, unknown])[] = [
+  [profileModeAtom as WritableAtom<unknown, unknown[], unknown>, 'show'],
+  [profileImageAtom as WritableAtom<unknown, unknown[], unknown>, '/profile.svg'],
 ];
 
 describe('Profile', () => {
@@ -74,13 +81,13 @@ describe('Profile', () => {
       data: mockProfileData,
       isLoading: false,
       isError: false,
-    } as any);
+    } as unknown as ReturnType<typeof useProfile>);
   });
 
   it('renders the user name', () => {
     render(
       <TestProvider initialValues={defaultAtoms}>
-        <Profile />
+        <Profile userName="John Doe" />
       </TestProvider>,
     );
     expect(screen.getByText('John Doe')).toBeInTheDocument();
@@ -89,7 +96,7 @@ describe('Profile', () => {
   it('renders the user email', () => {
     render(
       <TestProvider initialValues={defaultAtoms}>
-        <Profile />
+        <Profile userName="John Doe" />
       </TestProvider>,
     );
     expect(screen.getByText('john.doe@example.com')).toBeInTheDocument();
@@ -98,7 +105,7 @@ describe('Profile', () => {
   it('renders the bio section', () => {
     render(
       <TestProvider initialValues={defaultAtoms}>
-        <Profile />
+        <Profile userName="John Doe" />
       </TestProvider>,
     );
     expect(screen.getByText(PROFILE_MESSAGES.BIO_TITLE)).toBeInTheDocument();
@@ -107,7 +114,7 @@ describe('Profile', () => {
   it('renders the streak section', () => {
     render(
       <TestProvider initialValues={defaultAtoms}>
-        <Profile />
+        <Profile userName="John Doe" />
       </TestProvider>,
     );
     expect(screen.getByText(/일 연속 스트릭/)).toBeInTheDocument();
@@ -116,7 +123,7 @@ describe('Profile', () => {
   it('renders completed and in-progress roadmap sections', () => {
     render(
       <TestProvider initialValues={defaultAtoms}>
-        <Profile />
+        <Profile userName="John Doe" />
       </TestProvider>,
     );
     expect(screen.getByText(PROFILE_MESSAGES.COMPLETED_ROADMAP)).toBeInTheDocument();
@@ -126,7 +133,7 @@ describe('Profile', () => {
   it('renders made roadmap section', () => {
     render(
       <TestProvider initialValues={defaultAtoms}>
-        <Profile />
+        <Profile userName="John Doe" />
       </TestProvider>,
     );
     expect(screen.getByText(PROFILE_MESSAGES.MADE_ROADMAP)).toBeInTheDocument();
@@ -137,11 +144,11 @@ describe('Profile', () => {
       data: undefined,
       isLoading: true,
       isError: false,
-    } as any);
+    } as unknown as ReturnType<typeof useProfile>);
 
     render(
       <TestProvider initialValues={defaultAtoms}>
-        <Profile />
+        <Profile userName="John Doe" />
       </TestProvider>,
     );
     expect(screen.getByText(PROFILE_MESSAGES.LOADING)).toBeInTheDocument();
@@ -152,11 +159,11 @@ describe('Profile', () => {
       data: undefined,
       isLoading: false,
       isError: true,
-    } as any);
+    } as unknown as ReturnType<typeof useProfile>);
 
     render(
       <TestProvider initialValues={defaultAtoms}>
-        <Profile />
+        <Profile userName="John Doe" />
       </TestProvider>,
     );
     expect(screen.getByText(PROFILE_MESSAGES.ERROR)).toBeInTheDocument();

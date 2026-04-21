@@ -15,6 +15,8 @@ if (!WS_URL && typeof window !== 'undefined') {
 
 let client: Client | null = null;
 let isConnecting = false;
+let consumerCount = 0;
+let disconnectingPromise: Promise<void> | null = null;
 
 type MessageHandler = (message: IMessage) => void;
 type ErrorHandler = (frame: IFrame) => void;
@@ -74,21 +76,33 @@ export function getStompClient(options?: StompClientOptions): Client {
   return client;
 }
 
-/** STOMP 연결 활성화 */
-export function connectStomp(options?: StompClientOptions): void {
+/** STOMP 연결 활성화 — 진행 중인 disconnect가 있으면 완료 후 연결 */
+export async function connectStomp(options?: StompClientOptions): Promise<void> {
+  if (disconnectingPromise) {
+    await disconnectingPromise;
+  }
+  consumerCount++;
   const c = getStompClient(options);
   if (!c.active) {
     c.activate();
   }
 }
 
-/** STOMP 연결 해제 */
-export async function disconnectStomp(): Promise<void> {
-  if (client?.active) {
-    await client.deactivate();
-  }
-  client = null;
-  isConnecting = false;
+/** STOMP 연결 해제 — 마지막 소비자가 해제할 때만 실제 disconnect */
+export function disconnectStomp(): Promise<void> {
+  consumerCount = Math.max(0, consumerCount - 1);
+  if (consumerCount > 0) return Promise.resolve();
+
+  disconnectingPromise = (async () => {
+    if (client?.active) {
+      await client.deactivate();
+    }
+    client = null;
+    isConnecting = false;
+    disconnectingPromise = null;
+  })();
+
+  return disconnectingPromise;
 }
 
 /** 토픽 구독 */

@@ -1,16 +1,17 @@
 # Jagalchi Client
 
-학습 로드맵 플랫폼 자갈치의 프론트엔드 레포지토리입니다.
+개발자 학습 로드맵 플랫폼 **자갈치**의 프론트엔드 레포지토리입니다.
+노드 기반 에디터로 학습 경로를 생성하고, 포크·공유하는 플랫폼입니다.
 
 ## Tech Stack
 
-- **Framework**: Next.js 16
-- **Language**: TypeScript
+- **Framework**: Next.js 16 (App Router)
+- **Language**: TypeScript (strict)
 - **Styling**: Tailwind CSS
 - **UI Components**: shadcn/ui
-- **State Management**: Zustand, TanStack Query
+- **State Management**: Jotai (client), TanStack Query (server)
 - **Form**: React Hook Form + Zod
-- **Testing**: Vitest, Storybook
+- **Testing**: Vitest, Storybook, Playwright (E2E)
 
 ## Getting Started
 
@@ -29,6 +30,9 @@ pnpm lint
 
 # 테스트
 pnpm test
+
+# Storybook
+pnpm storybook
 ```
 
 ## Project Structure
@@ -85,6 +89,14 @@ src/
 ```
 
 예시: `feat(#12): 소셜 로그인 기능 추가`
+
+## Documentation
+
+자세한 문서는 [`docs/`](./docs/README.md) 를 참고하세요.
+
+- [API 명세](./docs/api.md)
+- [배포 가이드](./docs/deployment.md)
+- [런북 (장애 대응)](./docs/runbook.md)
 
 ## License
 

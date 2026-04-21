@@ -38,3 +38,4 @@ export {
   calculateStreak,
 } from './utils/contribution-utils';
 export { GenerateMockContributions } from './utils/generate-mock-contributions';
+export { useProfileRoadmaps } from './hooks/use-profile-roadmaps';

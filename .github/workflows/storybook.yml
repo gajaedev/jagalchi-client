@@ -33,6 +33,10 @@ jobs:
       - name: Build Storybook
         run: pnpm build-storybook
 
+      - name: Add vercel.json to disable Vercel deployments from gh-pages
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+        run: echo '{"git":{"deploymentEnabled":false}}' > ./storybook-static/vercel.json
+
       - name: Deploy to GitHub Pages
         if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
         uses: peaceiris/actions-gh-pages@v4

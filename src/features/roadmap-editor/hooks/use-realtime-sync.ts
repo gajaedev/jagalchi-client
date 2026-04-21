@@ -1,8 +1,11 @@
 import { useCallback, useEffect } from 'react';
 
 import { useSetAtom } from 'jotai';
+import { toast } from 'sonner';
 
+import { REALTIME_MESSAGES } from '@/constants/messages';
 import { useStomp } from '@/hooks/use-stomp';
+import { isEnabled } from '@/lib/feature-flags';
 
 import { handleAck, handleNack } from '../services/action-dispatcher';
 import { nodesAtom, edgesAtom, remoteCursorsAtom, type RemoteCursor } from '../stores/editor-atoms';
@@ -10,7 +13,7 @@ import { nodesAtom, edgesAtom, remoteCursorsAtom, type RemoteCursor } from '../s
 import type { RoadmapNode } from '../types/editor.types';
 import type { Edge } from '@xyflow/react';
 
-const isRealtimeEnabled = process.env.NEXT_PUBLIC_REALTIME_ENABLED === 'true';
+const isRealtimeEnabled = isEnabled('REALTIME_ENABLED');
 
 interface UseRealtimeSyncOptions {
   roadmapId: string;
@@ -62,8 +65,11 @@ export function useRealtimeSync({
       const { isFound, action } = handleNack(data.actionId);
       if (!isFound) return;
 
-      // 전역 이벤트로 공지 → 앱 레이어의 토스트/Sentry/롤백 reducer 가 수신.
-      // 실제 롤백 로직은 리덕스 스타일 액션 스택 도입과 함께 #226 에서 처리.
+      toast.error(REALTIME_MESSAGES.NACK_TITLE, {
+        description: data.errorMessage || REALTIME_MESSAGES.NACK_DESCRIPTION,
+      });
+
+      // 전역 이벤트로 공지 — 롤백 reducer 는 #226 에서 연결.
       if (typeof window !== 'undefined') {
         window.dispatchEvent(
           new CustomEvent('jagalchi:realtime-nack', {
@@ -184,25 +190,41 @@ export function useRealtimeSync({
           // 삭제 이벤트
           setNodes((prev) => prev.filter((node) => node.id !== targetId));
         } else {
-          setNodes((prev) =>
-            prev.map((node) => {
+          setNodes((prev) => {
+            const existingNode = prev.find((n) => n.id === targetId);
+            if (!existingNode) {
+              // CREATE: payload.state를 새 노드로 추가
+              const state = payload.state as RoadmapNode | undefined;
+              if (state) return [...prev, state];
+              return prev;
+            }
+            // UPDATE
+            return prev.map((node) => {
               if (node.id !== targetId) return node;
               const state = payload.state as Record<string, unknown> | undefined;
               return state ? ({ ...node, ...state } as RoadmapNode) : node;
-            }),
-          );
+            });
+          });
         }
       } else if (targetType === 'EDGE') {
         if (payload.deletedNode) {
           setEdges((prev) => prev.filter((edge) => edge.id !== targetId));
         } else {
-          setEdges((prev) =>
-            prev.map((edge) => {
+          setEdges((prev) => {
+            const existingEdge = prev.find((e) => e.id === targetId);
+            if (!existingEdge) {
+              // CREATE: payload.state를 새 엣지로 추가
+              const state = payload.state as Edge | undefined;
+              if (state) return [...prev, state];
+              return prev;
+            }
+            // UPDATE
+            return prev.map((edge) => {
               if (edge.id !== targetId) return edge;
               const state = payload.state as Record<string, unknown> | undefined;
               return state ? ({ ...edge, ...state } as Edge) : edge;
-            }),
-          );
+            });
+          });
         }
       }
     },

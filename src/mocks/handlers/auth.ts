@@ -46,6 +46,9 @@ interface ErrorResponse {
 // 가변 유저 저장소 (등록된 유저를 런타임에서 추적)
 const registeredUsers: MockUser[] = [...MOCK_USERS];
 
+// 마지막으로 로그인한 유저 ID (refresh 핸들러에서 재사용)
+let lastLoggedInUserId: string | null = null;
+
 /** API 스펙 형식의 에러 응답 생성 */
 const createErrorResponse = (
   status: number,
@@ -124,6 +127,7 @@ export const authHandlers = [
       );
     }
 
+    lastLoggedInUserId = user.id;
     return HttpResponse.json({ accessToken: createMockToken(user.id) });
   }),
 
@@ -259,7 +263,9 @@ export const authHandlers = [
         { status: 401 },
       );
     }
-    return HttpResponse.json({ accessToken: createMockToken('refreshed') });
+    // 마지막 로그인 유저의 토큰을 재발급 (name 클레임 포함)
+    const userId = lastLoggedInUserId ?? registeredUsers[0]?.id ?? 'unknown';
+    return HttpResponse.json({ accessToken: createMockToken(userId) });
   }),
 
   // DELETE /api/users — 계정 삭제
@@ -278,4 +284,5 @@ export const authHandlers = [
 export const resetRegisteredUsers = (): void => {
   registeredUsers.length = 0;
   registeredUsers.push(...MOCK_USERS);
+  lastLoggedInUserId = null;
 };

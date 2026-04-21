@@ -5,6 +5,50 @@ const CREDENTIALS = (
   BASE_URL.startsWith('http') ? 'include' : 'same-origin'
 ) as globalThis.RequestCredentials;
 
+/** 프록시를 통해 요청할 때만 CSRF 검증이 필요하다 */
+const IS_PROXY_MODE = !BASE_URL.startsWith('http');
+
+const SAFE_METHODS_SET = new Set(['GET', 'HEAD', 'OPTIONS']);
+
+// --- CSRF Token (in-memory cache, proxy mode only) ---
+
+const CSRF_CACHE_TTL_MS = 90 * 60 * 1000; // 90분 (쿠키 maxAge 2시간보다 짧게)
+
+let csrfToken: string | null = null;
+let csrfTokenExpiresAt = 0;
+let csrfFetchPromise: Promise<string | null> | null = null;
+
+async function getCsrfToken(): Promise<string | null> {
+  if (!IS_PROXY_MODE) return null;
+  if (csrfToken && Date.now() < csrfTokenExpiresAt) return csrfToken;
+
+  // 이미 진행 중인 fetch가 있으면 공유 (thundering herd 방지)
+  if (csrfFetchPromise) return csrfFetchPromise;
+
+  csrfFetchPromise = (async () => {
+    try {
+      const response = await fetch('/api/csrf-token', { credentials: 'same-origin' });
+      if (!response.ok) return null;
+      const data = (await response.json()) as { token: string };
+      csrfToken = data.token;
+      csrfTokenExpiresAt = Date.now() + CSRF_CACHE_TTL_MS;
+      return csrfToken;
+    } catch {
+      return null;
+    } finally {
+      csrfFetchPromise = null;
+    }
+  })();
+
+  return csrfFetchPromise;
+}
+
+/** CSRF 토큰 캐시를 초기화한다 (로그아웃 등 세션 전환 시 호출). */
+export function resetCsrfToken(): void {
+  csrfToken = null;
+  csrfTokenExpiresAt = 0;
+}
+
 export const SESSION_COOKIE_KEY = 'jagalchi-session';
 
 interface ApiError {
@@ -52,6 +96,7 @@ export function setAccessToken(token: string): void {
 /** 액세스 토큰 삭제 (메모리 + 세션 쿠키) */
 export function clearAccessToken(): void {
   accessToken = null;
+  resetCsrfToken();
   if (typeof document !== 'undefined') {
     document.cookie = `${SESSION_COOKIE_KEY}=; path=/; max-age=0`;
   }
@@ -110,12 +155,19 @@ async function request<T>(
   const token = getAccessToken();
   const authHeader: Record<string, string> = token ? { Authorization: `Bearer ${token}` } : {};
 
+  const csrfHeader: Record<string, string> = {};
+  if (!SAFE_METHODS_SET.has(init.method)) {
+    const csrf = await getCsrfToken();
+    if (csrf) csrfHeader['X-CSRF-Token'] = csrf;
+  }
+
   const response = await fetch(url, {
     ...init,
     credentials: CREDENTIALS,
     headers: {
       'Content-Type': 'application/json',
       ...authHeader,
+      ...csrfHeader,
       ...init.headers,
     },
   });
@@ -133,6 +185,7 @@ async function request<T>(
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${newToken}`,
+            ...csrfHeader,
             ...init.headers,
           },
         });

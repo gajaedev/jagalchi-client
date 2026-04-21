@@ -8,14 +8,16 @@ import { useAtomValue } from 'jotai';
 import { ChevronLeft, Ellipsis } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
+import { REALTIME_MESSAGES } from '@/constants/messages';
 
 import { roadmapTitleAtom } from '../../../stores/editor-atoms';
 
 interface EditorHeaderProps {
   onBack?: () => void;
+  isConnected?: boolean;
 }
 
-export const EditorHeader = memo(function EditorHeader({ onBack }: EditorHeaderProps) {
+export const EditorHeader = memo(function EditorHeader({ onBack, isConnected }: EditorHeaderProps) {
   const router = useRouter();
   const title = useAtomValue(roadmapTitleAtom);
 
@@ -46,6 +48,28 @@ export const EditorHeader = memo(function EditorHeader({ onBack }: EditorHeaderP
         <span className="text-xs leading-4 font-medium tracking-[0.18px] text-slate-500">
           (수정중)
         </span>
+
+        {isConnected !== undefined && (
+          <span
+            className="flex items-center gap-1 text-xs leading-4 font-medium"
+            aria-label={
+              isConnected
+                ? REALTIME_MESSAGES.CONNECTION_CONNECTED
+                : REALTIME_MESSAGES.CONNECTION_DISCONNECTED
+            }
+          >
+            <span
+              className={`inline-block h-2 w-2 rounded-full ${
+                isConnected ? 'bg-green-500' : 'bg-slate-400'
+              }`}
+            />
+            <span className={isConnected ? 'text-green-600' : 'text-slate-400'}>
+              {isConnected
+                ? REALTIME_MESSAGES.CONNECTION_CONNECTED
+                : REALTIME_MESSAGES.CONNECTION_DISCONNECTED}
+            </span>
+          </span>
+        )}
 
         <button
           type="button"

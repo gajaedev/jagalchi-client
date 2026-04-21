@@ -1,0 +1,41 @@
+name: Accessibility (a11y)
+
+on:
+  pull_request:
+    branches: [develop]
+
+jobs:
+  storybook-a11y:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build Storybook
+        run: pnpm build-storybook
+        env:
+          NODE_OPTIONS: --max_old_space_size=4096
+
+      # @storybook/addon-a11y is installed and surfaces a11y violations
+      # in the Storybook UI (dev mode). For automated CI gating, install
+      # @storybook/test-runner and configure an axe preVisit hook.
+      # Tracked in issue #225.
+      - name: Verify Storybook build artifact
+        run: |
+          if [ ! -d storybook-static ]; then
+            echo "storybook-static directory not found"
+            exit 1
+          fi
+          echo "Storybook build succeeded. storybook-static is present."

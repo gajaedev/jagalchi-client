@@ -1,12 +1,13 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useAtom, useSetAtom } from 'jotai';
 import { useForm } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { PROFILE_MESSAGES } from '@/constants/messages';
 
 import {
   profileBioAtom,
@@ -17,13 +18,19 @@ import {
   profileOrgAtom,
   profileOrgSnapshotAtom,
 } from '../../../stores/profile-atoms';
+import { FollowButton } from '../../atoms/FollowButton';
 import { ProfileEditButton } from '../../atoms/ProfileEditButton';
+import { FollowListDialog } from '../FollowListDialog';
+
+type FollowDialogType = 'followers' | 'followings';
 
 interface ProfileInfoFormProps {
   name: string;
   email: string;
   followerCount?: number;
   followingCount?: number;
+  isSelf?: boolean;
+  isFollowing?: boolean;
   onNameChange?: (name: string) => void;
   onEmailChange?: (email: string) => void;
 }
@@ -40,10 +47,13 @@ export function ProfileInfoForm({
   email,
   followerCount = 0,
   followingCount = 0,
+  isSelf = true,
+  isFollowing = false,
   onNameChange,
   onEmailChange,
 }: ProfileInfoFormProps) {
   const [mode, setMode] = useAtom(profileModeAtom);
+  const [followDialog, setFollowDialog] = useState<FollowDialogType | null>(null);
 
   // Atoms for bio / org / links (read current, set snapshot, restore from snapshot)
   const [bio, setBio] = useAtom(profileBioAtom);
@@ -125,18 +135,31 @@ export function ProfileInfoForm({
             </div>
 
             <div className="flex flex-row gap-2">
-              <p className="text-base font-medium">
+              <button
+                type="button"
+                className="text-base font-medium hover:underline"
+                onClick={() => setFollowDialog('followers')}
+              >
                 {formatCount(followerCount)}{' '}
-                <span className="text-muted-foreground text-sm font-medium">followers</span>
-              </p>
-              <p className="text-base font-medium">
+                <span className="text-muted-foreground text-sm font-medium">
+                  {PROFILE_MESSAGES.FOLLOWERS_TITLE}
+                </span>
+              </button>
+              <button
+                type="button"
+                className="text-base font-medium hover:underline"
+                onClick={() => setFollowDialog('followings')}
+              >
                 {formatCount(followingCount)}{' '}
-                <span className="text-muted-foreground text-sm font-medium">following</span>
-              </p>
+                <span className="text-muted-foreground text-sm font-medium">
+                  {PROFILE_MESSAGES.FOLLOWINGS_TITLE}
+                </span>
+              </button>
             </div>
           </div>
 
-          <div>
+          <div className="flex flex-row gap-2">
+            <FollowButton userName={name} isFollowing={isFollowing} isSelf={isSelf} />
             <ProfileEditButton variant="show" onClick={handleEnterEdit} />
           </div>
         </div>
@@ -171,14 +194,26 @@ export function ProfileInfoForm({
             </div>
 
             <div className="flex flex-row gap-2 sm:gap-4">
-              <p className="text-sm font-medium sm:text-base">
+              <button
+                type="button"
+                className="text-sm font-medium hover:underline sm:text-base"
+                onClick={() => setFollowDialog('followers')}
+              >
                 {formatCount(followerCount)}{' '}
-                <span className="text-muted-foreground text-sm font-medium">followers</span>
-              </p>
-              <p className="text-sm font-medium sm:text-base">
+                <span className="text-muted-foreground text-sm font-medium">
+                  {PROFILE_MESSAGES.FOLLOWERS_TITLE}
+                </span>
+              </button>
+              <button
+                type="button"
+                className="text-sm font-medium hover:underline sm:text-base"
+                onClick={() => setFollowDialog('followings')}
+              >
                 {formatCount(followingCount)}{' '}
-                <span className="text-muted-foreground text-sm font-medium">following</span>
-              </p>
+                <span className="text-muted-foreground text-sm font-medium">
+                  {PROFILE_MESSAGES.FOLLOWINGS_TITLE}
+                </span>
+              </button>
             </div>
           </div>
 
@@ -197,6 +232,14 @@ export function ProfileInfoForm({
           </div>
         </div>
       )}
+
+      <FollowListDialog
+        userName={name}
+        open={followDialog}
+        onOpenChange={(isOpen) => {
+          if (!isOpen) setFollowDialog(null);
+        }}
+      />
     </div>
   );
 }
