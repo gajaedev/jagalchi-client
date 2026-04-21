@@ -1,6 +1,16 @@
 # 즉시 실행 액션 (우선순위순)
 
-**최종 업데이트**: 2026-02-14
+**최종 업데이트**: 2026-04-20
+
+> 2026-04-20 스윕: 남아 있던 HIGH 항목(H2~H8) 검증.
+>
+> - H2/H3 RoadmapCard 공용 primitive 추출 (PR #252). `useClickOutside` 는 이미
+>   단일 hook(`src/hooks/use-click-outside.ts`)으로 통합되어 있었음.
+> - H4/H5 `PanelHeader` + `useUpdateNode` 는 이미 Node/Section/Text/Edge Panel
+>   모두에서 사용 중(`src/features/roadmap-editor/properties/...`). 재검증 완료.
+> - H6 localStorage 는 `src/lib/roadmap-storage.ts` 단일 서비스로 완료.
+> - H7/H8 공용 타입/상수는 `src/types/sort.types.ts`, `src/lib/roadmap-storage.ts`
+>   로 이미 존재. feature 는 re-export 만 사용.
 
 ---
 
@@ -458,10 +468,10 @@ roadmap-editor/
 ### 다음 주
 
 - [x] H1: RoadmapEditorPage 훅 분해
-- [ ] H2-H3: 중복 컴포넌트/훅 통합
-- [ ] H4-H5: Property panel 중복 제거
-- [ ] H6: localStorage 단일 서비스
-- [ ] H7-H8: 공유 타입/상수 추출
+- [x] H2-H3: 중복 컴포넌트/훅 통합 (PR #252, useClickOutside 이미 통합됨)
+- [x] H4-H5: Property panel 중복 제거 (PanelHeader + useUpdateNode 적용 완료)
+- [x] H6: localStorage 단일 서비스 (`src/lib/roadmap-storage.ts`)
+- [x] H7-H8: 공유 타입/상수 추출 (`src/types/sort.types.ts`)
 - [x] H9: roadmap-editor sub-features 분해
 
 ### 이번 달
