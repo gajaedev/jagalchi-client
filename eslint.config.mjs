@@ -139,6 +139,15 @@ export default [
       ],
     },
   },
+  // Node.js 스크립트
+  {
+    files: ['scripts/**/*.{js,mjs,cjs}'],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+      },
+    },
+  },
   // 테스트 및 스토리북 파일 규칙 완화
   {
     files: ['**/*.test.{ts,tsx}', '**/*.spec.{ts,tsx}', '**/*.stories.{ts,tsx}'],
