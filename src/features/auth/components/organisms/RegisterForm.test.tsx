@@ -27,6 +27,14 @@ vi.mock('../../hooks/use-verify-code', () => ({
   }),
 }));
 
+vi.mock('../../hooks/use-update-profile-links', () => ({
+  useUpdateProfileLinks: () => ({
+    mutate: vi.fn(),
+    mutateAsync: vi.fn().mockResolvedValue(null),
+    isPending: false,
+  }),
+}));
+
 vi.mock('../../hooks/use-send-verification-code', () => ({
   useSendVerificationCode: () => ({
     mutate: (_data: unknown, options?: { onSuccess?: () => void }) => {
