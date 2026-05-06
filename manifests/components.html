@@ -6541,7 +6541,7 @@ position: &#39;top&#39; | &#39;right&#39; | &#39;bottom&#39; | &#39;left&#39;</c
               
               <pre><code>const Top = () =&gt; &lt;div
     className=&quot;relative flex h-[100px] w-[200px] items-center justify-center border border-dashed border-slate-300&quot;&gt;
-    &lt;span className=&quot;text-slate-400&quot;&gt;Node&lt;/span&gt;
+    &lt;span className=&quot;text-slate-600&quot;&gt;Node&lt;/span&gt;
     &lt;PlusButtonHandle position=&quot;top&quot; onCreateNode={() =&gt; console.log(&#39;Create node at top&#39;)} /&gt;
 &lt;/div&gt;;</code></pre>
             </div>
@@ -6554,7 +6554,7 @@ position: &#39;top&#39; | &#39;right&#39; | &#39;bottom&#39; | &#39;left&#39;</c
               
               <pre><code>const Right = () =&gt; &lt;div
     className=&quot;relative flex h-[100px] w-[200px] items-center justify-center border border-dashed border-slate-300&quot;&gt;
-    &lt;span className=&quot;text-slate-400&quot;&gt;Node&lt;/span&gt;
+    &lt;span className=&quot;text-slate-600&quot;&gt;Node&lt;/span&gt;
     &lt;PlusButtonHandle position=&quot;right&quot; onCreateNode={() =&gt; console.log(&#39;Create node at right&#39;)} /&gt;
 &lt;/div&gt;;</code></pre>
             </div>
@@ -6567,7 +6567,7 @@ position: &#39;top&#39; | &#39;right&#39; | &#39;bottom&#39; | &#39;left&#39;</c
               
               <pre><code>const Bottom = () =&gt; &lt;div
     className=&quot;relative flex h-[100px] w-[200px] items-center justify-center border border-dashed border-slate-300&quot;&gt;
-    &lt;span className=&quot;text-slate-400&quot;&gt;Node&lt;/span&gt;
+    &lt;span className=&quot;text-slate-600&quot;&gt;Node&lt;/span&gt;
     &lt;PlusButtonHandle
         position=&quot;bottom&quot;
         onCreateNode={() =&gt; console.log(&#39;Create node at bottom&#39;)} /&gt;
@@ -6582,7 +6582,7 @@ position: &#39;top&#39; | &#39;right&#39; | &#39;bottom&#39; | &#39;left&#39;</c
               
               <pre><code>const Left = () =&gt; &lt;div
     className=&quot;relative flex h-[100px] w-[200px] items-center justify-center border border-dashed border-slate-300&quot;&gt;
-    &lt;span className=&quot;text-slate-400&quot;&gt;Node&lt;/span&gt;
+    &lt;span className=&quot;text-slate-600&quot;&gt;Node&lt;/span&gt;
     &lt;PlusButtonHandle position=&quot;left&quot; onCreateNode={() =&gt; console.log(&#39;Create node at left&#39;)} /&gt;
 &lt;/div&gt;;</code></pre>
             </div>
@@ -6595,7 +6595,7 @@ position: &#39;top&#39; | &#39;right&#39; | &#39;bottom&#39; | &#39;left&#39;</c
               
               <pre><code>const AllDirections = () =&gt; (
   &lt;div className=&quot;relative flex h-[200px] w-[200px] items-center justify-center border border-dashed border-slate-300&quot;&gt;
-    &lt;span className=&quot;text-slate-400&quot;&gt;Node&lt;/span&gt;
+    &lt;span className=&quot;text-slate-600&quot;&gt;Node&lt;/span&gt;
     &lt;PlusButtonHandle position=&quot;top&quot; onCreateNode={() =&gt; {}} /&gt;
     &lt;PlusButtonHandle position=&quot;right&quot; onCreateNode={() =&gt; {}} /&gt;
     &lt;PlusButtonHandle position=&quot;bottom&quot; onCreateNode={() =&gt; {}} /&gt;
@@ -6805,7 +6805,7 @@ onClose: () =&gt; void</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> RoadmapCanvas</h2>
       <div class="badges">
-        <label for="c-31-roadmap-editor-organisms-roadmapcanvas-props" class="badge ok as-toggle">2 prop types</label>
+        <label for="c-31-roadmap-editor-organisms-roadmapcanvas-props" class="badge ok as-toggle">3 prop types</label>
         <label for="c-31-roadmap-editor-organisms-roadmapcanvas-info" class="badge info as-toggle">1 info</label>
         <label for="c-31-roadmap-editor-organisms-roadmapcanvas-stories" class="badge ok as-toggle">6 stories</label>
         
@@ -6839,13 +6839,15 @@ onClose: () =&gt; void</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">2 prop types</span>
+              <span class="badge ok">3 prop types</span>
             </div>
             <pre><code>Component: src/features/roadmap-editor/canvas/components/RoadmapCanvas/index.tsx::RoadmapCanvas</code></pre>
             <pre><code>Props:</code></pre>
             <pre><code>roadmapId?: string
 
-userName?: string = &#39;Unknown&#39;</code></pre>
+userId?: string
+
+userName?: string</code></pre>
           </div>
         </div>
     
