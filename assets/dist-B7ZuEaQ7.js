@@ -1,1 +1,0 @@
-import{n as e,o as t}from"./chunk-BEldbCjX.js";import{J as n}from"./iframe-BW17Ef0A.js";var r,i,a=e((()=>{r=t(n(),1),i=globalThis?.document?r.useLayoutEffect:()=>{}}));function o(e){let t=s.useRef(e);return s.useEffect(()=>{t.current=e}),s.useMemo(()=>(...e)=>t.current?.(...e),[])}var s,c=e((()=>{s=t(n(),1)}));export{i,o as n,a as r,c as t};
