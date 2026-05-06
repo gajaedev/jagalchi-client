@@ -56,7 +56,7 @@
     "html-to-image": "^1.11.13",
     "isomorphic-dompurify": "^3.12.0",
     "jagalchi-client": "link:",
-    "jotai": "^2.19.1",
+    "jotai": "^2.20.0",
     "jotai-history": "^0.5.0",
     "jspdf": "^4.2.1",
     "lucide-react": "^1.14.0",
@@ -72,7 +72,7 @@
     "sonner": "^2.0.7",
     "sockjs-client": "^1.6.1",
     "tailwind-merge": "^3.5.0",
-    "zod": "^4.4.2"
+    "zod": "^4.4.3"
   },
   "pnpm": {
     "overrides": {
